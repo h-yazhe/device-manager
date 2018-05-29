@@ -1,0 +1,30 @@
+spring:
+  datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/device_manager?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: 123456
+      druid:
+        initial-size: 5
+        max-active: 20
+        min-idle: 5
+        #监控视图配置
+        stat-view-servlet:
+          login-username: admin
+          login-password: 123456
+
+mybatis:
+   mapperLocations: classpath:/mapper/*.xml
+   type-aliases-package: com.sicau.devicemanager.POJO.*
+   configuration:
+     map-underscore-to-camel-case: true
+
+#token过期时间（天）
+token-expire-time: 30
+
+logging:
+  level:
+    com:
+      sicau:
+        devicemanager:
+          dao: debug

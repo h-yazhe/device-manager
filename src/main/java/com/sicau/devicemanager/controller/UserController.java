@@ -1,0 +1,103 @@
+package com.sicau.devicemanager.controller;
+
+import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.POJO.DTO.UserRegisterDTO;
+import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.constants.CommonConstants;
+import com.sicau.devicemanager.constants.HttpParamKey;
+import com.sicau.devicemanager.constants.PermissionActionConstant;
+import com.sicau.devicemanager.constants.ResourceConstants;
+import com.sicau.devicemanager.service.UserService;
+import com.sicau.devicemanager.util.web.ResultVOUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+
+/**
+ * 用户操作
+ * @author BeFondOfTaro
+ * Created at 19:21 2018/5/15
+ */
+@RestController
+@RequestMapping(CommonConstants.API_PREFIX)
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    /**
+     * 根据用户id查询用户信息
+     * @param userId 用户id
+     * @return
+     */
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
+    )
+    @GetMapping(ResourceConstants.USER + "/{userId}")
+    @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.GET)
+    public ResultVO getUserById(@PathVariable("userId") String userId){
+        return ResultVOUtil.success(userService.getUserById(userId));
+    }
+
+    /**
+     * 分页查询所有用户
+     * @param queryPage 分页参数
+     * @return
+     */
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
+    )
+    @GetMapping(ResourceConstants.USER )
+    @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.GET)
+    public ResultVO listUser(QueryPage queryPage){
+        return ResultVOUtil.success(userService.listUser(queryPage));
+    }
+
+    /**
+     * 添加用户
+     * @param userRegisterDTO 用户信息
+     */
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
+    )
+    @PostMapping(ResourceConstants.USER)
+    @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.ADD)
+    public ResultVO addUser(@Valid UserRegisterDTO userRegisterDTO){
+        userService.addUser(userRegisterDTO);
+        return ResultVOUtil.success();
+    }
+
+    /**
+     * 为用户批量更新角色
+     * @param userId 用户id
+     * @param roleIdList 角色id列表
+     */
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header",required = true)
+    )
+    @PutMapping(ResourceConstants.USER + "/{userId}/" + ResourceConstants.ROLE)
+    @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.UPDATE)
+    public ResultVO updateUserRole(@PathVariable String userId, @RequestParam("roleId") List<String> roleIdList){
+        userService.updateUserRole(userId,roleIdList);
+        return ResultVOUtil.success();
+    }
+
+    /**
+     * 通过用户id删除用户
+     * @param userId 用户id
+     */
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
+    )
+    @DeleteMapping(ResourceConstants.USER + "/{userId}")
+    @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.DELETE)
+    public ResultVO deleteUserById(@PathVariable String userId){
+        userService.deleteUserById(userId);
+        return ResultVOUtil.success();
+    }
+}

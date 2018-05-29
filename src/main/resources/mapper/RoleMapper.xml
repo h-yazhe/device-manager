@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicau.devicemanager.dao.RoleMapper">
+
+    <resultMap id="RoleDTO" type="com.sicau.devicemanager.POJO.DTO.RoleDTO">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="locked" column="locked"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <collection property="permissionList" ofType="com.sicau.devicemanager.POJO.DO.Permission">
+            <id property="id" column="p_id"/>
+            <result property="resource" column="resource"/>
+            <result property="resourceName" column="resource_name"/>
+            <result property="permissionCode" column="permission_code"/>
+            <result property="permissionName" column="permission_name"/>
+            <result property="required" column="required"/>
+        </collection>
+    </resultMap>
+
+    <sql id="listRole">
+        SELECT role.*,
+            p.id p_id, p.resource, p.resource_name,
+            p.permission_code, p.permission_name,
+            p.required
+        FROM role
+            JOIN role_permission
+                ON role.id = role_permission.role_id
+            JOIN permission p
+                ON role_permission.permission_id = p.id
+    </sql>
+
+    <insert id="insertRole">
+        INSERT INTO `role`
+        (`id`,
+         `name`)
+        VALUES (#{id},
+                #{name});
+    </insert>
+
+    <insert id="insertRolePermission">
+        INSERT INTO `role_permission`
+        (`id`,
+         `role_id`,
+         `permission_id`)
+        VALUES (#{id},
+                #{roleId},
+                #{permissionId});
+    </insert>
+
+    <delete id="deleteRoleById">
+        DELETE FROM role
+        WHERE id = #{roleId}
+    </delete>
+
+    <delete id="deleteRolePermissionByRoleId">
+        DELETE FROM role_permission
+        WHERE role_id = #{roleId}
+    </delete>
+
+    <select id="listRole" resultMap="RoleDTO">
+        <include refid="listRole"/>
+    </select>
+</mapper>

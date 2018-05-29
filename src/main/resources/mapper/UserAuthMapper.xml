@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicau.devicemanager.dao.UserAuthMapper">
+
+    <select id="getUserAuthByLoginInfo" resultType="com.sicau.devicemanager.POJO.DO.UserAuth">
+        SELECT *
+        FROM user_auth
+        WHERE identifier = #{identifier}
+          and credential = #{credential}
+          and identify_type = #{identifyType}
+    </select>
+
+    <select id="getPasswordByUserId" resultType="java.lang.String">
+        SELECT user_auth.credential
+        FROM user_auth
+        WHERE user_id = #{userId}
+        AND locked = 0
+        And identify_type = 0
+    </select>
+</mapper>

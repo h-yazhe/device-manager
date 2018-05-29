@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicau.devicemanager.dao.UserRoleMapper">
+
+    <delete id="deleteUserRoleByRoleId">
+        DELETE FROM user_role
+        WHERE role_id = #{roleId}
+    </delete>
+
+    <delete id="deleteUserRoleByUserId">
+        DELETE FROM user_role
+        WHERE user_role.user_id = #{userId}
+    </delete>
+
+    <insert id="insertUserRole">
+        INSERT INTO `user_role`
+        (`id`,
+        `user_id`,
+        `role_id`)
+        VALUES (#{id},
+        #{userId},
+        #{roleId})
+    </insert>
+</mapper>

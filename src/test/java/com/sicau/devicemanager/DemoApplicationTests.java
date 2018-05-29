@@ -1,4 +1,4 @@
-package com.sicau.demo;
+package com.sicau.devicemanager;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

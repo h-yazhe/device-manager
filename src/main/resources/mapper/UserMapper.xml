@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicau.devicemanager.dao.UserMapper">
+
+    <resultMap id="userDTOMap" type="com.sicau.devicemanager.POJO.DTO.UserDTO">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="realName" column="real_name"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="address" column="address"/>
+        <result property="locked" column="locked"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="lastTime" column="last_time"/>
+        <collection property="roleList" ofType="com.sicau.devicemanager.POJO.DO.Role">
+            <id property="id" column="role_id"/>
+            <result property="name" column="role_name"/>
+            <result property="locked" column="role_locked"/>
+            <result property="createTime" column="role_create_time"/>
+            <result property="updateTime" column="role_update_time"/>
+        </collection>
+        <collection property="permissionList" ofType="com.sicau.devicemanager.POJO.DO.Permission">
+            <id property="id" column="permission_id"/>
+            <result property="resource" column="resource"/>
+            <result property="resourceName" column="resource_name"/>
+            <result property="permissionCode" column="permission_code"/>
+            <result property="permissionName" column="permission_name"/>
+            <result property="required" column="required"/>
+        </collection>
+    </resultMap>
+
+    <sql id="listUser">
+        SELECT
+            `user`.*,
+            role.id          role_id,
+            role.name        role_name,
+            role.locked      role_locked,
+            role.create_time role_create_time,
+            role.update_time role_update_time,
+            permission.id    permission_id,
+            resource,
+            resource_name,
+            permission_code,
+            permission_name,
+            required
+        FROM `user`
+            JOIN `user_role` ON user.id = user_role.user_id
+            JOIN role ON user_role.role_id = role.id
+            JOIN role_permission ON role.id = role_permission.role_id
+            JOIN permission ON role_permission.permission_id = permission.id
+    </sql>
+
+    <insert id="insertUser">
+        INSERT INTO `user`
+        (`id`,
+         `username`,
+         `real_name`,
+         `email`,
+         `phone`,
+         `address`)
+        VALUES (#{id},
+                #{username},
+                #{realName},
+                #{email},
+                #{phone},
+                #{address})
+    </insert>
+
+    <insert id="insertUserAuth">
+        INSERT INTO `user_auth`
+        (`id`,
+         `user_id`,
+         `identify_type`,
+         `identifier`,
+         `credential`)
+        VALUES (#{id},
+                #{userId},
+                #{identifyType},
+                #{identifier},
+                #{credential});
+    </insert>
+
+
+    <delete id="deleteUserById">
+        DELETE FROM `user`
+        WHERE id = #{userId}
+    </delete>
+
+    <delete id="deleteUserAuthByUserId">
+        DELETE FROM user_auth
+        WHERE user_id = #{userId}
+    </delete>
+
+    <select id="getUserById" resultMap="userDTOMap">
+        <include refid="listUser"/>
+        WHERE user_id = #{userId}
+    </select>
+
+
+    <select id="listUser" resultMap="userDTOMap">
+        <include refid="listUser"/>
+    </select>
+</mapper>
