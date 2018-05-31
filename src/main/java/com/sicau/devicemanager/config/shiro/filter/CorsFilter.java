@@ -30,12 +30,13 @@ public class CorsFilter extends AccessControlFilter {
         if (HttpMethod.OPTIONS.matches(request.getMethod())){
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return false;
+        }else {
+            return true;
         }
-        return true;
     }
 
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        return false;
+        return true;
     }
 }

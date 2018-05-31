@@ -1,12 +1,11 @@
 server:
-  context-path: dev-manager
+  context-path: /dev-manager
 
 spring:
+  profiles:
+    active: prod
   datasource:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/device_manager?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
-      username: root
-      password: 123456
       druid:
         initial-size: 5
         max-active: 20

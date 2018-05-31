@@ -65,9 +65,10 @@ public class ShiroConfig {
          */
         Map<String, String> filterRuleMap = new LinkedHashMap<>();
         //登录不需要拦截
+        filterRuleMap.put("/**", "cors");
         filterRuleMap.put(CommonConstants.API_PREFIX + "/login", "anon");
         // 所有rest请求通过我们自己的auth Filter
-        filterRuleMap.put(CommonConstants.API_PREFIX + "/**", "cors");
+
         filterRuleMap.put(CommonConstants.API_PREFIX + "/**", "auth");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return factoryBean;
