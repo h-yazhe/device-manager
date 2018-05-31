@@ -25,10 +25,11 @@ public class CorsFilter extends AccessControlFilter {
         //支持的http动作
         response.setHeader("Access-Control-Allow-Methods", "POST,GET,OPTIONS,DELETE,PUT");
         //响应头
-        response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Allow-Headers"));
+        response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
         //复杂跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
         if (HttpMethod.OPTIONS.matches(request.getMethod())){
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
+            return false;
         }
         return true;
     }

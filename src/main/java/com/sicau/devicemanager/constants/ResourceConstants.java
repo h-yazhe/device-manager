@@ -21,4 +21,6 @@ public interface ResourceConstants {
      * 权限
      */
     String PERMISSION = "permission";
+
+    String BRAND = "brand";
 }

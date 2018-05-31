@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicau.devicemanager.dao.BrandMapper">
+
+    <insert id="insertBrand">
+        INSERT INTO brand(id, name) VALUES (
+                #{id},#{name}
+        )
+    </insert>
+
+    <delete id="deleteBrandById">
+        DELETE FROM brand
+        WHERE id = #{id}
+    </delete>
+
+    <select id="listBrand" resultType="com.sicau.devicemanager.POJO.DO.Brand">
+        SELECT *
+        FROM brand
+    </select>
+</mapper>

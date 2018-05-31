@@ -1,3 +1,6 @@
+server:
+  context-path: dev-manager
+
 spring:
   datasource:
       driver-class-name: com.mysql.jdbc.Driver
