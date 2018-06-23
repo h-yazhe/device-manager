@@ -4,6 +4,7 @@ import com.sicau.devicemanager.POJO.DO.Brand;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
+import com.sicau.devicemanager.constants.PermissionActionConstant;
 import com.sicau.devicemanager.constants.ResourceConstants;
 import com.sicau.devicemanager.service.BrandService;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
@@ -11,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +32,7 @@ public class BrandController {
     @ApiOperation("查询所有品牌")
     @ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
     @GetMapping(ResourceConstants.BRAND)
+    @RequiresPermissions(ResourceConstants.BRAND + PermissionActionConstant.GET)
     public ResultVO listBrand(){
         return ResultVOUtil.success(brandService.listBrand());
     }

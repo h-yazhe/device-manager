@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
  * Created at 23:15 2018/4/10
  */
 public class CorsFilter extends AccessControlFilter {
-
     @Override
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object o) throws Exception {
         //简单跨域设置
@@ -37,6 +36,6 @@ public class CorsFilter extends AccessControlFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        return true;
+        return false;
     }
 }

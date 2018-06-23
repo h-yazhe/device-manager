@@ -47,16 +47,14 @@ public class ShiroConfig {
     @Bean("shiroFilter")
     public ShiroFilterFactoryBean factory(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
-
-        // 添加自己的过滤器并且取名
-        Map<String, Filter> filterMap = new LinkedHashMap<>();
-        //跨域访问拦截器
-        filterMap.put("cors", new CorsFilter());
-        //身份认证拦截器
-        filterMap.put("auth", new AuthFilter());
-        factoryBean.setFilters(filterMap);
-
         factoryBean.setSecurityManager(securityManager);
+        // 添加自己的过滤器并且取名
+        Map<String, Filter> filterMap = factoryBean.getFilters();
+        //跨域访问拦截器
+        filterMap.put("corsFilter", new CorsFilter());
+        //身份认证拦截器
+        filterMap.put("statelessAuthc", new AuthFilter());
+
         factoryBean.setUnauthorizedUrl("/401");
 
         /*
@@ -65,11 +63,9 @@ public class ShiroConfig {
          */
         Map<String, String> filterRuleMap = new LinkedHashMap<>();
         //登录不需要拦截
-        filterRuleMap.put("/**", "cors");
-        filterRuleMap.put(CommonConstants.API_PREFIX + "/login", "anon");
+        filterRuleMap.put(CommonConstants.API_PREFIX + "/login", "corsFilter,anon");
         // 所有rest请求通过我们自己的auth Filter
-
-        filterRuleMap.put(CommonConstants.API_PREFIX + "/**", "auth");
+        filterRuleMap.put(CommonConstants.API_PREFIX + "/**", "corsFilter,statelessAuthc");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return factoryBean;
     }

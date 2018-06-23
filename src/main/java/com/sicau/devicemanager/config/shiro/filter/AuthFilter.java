@@ -17,7 +17,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Calendar;
 
 /**
  * 无状态身份认证过滤器
@@ -46,6 +45,7 @@ public class AuthFilter extends AccessControlFilter {
             if (authorization == null){
                 throw new Exception("token为空!");
             }
+            log.info(authorization);
             //登录
             JWTToken token = new JWTToken(authorization);
             // 提交给realm进行登入，如果错误他会抛出异常并被捕获

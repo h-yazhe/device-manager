@@ -1,5 +1,7 @@
 package com.sicau.devicemanager.service;
 
+import java.util.Map;
+
 /**
  * 登录相关服务
  * @author BeFondOfTaro
@@ -14,6 +16,6 @@ public interface LoginService {
      * @param identifyType
      * @return 用户通行token
      */
-    String login(String identifier,String credential,Integer identifyType);
+    Map<String,Object> login(String identifier, String credential, Integer identifyType);
 
 }

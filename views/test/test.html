@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <script src="../assets/js/jquery-1.8.3.min.js"></script>
+</head>
+
+<body>
+<script type="text/javascript">
+
+    $.ajax({
+        type: "post",
+        url: "http://localhost:8080/dev-manager/api_v1/login",
+        data: {
+            identifier: 'hyz',
+            credential: '123456',
+            identifyType: 0
+        }
+    })
+
+    $.ajax({
+        headers: {
+            'token': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE1Mjk3NTQ1OTUsImV4cCI6MTUzMjM0NjU5NSwiaWF0IjoxNTI5NzU0NTk1LCJ1c2VySWQiOiIxNTI2NDY3MzYzMzYyMTcxODQ0In0.zI42eBRtKp1mdI4fBogCZMUiPOLtbsAHEAC2fcX2mQg"
+        },
+        type: "get",
+        url: "http://localhost:8080/dev-manager/api_v1/brand"
+    })
+    function insertOne() {
+        $.ajax({
+            headers: {
+                'token': "1516448255597359989.949b92eddc06121f8746a59d231817470751c18537d5cc9178d7ed604fa20d8d"
+            },
+            type: 'post',
+            url: "http://demo-set.matrixwing.com/ass-app-sys/v1/nonpub/register",
+            data: $("#insertOne").serialize(),
+            <!-- beforeSend: function (XMLHttpRequest) {   -->
+            <!-- XMLHttpRequest.setRequestHeader("token", "1516448255597359989.949b92eddc06121f8746a59d231817470751c18537d5cc9178d7ed604fa20d8d");   -->
+            <!-- },   -->
+            success: function (data) {
+                alert(data)
+            }
+        })
+    }
+
+    function deleteOne() {
+        $.post("http://localhost:8080/deleteuser",
+            $("#deleteOne").serialize(),
+            function (data) {
+                alert("删除成功")
+            })
+    }
+
+    function findOne() {
+        $.get("http://localhost:8080/finduser",
+            $("#findOne").serialize(),
+            function (data) {
+                var jsonObj = data
+                $("#myId").val(jsonObj.id)
+                $("#myUsername").val(jsonObj.username)
+                $("#myRealname").val(jsonObj.realname)
+            })
+    }
+
+    function updateOne() {
+        $.post("http://localhost:8080/updateuser",
+            $("#updateOne").serialize(),
+            function (data) {
+                alert("修改成功！")
+            })
+    }
+</script>
+</body>
+</html>
