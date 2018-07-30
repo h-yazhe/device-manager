@@ -1,10 +1,10 @@
 package com.sicau.devicemanager.config.shiro.filter;
 
-import com.sicau.devicemanager.config.shiro.JWTToken;
+import com.sicau.devicemanager.config.shiro.token.JWTToken;
+import com.sicau.devicemanager.config.shiro.token.SimpleToken;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.util.DateUtil;
-import com.sicau.devicemanager.util.JWTUtil;
 import com.sicau.devicemanager.util.web.CookieUtil;
 import com.sicau.devicemanager.util.web.ResponseUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
@@ -47,7 +47,7 @@ public class AuthFilter extends AccessControlFilter {
             }
             log.info(authorization);
             //登录
-            JWTToken token = new JWTToken(authorization);
+            SimpleToken token = new SimpleToken(authorization);
             // 提交给realm进行登入，如果错误他会抛出异常并被捕获
             getSubject(request, response).login(token);
             //登录成功后设置cookie，方便下次请求

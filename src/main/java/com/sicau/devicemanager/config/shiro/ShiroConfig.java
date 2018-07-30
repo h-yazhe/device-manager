@@ -1,7 +1,6 @@
 package com.sicau.devicemanager.config.shiro;
 
 import com.sicau.devicemanager.config.shiro.filter.AuthFilter;
-import com.sicau.devicemanager.config.shiro.filter.CorsFilter;
 import com.sicau.devicemanager.constants.CommonConstants;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
@@ -50,8 +49,6 @@ public class ShiroConfig {
         factoryBean.setSecurityManager(securityManager);
         // 添加自己的过滤器并且取名
         Map<String, Filter> filterMap = factoryBean.getFilters();
-        //跨域访问拦截器
-        filterMap.put("corsFilter", new CorsFilter());
         //身份认证拦截器
         filterMap.put("statelessAuthc", new AuthFilter());
 
@@ -63,9 +60,9 @@ public class ShiroConfig {
          */
         Map<String, String> filterRuleMap = new LinkedHashMap<>();
         //登录不需要拦截
-        filterRuleMap.put(CommonConstants.API_PREFIX + "/login", "corsFilter,anon");
+        filterRuleMap.put(CommonConstants.API_PREFIX + "/login", "anon");
         // 所有rest请求通过我们自己的auth Filter
-        filterRuleMap.put(CommonConstants.API_PREFIX + "/**", "corsFilter,statelessAuthc");
+        filterRuleMap.put(CommonConstants.API_PREFIX + "/**", "statelessAuthc");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return factoryBean;
     }

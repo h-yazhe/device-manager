@@ -3,33 +3,36 @@ package com.sicau.devicemanager.config.shiro;
 import com.sicau.devicemanager.POJO.DO.Permission;
 import com.sicau.devicemanager.POJO.DO.Role;
 import com.sicau.devicemanager.POJO.DTO.UserDTO;
+import com.sicau.devicemanager.config.RedisConfig;
+import com.sicau.devicemanager.config.shiro.token.SimpleToken;
 import com.sicau.devicemanager.service.UserService;
 import com.sicau.devicemanager.util.JWTUtil;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpSession;
 
 
 @Service
 public class MyRealm extends AuthorizingRealm {
 
-    private static final Logger LOGGER = LogManager.getLogger(MyRealm.class);
-
     @Autowired
     private UserService userService;
+    @Autowired
+	private RedisTemplate<String,String> redisTemplate;
 
     /**
      * 大坑！，必须重写此方法，不然Shiro会报错
      */
     @Override
     public boolean supports(AuthenticationToken token) {
-        return token instanceof JWTToken;
+        return token instanceof SimpleToken;
     }
 
     /**
@@ -55,15 +58,15 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
         String token = (String) auth.getCredentials();
-        // 解密获得userId，用于和数据库进行对比
-        String userId = JWTUtil.getUserId(token);
+        // 获得userId，用于和数据库进行对比
+        String userId = (String) auth.getPrincipal();
         if (userId == null) {
-            throw new AuthenticationException("token invalid");
+            throw new AuthenticationException("token无效");
         }
-        //根据userId查询密码，生成token，和客户端token比对
-        if (! JWTUtil.verify(token, userId, userService.getPasswordByUserId(userId))) {
+        //根据userId查询redis中保存的token，对比是否相同
+        if (!userId.equals(redisTemplate.boundValueOps(RedisConfig.DATABASE + ":" + userId + ":token").get())) {
             throw new AuthenticationException("token验证失败");
         }
-        return new SimpleAuthenticationInfo(JWTUtil.getUserId(token), token, getName());
+        return new SimpleAuthenticationInfo(userId, token, getName());
     }
 }

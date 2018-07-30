@@ -1,4 +1,4 @@
-package com.sicau.devicemanager.config.shiro;
+package com.sicau.devicemanager.config.shiro.token;
 
 import org.apache.shiro.authc.AuthenticationToken;
 
