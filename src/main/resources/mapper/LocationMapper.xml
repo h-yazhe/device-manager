@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicau.devicemanager.dao.LocationMapper">
+
+
+	<insert id="insertLocationList">
+		INSERT INTO location
+		VALUES
+		<foreach collection="list" item="location" separator=",">
+			(#{location.id},#{location.parentId},#{location.name},
+			#{location.level},#{location.path})
+		</foreach>
+	</insert>
+
+	<delete id="deleteLocationById">
+		DELETE FROM location
+		WHERE id = #{id}
+	</delete>
+
+	<select id="getLocationList" resultType="com.sicau.devicemanager.POJO.DO.Location">
+		SELECT * FROM location
+	</select>
+
+	<select id="getLocationByDeviceId" resultType="com.sicau.devicemanager.POJO.DO.Location">
+		SELECT * FROM location
+		WHERE id = (
+			SELECT location_id FROM device
+			WHERE device.id = #{deviceId}
+		)
+	</select>
+	<select id="getChildrenById" resultType="Location">
+		SELECT * FROM location
+		WHERE parent_id = #{id}
+	</select>
+
+	<select id="getChildrenIdById" resultType="java.lang.String">
+		SELECT id FROM location
+		WHERE parent_id = #{id}
+	</select>
+</mapper>

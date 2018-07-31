@@ -17,7 +17,7 @@ spring:
 
 mybatis:
    mapperLocations: classpath:/mapper/*.xml
-   type-aliases-package: com.sicau.devicemanager.POJO.*
+   type-aliases-package: com.sicau.devicemanager.POJO.DO,com.sicau.devicemanager.POJO.DTO,com.sicau.devicemanager.POJO.VO
    configuration:
      map-underscore-to-camel-case: true
 

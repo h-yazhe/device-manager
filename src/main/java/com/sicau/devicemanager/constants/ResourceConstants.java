@@ -22,5 +22,13 @@ public interface ResourceConstants {
      */
     String PERMISSION = "permission";
 
-    String BRAND = "brand";
+	/**
+	 * 品牌
+	 */
+	String BRAND = "brand";
+
+	/**
+	 * 地点
+	 */
+	String LOCATION = "location";
 }

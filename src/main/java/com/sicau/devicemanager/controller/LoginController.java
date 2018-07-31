@@ -24,7 +24,7 @@ public class LoginController {
     @PostMapping("login")
     public ResultVO login(@RequestParam String identifier,
                           @RequestParam String credential,
-                          @RequestParam Integer identifyType){
+                          @RequestParam(defaultValue = "0") Integer identifyType){
         return ResultVOUtil.success(loginService.login(identifier, credential, identifyType));
     }
 }
