@@ -7,6 +7,7 @@ import com.sicau.devicemanager.config.RedisConfig;
 import com.sicau.devicemanager.config.shiro.token.SimpleToken;
 import com.sicau.devicemanager.service.UserService;
 import com.sicau.devicemanager.util.JWTUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 
-
+@Slf4j
 @Service
 public class MyRealm extends AuthorizingRealm {
 
@@ -64,7 +65,8 @@ public class MyRealm extends AuthorizingRealm {
             throw new AuthenticationException("token无效");
         }
         //根据userId查询redis中保存的token，对比是否相同
-        if (!userId.equals(redisTemplate.boundValueOps(RedisConfig.DATABASE + ":" + userId + ":token").get())) {
+		log.error(redisTemplate.boundValueOps(RedisConfig.DATABASE + ":" + userId + ":token").get());
+        if (!token.equals(redisTemplate.boundValueOps(RedisConfig.DATABASE + ":" + userId + ":token").get())) {
             throw new AuthenticationException("token验证失败");
         }
         return new SimpleAuthenticationInfo(userId, token, getName());

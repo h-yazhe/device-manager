@@ -11,12 +11,12 @@ import com.sicau.devicemanager.util.DateUtil;
 import com.sicau.devicemanager.util.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author BeFondOfTaro
@@ -48,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
 				DateUtil.convertDay2Millisecond(tokenExpireTime));
         //存入redis
         redisTemplate.boundValueOps(RedisConfig.DATABASE + ":" + userAuth.getUserId() + ":token").
-				set(token,DateUtil.convertDay2Second(tokenExpireTime));
+				set(token,tokenExpireTime, TimeUnit.DAYS);
         //返回给客户端
         Map<String,Object> res = new HashMap<>();
         res.put(HttpParamKey.TOKEN,token);

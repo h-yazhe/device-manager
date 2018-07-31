@@ -9,19 +9,19 @@
 <body>
 <script type="text/javascript">
 
-    $.ajax({
-        type: "post",
-        url: "http://localhost:8080/dev-manager/api_v1/login",
-        data: {
-            identifier: 'hyz',
-            credential: '123456',
-            identifyType: 0
-        }
-    })
+//    $.ajax({
+//        type: "post",
+//        url: "http://localhost:8080/dev-manager/api_v1/login",
+//        data: {
+//            identifier: 'hyz',
+//            credential: '123456',
+//            identifyType: 0
+//        }
+//    })
 
     $.ajax({
         headers: {
-            'token': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE1Mjk3NTQ1OTUsImV4cCI6MTUzMjM0NjU5NSwiaWF0IjoxNTI5NzU0NTk1LCJ1c2VySWQiOiIxNTI2NDY3MzYzMzYyMTcxODQ0In0.zI42eBRtKp1mdI4fBogCZMUiPOLtbsAHEAC2fcX2mQg"
+            'token': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE1MzI5OTk5MzcsImV4cCI6MTUzNTU5MTkzNywiaWF0IjoxNTMyOTk5OTM3LCJ1c2VySWQiOiIxNTMyOTk5MTgyMjkyNjQ4MTcxIn0.0P0yucQTJcgr1Uv5ummRWooTzkR47WMPp4peRbb4X8k"
         },
         type: "get",
         url: "http://localhost:8080/dev-manager/api_v1/brand"
