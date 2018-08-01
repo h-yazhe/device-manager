@@ -1,5 +1,6 @@
 package com.sicau.devicemanager.controller;
 
+import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
@@ -12,9 +13,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 地点
@@ -35,5 +36,32 @@ public class LocationController {
 	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
 	public ResultVO listLocationTree(){
 		return ResultVOUtil.success(locationService.listLocationTree());
+	}
+
+	@ApiOperation("删除该节点为根的树")
+	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+	@DeleteMapping("location/{rootId}")
+	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.DELETE)
+	public ResultVO deleteLocationTree(@PathVariable("rootId") String rootId){
+		locationService.deleteLocationTree(rootId);
+		return ResultVOUtil.success();
+	}
+
+	@ApiOperation("更新地点树")
+	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+	@PutMapping("location/{rootId}")
+	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.UPDATE)
+	public ResultVO updateLocationTree(@PathVariable String rootId,@RequestBody List<Location> locationList){
+		locationService.updateLocationTree(rootId, locationList);
+		return ResultVOUtil.success();
+	}
+
+	@ApiOperation("插入一个地点树")
+	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+	@PostMapping("location")
+	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.ADD)
+	public ResultVO insertLocationTree(@RequestBody List<Location> locationList){
+		locationService.insertLocationTree(locationList);
+		return ResultVOUtil.success();
 	}
 }
