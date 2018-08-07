@@ -2,13 +2,13 @@ package com.sicau.devicemanager.service.impl;
 
 import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.DTO.LocationDTO;
-import com.sicau.devicemanager.config.exception.CommonException;
 import com.sicau.devicemanager.dao.LocationMapper;
 import com.sicau.devicemanager.service.LocationService;
 import com.sicau.devicemanager.util.KeyUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ import java.util.List;
  * Created at 10:55 2018/7/31
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class LocationServiceImpl implements LocationService {
 
 	@Autowired
@@ -42,7 +43,7 @@ public class LocationServiceImpl implements LocationService {
 		if (rootCount == 0){
 			throw new RuntimeException("根节点数量不能为0");
 		}
-		locationMapper.insertLocationList(locationList);
+		locationMapper.insertList(locationList);
 	}
 
 	/**
@@ -74,9 +75,9 @@ public class LocationServiceImpl implements LocationService {
 	public void deleteLocationTree(String rootId) {
 		for (String childId: locationMapper.getChildrenIdById(rootId)){
 			deleteLocationTree(childId);
-			locationMapper.deleteLocationById(childId);
+			locationMapper.deleteById(childId);
 		}
-		locationMapper.deleteLocationById(rootId);
+		locationMapper.deleteById(rootId);
 	}
 
 	@Override
@@ -87,7 +88,7 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public List<LocationDTO> listLocationTree() {
-		List<Location> locationList = locationMapper.getLocationList();
+		List<Location> locationList = locationMapper.selectAll();
 		List<LocationDTO> locationDTOList = new ArrayList<>();
 		for (Location location :
 				locationList) {
@@ -118,9 +119,7 @@ public class LocationServiceImpl implements LocationService {
 					rootDTO.setChildren(new ArrayList<>());
 				}
 				//添加子节点
-				LocationDTO childDTO = new LocationDTO();
-				BeanUtils.copyProperties(location,childDTO);
-				rootDTO.getChildren().add(childDTO);
+				rootDTO.getChildren().add(createChildren(location,locationList));
 			}
 		}
 		//返回根节点

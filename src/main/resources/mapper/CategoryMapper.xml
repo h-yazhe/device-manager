@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicau.devicemanager.dao.CategoryMapper">
+
+	<insert id="insertList">
+		INSERT INTO category
+		VALUES
+		<foreach collection="list" item="category" separator=",">
+			(#{category.id},#{category.parentId},#{category.name},
+			#{category.level},#{category.path})
+		</foreach>
+	</insert>
+
+	<delete id="deleteById">
+		DELETE FROM category
+		WHERE id = #{id}
+	</delete>
+
+	<select id="selectAll" resultType="com.sicau.devicemanager.POJO.DO.Category">
+		SELECT * FROM category
+	</select>
+
+	<select id="getByDeviceId" resultType="com.sicau.devicemanager.POJO.DO.Category">
+		SELECT * FROM category
+		WHERE id = (
+		SELECT category_id FROM device_cateory
+		WHERE device_cateory.id = #{deviceId}
+		)
+	</select>
+	<select id="getChildrenById" resultType="Category">
+		SELECT * FROM category
+		WHERE parent_id = #{id}
+	</select>
+
+	<select id="getChildrenIdById" resultType="java.lang.String">
+		SELECT id FROM category
+		WHERE parent_id = #{id}
+	</select>
+</mapper>

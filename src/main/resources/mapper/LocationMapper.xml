@@ -3,7 +3,7 @@
 <mapper namespace="com.sicau.devicemanager.dao.LocationMapper">
 
 
-	<insert id="insertLocationList">
+	<insert id="insertList">
 		INSERT INTO location
 		VALUES
 		<foreach collection="list" item="location" separator=",">
@@ -12,16 +12,16 @@
 		</foreach>
 	</insert>
 
-	<delete id="deleteLocationById">
+	<delete id="deleteById">
 		DELETE FROM location
 		WHERE id = #{id}
 	</delete>
 
-	<select id="getLocationList" resultType="com.sicau.devicemanager.POJO.DO.Location">
+	<select id="selectAll" resultType="com.sicau.devicemanager.POJO.DO.Location">
 		SELECT * FROM location
 	</select>
 
-	<select id="getLocationByDeviceId" resultType="com.sicau.devicemanager.POJO.DO.Location">
+	<select id="getByDeviceId" resultType="com.sicau.devicemanager.POJO.DO.Location">
 		SELECT * FROM location
 		WHERE id = (
 			SELECT location_id FROM device

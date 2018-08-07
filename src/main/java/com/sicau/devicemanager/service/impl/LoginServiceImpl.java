@@ -3,6 +3,7 @@ package com.sicau.devicemanager.service.impl;
 import com.sicau.devicemanager.POJO.DO.UserAuth;
 import com.sicau.devicemanager.config.RedisConfig;
 import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.UserAuthMapper;
@@ -47,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
 				userAuthMapper.getPasswordByUserId(userAuth.getUserId()),
 				DateUtil.convertDay2Millisecond(tokenExpireTime));
         //存入redis
-        redisTemplate.boundValueOps(RedisConfig.DATABASE + ":" + userAuth.getUserId() + ":token").
+        redisTemplate.boundValueOps(CommonConstants.RedisKey.AUTH_TOKEN_PRIFIX + userAuth.getUserId()).
 				set(token,tokenExpireTime, TimeUnit.DAYS);
         //返回给客户端
         Map<String,Object> res = new HashMap<>();

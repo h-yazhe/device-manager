@@ -19,4 +19,9 @@ public class QueryPage {
      * 每页记录数量
      */
     private Integer pageSize = 10;
+
+	/**
+	 * 排序
+	 */
+	private String orderBy;
 }

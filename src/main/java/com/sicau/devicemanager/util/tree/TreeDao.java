@@ -9,7 +9,12 @@ import java.util.List;
  */
 public interface TreeDao {
 
-	void insertBasicTreeNodeList(List<BasicTreeNode> nodeList);
+	/**
+	 * 插入节点集合
+	 * @param nodeList 节点集
+	 * @return
+	 */
+	int insertBasicTreeNodeList(List<? extends BasicTreeNode> nodeList);
 
 	/**
 	 * 根据id查询其所有子节点id

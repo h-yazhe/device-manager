@@ -22,7 +22,7 @@ public class TreeUtil {
 		this.treeDao = treeDao;
 	}
 
-	public void insert(List<BasicTreeNode> nodeList){
+	public void insert(List<? extends BasicTreeNode> nodeList){
 		//根节点数量
 		int rootCount = 0;
 		for (BasicTreeNode node :
@@ -48,7 +48,7 @@ public class TreeUtil {
 	 * @param node 当前地点
 	 * @param nodeList 地点树的节点集合
 	 */
-	private void setBasicTreeNodeInfo(BasicTreeNode node,List<BasicTreeNode> nodeList){
+	private void setBasicTreeNodeInfo(BasicTreeNode node,List<? extends BasicTreeNode> nodeList){
 		//查找子节点
 		List<BasicTreeNode> childs = new ArrayList<>();
 		for (BasicTreeNode child : nodeList){
@@ -76,7 +76,7 @@ public class TreeUtil {
 		treeDao.deleteNodeById(rootId);
 	}
 
-	public void updateLocationTree(String rootId, List<BasicTreeNode> nodeList) {
+	public void updateLocationTree(String rootId, List<? extends BasicTreeNode> nodeList) {
 		deleteTree(rootId);
 		insert(nodeList);
 	}
@@ -100,7 +100,7 @@ public class TreeUtil {
 	 * @param nodeList 所有节点
 	 * @return 根节点
 	 */
-	private BasicTreeNodeDTO createChildren(BasicTreeNode root, List<BasicTreeNode> nodeList){
+	private BasicTreeNodeDTO createChildren(BasicTreeNode root, List<? extends BasicTreeNode> nodeList){
 		//生成根节点DTO
 		BasicTreeNodeDTO rootDTO = new BasicTreeNodeDTO();
 		BeanUtils.copyProperties(root,rootDTO);
@@ -112,10 +112,7 @@ public class TreeUtil {
 				if (rootDTO.getChildren() == null){
 					rootDTO.setChildren(new ArrayList<>());
 				}
-				//添加子节点
-				BasicTreeNodeDTO childDTO = new BasicTreeNodeDTO();
-				BeanUtils.copyProperties(node,childDTO);
-				rootDTO.getChildren().add(childDTO);
+				rootDTO.getChildren().add(createChildren(node,nodeList));
 			}
 		}
 		//返回根节点

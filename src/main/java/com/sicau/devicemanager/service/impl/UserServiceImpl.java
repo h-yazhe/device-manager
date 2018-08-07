@@ -29,6 +29,7 @@ import java.util.List;
  * Created at 13:05 2018/5/14
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -58,7 +59,6 @@ public class UserServiceImpl implements UserService {
         return userAuthMapper.getPasswordByUserId(userId);
     }
 
-    @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public void addUser(UserRegisterDTO userRegisterDTO) {
         //用户信息写入
@@ -89,7 +89,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public void updateUserRole(String userId, List<String> roleIdList) {
         //删除原来的角色
@@ -104,7 +103,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public void deleteUserById(String userId) {
         userMapper.deleteUserById(userId);

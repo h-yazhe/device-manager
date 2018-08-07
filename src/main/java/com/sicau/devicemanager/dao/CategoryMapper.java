@@ -1,21 +1,21 @@
 package com.sicau.devicemanager.dao;
 
-import com.sicau.devicemanager.POJO.DO.Location;
+import com.sicau.devicemanager.POJO.DO.Category;
 
 import java.util.List;
 
 /**
  * @author Yazhe
- * Created at 9:40 2018/7/31
+ * Created at 14:59 2018/8/7
  */
-public interface LocationMapper {
+public interface CategoryMapper {
 
 	/**
 	 * 插入地点集合
 	 * @param locationList 地点集合
 	 * @return
 	 */
-	int insertList(List<Location> locationList);
+	int insertList(List<Category> locationList);
 
 	/**
 	 * 根据id删除节点
@@ -27,21 +27,21 @@ public interface LocationMapper {
 	 * 查询所有的地点
 	 * @return
 	 */
-	List<Location> selectAll();
+	List<Category> selectAll();
 
 	/**
 	 * 查询该设备对应的地点
 	 * @param deviceId 设备id
 	 * @return
 	 */
-	Location getByDeviceId(String deviceId);
+	Category getByDeviceId(String deviceId);
 
 	/**
 	 * 根据id查询其所有子节点
 	 * @param id locationId
 	 * @return
 	 */
-	List<Location> getChildrenById(String id);
+	List<Category> getChildrenById(String id);
 
 	/**
 	 * 根据id查询其所有子节点id
