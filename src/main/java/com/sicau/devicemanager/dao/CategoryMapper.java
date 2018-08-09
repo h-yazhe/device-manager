@@ -49,4 +49,6 @@ public interface CategoryMapper {
 	 * @return
 	 */
 	List<String> getChildrenIdById(String id);
+
+	Category getById(String id);
 }

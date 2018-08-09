@@ -2,7 +2,8 @@
 SQLyog v10.2 
 MySQL - 5.7.22 : Database - device_manager
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -42,7 +43,7 @@ CREATE TABLE `brand` (
 
 insert  into `brand`(`id`,`name`) values ('1527744129765806748','三星'),('1527745606203104480','华硕'),('2','苹果'),('3','联想');
 
-/*Table structure for table `category` */
+/*Table structure for table `categoryList` */
 
 DROP TABLE IF EXISTS `category`;
 
@@ -57,7 +58,7 @@ CREATE TABLE `category` (
   CONSTRAINT `category_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `category` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-/*Data for the table `category` */
+/*Data for the table `categoryList` */
 
 /*Table structure for table `custodian` */
 
@@ -150,7 +151,7 @@ CREATE TABLE `device_status` (
 
 /*Data for the table `device_status` */
 
-/*Table structure for table `location` */
+/*Table structure for table `locationList` */
 
 DROP TABLE IF EXISTS `location`;
 
@@ -165,7 +166,7 @@ CREATE TABLE `location` (
   CONSTRAINT `location_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `location` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-/*Data for the table `location` */
+/*Data for the table `locationList` */
 
 insert  into `location`(`id`,`parent_id`,`name`,`level`,`path`) values ('1',NULL,'十教',1,'1'),('1533027557317293583','1533027557317946773','2舍',2,'/1533027557317946773/'),('1533027557317307900','1533027557317946773','109',2,'/1533027557317946773/'),('1533027557317363146','1533027557317946773','1舍',2,'/1533027557317946773/'),('1533027557317946773',NULL,'老区',1,'/');
 

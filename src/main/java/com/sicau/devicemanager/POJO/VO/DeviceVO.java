@@ -20,7 +20,7 @@ public class DeviceVO {
 	private String id;
 
 	@ApiModelProperty(value = "所处地点",notes = "左侧的为右侧的父节点，最后一个即为当前节点")
-	private List<Location> location;
+	private List<Location> locationList;
 
 	@ApiModelProperty("国资编号")
 	private String nationalId;
@@ -56,5 +56,5 @@ public class DeviceVO {
 	private Brand brand;
 
 	@ApiModelProperty(value = "设备分类",notes = "左侧的为右侧的父节点，最后一个即为当前节点")
-	private List<Category> category;
+	private List<Category> categoryList;
 }

@@ -10,4 +10,7 @@ public class DeviceValidatedGroup {
 
 	 public interface AddDeviceGroup {
 	 }
+
+	 public interface UpdateDeviceGroup{
+	 }
 }

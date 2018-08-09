@@ -1,5 +1,7 @@
 package com.sicau.devicemanager.POJO.DO;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UpdateDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddDeviceGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,38 +11,44 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @ApiModel("设备")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Device {
+
+	@NotNull(groups = {UpdateDeviceGroup.class})
     private String id;
 
+	@ApiModelProperty("设备名")
+	private String name;
+
     @ApiModelProperty("所处地点id")
-	@NotNull(groups = {AddDeviceGroup.class})
+	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
     private String locationId;
 
     @ApiModelProperty("国资编号")
-	@NotNull(groups = {AddDeviceGroup.class})
+	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
     private String nationalId;
 
     @ApiModelProperty("序列号")
-	@NotNull(groups = {AddDeviceGroup.class})
+	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
     private String serialNumber;
 
     @ApiModelProperty("领用时间")
     private Date useTime;
 
     @ApiModelProperty("工作性质id")
-	@NotNull(groups = {AddDeviceGroup.class})
+	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
     private String workNatureId;
 
     @ApiModelProperty("保管人id")
-	@NotNull(groups = {AddDeviceGroup.class})
+	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
     private String custodianId;
 
     @ApiModelProperty("单价")
-	@NotNull(groups = {AddDeviceGroup.class})
+	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
     private BigDecimal unitPrice;
 
     @ApiModelProperty("计量单位id")
-	@NotNull(groups = {AddDeviceGroup.class})
+	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
     private String amountUnitId;
 
     @ApiModelProperty("当前设备状态id")
@@ -60,7 +68,15 @@ public class Device {
         this.id = id == null ? null : id.trim();
     }
 
-    public String getLocationId() {
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getLocationId() {
         return locationId;
     }
 

@@ -3,6 +3,7 @@
 <mapper namespace="com.sicau.devicemanager.dao.DeviceMapper" >
   <resultMap id="BaseResultMap" type="com.sicau.devicemanager.POJO.DO.Device" >
     <id column="id" property="id" jdbcType="VARCHAR" />
+	  <result column="name" property="name" jdbcType="VARCHAR"/>
     <result column="location_id" property="locationId" jdbcType="VARCHAR" />
     <result column="national_id" property="nationalId" jdbcType="VARCHAR" />
     <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
@@ -17,9 +18,13 @@
   </resultMap>
 	<resultMap id="deviceVO" type="com.sicau.devicemanager.POJO.VO.DeviceVO">
 		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR"/>
 		<result column="national_id" property="nationalId" jdbcType="VARCHAR" />
 		<result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
 		<result column="use_time" property="useTime" jdbcType="TIMESTAMP" />
+		<result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<association property="workNature" javaType="WorkNature">
 			<id column="wn.id" property="id"/>
 			<result column="wn.name" property="name"/>
@@ -28,7 +33,6 @@
 			<id column="cus.id" property="id"/>
 			<result column="cus.name" property="name"/>
 		</association>
-		<result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
 		<association property="amountUnit" javaType="AmountUnit">
 			<id column="amo.id" property="id"/>
 			<result column="amo.name" property="name"/>
@@ -37,19 +41,17 @@
 			<id column="sta.id" property="id"/>
 			<result column="sta.name" property="name"/>
 		</association>
-		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<association property="brand" javaType="Brand">
 			<id column="bra.id" property="id"/>
 			<result column="bra.name" property="name"/>
 		</association>
 	</resultMap>
   <sql id="Base_Column_List" >
-    id, location_id, national_id, serial_number, use_time, work_nature_id, custodian_id, 
+    id, `name`, location_id, national_id, serial_number, use_time, work_nature_id, custodian_id,
     unit_price, amount_unit_id, status_id, create_time, update_time
   </sql>
 	<sql id="getDeviceInfo">
-		SELECT d.id,d.national_id,d.serial_number,d.use_time,d.unit_price,d.create_time,d.update_time,
+		SELECT d.id,d.`name`, d.national_id,d.serial_number,d.use_time,d.unit_price,d.create_time,d.update_time,
 			wn.id wn_id,wn.name wn_name,cus.id cus_id,cus.name cus_name,
 			amo.id amo_id, amo.name amo_name,sta.id sta_id, sta.name sta_name
 		FROM device d
@@ -80,19 +82,27 @@
 
 	<select id="getDeviceInfo" resultType="com.sicau.devicemanager.POJO.VO.DeviceVO">
 		<include refid="getDeviceInfo"/>
+		order by `name`
 	</select>
 
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from device
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.Device" >
-    insert into device (id, location_id, national_id, 
+	<delete id="deleteByIds">
+		DELETE FROM device
+		WHERE id IN 
+	  	<foreach collection="list" item="id" separator="," open="(" close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.Device" >
+    insert into device (id, `name`,location_id, national_id,
       serial_number, use_time, work_nature_id, 
       custodian_id, unit_price, amount_unit_id, 
       status_id, create_time, update_time
       )
-    values (#{id,jdbcType=VARCHAR}, #{locationId,jdbcType=VARCHAR}, #{nationalId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR}, #{locationId,jdbcType=VARCHAR}, #{nationalId,jdbcType=VARCHAR},
       #{serialNumber,jdbcType=VARCHAR}, #{useTime,jdbcType=TIMESTAMP}, #{workNatureId,jdbcType=VARCHAR}, 
       #{custodianId,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, #{amountUnitId,jdbcType=VARCHAR}, 
       #{statusId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
@@ -104,6 +114,9 @@
       <if test="id != null" >
         id,
       </if>
+		<if test="name != null" >
+			`name`,
+		</if>
       <if test="locationId != null" >
         location_id,
       </if>
@@ -142,6 +155,9 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
+		<if test="name != null" >
+			#{name,jdbcType=VARCHAR},
+		</if>
       <if test="locationId != null" >
         #{locationId,jdbcType=VARCHAR},
       </if>
@@ -180,6 +196,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.sicau.devicemanager.POJO.DO.Device" >
     update device
     <set >
+		<if test="name != null" >
+			`name` = #{name,jdbcType=VARCHAR},
+		</if>
       <if test="locationId != null" >
         location_id = #{locationId,jdbcType=VARCHAR},
       </if>
@@ -218,7 +237,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sicau.devicemanager.POJO.DO.Device" >
     update device
-    set location_id = #{locationId,jdbcType=VARCHAR},
+    set `name` = #{name,jdbcType=VARCHAR},
+		location_id = #{locationId,jdbcType=VARCHAR},
       national_id = #{nationalId,jdbcType=VARCHAR},
       serial_number = #{serialNumber,jdbcType=VARCHAR},
       use_time = #{useTime,jdbcType=TIMESTAMP},

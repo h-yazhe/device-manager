@@ -23,8 +23,8 @@
 	<select id="getByDeviceId" resultType="com.sicau.devicemanager.POJO.DO.Category">
 		SELECT * FROM category
 		WHERE id = (
-		SELECT category_id FROM device_cateory
-		WHERE device_cateory.id = #{deviceId}
+		SELECT category_id FROM device_category dc
+		WHERE dc.device_id = #{deviceId}
 		)
 	</select>
 	<select id="getChildrenById" resultType="Category">
@@ -35,5 +35,9 @@
 	<select id="getChildrenIdById" resultType="java.lang.String">
 		SELECT id FROM category
 		WHERE parent_id = #{id}
+	</select>
+	<select id="getById" resultType="com.sicau.devicemanager.POJO.DO.Category">
+		SELECT * FROM category
+		WHERE id = #{id}
 	</select>
 </mapper>

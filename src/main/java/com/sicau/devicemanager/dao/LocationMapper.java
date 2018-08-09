@@ -49,4 +49,6 @@ public interface LocationMapper {
 	 * @return
 	 */
 	List<String> getChildrenIdById(String id);
+
+	Location getById(String id);
 }

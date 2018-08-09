@@ -6,9 +6,9 @@
 	<insert id="insertList">
 		INSERT INTO location
 		VALUES
-		<foreach collection="list" item="location" separator=",">
-			(#{location.id},#{location.parentId},#{location.name},
-			#{location.level},#{location.path})
+		<foreach collection="list" item="locationList" separator=",">
+			(#{locationList.id},#{locationList.parentId},#{locationList.name},
+			#{locationList.level},#{locationList.path})
 		</foreach>
 	</insert>
 
@@ -36,5 +36,10 @@
 	<select id="getChildrenIdById" resultType="java.lang.String">
 		SELECT id FROM location
 		WHERE parent_id = #{id}
+	</select>
+
+	<select id="getById" resultType="com.sicau.devicemanager.POJO.DO.Location">
+		SELECT * FROM location
+		WHERE id = #{id}
 	</select>
 </mapper>

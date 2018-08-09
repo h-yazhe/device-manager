@@ -30,4 +30,6 @@ public interface DeviceMapper {
 	 * @return
 	 */
 	List<DeviceVO> getDeviceInfo();
+
+	int deleteByIds(List<String> ids);
 }

@@ -20,8 +20,4 @@ public class QueryPage {
      */
     private Integer pageSize = 10;
 
-	/**
-	 * 排序
-	 */
-	private String orderBy;
 }

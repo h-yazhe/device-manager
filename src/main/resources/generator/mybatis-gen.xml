@@ -44,23 +44,11 @@
 		</javaClientGenerator>
 
 		<!--对应数据库表 mysql可以加入主键自增 字段命名 忽略某字段等 -->
-		<table tableName="amount_unit" domainObjectName="AmountUnit"
+		<table tableName="device_brand" domainObjectName="DeviceBrand"
 			   enableCountByExample="false" enableUpdateByExample="false"
 			   enableDeleteByExample="false" enableSelectByExample="false"
 			   selectByExampleQueryId="false" />
-		<table tableName="custodian" domainObjectName="Custodian"
-			   enableCountByExample="false" enableUpdateByExample="false"
-			   enableDeleteByExample="false" enableSelectByExample="false"
-			   selectByExampleQueryId="false" />
-		<table tableName="device_status" domainObjectName="DeviceStatus"
-			   enableCountByExample="false" enableUpdateByExample="false"
-			   enableDeleteByExample="false" enableSelectByExample="false"
-			   selectByExampleQueryId="false" />
-		<table tableName="status" domainObjectName="Status"
-			   enableCountByExample="false" enableUpdateByExample="false"
-			   enableDeleteByExample="false" enableSelectByExample="false"
-			   selectByExampleQueryId="false" />
-		<table tableName="work_nature" domainObjectName="WorkNature"
+		<table tableName="device_category" domainObjectName="DeviceCategory"
 			   enableCountByExample="false" enableUpdateByExample="false"
 			   enableDeleteByExample="false" enableSelectByExample="false"
 			   selectByExampleQueryId="false" />

@@ -1,5 +1,6 @@
 package com.sicau.devicemanager.service;
 
+import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.DeviceVO;
@@ -30,7 +31,7 @@ public interface DeviceService {
 	 * @param queryPage 分页信息
 	 * @return
 	 */
-	List<DeviceVO> listDeviceByPage(QueryPage queryPage);
+	PageInfo<DeviceVO> listDeviceByPage(QueryPage queryPage);
 
 	/**
 	 * 根据设备id删除设备
