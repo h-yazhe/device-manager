@@ -1,6 +1,5 @@
 package com.sicau.devicemanager.config.exception.handle;
 
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.exception.CommonException;
 import com.sicau.devicemanager.config.exception.ResourceException;
