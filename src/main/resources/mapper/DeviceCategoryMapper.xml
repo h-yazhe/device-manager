@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicau.devicemanager.dao.DeviceCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.sicau.devicemanager.POJO.DO.DeviceCategory" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="device_id" property="deviceId" jdbcType="VARCHAR" />
+    <result column="category_id" property="categoryId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, device_id, category_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from device_category
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from device_category
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+	<delete id="deleteByDeviceId">
+		DELETE FROM device_category
+		WHERE device_id = #{deviceId}
+	</delete>
+	<delete id="deleteByDeviceIds">
+		DELETE FROM device_category
+		WHERE device_id IN
+		<foreach collection="list" item="id" separator="," open="(" close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.DeviceCategory" >
+    insert into device_category (id, device_id, category_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{deviceId,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.DeviceCategory" >
+    insert into device_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="deviceId != null" >
+        device_id,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null" >
+        #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sicau.devicemanager.POJO.DO.DeviceCategory" >
+    update device_category
+    <set >
+      <if test="deviceId != null" >
+        device_id = #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sicau.devicemanager.POJO.DO.DeviceCategory" >
+    update device_category
+    set device_id = #{deviceId,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
