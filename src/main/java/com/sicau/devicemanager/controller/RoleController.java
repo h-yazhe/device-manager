@@ -66,7 +66,7 @@ public class RoleController {
             @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
     )
     @PutMapping(ResourceConstants.ROLE + "/{roleId}")
-    public ResultVO updateRolePermission(String roleId, List<String> permissionIdList){
+    public ResultVO updateRolePermission(@PathVariable String roleId, @RequestParam List<String> permissionIdList){
         roleService.updateRolePermission(roleId,permissionIdList);
         return ResultVOUtil.success();
     }

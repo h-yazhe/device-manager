@@ -1,7 +1,7 @@
 package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.Device;
-import com.sicau.devicemanager.POJO.VO.DeviceVO;
+import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 
 import java.util.List;
 
@@ -23,13 +23,13 @@ public interface DeviceMapper {
 	 * @param id 设备id
 	 * @return
 	 */
-	DeviceVO getDeviceInfoById(String id);
+	DeviceDTO getDeviceInfoById(String id);
 
 	/**
 	 * 查询设备信息，用于展示
 	 * @return
 	 */
-	List<DeviceVO> getDeviceInfo();
+	List<DeviceDTO> getDeviceInfo();
 
 	int deleteByIds(List<String> ids);
 }

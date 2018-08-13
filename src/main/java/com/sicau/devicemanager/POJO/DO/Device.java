@@ -1,11 +1,15 @@
 package com.sicau.devicemanager.POJO.DO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UpdateDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddDeviceGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -59,6 +63,10 @@ public class Device {
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+    @Valid
+	@NotNull(groups = DeviceValidatedGroup.QueryDeviceGroup.class,message = "分页参数不能为空")
+    private QueryPage queryPage;
 
     public String getId() {
         return id;

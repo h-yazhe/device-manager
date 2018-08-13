@@ -16,7 +16,7 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
-	<resultMap id="deviceVO" type="com.sicau.devicemanager.POJO.VO.DeviceVO">
+	<resultMap id="deviceDTO" type="com.sicau.devicemanager.POJO.DTO.DeviceDTO">
 		<id column="id" property="id" jdbcType="VARCHAR" />
 		<result column="name" property="name" jdbcType="VARCHAR"/>
 		<result column="national_id" property="nationalId" jdbcType="VARCHAR" />
@@ -25,25 +25,13 @@
 		<result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-		<association property="workNature" javaType="WorkNature">
-			<id column="wn.id" property="id"/>
-			<result column="wn.name" property="name"/>
-		</association>
-		<association property="custodian" javaType="Custodian">
-			<id column="cus.id" property="id"/>
-			<result column="cus.name" property="name"/>
-		</association>
-		<association property="amountUnit" javaType="AmountUnit">
-			<id column="amo.id" property="id"/>
-			<result column="amo.name" property="name"/>
-		</association>
-		<association property="status" javaType="Status">
-			<id column="sta.id" property="id"/>
-			<result column="sta.name" property="name"/>
-		</association>
+		<result column="wn_name" property="workNature" jdbcType="VARCHAR" />
+		<result column="cus_name" property="custodian" jdbcType="VARCHAR" />
+		<result column="amo_name" property="amountUnit" jdbcType="VARCHAR" />
+		<result column="sta_name" property="status" jdbcType="VARCHAR" />
 		<association property="brand" javaType="Brand">
-			<id column="bra.id" property="id"/>
-			<result column="bra.name" property="name"/>
+			<id column="bra_id" property="id"/>
+			<result column="bra_name" property="name"/>
 		</association>
 	</resultMap>
   <sql id="Base_Column_List" >
@@ -52,8 +40,8 @@
   </sql>
 	<sql id="getDeviceInfo">
 		SELECT d.id,d.`name`, d.national_id,d.serial_number,d.use_time,d.unit_price,d.create_time,d.update_time,
-			wn.id wn_id,wn.name wn_name,cus.id cus_id,cus.name cus_name,
-			amo.id amo_id, amo.name amo_name,sta.id sta_id, sta.name sta_name
+			wn.name wn_name,cus.name cus_name,amo.name amo_name,sta.name sta_name,
+			bra.id bra_id, bra.name bra_name
 		FROM device d
 			JOIN work_nature wn
 				ON d.work_nature_id = wn.id
@@ -75,12 +63,12 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
-	<select id="getDeviceInfoById" resultMap="deviceVO">
+	<select id="getDeviceInfoById" resultMap="deviceDTO">
 		<include refid="getDeviceInfo"/>
 		where d.id = #{id}
 	</select>
 
-	<select id="getDeviceInfo" resultType="com.sicau.devicemanager.POJO.VO.DeviceVO">
+	<select id="getDeviceInfo" resultMap="deviceDTO">
 		<include refid="getDeviceInfo"/>
 		order by `name`
 	</select>

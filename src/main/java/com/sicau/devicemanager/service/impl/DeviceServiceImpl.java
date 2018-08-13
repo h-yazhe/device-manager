@@ -8,7 +8,6 @@ import com.sicau.devicemanager.POJO.DO.DeviceCategory;
 import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
-import com.sicau.devicemanager.POJO.VO.DeviceVO;
 import com.sicau.devicemanager.dao.*;
 import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.util.KeyUtil;
@@ -50,7 +49,7 @@ public class DeviceServiceImpl implements DeviceService {
 	private void insertDeviceBrand(DeviceDTO deviceDTO){
 		DeviceBrand deviceBrand = new DeviceBrand();
 		deviceBrand.setId(KeyUtil.genUniqueKey());
-		deviceBrand.setBrandId(deviceDTO.getBrandId());
+		deviceBrand.setBrandId(deviceDTO.getBrand().getId());
 		deviceBrand.setDeviceId(deviceDTO.getId());
 		deviceBrandMapper.insert(deviceBrand);
 	}
@@ -78,29 +77,31 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 
 	@Override
-	public PageInfo<DeviceVO> listDeviceByPage(QueryPage queryPage) {
+	public PageInfo<DeviceDTO> listDeviceByPage(QueryPage queryPage) {
 		PageHelper.startPage(queryPage.getPageNum(),queryPage.getPageSize());
-		List<DeviceVO> deviceInfo = deviceMapper.getDeviceInfo();
+		List<DeviceDTO> deviceInfo = deviceMapper.getDeviceInfo();
 		//组装地点和分类信息
-		for (DeviceVO deviceVO : deviceInfo){
+		for (DeviceDTO deviceDTO : deviceInfo){
 			//地点信息
-			List<Location> locationList = new ArrayList<>();
-			Location location = locationMapper.getByDeviceId(deviceVO.getId());
+			StringBuilder locationStr = new StringBuilder();
+			Location location = locationMapper.getByDeviceId(deviceDTO.getId());
 			String[] locationIds = location.getPath().split("/");
 			//字符串分割后的第一个元素为空，直接跳过
 			for (int i = 1; i<locationIds.length; i++){
-				locationList.add(locationMapper.getById(locationIds[i]));
+				locationStr.append("/");
+				locationStr.append(locationMapper.getById(locationIds[i]).getName());
 			}
-			deviceVO.setLocationList(locationList);
+			deviceDTO.setLocation(locationStr.toString());
 
 			//分类信息
-			List<Category> categoryList = new ArrayList<>();
-			Category category = categoryMapper.getByDeviceId(deviceVO.getId());
+			StringBuilder categoryStr = new StringBuilder();
+			Category category = categoryMapper.getByDeviceId(deviceDTO.getId());
 			String[] categoryIds = category.getPath().split("/");
-			for (int i = 1; i < locationIds.length; i++){
-				categoryList.add(categoryMapper.getById(categoryIds[i]));
+			for (int i = 1; i < categoryIds.length; i++){
+				categoryStr.append("/");
+				categoryStr.append(categoryMapper.getById(categoryIds[i]).getName());
 			}
-			deviceVO.setCategoryList(categoryList);
+			deviceDTO.setCategory(categoryStr.toString());
 		}
 		return new PageInfo<>(deviceInfo);
 	}
@@ -113,5 +114,10 @@ public class DeviceServiceImpl implements DeviceService {
 		deviceCategoryMapper.deleteByDeviceIds(ids);
 		deviceBrandMapper.deleteByDeviceIds(ids);
 		deviceMapper.deleteByIds(ids);
+	}
+
+	@Override
+	public List<DeviceDTO> listDevice(DeviceDTO deviceDTO) {
+		return null;
 	}
 }

@@ -10,6 +10,8 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
@@ -20,8 +22,10 @@ import java.util.Date;
  */
 public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
 
+	private static final Logger logger = LoggerFactory.getLogger(WebSocketHandler.class);
+
 	private WebSocketServerHandshaker handShaker;
-	private static final String WEB_SOCKET_URL = "ws://localhost:8888/websocket";
+	private static final String WEB_SOCKET_URL = "ws://localhost:1111/websocket";
 	private static ChannelGroup group = WebSocketServer.getGroup();
 
 	//处理客户端websocket请求的和新方法
@@ -45,6 +49,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
 		//判断是否是关闭websocket的指令
 		if (frame instanceof CloseWebSocketFrame){
 			handShaker.close(ctx.channel(),(CloseWebSocketFrame) frame.retain());
+			return;
 		}
 		//判断是否是ping消息
 		if (frame instanceof PingWebSocketFrame){
@@ -53,13 +58,12 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
 		}
 		//判断是否是二进制消息，如果是二进制消息，抛出异常
 		if (!(frame instanceof TextWebSocketFrame)){
-			System.out.println("目前我们不支持二进制消息");
 			throw new RuntimeException("【"+this.getClass().getName()+"】不支持消息");
 		}
 		//返回应答消息
 		//获取客户端向服务端发送的消息
 		String request = ((TextWebSocketFrame)frame).text();
-		System.out.println("服务端收到客户端的消息====>>>" + request);
+		logger.info("服务端收到客户端的消息====>>>" + request);
 		TextWebSocketFrame textWebSocketFrame =
 				new TextWebSocketFrame(new Date().toString() + ctx.channel().id() +
 						" ===>>>" + request);
@@ -81,6 +85,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
 			return;
 		}
 		// 构造握手响应返回
+		//注意，这条地址别被误导了，其实这里填写什么都无所谓，WS协议消息的接收不受这里控制
 		WebSocketServerHandshakerFactory webSocketServerHandshakerFactory = new WebSocketServerHandshakerFactory(WEB_SOCKET_URL,null,false);
 		handShaker = webSocketServerHandshakerFactory.newHandshaker(req);
 		if (handShaker == null){
@@ -113,7 +118,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		group.add(ctx.channel());
-		System.out.println("客户端与服务端连接开启...");
+		logger.info("客户端与服务端连接开启...");
 	}
 
 	/**
@@ -124,7 +129,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		group.remove(ctx.channel());
-		System.out.println("客户端与服务端连接关闭...");
+		logger.info("客户端与服务端连接关闭...");
 	}
 
 	/**

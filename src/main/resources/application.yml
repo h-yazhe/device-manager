@@ -1,6 +1,9 @@
 server:
   context-path: /dev-manager
 
+websocket:
+  port: 8888
+
 spring:
   profiles:
     active: hyz
