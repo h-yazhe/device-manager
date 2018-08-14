@@ -22,7 +22,8 @@ public enum ResultEnum {
     UNAUTHORIZED(8, "没有权限"),
     DELETE_FAILED(9, "删除失败"),
 
-    RESOURCE_NOT_FOUND(10, "资源不存在")
+    RESOURCE_NOT_FOUND(10, "资源不存在"),
+	DATE_INCORRECT(11,"日期不正确")
     ;
 
     private Integer code;

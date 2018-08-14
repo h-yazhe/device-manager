@@ -20,16 +20,11 @@ public interface DeviceMapper {
 
 	/**
 	 * 查询设备信息，用于展示
-	 * @param id 设备id
+	 * @param deviceDTO
 	 * @return
 	 */
-	DeviceDTO getDeviceInfoById(String id);
-
-	/**
-	 * 查询设备信息，用于展示
-	 * @return
-	 */
-	List<DeviceDTO> getDeviceInfo();
+	List<DeviceDTO> getDeviceInfo(DeviceDTO deviceDTO);
 
 	int deleteByIds(List<String> ids);
+
 }

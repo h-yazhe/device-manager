@@ -51,11 +51,11 @@ public class DeviceController {
 		return ResultVOUtil.success();
 	}
 
-	@ApiOperation("分页查询所有设备")
+	@ApiOperation("根据条件查询设备列表")
 	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
 	@PostMapping("/list")
-	public ResultVO listDeviceByPage(@Validated(DeviceValidatedGroup.QueryDeviceGroup.class)@RequestBody QueryPage queryPage){
-		return ResultVOUtil.success(deviceService.listDeviceByPage(queryPage));
+	public ResultVO listDeviceByCondition(@Validated(DeviceValidatedGroup.QueryDeviceGroup.class)@RequestBody DeviceDTO deviceDTO){
+		return ResultVOUtil.success(deviceService.listDevice(deviceDTO));
 	}
 
 	@ApiOperation("删除设备")
@@ -64,10 +64,5 @@ public class DeviceController {
 	public ResultVO deleteDeviceById(@RequestBody List<String> ids){
 		deviceService.deleteDeviceById(ids);
 		return ResultVOUtil.success();
-	}
-
-	public ResultVO listDevice(@Validated(DeviceValidatedGroup.QueryDeviceGroup.class)
-							   @RequestBody DeviceDTO deviceDTO){
-		return ResultVOUtil.success(deviceService.listDevice(deviceDTO));
 	}
 }

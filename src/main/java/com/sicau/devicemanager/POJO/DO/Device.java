@@ -64,9 +64,6 @@ public class Device {
     @ApiModelProperty("更新时间")
     private Date updateTime;
 
-    @Valid
-	@NotNull(groups = DeviceValidatedGroup.QueryDeviceGroup.class,message = "分页参数不能为空")
-    private QueryPage queryPage;
 
     public String getId() {
         return id;

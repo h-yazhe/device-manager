@@ -26,18 +26,16 @@ public interface DeviceService {
 	void updateDeviceById(DeviceDTO deviceDTO);
 
 	/**
-	 * 分页查询设备信息
-	 * @param queryPage 分页信息
-	 * @return
-	 */
-	PageInfo<DeviceDTO> listDeviceByPage(QueryPage queryPage);
-
-	/**
 	 * 根据设备id删除设备
 	 * @param ids id列表
 	 */
 	void deleteDeviceById(List<String> ids);
 
-	List<DeviceDTO> listDevice(DeviceDTO deviceDTO);
+	/**
+	 * 根据条件查询设备信息
+	 * @param deviceDTO
+	 * @return
+	 */
+	PageInfo<DeviceDTO> listDevice(DeviceDTO deviceDTO);
 
 }

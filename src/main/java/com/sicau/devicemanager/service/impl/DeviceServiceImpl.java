@@ -8,8 +8,11 @@ import com.sicau.devicemanager.POJO.DO.DeviceCategory;
 import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.*;
 import com.sicau.devicemanager.service.DeviceService;
+import com.sicau.devicemanager.util.DateUtil;
 import com.sicau.devicemanager.util.KeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,11 +81,41 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 
 	@Override
-	public PageInfo<DeviceDTO> listDeviceByPage(QueryPage queryPage) {
-		PageHelper.startPage(queryPage.getPageNum(),queryPage.getPageSize());
-		List<DeviceDTO> deviceInfo = deviceMapper.getDeviceInfo();
+	public void deleteDeviceById(List<String> ids) {
+		if (ids.isEmpty()){
+			return;
+		}
+		deviceCategoryMapper.deleteByDeviceIds(ids);
+		deviceBrandMapper.deleteByDeviceIds(ids);
+		deviceMapper.deleteByIds(ids);
+	}
+
+	@Override
+	public PageInfo<DeviceDTO> listDevice(DeviceDTO deviceDTO) {
+		//校验时间
+		Date startTime = deviceDTO.getStartTime();
+		Date endTime = deviceDTO.getEndTime();
+		if (startTime!=null && endTime!=null){
+			int result = startTime.compareTo(endTime);
+			//开始时间大于结束时间
+			if (result == 1){
+				throw new CommonException(ResultEnum.DATE_INCORRECT.getCode(),"请选择合适的日期");
+			}
+			else if (result == 0){
+				//开始时间=结束时间
+				deviceDTO.setStartTime(DateUtil.getStartTimeToday(startTime));
+				deviceDTO.setEndTime(DateUtil.getEndTimeToday(endTime));
+			}
+		}
+		PageHelper.startPage(deviceDTO.getQueryPage().getPageNum(),deviceDTO.getQueryPage().getPageSize());
+		List<DeviceDTO> deviceDTOList = deviceMapper.getDeviceInfo(deviceDTO);
 		//组装地点和分类信息
-		for (DeviceDTO deviceDTO : deviceInfo){
+		setLocationAndCategory(deviceDTOList);
+		return new PageInfo<>(deviceDTOList);
+	}
+
+	private void setLocationAndCategory(List<DeviceDTO> deviceDTOList){
+		for (DeviceDTO deviceDTO : deviceDTOList){
 			//地点信息
 			StringBuilder locationStr = new StringBuilder();
 			Location location = locationMapper.getByDeviceId(deviceDTO.getId());
@@ -103,21 +137,5 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 			deviceDTO.setCategory(categoryStr.toString());
 		}
-		return new PageInfo<>(deviceInfo);
-	}
-
-	@Override
-	public void deleteDeviceById(List<String> ids) {
-		if (ids.isEmpty()){
-			return;
-		}
-		deviceCategoryMapper.deleteByDeviceIds(ids);
-		deviceBrandMapper.deleteByDeviceIds(ids);
-		deviceMapper.deleteByIds(ids);
-	}
-
-	@Override
-	public List<DeviceDTO> listDevice(DeviceDTO deviceDTO) {
-		return null;
 	}
 }

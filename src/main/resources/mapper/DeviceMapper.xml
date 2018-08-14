@@ -55,6 +55,43 @@
 				ON d.id = db.device_id
 			JOIN brand bra
 				ON db.brand_id = bra.id
+		<where>
+			<if test="nationalId!=null">
+				and d.national_id = #{nationalId}
+			</if>
+			<if test="workNatureId!=null">
+				and wn.id = #{workNatureId}
+			</if>
+			<if test="custodianId!=null">
+				and cus.id = #{custodianId}
+			</if>
+			<if test="amountUnitId!=null">
+				and amo.id = #{amountUnitId}
+			</if>
+			<if test="statusId!=null">
+				and sta.id = #{statusId}
+			</if>
+			<if test="brand!=null">
+				and bra.id = #{brand.id}
+			</if>
+			<if test="locationList!=null">
+				and location_id IN
+				<foreach index="index" item="location" open="(" close=")" separator="," collection="locationList">
+					#{location.id}
+				</foreach>
+			</if>
+			<if test="startTime != null">
+				AND create_time <![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime != null">
+				AND create_time <![CDATA[ <= ]]> #{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="queryKey!=null">
+				AND (d.id LIKE CONCAT('%',#{queryKey},'%') or
+				d.name like concat('%',#{queryKey},'%') or
+				d.serial_number like concat('%',#{queryKey},'%'))
+			</if>
+		</where>
 	</sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -63,14 +100,8 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
-	<select id="getDeviceInfoById" resultMap="deviceDTO">
+	<select id="getDeviceInfo" parameterType="com.sicau.devicemanager.POJO.DTO.DeviceDTO" resultMap="deviceDTO">
 		<include refid="getDeviceInfo"/>
-		where d.id = #{id}
-	</select>
-
-	<select id="getDeviceInfo" resultMap="deviceDTO">
-		<include refid="getDeviceInfo"/>
-		order by `name`
 	</select>
 
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
