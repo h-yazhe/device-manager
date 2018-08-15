@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 /**
  * @author Yazhe
  * Created at 17:08 2018/8/14
@@ -26,8 +28,6 @@ public class LogAspect {
 
 	@Before("pointCut()")
 	public void doBefore(JoinPoint joinPoint){
-		for (Object o : joinPoint.getArgs()){
-			logger.info(o.toString());
-		}
+		logger.info("请求参数：{}", Arrays.toString(joinPoint.getArgs()));
 	}
 }

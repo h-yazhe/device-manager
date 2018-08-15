@@ -17,7 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Application extends SpringBootServletInitializer implements CommandLineRunner {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class);
+		SpringApplication.run(Application.class,args);
 	}
 
 	@Value("${websocket.port}")

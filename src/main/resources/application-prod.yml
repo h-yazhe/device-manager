@@ -6,3 +6,5 @@ spring:
   redis:
     host: 39.108.97.103
     port: 6379
+logging:
+  file: /log/service.log
