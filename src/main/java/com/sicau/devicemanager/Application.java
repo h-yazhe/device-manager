@@ -25,6 +25,6 @@ public class Application extends SpringBootServletInitializer implements Command
 
 	@Override
 	public void run(String... strings) throws Exception {
-		new WebSocketServer().start(Integer.valueOf(port));
+		//new WebSocketServer().start(Integer.valueOf(port));
 	}
 }

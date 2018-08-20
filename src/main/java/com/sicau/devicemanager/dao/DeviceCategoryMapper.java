@@ -20,4 +20,6 @@ public interface DeviceCategoryMapper {
     int deleteByDeviceId(String deviceId);
 
 	int deleteByDeviceIds(List<String> deviceIds);
+
+	int deleteByCategoryIds(List<String> categoryIds);
 }

@@ -51,4 +51,15 @@ public interface CategoryMapper {
 	List<String> getChildrenIdById(String id);
 
 	Category getById(String id);
+
+	List<Category> getCategoryInIds(List<String> ids);
+
+	/**
+	 * 查询所有后代
+	 * @param rootId
+	 * @return
+	 */
+	List<Category> getDescendants(String rootId);
+
+	int deleteByIds(List<String> ids);
 }

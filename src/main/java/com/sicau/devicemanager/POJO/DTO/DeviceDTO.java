@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.sicau.devicemanager.POJO.DO.Brand;
-import com.sicau.devicemanager.POJO.DO.Category;
 import com.sicau.devicemanager.POJO.DO.Device;
 import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.QueryDeviceGroup;
@@ -38,7 +37,10 @@ public class DeviceDTO extends Device {
 	 */
 	@NotNull(message = "分类不能为空",groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
 	@NotEmpty(message = "分类不能为空",groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
-	private List<String> categoryId;
+	private List<String> categoryIds;
+
+	@ApiModelProperty("查询条件，分类id")
+	private String categoryId;
 
 	@ApiModelProperty(value = "所处地点")
 	private String location;
@@ -75,6 +77,35 @@ public class DeviceDTO extends Device {
 
 	@ApiModelProperty("地点列表")
 	private List<Location> locationList;
+
+	private List<String> locationIds;
+
+	@ApiModelProperty("查询条件，用户id")
+	private String userId;
+
+	public List<String> getLocationIds() {
+		return locationIds;
+	}
+
+	public void setLocationIds(List<String> locationIds) {
+		this.locationIds = locationIds;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
 
 	public List<Location> getLocationList() {
 		return locationList;
@@ -172,19 +203,19 @@ public class DeviceDTO extends Device {
 		this.category = category;
 	}
 
-	public List<String> getCategoryId() {
-		return categoryId;
+	public List<String> getCategoryIds() {
+		return categoryIds;
 	}
 
-	public void setCategoryId(List<String> categoryId) {
-		this.categoryId = categoryId;
+	public void setCategoryIds(List<String> categoryIds) {
+		this.categoryIds = categoryIds;
 	}
 
 	@Override
 	public String toString() {
 		return "DeviceDTO{" +
 				"brand=" + brand +
-				", categoryId=" + categoryId +
+				", categoryIds=" + categoryIds +
 				", location='" + location + '\'' +
 				", category='" + category + '\'' +
 				", workNature='" + workNature + '\'' +

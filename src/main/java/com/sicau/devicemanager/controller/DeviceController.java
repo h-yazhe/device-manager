@@ -7,6 +7,7 @@ import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.service.DeviceService;
+import com.sicau.devicemanager.util.JWTUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -54,7 +56,9 @@ public class DeviceController {
 	@ApiOperation("根据条件查询设备列表")
 	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
 	@PostMapping("/list")
-	public ResultVO listDeviceByCondition(@Validated(DeviceValidatedGroup.QueryDeviceGroup.class)@RequestBody DeviceDTO deviceDTO){
+	public ResultVO listDeviceByCondition(@Validated(DeviceValidatedGroup.QueryDeviceGroup.class)@RequestBody DeviceDTO deviceDTO,
+										  HttpServletRequest request){
+		deviceDTO.setUserId(JWTUtil.getUserId(request.getHeader(HttpParamKey.TOKEN)));
 		return ResultVOUtil.success(deviceService.listDevice(deviceDTO));
 	}
 

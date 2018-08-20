@@ -51,4 +51,20 @@ public interface LocationMapper {
 	List<String> getChildrenIdById(String id);
 
 	Location getById(String id);
+
+	/**
+	 * 查询在id列表里的所有地点信息，list为空则查询所有
+	 * @param locationIds
+	 * @return
+	 */
+	List<Location> getLocationsInIds(List<String> locationIds);
+
+	Location getByUserId(String userId);
+
+	/**
+	 * 查询所有后代
+	 * @param rootId
+	 * @return
+	 */
+	List<Location> getDescendants(String rootId);
 }

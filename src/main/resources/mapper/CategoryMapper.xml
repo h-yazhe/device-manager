@@ -15,6 +15,21 @@
 		DELETE FROM category
 		WHERE id = #{id}
 	</delete>
+	<select id="getDescendants" resultType="Category">
+		SELECT * FROM category WHERE `level` <![CDATA[ > ]]>
+									 (
+										 SELECT `level` FROM(
+											 (SELECT * FROM category WHERE id = #{rootId}) a
+										 )
+									 ) AND path LIKE concat("%",#{rootId},"%")
+	</select>
+	<delete id="deleteByIds">
+		DELETE FROM category
+		WHERE id IN
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</delete>
 
 	<select id="selectAll" resultType="com.sicau.devicemanager.POJO.DO.Category">
 		SELECT * FROM category
@@ -39,5 +54,14 @@
 	<select id="getById" resultType="com.sicau.devicemanager.POJO.DO.Category">
 		SELECT * FROM category
 		WHERE id = #{id}
+	</select>
+	<select id="getCategoryInIds" resultType="com.sicau.devicemanager.POJO.DO.Category">
+		SELECT * FROM category
+		<if test="list!=null and list.size>0">
+			WHERE id IN
+			<foreach collection="list" item="id" index="idx" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+		</if>
 	</select>
 </mapper>

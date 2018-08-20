@@ -23,7 +23,9 @@ public enum ResultEnum {
     DELETE_FAILED(9, "删除失败"),
 
     RESOURCE_NOT_FOUND(10, "资源不存在"),
-	DATE_INCORRECT(11,"日期不正确")
+	DATE_INCORRECT(11,"日期不正确"),
+
+	LOCATION_UNAUTHORIZED(100,"无该地点的权限")
     ;
 
     private Integer code;

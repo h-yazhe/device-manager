@@ -42,4 +42,32 @@
 		SELECT * FROM location
 		WHERE id = #{id}
 	</select>
+	<select id="getLocationsInIds" resultType="com.sicau.devicemanager.POJO.DO.Location">
+		SELECT * FROM location
+		<if test="list!=null and list.size>0">
+			WHERE id IN
+			<foreach collection="list" item="id" index="idx" separator="," open="(" close=")">
+				#{id}
+			</foreach>
+		</if>
+	</select>
+	<select id="getByUserId" resultType="com.sicau.devicemanager.POJO.DO.Location">
+		SELECT * FROM location
+		WHERE id = (
+				SELECT rl.location_id FROM user u
+				JOIN user_role ur
+				ON u.id = ur.user_id
+				JOIN role_location rl
+				ON ur.role_id = rl.role_id
+			WHERE ur.user_id = #{userId}
+				)
+	</select>
+	<select id="getDescendants" resultType="com.sicau.devicemanager.POJO.DO.Location">
+		SELECT * FROM location WHERE `level` <![CDATA[ > ]]>
+									 (
+										 SELECT `level` FROM(
+											 (SELECT * FROM location WHERE id = #{rootId}) a
+										 )
+									 ) AND path LIKE concat("%",#{rootId},"%")
+	</select>
 </mapper>

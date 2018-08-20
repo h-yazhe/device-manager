@@ -3,6 +3,7 @@ package com.sicau.devicemanager.service.impl;
 import com.sicau.devicemanager.POJO.DO.Category;
 import com.sicau.devicemanager.POJO.DTO.CategoryDTO;
 import com.sicau.devicemanager.dao.CategoryMapper;
+import com.sicau.devicemanager.dao.DeviceCategoryMapper;
 import com.sicau.devicemanager.service.CategoryService;
 import com.sicau.devicemanager.util.KeyUtil;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +25,8 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Autowired
 	private CategoryMapper categoryMapper;
+	@Autowired
+	private DeviceCategoryMapper deviceCategoryMapper;
 
 	@Override
 	public void insertCategoryTree(List<Category> categoryList) {
@@ -74,11 +77,14 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	public void deleteCategoryTree(String rootId) {
-		for (String childId: categoryMapper.getChildrenIdById(rootId)){
-			deleteCategoryTree(childId);
-			categoryMapper.deleteById(childId);
+		List<String> categoryIds = new ArrayList<>();
+		List<Category> categoryList = categoryMapper.getDescendants(rootId);
+		for (Category category : categoryList){
+			categoryIds.add(category.getId());
 		}
-		categoryMapper.deleteById(rootId);
+		categoryIds.add(rootId);
+		deviceCategoryMapper.deleteByCategoryIds(categoryIds);
+		categoryMapper.deleteByIds(categoryIds);
 	}
 
 	@Override

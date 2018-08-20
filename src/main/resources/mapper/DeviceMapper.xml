@@ -43,18 +43,28 @@
 			wn.name wn_name,cus.name cus_name,amo.name amo_name,sta.name sta_name,
 			bra.id bra_id, bra.name bra_name
 		FROM device d
-			JOIN work_nature wn
+			LEFT JOIN work_nature wn
 				ON d.work_nature_id = wn.id
-			JOIN custodian cus
+			LEFT JOIN custodian cus
 				ON d.custodian_id = cus.id
-			JOIN amount_unit amo
+			LEFT JOIN amount_unit amo
 				ON d.amount_unit_id = amo.id
-			JOIN status sta
+			LEFT JOIN status sta
 				ON d.status_id = sta.id
-			JOIN device_brand db
+			LEFT JOIN device_brand db
 				ON d.id = db.device_id
-			JOIN brand bra
+			LEFT JOIN brand bra
 				ON db.brand_id = bra.id
+			LEFT JOIN device_category dc
+			ON dc.device_id = d.id
+			LEFT JOIN category c
+			ON c.id = dc.category_id
+			JOIN location l
+		    ON l.id = d.location_id
+			and l.id in
+			<foreach collection="locationIds" item="locationId" separator="," open="(" close=")">
+				#{locationId}
+			</foreach>
 		<where>
 			<if test="nationalId!=null">
 				and d.national_id = #{nationalId}
@@ -74,10 +84,10 @@
 			<if test="brand!=null">
 				and bra.id = #{brand.id}
 			</if>
-			<if test="locationList!=null">
-				and location_id IN
-				<foreach index="index" item="location" open="(" close=")" separator="," collection="locationList">
-					#{location.id}
+			<if test="categoryIds != null">
+				AND c.id IN
+				<foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
+					#{categoryId}
 				</foreach>
 			</if>
 			<if test="startTime != null">
