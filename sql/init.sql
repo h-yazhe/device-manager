@@ -2,8 +2,7 @@
 SQLyog v10.2 
 MySQL - 5.7.22 : Database - device_manager
 *********************************************************************
-*/
-
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -29,6 +28,8 @@ CREATE TABLE `amount_unit` (
 
 /*Data for the table `amount_unit` */
 
+insert  into `amount_unit`(`id`,`name`) values ('1','个');
+
 /*Table structure for table `brand` */
 
 DROP TABLE IF EXISTS `brand`;
@@ -43,22 +44,23 @@ CREATE TABLE `brand` (
 
 insert  into `brand`(`id`,`name`) values ('1527744129765806748','三星'),('1527745606203104480','华硕'),('2','苹果'),('3','联想');
 
-/*Table structure for table `categoryList` */
+/*Table structure for table `category` */
 
 DROP TABLE IF EXISTS `category`;
 
 CREATE TABLE `category` (
   `id` varchar(32) NOT NULL,
-  `parent_id` varchar(32) NOT NULL DEFAULT '' COMMENT '父级类别id',
+  `parent_id` varchar(32) DEFAULT NULL COMMENT '父级类别id',
   `name` varchar(32) NOT NULL COMMENT '类别名',
   `level` tinyint(2) NOT NULL COMMENT '层级',
   `path` varchar(256) NOT NULL COMMENT '路径',
   PRIMARY KEY (`id`),
-  KEY `parent_id` (`parent_id`),
-  CONSTRAINT `category_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `category` (`id`)
+  KEY `parent_id` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-/*Data for the table `categoryList` */
+/*Data for the table `category` */
+
+insert  into `category`(`id`,`parent_id`,`name`,`level`,`path`) values ('1533627421723595723',NULL,'电脑',1,'/'),('1533627421723695018','1533627421723595723','笔记本',2,'/1533627421723595723/'),('1533627421723747003','1533627421723777410','神舟',3,'/1533627421723595723/1533627421723777410/'),('1533627421723777410','1533627421723595723','台式机',2,'/1533627421723595723/');
 
 /*Table structure for table `custodian` */
 
@@ -72,12 +74,15 @@ CREATE TABLE `custodian` (
 
 /*Data for the table `custodian` */
 
+insert  into `custodian`(`id`,`name`) values ('1','李四');
+
 /*Table structure for table `device` */
 
 DROP TABLE IF EXISTS `device`;
 
 CREATE TABLE `device` (
   `id` varchar(32) NOT NULL,
+  `name` varchar(32) NOT NULL COMMENT '设备名',
   `location_id` varchar(32) NOT NULL COMMENT '所处地点id',
   `national_id` varchar(32) NOT NULL COMMENT '国资编号',
   `serial_number` varchar(32) NOT NULL COMMENT '序列号',
@@ -86,7 +91,7 @@ CREATE TABLE `device` (
   `custodian_id` varchar(32) NOT NULL COMMENT '保管人id',
   `unit_price` decimal(11,2) NOT NULL COMMENT '单价',
   `amount_unit_id` varchar(32) NOT NULL COMMENT '计量单位id',
-  `status_id` varchar(32) NOT NULL COMMENT '当前设备状态id',
+  `status_id` varchar(32) NOT NULL DEFAULT '1' COMMENT '当前设备状态id',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间，即第一次入库的时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
@@ -103,6 +108,8 @@ CREATE TABLE `device` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `device` */
+
+insert  into `device`(`id`,`name`,`location_id`,`national_id`,`serial_number`,`use_time`,`work_nature_id`,`custodian_id`,`unit_price`,`amount_unit_id`,`status_id`,`create_time`,`update_time`) values ('1','测试设备2','1533106692421936787','12314','asdas11','2018-08-17 07:16:23','1','1','11.00','1','1','2018-08-17 07:16:23','2018-08-17 07:16:23'),('1533799349223338772','测试设备1','1533106692421375227','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33'),('2','测试设备1','1533106692421375227','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33'),('3','测试设备1','1533106692421375227','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33'),('4','测试设备1','1533106692421375227','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33'),('5','测试设备2','1533106692421375227','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33'),('6','测试设备3','1533106692421375227','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33'),('7','测试设备3','1533106692421715916','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33');
 
 /*Table structure for table `device_brand` */
 
@@ -121,22 +128,26 @@ CREATE TABLE `device_brand` (
 
 /*Data for the table `device_brand` */
 
-/*Table structure for table `device_cateory` */
+insert  into `device_brand`(`id`,`device_id`,`brand_id`) values ('1','1','3'),('1533800141382885094','1533799349223338772','2');
 
-DROP TABLE IF EXISTS `device_cateory`;
+/*Table structure for table `device_category` */
 
-CREATE TABLE `device_cateory` (
+DROP TABLE IF EXISTS `device_category`;
+
+CREATE TABLE `device_category` (
   `id` varchar(32) NOT NULL,
   `device_id` varchar(32) NOT NULL COMMENT '设备id',
   `category_id` varchar(32) NOT NULL COMMENT '类别id',
   PRIMARY KEY (`id`),
   KEY `device_id` (`device_id`),
   KEY `category_id` (`category_id`),
-  CONSTRAINT `device_cateory_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `device` (`id`),
-  CONSTRAINT `device_cateory_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
+  CONSTRAINT `device_category_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `device` (`id`),
+  CONSTRAINT `device_category_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-/*Data for the table `device_cateory` */
+/*Data for the table `device_category` */
+
+insert  into `device_category`(`id`,`device_id`,`category_id`) values ('1','1','1533627421723747003'),('1533800141538980826','1533799349223338772','1533627421723747003'),('2','7','1533627421723777410');
 
 /*Table structure for table `device_status` */
 
@@ -151,7 +162,7 @@ CREATE TABLE `device_status` (
 
 /*Data for the table `device_status` */
 
-/*Table structure for table `locationList` */
+/*Table structure for table `location` */
 
 DROP TABLE IF EXISTS `location`;
 
@@ -166,9 +177,9 @@ CREATE TABLE `location` (
   CONSTRAINT `location_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `location` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-/*Data for the table `locationList` */
+/*Data for the table `location` */
 
-insert  into `location`(`id`,`parent_id`,`name`,`level`,`path`) values ('1',NULL,'十教',1,'1'),('1533027557317293583','1533027557317946773','2舍',2,'/1533027557317946773/'),('1533027557317307900','1533027557317946773','109',2,'/1533027557317946773/'),('1533027557317363146','1533027557317946773','1舍',2,'/1533027557317946773/'),('1533027557317946773',NULL,'老区',1,'/');
+insert  into `location`(`id`,`parent_id`,`name`,`level`,`path`) values ('1533106692421375227','1533106692421794296','bbb',3,'/1533106692421936787/1533106692421794296/'),('1533106692421715916','1533106692421936787','aaa',2,'/1533106692421936787/'),('1533106692421794296','1533106692421936787','嘻嘻',2,'/1533106692421936787/'),('1533106692421936787',NULL,'zzz',1,'/');
 
 /*Table structure for table `permission` */
 
@@ -186,7 +197,7 @@ CREATE TABLE `permission` (
 
 /*Data for the table `permission` */
 
-insert  into `permission`(`id`,`resource`,`resource_name`,`permission_code`,`permission_name`,`required`) values ('0','user','用户','user:add','添加',0),('1','user','用户','user:delete','删除',0),('10','brand','品牌','brand:delete','删除',0),('11','brand','品牌','brand:update','更新',0),('12','brand','品牌','brand:get','查询',0),('2','user','用户','user:update','更新',0),('3','user','用户','user:get','查询',0),('4','role','角色','role:get','查询',0),('5','role','角色','role:delete','删除',0),('6','role','角色','role:update','更新',0),('7','role','角色','role:add','添加',0),('8','permission','权限','permission:get','查询',0),('9','brand','品牌','brand:add','添加',0);
+insert  into `permission`(`id`,`resource`,`resource_name`,`permission_code`,`permission_name`,`required`) values ('0','user','用户','user:add','添加',0),('1','user','用户','user:delete','删除',0),('10','brand','品牌','brand:delete','删除',0),('11','brand','品牌','brand:update','更新',0),('12','brand','品牌','brand:get','查询',0),('13','location','地点','location:add','添加',0),('14','location','地点','location:get','查询',0),('15','location','地点','location:update','更新',0),('16','location','地点','location:delete','删除',0),('2','user','用户','user:update','更新',0),('3','user','用户','user:get','查询',0),('4','role','角色','role:get','查询',0),('5','role','角色','role:delete','删除',0),('6','role','角色','role:update','更新',0),('7','role','角色','role:add','添加',0),('8','permission','权限','permission:get','查询',0),('9','brand','品牌','brand:add','添加',0);
 
 /*Table structure for table `role` */
 
@@ -204,6 +215,23 @@ CREATE TABLE `role` (
 /*Data for the table `role` */
 
 insert  into `role`(`id`,`name`,`locked`,`create_time`,`update_time`) values ('1','管理员',0,'2018-05-13 17:11:42','2018-05-13 17:11:38');
+
+/*Table structure for table `role_location` */
+
+DROP TABLE IF EXISTS `role_location`;
+
+CREATE TABLE `role_location` (
+  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
+  `role_id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
+  `location_id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
+  `bind_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '绑定时间',
+  `operate_user_id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '进行该绑定操作的用户id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+/*Data for the table `role_location` */
+
+insert  into `role_location`(`id`,`role_id`,`location_id`,`bind_time`,`operate_user_id`) values ('1','1','1533106692421936787','2018-08-20 02:51:04','1');
 
 /*Table structure for table `role_permission` */
 
@@ -224,7 +252,7 @@ CREATE TABLE `role_permission` (
 
 /*Data for the table `role_permission` */
 
-insert  into `role_permission`(`id`,`role_id`,`permission_id`,`locked`,`create_time`) values ('1','1','0',0,'2018-05-13 17:54:04'),('2','1','1',0,'2018-05-13 17:54:04'),('3','1','2',0,'2018-05-13 17:54:04'),('4','1','3',0,'2018-05-13 17:54:04'),('5','1','8',0,'2018-05-18 13:55:41'),('6','1','4',0,'2018-05-18 14:09:20'),('7','1','12',0,'2018-07-31 01:19:13');
+insert  into `role_permission`(`id`,`role_id`,`permission_id`,`locked`,`create_time`) values ('1','1','0',0,'2018-05-13 17:54:04'),('10','1','15',0,'2018-08-01 06:59:23'),('11','1','16',0,'2018-08-01 06:59:27'),('2','1','1',0,'2018-05-13 17:54:04'),('3','1','2',0,'2018-05-13 17:54:04'),('4','1','3',0,'2018-05-13 17:54:04'),('5','1','8',0,'2018-05-18 13:55:41'),('6','1','4',0,'2018-05-18 14:09:20'),('7','1','12',0,'2018-07-31 01:19:13'),('8','1','13',0,'2018-08-01 06:25:53'),('9','1','14',0,'2018-08-01 06:59:18');
 
 /*Table structure for table `status` */
 
@@ -237,6 +265,8 @@ CREATE TABLE `status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `status` */
+
+insert  into `status`(`id`,`name`) values ('1','入库');
 
 /*Table structure for table `user` */
 
@@ -314,6 +344,26 @@ CREATE TABLE `work_nature` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `work_nature` */
+
+insert  into `work_nature`(`id`,`name`) values ('1','自用');
+
+/* Procedure structure for procedure `insertCategory` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `insertCategory` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`%` PROCEDURE `insertCategory`()
+BEGIN
+DECLARE i INT DEFAULT 1;
+WHILE i<=1000
+DO
+INSERT INTO category VALUES(REPLACE(UUID(),"-",""),NULL,"测试分类",1,"/");
+SET i=i+1;
+END WHILE;
+COMMIT;
+    END */$$
+DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
