@@ -173,9 +173,11 @@ public class DeviceServiceImpl implements DeviceService {
 		for (DeviceDTO deviceDTO : deviceDTOList){
 			//地点信息
 			StringBuilder locationStr = new StringBuilder();
-			Location location = locationMapper.getByDeviceId(deviceDTO.getId());
+			Location location = deviceDTO.getLocation();
+			//不给用户返回location数据
+			deviceDTO.setLocation(null);
 			List<String> locationIds = new ArrayList<>(Arrays.asList(location.getPath().split("/")));
-			//字符串分割后的第一个元素为空，去掉
+			//字符串分割后第一个元素为空，去掉
 			if (locationIds.size()>0){
 				locationIds.remove(0);
 				List<Location> locationList = locationMapper.getLocationsInIds(locationIds);
@@ -183,20 +185,21 @@ public class DeviceServiceImpl implements DeviceService {
 					locationStr.append(item.getName());
 					locationStr.append("/");
 				}
-				deviceDTO.setLocation(locationStr.append(location.getName()).toString());
+				deviceDTO.setLocationStr(locationStr.append(location.getName()).toString());
 			}else {
 				//否则为顶级区域
-				deviceDTO.setLocation(location.getName());
+				deviceDTO.setLocationStr(location.getName());
 			}
 
 			//分类信息
 			StringBuilder categoryStr = new StringBuilder();
-			Category category = categoryMapper.getByDeviceId(deviceDTO.getId());
+			Category category = deviceDTO.getCategory();
 			//TODO 可以为设备设置一个默认分类，且该默认分类不可删除，就不用再判断分类是否为空了
 			if (category == null){
-				deviceDTO.setCategory("未分类");
+				deviceDTO.setCategoryStr("未分类");
 				continue;
 			}
+			deviceDTO.setCategory(null);
 			List<String> categoryIds = new ArrayList<>(Arrays.asList(category.getPath().split("/")));
 			if (categoryIds.size()>0){
 				categoryIds.remove(0);
@@ -205,9 +208,9 @@ public class DeviceServiceImpl implements DeviceService {
 					categoryStr.append(item.getName());
 					categoryStr.append("/");
 				}
-				deviceDTO.setCategory(categoryStr.append(category.getName()).toString());
+				deviceDTO.setCategoryStr(categoryStr.append(category.getName()).toString());
 			}else {
-				deviceDTO.setCategory(category.getName());
+				deviceDTO.setCategoryStr(category.getName());
 			}
 		}
 	}

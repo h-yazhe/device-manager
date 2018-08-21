@@ -6,9 +6,9 @@
 	<insert id="insertList">
 		INSERT INTO location
 		VALUES
-		<foreach collection="list" item="locationList" separator=",">
-			(#{locationList.id},#{locationList.parentId},#{locationList.name},
-			#{locationList.level},#{locationList.path})
+		<foreach collection="list" item="location" separator=",">
+			(#{location.id},#{location.parentId},#{location.name},
+			#{location.level},#{location.path})
 		</foreach>
 	</insert>
 

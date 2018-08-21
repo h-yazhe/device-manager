@@ -33,6 +33,20 @@
 			<id column="bra_id" property="id"/>
 			<result column="bra_name" property="name"/>
 		</association>
+		<association property="location" javaType="com.sicau.devicemanager.POJO.DO.Location">
+			<id column="l_id" property="id"/>
+			<result column="l_pId" property="parentId"/>
+			<result column="l_name" property="name"/>
+			<result column="l_level" property="level"/>
+			<result column="l_path" property="path"/>
+		</association>
+		<association property="category" javaType="com.sicau.devicemanager.POJO.DO.Category">
+			<id column="c_id" property="id"/>
+			<result column="c_pId" property="parentId"/>
+			<result column="c_name" property="name"/>
+			<result column="c_level" property="level"/>
+			<result column="c_path" property="path"/>
+		</association>
 	</resultMap>
   <sql id="Base_Column_List" >
     id, `name`, location_id, national_id, serial_number, use_time, work_nature_id, custodian_id,
@@ -41,7 +55,9 @@
 	<sql id="getDeviceInfo">
 		SELECT d.id,d.`name`, d.national_id,d.serial_number,d.use_time,d.unit_price,d.create_time,d.update_time,
 			wn.name wn_name,cus.name cus_name,amo.name amo_name,sta.name sta_name,
-			bra.id bra_id, bra.name bra_name
+			bra.id bra_id, bra.name bra_name,
+		l.id l_id,l.parent_id l_pid,l.name l_name,l.level l_level,l.path l_path,
+		c.id c_id,c.parent_id c_pid,c.name c_name,c.level c_level,c.path c_path
 		FROM device d
 			LEFT JOIN work_nature wn
 				ON d.work_nature_id = wn.id

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.sicau.devicemanager.POJO.DO.Brand;
+import com.sicau.devicemanager.POJO.DO.Category;
 import com.sicau.devicemanager.POJO.DO.Device;
 import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.QueryDeviceGroup;
@@ -43,10 +44,14 @@ public class DeviceDTO extends Device {
 	private String categoryId;
 
 	@ApiModelProperty(value = "所处地点")
-	private String location;
+	private String locationStr;
+
+	private Location location;
 
 	@ApiModelProperty(value = "设备分类")
-	private String category;
+	private String categoryStr;
+
+	private Category category;
 
 	@ApiModelProperty("工作性质")
 	private String workNature;
@@ -82,6 +87,22 @@ public class DeviceDTO extends Device {
 
 	@ApiModelProperty("查询条件，用户id")
 	private String userId;
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
 
 	public List<String> getLocationIds() {
 		return locationIds;
@@ -155,12 +176,12 @@ public class DeviceDTO extends Device {
 		this.brand = brand;
 	}
 
-	public String getLocation() {
-		return location;
+	public String getLocationStr() {
+		return locationStr;
 	}
 
-	public void setLocation(String location) {
-		this.location = location;
+	public void setLocationStr(String locationStr) {
+		this.locationStr = locationStr;
 	}
 
 	public String getWorkNature() {
@@ -195,12 +216,12 @@ public class DeviceDTO extends Device {
 		this.status = status;
 	}
 
-	public String getCategory() {
-		return category;
+	public String getCategoryStr() {
+		return categoryStr;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setCategoryStr(String categoryStr) {
+		this.categoryStr = categoryStr;
 	}
 
 	public List<String> getCategoryIds() {
@@ -211,13 +232,19 @@ public class DeviceDTO extends Device {
 		this.categoryIds = categoryIds;
 	}
 
+	public DeviceDTO() {
+	}
+
 	@Override
 	public String toString() {
 		return "DeviceDTO{" +
 				"brand=" + brand +
 				", categoryIds=" + categoryIds +
-				", location='" + location + '\'' +
-				", category='" + category + '\'' +
+				", categoryId='" + categoryId + '\'' +
+				", locationStr='" + locationStr + '\'' +
+				", location=" + location +
+				", categoryStr='" + categoryStr + '\'' +
+				", category=" + category +
 				", workNature='" + workNature + '\'' +
 				", custodian='" + custodian + '\'' +
 				", amountUnit='" + amountUnit + '\'' +
@@ -227,6 +254,8 @@ public class DeviceDTO extends Device {
 				", queryPage=" + queryPage +
 				", queryKey='" + queryKey + '\'' +
 				", locationList=" + locationList +
+				", locationIds=" + locationIds +
+				", userId='" + userId + '\'' +
 				"} " + super.toString();
 	}
 }

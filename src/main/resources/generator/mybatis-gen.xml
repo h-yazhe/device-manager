@@ -6,7 +6,7 @@
 <generatorConfiguration>
 	<!--数据库驱动jar -->
 	<classPathEntry
-			location="C:\Users\huangyazhe\.m2\repository\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar" />
+			locationStr="C:\Users\huangyazhe\.m2\repository\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar" />
 
 	<context id="Tables" targetRuntime="MyBatis3">
 		<!--去除注释 -->

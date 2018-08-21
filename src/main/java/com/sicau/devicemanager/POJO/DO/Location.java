@@ -42,6 +42,9 @@ public class Location {
 	@ApiModelProperty("路径")
 	private String path;
 
+	public Location() {
+	}
+
 	public Location(String id, String parentId, String name, Integer level, String path) {
 		this.id = id;
 		this.parentId = parentId;
