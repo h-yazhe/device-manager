@@ -16,4 +16,6 @@ public class DeviceValidatedGroup {
 
 	 public interface QueryDeviceGroup{
 	 }
+
+	 public interface DistributeDeviceGroup{}
 }

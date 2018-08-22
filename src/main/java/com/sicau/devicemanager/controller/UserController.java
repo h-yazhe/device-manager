@@ -9,10 +9,13 @@ import com.sicau.devicemanager.constants.PermissionActionConstant;
 import com.sicau.devicemanager.constants.ResourceConstants;
 import com.sicau.devicemanager.service.UserService;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,6 +26,7 @@ import java.util.List;
  * @author BeFondOfTaro
  * Created at 19:21 2018/5/15
  */
+@Api(tags = "用户操作")
 @RestController
 @RequestMapping(CommonConstants.API_PREFIX)
 public class UserController {
@@ -35,6 +39,7 @@ public class UserController {
      * @param userId 用户id
      * @return
      */
+    @ApiOperation("根据用户id查询用户信息")
     @ApiImplicitParams(
             @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
     )
@@ -49,12 +54,13 @@ public class UserController {
      * @param queryPage 分页参数
      * @return
      */
+    @ApiOperation("分页查询所有用户")
     @ApiImplicitParams(
             @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
     )
     @GetMapping(ResourceConstants.USER )
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.GET)
-    public ResultVO listUser(QueryPage queryPage){
+    public ResultVO listUser(@Valid QueryPage queryPage){
         return ResultVOUtil.success(userService.listUser(queryPage));
     }
 
@@ -62,12 +68,13 @@ public class UserController {
      * 添加用户
      * @param userRegisterDTO 用户信息
      */
+    @ApiOperation("添加用户")
     @ApiImplicitParams(
             @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
     )
     @PostMapping(ResourceConstants.USER)
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.ADD)
-    public ResultVO addUser(@Valid UserRegisterDTO userRegisterDTO){
+    public ResultVO addUser(@Valid @RequestBody UserRegisterDTO userRegisterDTO){
         userService.addUser(userRegisterDTO);
         return ResultVOUtil.success();
     }
@@ -77,12 +84,13 @@ public class UserController {
      * @param userId 用户id
      * @param roleIdList 角色id列表
      */
+    @ApiOperation("为用户批量更新角色")
     @ApiImplicitParams(
             @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header",required = true)
     )
-    @PutMapping(ResourceConstants.USER + "/{userId}/" + ResourceConstants.ROLE)
+    @PostMapping(ResourceConstants.USER + "/{userId}/" + ResourceConstants.ROLE)
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.UPDATE)
-    public ResultVO updateUserRole(@PathVariable String userId, @RequestParam("roleId") List<String> roleIdList){
+    public ResultVO updateUserRole(@PathVariable String userId, @RequestBody List<String> roleIdList){
         userService.updateUserRole(userId,roleIdList);
         return ResultVOUtil.success();
     }
@@ -91,6 +99,7 @@ public class UserController {
      * 通过用户id删除用户
      * @param userId 用户id
      */
+    @ApiOperation("通过用户id删除用户")
     @ApiImplicitParams(
             @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
     )

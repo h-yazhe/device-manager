@@ -45,7 +45,6 @@ public class AuthFilter extends AccessControlFilter {
             if (authorization == null){
                 throw new Exception("token为空!");
             }
-            log.info(authorization);
             //登录
             SimpleToken token = new SimpleToken(authorization);
             // 提交给realm进行登入，如果错误他会抛出异常并被捕获

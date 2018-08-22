@@ -12,7 +12,7 @@
     <result column="custodian_id" property="custodianId" jdbcType="VARCHAR" />
     <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
     <result column="amount_unit_id" property="amountUnitId" jdbcType="VARCHAR" />
-    <result column="status_id" property="statusId" jdbcType="VARCHAR" />
+    <result column="status_id" property="statusId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -23,6 +23,7 @@
 		<result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
 		<result column="use_time" property="useTime" jdbcType="TIMESTAMP" />
 		<result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+		<result column="status_id" property="statusId" jdbcType="INTEGER" />
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="wn_name" property="workNature" jdbcType="VARCHAR" />
@@ -53,26 +54,42 @@
     unit_price, amount_unit_id, status_id, create_time, update_time
   </sql>
 	<sql id="getDeviceInfo">
-		SELECT d.id,d.`name`, d.national_id,d.serial_number,d.use_time,d.unit_price,d.create_time,d.update_time,
-			wn.name wn_name,cus.name cus_name,amo.name amo_name,sta.name sta_name,
+		SELECT d.id,d.`name`, d.national_id,d.serial_number,d.use_time,d.unit_price, d.status_id,d.create_time,d.update_time,
+			wn.name wn_name,cus.name cus_name,amo.name amo_name,
 			bra.id bra_id, bra.name bra_name,
 		l.id l_id,l.parent_id l_pid,l.name l_name,l.level l_level,l.path l_path,
 		c.id c_id,c.parent_id c_pid,c.name c_name,c.level c_level,c.path c_path
 		FROM device d
 			LEFT JOIN work_nature wn
 				ON d.work_nature_id = wn.id
+			<if test="workNatureId!=null">
+				and wn.id = #{workNatureId}
+			</if>
 			LEFT JOIN custodian cus
 				ON d.custodian_id = cus.id
+			<if test="custodianId!=null">
+				and cus.id = #{custodianId}
+			</if>
 			LEFT JOIN amount_unit amo
 				ON d.amount_unit_id = amo.id
-			LEFT JOIN status sta
-				ON d.status_id = sta.id
+			<if test="amountUnitId!=null">
+				and amo.id = #{amountUnitId}
+			</if>
 			LEFT JOIN device_brand db
 				ON d.id = db.device_id
+			<if test="brand!=null">
+				and db.brand_id = #{brand.id}
+			</if>
 			LEFT JOIN brand bra
 				ON db.brand_id = bra.id
 			LEFT JOIN device_category dc
 			ON dc.device_id = d.id
+			<if test="categoryIds != null">
+				AND dc.id IN
+				<foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
+					#{categoryId}
+				</foreach>
+			</if>
 			LEFT JOIN category c
 			ON c.id = dc.category_id
 			JOIN location l
@@ -85,26 +102,8 @@
 			<if test="nationalId!=null">
 				and d.national_id = #{nationalId}
 			</if>
-			<if test="workNatureId!=null">
-				and wn.id = #{workNatureId}
-			</if>
-			<if test="custodianId!=null">
-				and cus.id = #{custodianId}
-			</if>
-			<if test="amountUnitId!=null">
-				and amo.id = #{amountUnitId}
-			</if>
 			<if test="statusId!=null">
-				and sta.id = #{statusId}
-			</if>
-			<if test="brand!=null">
-				and bra.id = #{brand.id}
-			</if>
-			<if test="categoryIds != null">
-				AND c.id IN
-				<foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
-					#{categoryId}
-				</foreach>
+				and status_id = #{statusId}
 			</if>
 			<if test="startTime != null">
 				AND create_time <![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
@@ -150,7 +149,7 @@
     values (#{id,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR}, #{locationId,jdbcType=VARCHAR}, #{nationalId,jdbcType=VARCHAR},
       #{serialNumber,jdbcType=VARCHAR}, #{useTime,jdbcType=TIMESTAMP}, #{workNatureId,jdbcType=VARCHAR}, 
       #{custodianId,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, #{amountUnitId,jdbcType=VARCHAR}, 
-      #{statusId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{statusId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.Device" >
@@ -296,4 +295,14 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+	<update id="distributeDevice">
+		UPDATE device
+		SET location_id = #{locationId},
+			use_time = #{useTime},
+			status_id = 2
+		where id IN
+		<foreach collection="deviceIdList" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</update>
 </mapper>

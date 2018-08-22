@@ -2,7 +2,7 @@ package com.sicau.devicemanager.service;
 
 import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
-import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 
 import java.util.List;
 
@@ -38,4 +38,9 @@ public interface DeviceService {
 	 */
 	PageInfo<DeviceDTO> listDevice(DeviceDTO deviceDTO);
 
+	/**
+	 * 分发设备
+	 * @param distributeDeviceDTO
+	 */
+	void distributeDevice(DistributeDeviceDTO distributeDeviceDTO);
 }

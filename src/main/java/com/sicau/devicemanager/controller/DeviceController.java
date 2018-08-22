@@ -1,9 +1,11 @@
 package com.sicau.devicemanager.controller;
 
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
+import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.DistributeDeviceGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.service.DeviceService;
@@ -67,6 +69,14 @@ public class DeviceController {
 	@PostMapping("/delete-device")
 	public ResultVO deleteDeviceById(@RequestBody List<String> ids){
 		deviceService.deleteDeviceById(ids);
+		return ResultVOUtil.success();
+	}
+
+	@ApiOperation("分发设备")
+	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+	@PostMapping("/distribute")
+	public ResultVO distributeDevice(@Validated(DistributeDeviceGroup.class) DistributeDeviceDTO distributeDeviceDTO){
+		deviceService.distributeDevice(distributeDeviceDTO);
 		return ResultVOUtil.success();
 	}
 }

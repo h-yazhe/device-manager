@@ -2,6 +2,7 @@ package com.sicau.devicemanager.aop;
 
 import com.google.gson.Gson;
 import com.sicau.devicemanager.constants.HttpParamKey;
+import com.sicau.devicemanager.util.GsonUtil;
 import com.sicau.devicemanager.util.JWTUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -31,7 +32,7 @@ import java.util.Map;
 @Component
 public class LogAspect {
 
-	private static Gson gson = new Gson();
+	private Gson gson = GsonUtil.getGson();
 	private static final Logger logger = LoggerFactory.getLogger(LogAspect.class);
 
 	//定义切点
@@ -54,7 +55,7 @@ public class LogAspect {
 		}
 		reqMap.put("url",req.getRequestURI());
 		reqMap.put("method",req.getMethod());
-		reqMap.put("requestParams",Arrays.toString(pjp.getArgs()));
+		reqMap.put("requestParams", Arrays.toString(pjp.getArgs()));
 		logger.info("controller请求：" + gson.toJson(reqMap));
 		//result的值就是被拦截方法的返回值
 		Object result = pjp.proceed();

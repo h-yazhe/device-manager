@@ -2,11 +2,9 @@ package com.sicau.devicemanager.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sicau.devicemanager.POJO.DO.Category;
-import com.sicau.devicemanager.POJO.DO.DeviceBrand;
-import com.sicau.devicemanager.POJO.DO.DeviceCategory;
-import com.sicau.devicemanager.POJO.DO.Location;
+import com.sicau.devicemanager.POJO.DO.*;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
+import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.config.exception.CommonException;
 import com.sicau.devicemanager.constants.ResultEnum;
@@ -41,11 +39,18 @@ public class DeviceServiceImpl implements DeviceService {
 	private LocationMapper locationMapper;
 	@Autowired
 	private CategoryMapper categoryMapper;
+	@Autowired
+	private DeviceStatusRecordMapper deviceStatusRecordMapper;
 
 	@Override
 	public void addDevice(DeviceDTO deviceDTO) {
 		deviceDTO.setId(KeyUtil.genUniqueKey());
+		deviceDTO.setStatusId(1);
 		deviceMapper.insertSelective(deviceDTO);
+		deviceStatusRecordMapper.insert(
+				new DeviceStatusRecord(KeyUtil.genUniqueKey(),deviceDTO.getId(),
+						-1,1,deviceDTO.getUserId())
+		);
 		insertDeviceBrand(deviceDTO);
 		insertDeviceCategory(deviceDTO);
 	}
@@ -154,6 +159,12 @@ public class DeviceServiceImpl implements DeviceService {
 		return new PageInfo<>(deviceDTOList);
 	}
 
+	@Override
+	public void distributeDevice(DistributeDeviceDTO distributeDeviceDTO) {
+		distributeDeviceDTO.setUseTime(new Date());
+		deviceMapper.distributeDevice(distributeDeviceDTO);
+	}
+
 	/**
 	 * 校验locationId是否在目标list中
 	 * @param locationId
@@ -194,7 +205,7 @@ public class DeviceServiceImpl implements DeviceService {
 			//分类信息
 			StringBuilder categoryStr = new StringBuilder();
 			Category category = deviceDTO.getCategory();
-			//TODO 可以为设备设置一个默认分类，且该默认分类不可删除，就不用再判断分类是否为空了
+			//TODO 上线删除，测试用
 			if (category == null){
 				deviceDTO.setCategoryStr("未分类");
 				continue;

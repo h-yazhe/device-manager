@@ -9,6 +9,7 @@ import com.sicau.devicemanager.constants.PermissionActionConstant;
 import com.sicau.devicemanager.constants.ResourceConstants;
 import com.sicau.devicemanager.service.RoleService;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -22,6 +23,7 @@ import java.util.List;
  * @author BeFondOfTaro
  * Created at 23:41 2018/5/15
  */
+@Api(tags = "角色操作")
 @RestController
 @RequestMapping(CommonConstants.API_PREFIX)
 public class RoleController {

@@ -55,8 +55,8 @@ public class Device {
 	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
     private String amountUnitId;
 
-    @ApiModelProperty("当前设备状态id")
-    private String statusId;
+    @ApiModelProperty(value = "当前设备状态id",notes = "1为入库，2为使用，3为报废")
+    private Integer statusId;
 
     @ApiModelProperty("创建时间，即第一次入库的时间")
     private Date createTime;
@@ -145,12 +145,12 @@ public class Device {
         this.amountUnitId = amountUnitId == null ? null : amountUnitId.trim();
     }
 
-    public String getStatusId() {
+    public Integer getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(String statusId) {
-        this.statusId = statusId == null ? null : statusId.trim();
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
     }
 
     public Date getCreateTime() {

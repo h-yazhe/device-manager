@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sicau.devicemanager.dao.DeviceStatusRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="device_id" property="deviceId" jdbcType="VARCHAR" />
+    <result column="from_status" property="fromStatus" jdbcType="TINYINT" />
+    <result column="to_status" property="toStatus" jdbcType="TINYINT" />
+    <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP" />
+    <result column="operate_user_id" property="operateUserId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, device_id, from_status, to_status, operate_time, operate_user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from device_status_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from device_status_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
+    insert into device_status_record (id, device_id, from_status, 
+      to_status, operate_user_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{deviceId,jdbcType=VARCHAR}, #{fromStatus,jdbcType=TINYINT}, 
+      #{toStatus,jdbcType=TINYINT}, #{operateUserId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
+    insert into device_status_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="deviceId != null" >
+        device_id,
+      </if>
+      <if test="fromStatus != null" >
+        from_status,
+      </if>
+      <if test="toStatus != null" >
+        to_status,
+      </if>
+      <if test="operateTime != null" >
+        operate_time,
+      </if>
+      <if test="operateUserId != null" >
+        operate_user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null" >
+        #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="fromStatus != null" >
+        #{fromStatus,jdbcType=TINYINT},
+      </if>
+      <if test="toStatus != null" >
+        #{toStatus,jdbcType=TINYINT},
+      </if>
+      <if test="operateTime != null" >
+        #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateUserId != null" >
+        #{operateUserId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
+    update device_status_record
+    <set >
+      <if test="deviceId != null" >
+        device_id = #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="fromStatus != null" >
+        from_status = #{fromStatus,jdbcType=TINYINT},
+      </if>
+      <if test="toStatus != null" >
+        to_status = #{toStatus,jdbcType=TINYINT},
+      </if>
+      <if test="operateTime != null" >
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateUserId != null" >
+        operate_user_id = #{operateUserId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
+    update device_status_record
+    set device_id = #{deviceId,jdbcType=VARCHAR},
+      from_status = #{fromStatus,jdbcType=TINYINT},
+      to_status = #{toStatus,jdbcType=TINYINT},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      operate_user_id = #{operateUserId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

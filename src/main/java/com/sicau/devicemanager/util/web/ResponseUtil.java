@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.util.web;
 
 import com.google.gson.Gson;
+import com.sicau.devicemanager.util.GsonUtil;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class ResponseUtil {
      * @throws IOException
      */
     public static void toJson(HttpServletResponse httpServletResponse, Object data) throws IOException{
-        Gson gson = new Gson();
+        Gson gson = GsonUtil.getGson();
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json; charset=utf-8");
         httpServletResponse.getWriter().write(
