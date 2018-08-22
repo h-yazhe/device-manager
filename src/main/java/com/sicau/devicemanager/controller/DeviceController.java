@@ -75,7 +75,7 @@ public class DeviceController {
 	@ApiOperation("分发设备")
 	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
 	@PostMapping("/distribute")
-	public ResultVO distributeDevice(@Validated(DistributeDeviceGroup.class) DistributeDeviceDTO distributeDeviceDTO){
+	public ResultVO distributeDevice(@Validated(DistributeDeviceGroup.class)@RequestBody DistributeDeviceDTO distributeDeviceDTO){
 		deviceService.distributeDevice(distributeDeviceDTO);
 		return ResultVOUtil.success();
 	}
