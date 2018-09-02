@@ -215,7 +215,7 @@
                               设备详情
                           </h4>
                           <hr>
-                          <table class="table table-striped table-advance table-hover table-condensed cf">
+                          <table id="device-list" class="table table-striped table-advance table-hover table-condensed cf">
                               <thead>
                               <tr>
                                   <th>使用地点</th>
@@ -235,19 +235,19 @@
                               </tr>
                               </thead>
                               <tbody>
-                              <tr>
-                                  <td>Company Ltd</td>
-                                  <td class="hidden-phone">Lorem Ipsum dolor</td>
-                                  <td>12000.00$ </td>
-                                  <td>Due</td>
-                                  <td>Company Ltd</td>
-                                  <td class="hidden-phone">Lorem Ipsum dolor</td>
-                                  <td>12000.00$ </td>
-                                  <td>Due</td>
-                                  <td>Company Ltd</td>
-                                  <td class="hidden-phone">Lorem Ipsum dolor</td>
-                                  <td>12000.00$ </td>
-                                  <td>Due</td>
+                              <tr v-for="device in deviceList">
+                                  <td>{{device.locationStr}}</td>
+                                  <td class="hidden-phone">{{device.brand!=undefined?device.brand.name:'未填写'}}</td>
+                                  <td>{{device.deviceModel}}</td>
+                                  <td>{{device.nationalId}}</td>
+                                  <td>{{device.serialNumber}}</td>
+                                  <td class="hidden-phone">{{device.locationStr.split('/')[0]}}</td>
+                                  <td>{{device.useDepartment}}</td>
+                                  <td>{{formatTime(device.useTime)}}</td>
+                                  <td>{{device.workNature}}</td>
+                                  <td class="hidden-phone">{{device.custodian}}</td>
+                                  <td>{{device.unitPrice}}</td>
+                                  <td>{{parseStatus(device.statusId)}}</td>
                                   <td>
                                   <button class="btn btn-success btn-xs"><i class="fa fa-check"></i>Excel</button>
                               </td>
@@ -284,6 +284,7 @@
     <!--script for this page-->
     <script src="assets/js/sparkline-chart.js"></script>    
 	<script src="assets/js/zabuto_calendar.js"></script>
+    <script src="assets/js/vue.js"></script>
 
   <!--数据渲染代码-->
   <script>
@@ -301,6 +302,87 @@
               }
           })
       }
+
+      //api统一定义
+      var api = {
+          apiPrefix: "/dev-manager/api_v1/",
+          listDevice: "device/list"
+      };
+      function getApi(name) {
+          return api.apiPrefix + name;
+      }
+
+      var vueDeviceList = new Vue({
+          el: "#device-list",
+          data: {
+              deviceList: [
+                  {
+                      "id": "0",
+                      "name": "",
+                      "nationalId": "",
+                      "serialNumber": "",
+                      "useTime": 0,
+                      "unitPrice": 0,
+                      "statusId": 0,
+                      "createTime": 0,
+                      "updateTime": 0,
+                      "brand": {
+                          "id": "0",
+                          "name": ""
+                      },
+                      "locationStr": "",
+                      "categoryStr": "",
+                      "workNature": "",
+                      "custodian": "",
+                      "amountUnit": "",
+                      "useDepartment": "",
+                      "deviceModel": ""
+                  }
+              ]
+          },
+          methods: {
+              /**
+               * 渲染表格
+               */
+            listDevice: function () {
+                $.ajax({
+                    url: getApi(api.listDevice),
+                    method: "post",
+                    data: JSON.stringify({
+                        "queryPage": {
+                            "pageNum": 1,
+                            "pageSize": 10
+                        }
+                    }),
+                    contentType: "application/json",
+                    headers: {
+                        //TODO 测试使用，应当从cookie获取
+                        token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE1MzU4Njk4MTgsImV4cCI6MTUzODQ2MTgxOCwiaWF0IjoxNTM1ODY5ODE4LCJ1c2VySWQiOiIxNTI2NDY3MzYzMzYyMTcxODQ0In0.KGIie9PeJ4Io5pzh8PiLC6_oYednVgk9UgyoWkseokQ'
+                    },
+                    success: function (data) {
+                        vueDeviceList.deviceList = data.data.list;
+                    }
+                })
+            },
+              formatTime: function (timeStamp) {
+                var date = new Date(timeStamp);
+                  return date.getFullYear() + "." + date.getMonth() + "." + date.getDay();
+              },
+              parseStatus: function (status) {
+                  switch (status){
+                      case 1:
+                          return '入库';
+                      case 2:
+                          return '使用中';
+                      case 3:
+                          return '报废';
+                  }
+              }
+          },
+          created: function () {
+              this.listDevice();
+          }
+      })
   </script>
 
   </body>

@@ -88,6 +88,32 @@ public class DeviceDTO extends Device {
 	@ApiModelProperty("查询条件，用户id")
 	private String userId;
 
+	/**
+	 * 使用部门
+	 */
+	private String useDepartment;
+
+	/**
+	 * 设备型号
+	 */
+	private String deviceModel;
+
+	public String getUseDepartment() {
+		return useDepartment;
+	}
+
+	public void setUseDepartment(String useDepartment) {
+		this.useDepartment = useDepartment;
+	}
+
+	public String getDeviceModel() {
+		return deviceModel;
+	}
+
+	public void setDeviceModel(String deviceModel) {
+		this.deviceModel = deviceModel;
+	}
+
 	public Category getCategory() {
 		return category;
 	}

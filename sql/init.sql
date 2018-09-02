@@ -2,8 +2,7 @@
 SQLyog v10.2 
 MySQL - 5.7.22 : Database - device_manager
 *********************************************************************
-*/
-
+*/
 
 /*!40101 SET NAMES utf8 */;
 
@@ -77,6 +76,22 @@ CREATE TABLE `custodian` (
 
 insert  into `custodian`(`id`,`name`) values ('1','李四');
 
+/*Table structure for table `department` */
+
+DROP TABLE IF EXISTS `department`;
+
+CREATE TABLE `department` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL COMMENT '部门名称',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='部门表';
+
+/*Data for the table `department` */
+
+insert  into `department`(`id`,`name`,`create_time`,`update_time`) values (0,'未选择 ','2018-09-02 06:32:26','2018-09-02 06:32:30');
+
 /*Table structure for table `device` */
 
 DROP TABLE IF EXISTS `device`;
@@ -87,12 +102,14 @@ CREATE TABLE `device` (
   `location_id` varchar(32) NOT NULL COMMENT '所处地点id',
   `national_id` varchar(32) NOT NULL COMMENT '国资编号',
   `serial_number` varchar(32) NOT NULL COMMENT '序列号',
+  `device_model_id` int(11) NOT NULL DEFAULT '0' COMMENT '设备型号id',
   `use_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '领用时间',
+  `use_department_id` int(11) NOT NULL DEFAULT '0' COMMENT '使用部门id',
   `work_nature_id` varchar(32) NOT NULL COMMENT '工作性质id',
   `custodian_id` varchar(32) NOT NULL COMMENT '保管人id',
   `unit_price` decimal(11,2) NOT NULL COMMENT '单价',
   `amount_unit_id` varchar(32) NOT NULL COMMENT '计量单位id',
-  `status_id` varchar(32) NOT NULL DEFAULT '1' COMMENT '当前设备状态id',
+  `status_id` tinyint(2) NOT NULL DEFAULT '1' COMMENT '当前设备状态id,1为入库，2为使用，3为报废',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间，即第一次入库的时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
@@ -104,13 +121,12 @@ CREATE TABLE `device` (
   CONSTRAINT `device_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`),
   CONSTRAINT `device_ibfk_2` FOREIGN KEY (`work_nature_id`) REFERENCES `work_nature` (`id`),
   CONSTRAINT `device_ibfk_3` FOREIGN KEY (`custodian_id`) REFERENCES `custodian` (`id`),
-  CONSTRAINT `device_ibfk_4` FOREIGN KEY (`amount_unit_id`) REFERENCES `amount_unit` (`id`),
-  CONSTRAINT `device_ibfk_5` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`)
+  CONSTRAINT `device_ibfk_4` FOREIGN KEY (`amount_unit_id`) REFERENCES `amount_unit` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `device` */
 
-insert  into `device`(`id`,`name`,`location_id`,`national_id`,`serial_number`,`use_time`,`work_nature_id`,`custodian_id`,`unit_price`,`amount_unit_id`,`status_id`,`create_time`,`update_time`) values ('1','测试设备2','1533106692421936787','12314','asdas11','2018-08-17 07:16:23','1','1','11.00','1','1','2018-08-17 07:16:23','2018-08-17 07:16:23'),('1533799349223338772','测试设备1','1533106692421375227','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33'),('2','测试设备1','1533106692421375227','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33'),('3','测试设备1','1533106692421375227','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33'),('4','测试设备1','1533106692421375227','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33'),('5','测试设备2','1533106692421375227','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33'),('6','测试设备3','1533106692421375227','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33'),('7','测试设备3','1533106692421715916','a111345423','44444444','2018-08-09 07:21:21','1','1','100.40','1','1','2018-08-09 07:21:21','2018-08-09 07:34:33');
+insert  into `device`(`id`,`name`,`location_id`,`national_id`,`serial_number`,`device_model_id`,`use_time`,`use_department_id`,`work_nature_id`,`custodian_id`,`unit_price`,`amount_unit_id`,`status_id`,`create_time`,`update_time`) values ('1','测试设备2','1533106692421936787','12314','asdas11',0,'2018-08-17 07:16:23',0,'1','1','11.00','1',1,'2018-08-17 07:16:23','2018-08-17 07:16:23'),('1533799349223338772','测试设备1','1533106692421375227','a111345423','44444444',0,'2018-08-09 07:21:21',0,'1','1','100.40','1',1,'2018-08-09 07:21:21','2018-08-09 07:34:33'),('2','测试设备1','1533106692421375227','a111345423','44444444',0,'2018-08-09 07:21:21',0,'1','1','100.40','1',1,'2018-08-09 07:21:21','2018-08-09 07:34:33'),('3','测试设备1','1533106692421375227','a111345423','44444444',0,'2018-08-09 07:21:21',0,'1','1','100.40','1',1,'2018-08-09 07:21:21','2018-08-09 07:34:33'),('4','测试设备1','1533106692421375227','a111345423','44444444',0,'2018-08-09 07:21:21',0,'1','1','100.40','1',1,'2018-08-09 07:21:21','2018-08-09 07:34:33'),('5','测试设备2','1533106692421375227','a111345423','44444444',0,'2018-08-09 07:21:21',0,'1','1','100.40','1',1,'2018-08-09 07:21:21','2018-08-09 07:34:33'),('6','测试设备3','1533106692421375227','a111345423','44444444',0,'2018-08-09 07:21:21',0,'1','1','100.40','1',1,'2018-08-09 07:21:21','2018-08-09 07:34:33'),('7','测试设备3','1533106692421715916','a111345423','44444444',0,'2018-08-09 07:21:21',0,'1','1','100.40','1',1,'2018-08-09 07:21:21','2018-08-09 07:34:33');
 
 /*Table structure for table `device_brand` */
 
@@ -150,18 +166,37 @@ CREATE TABLE `device_category` (
 
 insert  into `device_category`(`id`,`device_id`,`category_id`) values ('1','1','1533627421723747003'),('1533800141538980826','1533799349223338772','1533627421723747003'),('2','7','1533627421723777410');
 
-/*Table structure for table `device_status` */
+/*Table structure for table `device_model` */
 
-DROP TABLE IF EXISTS `device_status`;
+DROP TABLE IF EXISTS `device_model`;
 
-CREATE TABLE `device_status` (
-  `id` varchar(32) NOT NULL,
-  `status_id` varchar(32) NOT NULL COMMENT '设备状态id',
-  `create_time` datetime NOT NULL COMMENT '创建时间，即设备更改为该状态的时间',
+CREATE TABLE `device_model` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL COMMENT '型号名称',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='设备型号表';
 
-/*Data for the table `device_status` */
+/*Data for the table `device_model` */
+
+insert  into `device_model`(`id`,`name`,`create_time`,`update_time`) values (0,'未选择','2018-09-02 06:32:54','2018-09-02 06:32:57');
+
+/*Table structure for table `device_status_record` */
+
+DROP TABLE IF EXISTS `device_status_record`;
+
+CREATE TABLE `device_status_record` (
+  `id` varchar(32) COLLATE utf8mb4_bin NOT NULL,
+  `device_id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '设备id',
+  `from_status` tinyint(2) NOT NULL COMMENT '本来的状态，若为-1，则表示新添加的设备',
+  `to_status` tinyint(2) NOT NULL COMMENT '改变的状态',
+  `operate_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '改变设备状态的操作时间',
+  `operate_user_id` varchar(32) COLLATE utf8mb4_bin NOT NULL COMMENT '操作的用户',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+/*Data for the table `device_status_record` */
 
 /*Table structure for table `location` */
 
@@ -254,20 +289,6 @@ CREATE TABLE `role_permission` (
 /*Data for the table `role_permission` */
 
 insert  into `role_permission`(`id`,`role_id`,`permission_id`,`locked`,`create_time`) values ('1','1','0',0,'2018-05-13 17:54:04'),('10','1','15',0,'2018-08-01 06:59:23'),('11','1','16',0,'2018-08-01 06:59:27'),('2','1','1',0,'2018-05-13 17:54:04'),('3','1','2',0,'2018-05-13 17:54:04'),('4','1','3',0,'2018-05-13 17:54:04'),('5','1','8',0,'2018-05-18 13:55:41'),('6','1','4',0,'2018-05-18 14:09:20'),('7','1','12',0,'2018-07-31 01:19:13'),('8','1','13',0,'2018-08-01 06:25:53'),('9','1','14',0,'2018-08-01 06:59:18');
-
-/*Table structure for table `status` */
-
-DROP TABLE IF EXISTS `status`;
-
-CREATE TABLE `status` (
-  `id` varchar(32) NOT NULL,
-  `name` varchar(32) NOT NULL COMMENT '设备状态',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `status` */
-
-insert  into `status`(`id`,`name`) values ('1','入库');
 
 /*Table structure for table `user` */
 

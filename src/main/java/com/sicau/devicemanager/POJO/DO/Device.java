@@ -36,6 +36,18 @@ public class Device {
 	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
     private String serialNumber;
 
+	/**
+	 * 设备型号id
+	 */
+	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
+	private Integer deviceModelId;
+
+	/**
+	 * 使用部门id
+	 */
+	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
+	private Integer useDepartmentId;
+
     @ApiModelProperty("领用时间")
     private Date useTime;
 
@@ -64,8 +76,23 @@ public class Device {
     @ApiModelProperty("更新时间")
     private Date updateTime;
 
+	public Integer getDeviceModelId() {
+		return deviceModelId;
+	}
 
-    public String getId() {
+	public void setDeviceModelId(Integer deviceModelId) {
+		this.deviceModelId = deviceModelId;
+	}
+
+	public Integer getUseDepartmentId() {
+		return useDepartmentId;
+	}
+
+	public void setUseDepartmentId(Integer useDepartmentId) {
+		this.useDepartmentId = useDepartmentId;
+	}
+
+	public String getId() {
         return id;
     }
 
