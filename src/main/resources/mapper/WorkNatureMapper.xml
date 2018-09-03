@@ -14,7 +14,10 @@
     from work_nature
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	<select id="listAll" resultType="com.sicau.devicemanager.POJO.DO.WorkNature">
+      SELECT * FROM work_nature
+    </select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from work_nature
     where id = #{id,jdbcType=VARCHAR}
   </delete>

@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sicau.devicemanager.dao.DeviceMapper" >
-  <resultMap id="BaseResultMap" type="com.sicau.devicemanager.POJO.DO.Device" >
-    <id column="id" property="id" jdbcType="VARCHAR" />
-	  <result column="name" property="name" jdbcType="VARCHAR"/>
-    <result column="location_id" property="locationId" jdbcType="VARCHAR" />
-    <result column="national_id" property="nationalId" jdbcType="VARCHAR" />
-    <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
-	  <result column="device_model_id" property="deviceModelId" jdbcType="INTEGER"/>
-	  <result column="use_department_id" property="useDepartmentId" jdbcType="INTEGER"/>
-    <result column="use_time" property="useTime" jdbcType="TIMESTAMP" />
-    <result column="work_nature_id" property="workNatureId" jdbcType="VARCHAR" />
-    <result column="custodian_id" property="custodianId" jdbcType="VARCHAR" />
-    <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
-    <result column="amount_unit_id" property="amountUnitId" jdbcType="VARCHAR" />
-    <result column="status_id" property="statusId" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-	<resultMap id="deviceDTO" type="com.sicau.devicemanager.POJO.DTO.DeviceDTO">
-		<id column="id" property="id" jdbcType="VARCHAR" />
+<mapper namespace="com.sicau.devicemanager.dao.DeviceMapper">
+	<resultMap id="BaseResultMap" type="com.sicau.devicemanager.POJO.DO.Device">
+		<id column="id" property="id" jdbcType="VARCHAR"/>
 		<result column="name" property="name" jdbcType="VARCHAR"/>
-		<result column="national_id" property="nationalId" jdbcType="VARCHAR" />
-		<result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
-		<result column="use_time" property="useTime" jdbcType="TIMESTAMP" />
-		<result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
-		<result column="status_id" property="statusId" jdbcType="INTEGER" />
-		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-		<result column="wn_name" property="workNature" jdbcType="VARCHAR" />
-		<result column="cus_name" property="custodian" jdbcType="VARCHAR" />
-		<result column="amo_name" property="amountUnit" jdbcType="VARCHAR" />
-		<result column="sta_name" property="status" jdbcType="VARCHAR" />
-		<result column="dep_name" property="useDepartment" jdbcType="VARCHAR" />
-		<result column="dm_name" property="deviceModel" jdbcType="VARCHAR" />
+		<result column="location_id" property="locationId" jdbcType="VARCHAR"/>
+		<result column="national_id" property="nationalId" jdbcType="VARCHAR"/>
+		<result column="serial_number" property="serialNumber" jdbcType="VARCHAR"/>
+		<result column="device_model_id" property="deviceModelId" jdbcType="INTEGER"/>
+		<result column="use_department_id" property="useDepartmentId" jdbcType="INTEGER"/>
+		<result column="use_time" property="useTime" jdbcType="TIMESTAMP"/>
+		<result column="work_nature_id" property="workNatureId" jdbcType="VARCHAR"/>
+		<result column="custodian_id" property="custodianId" jdbcType="VARCHAR"/>
+		<result column="unit_price" property="unitPrice" jdbcType="DECIMAL"/>
+		<result column="amount_unit_id" property="amountUnitId" jdbcType="VARCHAR"/>
+		<result column="status_id" property="statusId" jdbcType="INTEGER"/>
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	<resultMap id="deviceDTO" type="com.sicau.devicemanager.POJO.DTO.DeviceDTO">
+		<id column="id" property="id" jdbcType="VARCHAR"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="national_id" property="nationalId" jdbcType="VARCHAR"/>
+		<result column="serial_number" property="serialNumber" jdbcType="VARCHAR"/>
+		<result column="use_time" property="useTime" jdbcType="TIMESTAMP"/>
+		<result column="unit_price" property="unitPrice" jdbcType="DECIMAL"/>
+		<result column="status_id" property="statusId" jdbcType="INTEGER"/>
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+		<result column="wn_name" property="workNature" jdbcType="VARCHAR"/>
+		<result column="cus_name" property="custodian" jdbcType="VARCHAR"/>
+		<result column="amo_name" property="amountUnit" jdbcType="VARCHAR"/>
+		<result column="sta_name" property="status" jdbcType="VARCHAR"/>
+		<result column="dep_name" property="useDepartment" jdbcType="VARCHAR"/>
+		<result column="dm_name" property="deviceModel" jdbcType="VARCHAR"/>
 		<association property="brand" javaType="Brand">
 			<id column="bra_id" property="id"/>
 			<result column="bra_name" property="name"/>
@@ -53,65 +53,66 @@
 			<result column="c_path" property="path"/>
 		</association>
 	</resultMap>
-  <sql id="Base_Column_List" >
-    id, `name`, location_id, national_id, serial_number, use_time, work_nature_id, custodian_id,
-    unit_price, amount_unit_id, status_id, create_time, update_time,device_model_id,use_department_id
-  </sql>
+	<sql id="Base_Column_List">
+		id, `name`, location_id, national_id, serial_number, use_time, work_nature_id, custodian_id,
+		unit_price, amount_unit_id, status_id, create_time, update_time, device_model_id, use_department_id
+	</sql>
 	<sql id="getDeviceInfo">
-		SELECT d.id,d.`name`, d.national_id,d.serial_number,d.use_time,d.unit_price, d.status_id,d.create_time,d.update_time,
-			wn.name wn_name,cus.name cus_name,amo.name amo_name,
-			bra.id bra_id, bra.name bra_name,dep.name dep_name,dm.name dm_name,
+		SELECT d.id,d.`name`, d.national_id,d.serial_number,d.use_time,d.unit_price,
+		d.status_id,d.create_time,d.update_time,
+		wn.name wn_name,cus.name cus_name,amo.name amo_name,
+		bra.id bra_id, bra.name bra_name,dep.name dep_name,dm.name dm_name,
 		l.id l_id,l.parent_id l_pid,l.name l_name,l.level l_level,l.path l_path,
 		c.id c_id,c.parent_id c_pid,c.name c_name,c.level c_level,c.path c_path
 		FROM device d
-			LEFT JOIN work_nature wn
-				ON d.work_nature_id = wn.id
-			<if test="workNatureId!=null">
-				and wn.id = #{workNatureId}
-			</if>
-			LEFT JOIN custodian cus
-				ON d.custodian_id = cus.id
-			<if test="custodianId!=null">
-				and cus.id = #{custodianId}
-			</if>
-			left join device_model dm
-				on dm.id = d.device_model_id
-			<if test="deviceModelId!=null">
-				and dm.id = #{deviceModelId}
-			</if>
-			LEFT JOIN department dep
-				on dep.id = d.use_department_id
-			<if test="useDepartmentId!=null">
-				and dep.id = #{useDepartmentId}
-			</if>
-			LEFT JOIN amount_unit amo
-				ON d.amount_unit_id = amo.id
-			<if test="amountUnitId!=null">
-				and amo.id = #{amountUnitId}
-			</if>
-			LEFT JOIN device_brand db
-				ON d.id = db.device_id
-			<if test="brand!=null">
-				and db.brand_id = #{brand.id}
-			</if>
-			LEFT JOIN brand bra
-				ON db.brand_id = bra.id
-			LEFT JOIN device_category dc
-			ON dc.device_id = d.id
-			<if test="categoryIds != null">
-				AND dc.id IN
-				<foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
-					#{categoryId}
-				</foreach>
-			</if>
-			LEFT JOIN category c
-			ON c.id = dc.category_id
-			JOIN location l
-		    ON l.id = d.location_id
-			and l.id in
-			<foreach collection="locationIds" item="locationId" separator="," open="(" close=")">
-				#{locationId}
+		LEFT JOIN work_nature wn
+		ON d.work_nature_id = wn.id
+		<if test="workNatureId!=null">
+			and wn.id = #{workNatureId}
+		</if>
+		LEFT JOIN custodian cus
+		ON d.custodian_id = cus.id
+		<if test="custodianId!=null">
+			and cus.id = #{custodianId}
+		</if>
+		left join device_model dm
+		on dm.id = d.device_model_id
+		<if test="deviceModelId!=null">
+			and dm.id = #{deviceModelId}
+		</if>
+		LEFT JOIN department dep
+		on dep.id = d.use_department_id
+		<if test="useDepartmentId!=null">
+			and dep.id = #{useDepartmentId}
+		</if>
+		LEFT JOIN amount_unit amo
+		ON d.amount_unit_id = amo.id
+		<if test="amountUnitId!=null">
+			and amo.id = #{amountUnitId}
+		</if>
+		LEFT JOIN device_brand db
+		ON d.id = db.device_id
+		<if test="brand!=null">
+			and db.brand_id = #{brand.id}
+		</if>
+		LEFT JOIN brand bra
+		ON db.brand_id = bra.id
+		LEFT JOIN device_category dc
+		ON dc.device_id = d.id
+		<if test="categoryIds != null">
+			AND dc.id IN
+			<foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
+				#{categoryId}
 			</foreach>
+		</if>
+		LEFT JOIN category c
+		ON c.id = dc.category_id
+		JOIN location l
+		ON l.id = d.location_id
+		and l.id in
+		<foreach collection="locationIds" item="locationId" separator="," open="(" close=")">
+			#{locationId}
+		</foreach>
 		<where>
 			<if test="nationalId!=null">
 				and d.national_id = #{nationalId}
@@ -120,10 +121,10 @@
 				and status_id = #{statusId}
 			</if>
 			<if test="startTime != null">
-				AND create_time <![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
+				AND use_time <![CDATA[ >= ]]> #{startTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="endTime != null">
-				AND create_time <![CDATA[ <= ]]> #{endTime,jdbcType=TIMESTAMP}
+				AND use_time <![CDATA[ <= ]]> #{endTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="queryKey!=null">
 				AND (d.id LIKE CONCAT('%',#{queryKey},'%') or
@@ -132,213 +133,222 @@
 			</if>
 		</where>
 	</sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from device
-    where id = #{id,jdbcType=VARCHAR}
-  </select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List"/>
+		from device
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
 
 	<select id="getDeviceInfo" parameterType="com.sicau.devicemanager.POJO.DTO.DeviceDTO" resultMap="deviceDTO">
 		<include refid="getDeviceInfo"/>
 	</select>
 
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from device
-    where id = #{id,jdbcType=VARCHAR}
-  </delete>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		DELETE FROM device
+		WHERE id = #{id,jdbcType=VARCHAR}
+	</delete>
 	<delete id="deleteByIds">
 		DELETE FROM device
-		WHERE id IN 
-	  	<foreach collection="list" item="id" separator="," open="(" close=")">
+		WHERE id IN
+		<foreach collection="list" item="id" separator="," open="(" close=")">
 			#{id}
 		</foreach>
 	</delete>
-	<insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.Device" >
-    insert into device (id, `name`,location_id, national_id,
-      serial_number, use_time, work_nature_id, 
-      custodian_id, unit_price, amount_unit_id, 
-      status_id, create_time, update_time,device_model_id,
-	  use_department_id
-      )
-    values (#{id,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR}, #{locationId,jdbcType=VARCHAR}, #{nationalId,jdbcType=VARCHAR},
-      #{serialNumber,jdbcType=VARCHAR}, #{useTime,jdbcType=TIMESTAMP}, #{workNatureId,jdbcType=VARCHAR}, 
-      #{custodianId,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, #{amountUnitId,jdbcType=VARCHAR}, 
-      #{statusId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
-		#{deviceModelId,jdbcType=INTEGER},#{useDepartmentId,jdbcType=INTEGER}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.Device" >
-    insert into device
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-		<if test="name != null" >
-			`name`,
-		</if>
-		<if test="deviceModelId != null" >
-			`device_model_id`,
-		</if>
-		<if test="useDepartmentId != null" >
-			use_department_id,
-		</if>
-      <if test="locationId != null" >
-        location_id,
-      </if>
-      <if test="nationalId != null" >
-        national_id,
-      </if>
-      <if test="serialNumber != null" >
-        serial_number,
-      </if>
-      <if test="useTime != null" >
-        use_time,
-      </if>
-      <if test="workNatureId != null" >
-        work_nature_id,
-      </if>
-      <if test="custodianId != null" >
-        custodian_id,
-      </if>
-      <if test="unitPrice != null" >
-        unit_price,
-      </if>
-      <if test="amountUnitId != null" >
-        amount_unit_id,
-      </if>
-      <if test="statusId != null" >
-        status_id,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
-      </if>
-		<if test="deviceModelId != null" >
-			#{deviceModelId,jdbcType=INTEGER},
-		</if>
-		<if test="useDepartmentId != null" >
-			#{useDepartmentId,jdbcType=INTEGER},
-		</if>
-		<if test="name != null" >
-			#{name,jdbcType=VARCHAR},
-		</if>
-      <if test="locationId != null" >
-        #{locationId,jdbcType=VARCHAR},
-      </if>
-      <if test="nationalId != null" >
-        #{nationalId,jdbcType=VARCHAR},
-      </if>
-      <if test="serialNumber != null" >
-        #{serialNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="useTime != null" >
-        #{useTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="workNatureId != null" >
-        #{workNatureId,jdbcType=VARCHAR},
-      </if>
-      <if test="custodianId != null" >
-        #{custodianId,jdbcType=VARCHAR},
-      </if>
-      <if test="unitPrice != null" >
-        #{unitPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="amountUnitId != null" >
-        #{amountUnitId,jdbcType=VARCHAR},
-      </if>
-      <if test="statusId != null" >
-        #{statusId,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sicau.devicemanager.POJO.DO.Device" >
-    update device
-    <set >
-		<if test="name != null" >
-			`name` = #{name,jdbcType=VARCHAR},
-		</if>
-		<if test="deviceModelId != null" >
+	<insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.Device">
+		INSERT INTO device (id, `name`, location_id, national_id,
+							serial_number, use_time, work_nature_id,
+							custodian_id, unit_price, amount_unit_id,
+							status_id, create_time, update_time, device_model_id,
+							use_department_id
+		)
+		VALUES (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{locationId,jdbcType=VARCHAR},
+										#{nationalId,jdbcType=VARCHAR},
+										#{serialNumber,jdbcType=VARCHAR}, #{useTime,jdbcType=TIMESTAMP},
+										#{workNatureId,jdbcType=VARCHAR},
+										#{custodianId,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL},
+										#{amountUnitId,jdbcType=VARCHAR},
+										#{statusId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+				#{updateTime,jdbcType=TIMESTAMP},
+				#{deviceModelId,jdbcType=INTEGER}, #{useDepartmentId,jdbcType=INTEGER}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.Device">
+		insert into device
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				`name`,
+			</if>
+			<if test="deviceModelId != null">
+				`device_model_id`,
+			</if>
+			<if test="useDepartmentId != null">
+				use_department_id,
+			</if>
+			<if test="locationId != null">
+				location_id,
+			</if>
+			<if test="nationalId != null">
+				national_id,
+			</if>
+			<if test="serialNumber != null">
+				serial_number,
+			</if>
+			<if test="useTime != null">
+				use_time,
+			</if>
+			<if test="workNatureId != null">
+				work_nature_id,
+			</if>
+			<if test="custodianId != null">
+				custodian_id,
+			</if>
+			<if test="unitPrice != null">
+				unit_price,
+			</if>
+			<if test="amountUnitId != null">
+				amount_unit_id,
+			</if>
+			<if test="statusId != null">
+				status_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="deviceModelId != null">
+				#{deviceModelId,jdbcType=INTEGER},
+			</if>
+			<if test="useDepartmentId != null">
+				#{useDepartmentId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="locationId != null">
+				#{locationId,jdbcType=VARCHAR},
+			</if>
+			<if test="nationalId != null">
+				#{nationalId,jdbcType=VARCHAR},
+			</if>
+			<if test="serialNumber != null">
+				#{serialNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="useTime != null">
+				#{useTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="workNatureId != null">
+				#{workNatureId,jdbcType=VARCHAR},
+			</if>
+			<if test="custodianId != null">
+				#{custodianId,jdbcType=VARCHAR},
+			</if>
+			<if test="unitPrice != null">
+				#{unitPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="amountUnitId != null">
+				#{amountUnitId,jdbcType=VARCHAR},
+			</if>
+			<if test="statusId != null">
+				#{statusId,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.sicau.devicemanager.POJO.DO.Device">
+		update device
+		<set>
+			<if test="name != null">
+				`name` = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="deviceModelId != null">
+				device_model_id = #{deviceModelId,jdbcType=VARCHAR},
+			</if>
+			<if test="useDepartmentId != null">
+				use_department_id = #{useDepartmentId,jdbcType=VARCHAR},
+			</if>
+			<if test="locationId != null">
+				location_id = #{locationId,jdbcType=VARCHAR},
+			</if>
+			<if test="nationalId != null">
+				national_id = #{nationalId,jdbcType=VARCHAR},
+			</if>
+			<if test="serialNumber != null">
+				serial_number = #{serialNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="useTime != null">
+				use_time = #{useTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="workNatureId != null">
+				work_nature_id = #{workNatureId,jdbcType=VARCHAR},
+			</if>
+			<if test="custodianId != null">
+				custodian_id = #{custodianId,jdbcType=VARCHAR},
+			</if>
+			<if test="unitPrice != null">
+				unit_price = #{unitPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="amountUnitId != null">
+				amount_unit_id = #{amountUnitId,jdbcType=VARCHAR},
+			</if>
+			<if test="statusId != null">
+				status_id = #{statusId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.sicau.devicemanager.POJO.DO.Device">
+		UPDATE device
+		SET `name`          = #{name,jdbcType=VARCHAR},
+			location_id     = #{locationId,jdbcType=VARCHAR},
 			device_model_id = #{deviceModelId,jdbcType=VARCHAR},
-		</if>
-		<if test="useDepartmentId != null" >
-			use_department_id = #{useDepartmentId,jdbcType=VARCHAR},
-		</if>
-      <if test="locationId != null" >
-        location_id = #{locationId,jdbcType=VARCHAR},
-      </if>
-      <if test="nationalId != null" >
-        national_id = #{nationalId,jdbcType=VARCHAR},
-      </if>
-      <if test="serialNumber != null" >
-        serial_number = #{serialNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="useTime != null" >
-        use_time = #{useTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="workNatureId != null" >
-        work_nature_id = #{workNatureId,jdbcType=VARCHAR},
-      </if>
-      <if test="custodianId != null" >
-        custodian_id = #{custodianId,jdbcType=VARCHAR},
-      </if>
-      <if test="unitPrice != null" >
-        unit_price = #{unitPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="amountUnitId != null" >
-        amount_unit_id = #{amountUnitId,jdbcType=VARCHAR},
-      </if>
-      <if test="statusId != null" >
-        status_id = #{statusId,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.sicau.devicemanager.POJO.DO.Device" >
-    update device
-    set `name` = #{name,jdbcType=VARCHAR},
-		location_id = #{locationId,jdbcType=VARCHAR},
-		device_model_id = #{deviceModelId,jdbcType=VARCHAR},
-		device_model_id = #{deviceModelId,jdbcType=VARCHAR},
-      national_id = #{nationalId,jdbcType=VARCHAR},
-      serial_number = #{serialNumber,jdbcType=VARCHAR},
-      use_time = #{useTime,jdbcType=TIMESTAMP},
-      work_nature_id = #{workNatureId,jdbcType=VARCHAR},
-      custodian_id = #{custodianId,jdbcType=VARCHAR},
-      unit_price = #{unitPrice,jdbcType=DECIMAL},
-      amount_unit_id = #{amountUnitId,jdbcType=VARCHAR},
-      status_id = #{statusId,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
+			device_model_id = #{deviceModelId,jdbcType=VARCHAR},
+			national_id     = #{nationalId,jdbcType=VARCHAR},
+			serial_number   = #{serialNumber,jdbcType=VARCHAR},
+			use_time        = #{useTime,jdbcType=TIMESTAMP},
+			work_nature_id  = #{workNatureId,jdbcType=VARCHAR},
+			custodian_id    = #{custodianId,jdbcType=VARCHAR},
+			unit_price      = #{unitPrice,jdbcType=DECIMAL},
+			amount_unit_id  = #{amountUnitId,jdbcType=VARCHAR},
+			status_id       = #{statusId,jdbcType=VARCHAR},
+			create_time     = #{createTime,jdbcType=TIMESTAMP},
+			update_time     = #{updateTime,jdbcType=TIMESTAMP}
+		WHERE id = #{id,jdbcType=VARCHAR}
+	</update>
 	<update id="distributeDevice">
 		UPDATE device
 		SET location_id = #{locationId},
-			use_time = #{useTime},
-			status_id = 2
+		use_time = #{useTime},
+		status_id = 2
 		where id IN
 		<foreach collection="deviceIdList" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>
+	</update>
+	<update id="discardDevice">
+		UPDATE device
+		SET status_id = 3
+		WHERE id = #{diviceId}
 	</update>
 </mapper>

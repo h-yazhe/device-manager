@@ -2,6 +2,8 @@ package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.WorkNature;
 
+import java.util.List;
+
 public interface WorkNatureMapper {
     int deleteByPrimaryKey(String id);
 
@@ -14,4 +16,6 @@ public interface WorkNatureMapper {
     int updateByPrimaryKeySelective(WorkNature record);
 
     int updateByPrimaryKey(WorkNature record);
+
+    List<WorkNature> listAll();
 }

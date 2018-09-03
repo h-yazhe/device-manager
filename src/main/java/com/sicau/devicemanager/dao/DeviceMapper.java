@@ -34,4 +34,11 @@ public interface DeviceMapper {
 	 * @return
 	 */
 	int distributeDevice(DistributeDeviceDTO distributeDeviceDTO);
+
+	/**
+	 * 报废设备
+	 * @param deviceId
+	 * @return
+	 */
+	int discardDevice(String deviceId);
 }

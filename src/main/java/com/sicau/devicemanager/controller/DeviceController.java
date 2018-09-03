@@ -79,4 +79,19 @@ public class DeviceController {
 		deviceService.distributeDevice(distributeDeviceDTO);
 		return ResultVOUtil.success();
 	}
+
+	@ApiOperation("报废设备")
+	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+	@PostMapping("/discard")
+	public ResultVO discardDevice(@RequestBody String deviceId){
+		deviceService.discardDevice(deviceId);
+		return ResultVOUtil.success();
+	}
+
+	@ApiOperation("获取搜索的选项卡第一页数据")
+	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+	@PostMapping("/search-selection")
+	public ResultVO getSearchSelections(){
+		return ResultVOUtil.success(deviceService.getSearchSelections(10));
+	}
 }

@@ -67,4 +67,6 @@ public interface LocationMapper {
 	 * @return
 	 */
 	List<Location> getDescendants(String rootId);
+
+	List<Location> listLocationAtLevelOne();
 }

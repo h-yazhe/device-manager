@@ -2,6 +2,8 @@ package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.Custodian;
 
+import java.util.List;
+
 public interface CustodianMapper {
     int deleteByPrimaryKey(String id);
 
@@ -14,4 +16,6 @@ public interface CustodianMapper {
     int updateByPrimaryKeySelective(Custodian record);
 
     int updateByPrimaryKey(Custodian record);
+
+    List<Custodian> listAll();
 }

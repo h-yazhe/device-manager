@@ -3,6 +3,7 @@ package com.sicau.devicemanager.service;
 import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
+import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
 
 import java.util.List;
 
@@ -43,4 +44,16 @@ public interface DeviceService {
 	 * @param distributeDeviceDTO
 	 */
 	void distributeDevice(DistributeDeviceDTO distributeDeviceDTO);
+
+	/**
+	 * 废弃设备
+	 * @param deviceId
+	 */
+	void discardDevice(String deviceId);
+
+	/**
+	 * 获取搜索的选项卡数据
+	 * @return
+	 */
+	DeviceSearchSelectionVO getSearchSelections(int pageSize);
 }

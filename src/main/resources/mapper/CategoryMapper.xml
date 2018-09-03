@@ -64,4 +64,8 @@
 			</foreach>
 		</if>
 	</select>
+	<select id="listCategoryAtLevelOne" resultType="com.sicau.devicemanager.POJO.DO.Category">
+		SELECT * FROM category
+		WHERE level = 1
+	</select>
 </mapper>

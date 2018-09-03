@@ -6,7 +6,9 @@ import com.sicau.devicemanager.POJO.DO.*;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
 import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.constants.DeviceStatusEnum;
 import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.*;
 import com.sicau.devicemanager.service.DeviceService;
@@ -41,15 +43,25 @@ public class DeviceServiceImpl implements DeviceService {
 	private CategoryMapper categoryMapper;
 	@Autowired
 	private DeviceStatusRecordMapper deviceStatusRecordMapper;
+	@Autowired
+	private BrandMapper brandMapper;
+	@Autowired
+	private CustodianMapper custodianMapper;
+	@Autowired
+	private DepartmentMapper departmentMapper;
+	@Autowired
+	private DeviceModelMapper deviceModelMapper;
+	@Autowired
+	private WorkNatureMapper workNatureMapper;
 
 	@Override
 	public void addDevice(DeviceDTO deviceDTO) {
 		deviceDTO.setId(KeyUtil.genUniqueKey());
-		deviceDTO.setStatusId(1);
+		deviceDTO.setStatusId(DeviceStatusEnum.IN_STORAGE.getCode());
 		deviceMapper.insertSelective(deviceDTO);
 		deviceStatusRecordMapper.insert(
 				new DeviceStatusRecord(KeyUtil.genUniqueKey(),deviceDTO.getId(),
-						-1,1,deviceDTO.getUserId())
+						DeviceStatusEnum.UNCONNECTED.getCode(),DeviceStatusEnum.IN_STORAGE.getCode(),deviceDTO.getUserId())
 		);
 		insertDeviceBrand(deviceDTO);
 		insertDeviceCategory(deviceDTO);
@@ -163,6 +175,31 @@ public class DeviceServiceImpl implements DeviceService {
 	public void distributeDevice(DistributeDeviceDTO distributeDeviceDTO) {
 		distributeDeviceDTO.setUseTime(new Date());
 		deviceMapper.distributeDevice(distributeDeviceDTO);
+	}
+
+	@Override
+	public void discardDevice(String deviceId) {
+		deviceMapper.discardDevice(deviceId);
+	}
+
+	@Override
+	public DeviceSearchSelectionVO getSearchSelections(int pageSize) {
+		DeviceSearchSelectionVO deviceSearchSelectionVO = new DeviceSearchSelectionVO();
+		PageHelper.startPage(1,pageSize);
+		deviceSearchSelectionVO.setCategoryList(categoryMapper.listCategoryAtLevelOne());
+		PageHelper.startPage(1,pageSize);
+		deviceSearchSelectionVO.setLocationList(locationMapper.listLocationAtLevelOne());
+		PageHelper.startPage(1,pageSize);
+		deviceSearchSelectionVO.setBrandList(brandMapper.listBrand());
+		PageHelper.startPage(1,pageSize);
+		deviceSearchSelectionVO.setCustodianList(custodianMapper.listAll());
+		PageHelper.startPage(1,pageSize);
+		deviceSearchSelectionVO.setDepartmentList(departmentMapper.listAll());
+		PageHelper.startPage(1,pageSize);
+		deviceSearchSelectionVO.setDeviceModelList(deviceModelMapper.listAll());
+		PageHelper.startPage(1,pageSize);
+		deviceSearchSelectionVO.setWorkNatureList(workNatureMapper.listAll());
+		return deviceSearchSelectionVO;
 	}
 
 	/**

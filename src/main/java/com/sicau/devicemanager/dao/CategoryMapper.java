@@ -62,4 +62,6 @@ public interface CategoryMapper {
 	List<Category> getDescendants(String rootId);
 
 	int deleteByIds(List<String> ids);
+
+	List<Category> listCategoryAtLevelOne();
 }

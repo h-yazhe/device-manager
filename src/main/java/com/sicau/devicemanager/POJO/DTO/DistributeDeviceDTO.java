@@ -1,6 +1,5 @@
 package com.sicau.devicemanager.POJO.DTO;
 
-import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.DistributeDeviceGroup;
 
 import javax.validation.constraints.NotNull;
