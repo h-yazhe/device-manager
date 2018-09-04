@@ -33,13 +33,13 @@ public class LocationController {
 	@Autowired
 	private LocationService locationService;
 
-	@ApiOperation("查询所有地点")
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@GetMapping("location")
-	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
-	public ResultVO listLocationTree(){
-		return ResultVOUtil.success(locationService.listLocationTree());
-	}
+//	@ApiOperation("查询所有地点")
+//	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+//	@GetMapping("location")
+//	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
+//	public ResultVO listLocationTree(){
+//		return ResultVOUtil.success(locationService.listLocationTree());
+//	}
 
 	@ApiOperation("根据父id查询所有地点")
 	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
