@@ -53,6 +53,7 @@ public interface DeviceService {
 
 	/**
 	 * 获取搜索的选项卡数据
+	 * @param pageSize 每页数量
 	 * @return
 	 */
 	DeviceSearchSelectionVO getSearchSelections(int pageSize);

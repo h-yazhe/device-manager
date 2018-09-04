@@ -126,7 +126,7 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 
 		//获取查询条件的分类id及所有子分类id
-		if (deviceDTO.getCategoryId() != null){
+		if ("".equals(deviceDTO.getCategoryId())){
 			List<Category> categoryList = categoryMapper.getDescendants(deviceDTO.getCategoryId());
 			List<String> categoryIds = new ArrayList<>();
 			categoryIds.add(deviceDTO.getCategoryId());
@@ -144,7 +144,7 @@ public class DeviceServiceImpl implements DeviceService {
 		List<Location> locationList = locationMapper.getDescendants(location.getId());
 		locationList.add(location);
 		//开始校验地点
-		if (deviceDTO.getLocationId() != null){
+		if (!"".equals(deviceDTO.getLocationId())){
 			if (!checkLocationId(deviceDTO.getLocationId(),locationList)){
 				throw new CommonException(ResultEnum.LOCATION_UNAUTHORIZED);
 			}
@@ -186,9 +186,9 @@ public class DeviceServiceImpl implements DeviceService {
 	public DeviceSearchSelectionVO getSearchSelections(int pageSize) {
 		DeviceSearchSelectionVO deviceSearchSelectionVO = new DeviceSearchSelectionVO();
 		PageHelper.startPage(1,pageSize);
-		deviceSearchSelectionVO.setCategoryList(categoryMapper.listCategoryAtLevelOne());
+		deviceSearchSelectionVO.setCategoryList(categoryMapper.getChildrenById(""));
 		PageHelper.startPage(1,pageSize);
-		deviceSearchSelectionVO.setLocationList(locationMapper.listLocationAtLevelOne());
+		deviceSearchSelectionVO.setLocationList(locationMapper.getChildrenById(""));
 		PageHelper.startPage(1,pageSize);
 		deviceSearchSelectionVO.setBrandList(brandMapper.listBrand());
 		PageHelper.startPage(1,pageSize);

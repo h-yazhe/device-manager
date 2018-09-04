@@ -1,7 +1,10 @@
 package com.sicau.devicemanager.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.DTO.LocationDTO;
+import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.POJO.VO.LocationVO;
 import com.sicau.devicemanager.dao.LocationMapper;
 import com.sicau.devicemanager.service.LocationService;
 import com.sicau.devicemanager.util.KeyUtil;
@@ -31,7 +34,7 @@ public class LocationServiceImpl implements LocationService {
 		for (Location location :
 				locationList) {
 			//查找根节点
-			if (location.getParentId() == null){
+			if ("".equals(location.getParentId())){
 				rootCount++;
 				//初始化根节点
 				location.setLevel(1);
@@ -98,6 +101,13 @@ public class LocationServiceImpl implements LocationService {
 			}
 		}
 		return locationDTOList;
+	}
+
+	@Override
+	public List<Location> listLocationByPId(LocationVO locationVO) {
+		QueryPage queryPage = locationVO.getQueryPage();
+		PageHelper.startPage(queryPage.getPageNum(),queryPage.getPageSize(),"name");
+		return locationMapper.getChildrenById(locationVO.getParentId());
 	}
 
 	/**

@@ -2,9 +2,13 @@ package com.sicau.devicemanager.POJO.DO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.InsertTree;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.ListTreeByPId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 地点
@@ -22,12 +26,14 @@ public class Location {
 	 * 父级地点id
 	 */
 	@ApiModelProperty("父级地点id")
+	@NotNull(message = "父级地点id不能为空",groups = {InsertTree.class, ListTreeByPId.class})
 	private String parentId;
 
 	/**
 	 * 地名
 	 */
 	@ApiModelProperty("地名")
+	@NotNull(message = "地名不能为空",groups = {InsertTree.class})
 	private String name;
 
 	/**

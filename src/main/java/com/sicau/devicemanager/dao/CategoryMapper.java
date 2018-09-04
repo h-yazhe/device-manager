@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.Category;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -62,6 +63,4 @@ public interface CategoryMapper {
 	List<Category> getDescendants(String rootId);
 
 	int deleteByIds(List<String> ids);
-
-	List<Category> listCategoryAtLevelOne();
 }

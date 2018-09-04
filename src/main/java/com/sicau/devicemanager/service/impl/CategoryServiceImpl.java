@@ -1,7 +1,10 @@
 package com.sicau.devicemanager.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.sicau.devicemanager.POJO.DO.Category;
 import com.sicau.devicemanager.POJO.DTO.CategoryDTO;
+import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.POJO.VO.CategoryVO;
 import com.sicau.devicemanager.dao.CategoryMapper;
 import com.sicau.devicemanager.dao.DeviceCategoryMapper;
 import com.sicau.devicemanager.service.CategoryService;
@@ -35,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService{
 		for (Category category :
 				categoryList) {
 			//查找根节点
-			if (category.getParentId() == null){
+			if ("".equals(category.getParentId())){
 				rootCount++;
 				//初始化根节点
 				category.setLevel(1);
@@ -105,6 +108,13 @@ public class CategoryServiceImpl implements CategoryService{
 			}
 		}
 		return categoryDTOList;
+	}
+
+	@Override
+	public List<Category> listCategoryByPId(CategoryVO categoryVO) {
+		QueryPage queryPage = categoryVO.getQueryPage();
+		PageHelper.startPage(queryPage.getPageNum(),queryPage.getPageSize(),"name");
+		return categoryMapper.getChildrenById(categoryVO.getParentId());
 	}
 
 	/**

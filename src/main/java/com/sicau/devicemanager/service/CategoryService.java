@@ -2,6 +2,8 @@ package com.sicau.devicemanager.service;
 
 import com.sicau.devicemanager.POJO.DO.Category;
 import com.sicau.devicemanager.POJO.DTO.CategoryDTO;
+import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.POJO.VO.CategoryVO;
 
 import java.util.List;
 
@@ -35,4 +37,11 @@ public interface CategoryService {
 	 * @return
 	 */
 	List<CategoryDTO> listCategoryTree();
+
+	/**
+	 * 查找pId的子节点
+	 * @param categoryVO
+	 * @return
+	 */
+	List<Category> listCategoryByPId(CategoryVO categoryVO);
 }

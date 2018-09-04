@@ -1,7 +1,9 @@
 package com.sicau.devicemanager.controller;
 
 import com.sicau.devicemanager.POJO.DO.Location;
+import com.sicau.devicemanager.POJO.VO.LocationVO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.ListTreeByPId;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.constants.PermissionActionConstant;
@@ -13,6 +15,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +39,14 @@ public class LocationController {
 	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
 	public ResultVO listLocationTree(){
 		return ResultVOUtil.success(locationService.listLocationTree());
+	}
+
+	@ApiOperation("根据父id查询所有地点")
+	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+	@PostMapping("list-location-by-pid")
+	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
+	public ResultVO listLocationByPId(@Validated({ListTreeByPId.class}) @RequestBody LocationVO locationVO){
+		return ResultVOUtil.success(locationService.listLocationByPId(locationVO));
 	}
 
 	@ApiOperation("删除该节点为根的树")

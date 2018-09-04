@@ -70,8 +70,4 @@
 										 )
 									 ) AND path LIKE concat("%",#{rootId},"%")
 	</select>
-	<select id="listLocationAtLevelOne" resultType="com.sicau.devicemanager.POJO.DO.Location">
-		SELECT id,name FROM location
-		WHERE level = 1
-	</select>
 </mapper>

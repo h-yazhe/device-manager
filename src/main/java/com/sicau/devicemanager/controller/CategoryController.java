@@ -1,7 +1,9 @@
 package com.sicau.devicemanager.controller;
 
 import com.sicau.devicemanager.POJO.DO.Category;
+import com.sicau.devicemanager.POJO.VO.CategoryVO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.ListTreeByPId;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.constants.PermissionActionConstant;
@@ -13,6 +15,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,13 +32,21 @@ public class CategoryController {
 
 	@Autowired
 	private CategoryService categoryService;
+//
+//	@ApiOperation("查询所有分类")
+//	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+//	@GetMapping("category")
+//	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
+//	public ResultVO listCategoryTree(){
+//		return ResultVOUtil.success(categoryService.listCategoryTree());
+//	}
 
-	@ApiOperation("查询所有分类")
+	@ApiOperation("根据父id查询分类")
 	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@GetMapping("category")
+	@PostMapping("list-category-by-pId")
 	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
-	public ResultVO listCategoryTree(){
-		return ResultVOUtil.success(categoryService.listCategoryTree());
+	public ResultVO listCategoryByPId(@Validated({ListTreeByPId.class}) @RequestBody CategoryVO categoryVO){
+		return ResultVOUtil.success(categoryService.listCategoryByPId(categoryVO));
 	}
 
 	@ApiOperation("删除该节点为根的树")

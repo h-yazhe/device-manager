@@ -1,6 +1,6 @@
 package com.sicau.devicemanager.POJO.DO;
 
-import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.InsertDeviceCategoryGroup;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.InsertTree;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,6 +22,7 @@ public class Category {
 	 * 父级地点id
 	 */
 	@ApiModelProperty("父级分类id")
+	@NotNull(message = "父级分类id不能为空",groups = {InsertTree.class})
 	private String parentId;
 
 	/**
