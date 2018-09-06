@@ -40,7 +40,7 @@
 	<insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.DeviceCategory" >
     insert into device_category (id, device_id, category_id
       )
-    values (#{id,jdbcType=VARCHAR}, #{deviceId,jdbcType=VARCHAR}, #{categoryIds,jdbcType=VARCHAR}
+    values (#{id,jdbcType=VARCHAR}, #{deviceId,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.DeviceCategory" >

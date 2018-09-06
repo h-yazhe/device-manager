@@ -27,7 +27,5 @@ public class Brand {
      * 品牌名
      */
     @ApiModelProperty("品牌名")
-	@NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class},message = "品牌名不能为空")
-	@NotEmpty(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class},message = "品牌名不能为空")
     private String name;
 }

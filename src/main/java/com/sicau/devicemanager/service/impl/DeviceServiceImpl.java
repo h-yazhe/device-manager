@@ -14,9 +14,11 @@ import com.sicau.devicemanager.dao.*;
 import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.util.DateUtil;
 import com.sicau.devicemanager.util.KeyUtil;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,7 +63,8 @@ public class DeviceServiceImpl implements DeviceService {
 		deviceMapper.insertSelective(deviceDTO);
 		deviceStatusRecordMapper.insert(
 				new DeviceStatusRecord(KeyUtil.genUniqueKey(),deviceDTO.getId(),
-						DeviceStatusEnum.UNCONNECTED.getCode(),DeviceStatusEnum.IN_STORAGE.getCode(),deviceDTO.getUserId())
+						DeviceStatusEnum.UNCONNECTED.getCode(),DeviceStatusEnum.IN_STORAGE.getCode(),
+						(String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal())
 		);
 		insertDeviceBrand(deviceDTO);
 		insertDeviceCategory(deviceDTO);
@@ -70,7 +73,7 @@ public class DeviceServiceImpl implements DeviceService {
 	private void insertDeviceBrand(DeviceDTO deviceDTO){
 		DeviceBrand deviceBrand = new DeviceBrand();
 		deviceBrand.setId(KeyUtil.genUniqueKey());
-		deviceBrand.setBrandId(deviceDTO.getBrand().getId());
+		deviceBrand.setBrandId(deviceDTO.getBrandId());
 		deviceBrand.setDeviceId(deviceDTO.getId());
 		deviceBrandMapper.insert(deviceBrand);
 	}
@@ -144,7 +147,7 @@ public class DeviceServiceImpl implements DeviceService {
 		List<Location> locationList = locationMapper.getDescendants(location.getId());
 		locationList.add(location);
 		//开始校验地点
-		if (!"".equals(deviceDTO.getLocationId())){
+		if (!StringUtils.isEmpty(deviceDTO.getLocationId())){
 			if (!checkLocationId(deviceDTO.getLocationId(),locationList)){
 				throw new CommonException(ResultEnum.LOCATION_UNAUTHORIZED);
 			}

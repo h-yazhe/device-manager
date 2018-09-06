@@ -226,14 +226,14 @@
 			<if test="id != null">
 				#{id,jdbcType=VARCHAR},
 			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
 			<if test="deviceModelId != null">
 				#{deviceModelId,jdbcType=INTEGER},
 			</if>
 			<if test="useDepartmentId != null">
 				#{useDepartmentId,jdbcType=INTEGER},
-			</if>
-			<if test="name != null">
-				#{name,jdbcType=VARCHAR},
 			</if>
 			<if test="locationId != null">
 				#{locationId,jdbcType=VARCHAR},

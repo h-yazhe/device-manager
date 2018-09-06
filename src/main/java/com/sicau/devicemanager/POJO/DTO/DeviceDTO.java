@@ -28,10 +28,11 @@ public class DeviceDTO extends Device {
 	/**
 	 * 品牌
 	 */
-	@NotNull(message = "品牌不能为空",groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
-	@ApiModelProperty("设备品牌")
-	@Valid
 	private Brand brand;
+
+	@NotNull(message = "品牌id不能为空",groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
+	@ApiModelProperty("设备品牌id")
+	private String brandId;
 
 	/**
 	 * 分类id
@@ -97,6 +98,14 @@ public class DeviceDTO extends Device {
 	 * 设备型号
 	 */
 	private String deviceModel;
+
+	public String getBrandId() {
+		return brandId;
+	}
+
+	public void setBrandId(String brandId) {
+		this.brandId = brandId;
+	}
 
 	public String getUseDepartment() {
 		return useDepartment;
