@@ -1,14 +1,14 @@
 package com.sicau.devicemanager.controller;
 
+import com.sicau.devicemanager.POJO.DO.UserAuth;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.Login;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.service.LoginService;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author BeFondOfTaro
@@ -22,9 +22,7 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping("login")
-    public ResultVO login(@RequestParam String identifier,
-                          @RequestParam String credential,
-                          @RequestParam(defaultValue = "0") Integer identifyType){
-        return ResultVOUtil.success(loginService.login(identifier, credential, identifyType));
+    public ResultVO login(@Validated({Login.class}) @RequestBody UserAuth userAuth){
+        return ResultVOUtil.success(loginService.login(userAuth.getIdentifier(), userAuth.getCredential(), userAuth.getIdentifyType()));
     }
 }

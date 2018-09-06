@@ -1,7 +1,10 @@
 package com.sicau.devicemanager.POJO.DO;
 
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.Login;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -22,16 +25,19 @@ public class UserAuth {
     /**
      * 登录认证类型,0：用户名密码登录，1：微信登录
      */
+    @NotNull(groups = {Login.class})
     private Integer identifyType;
 
     /**
      * 标识（手机号 邮箱 用户名或第三方应用的唯一标识）
      */
+	@NotNull(groups = {Login.class})
     private String identifier;
 
     /**
      * 登录凭证
      */
+	@NotNull(groups = {Login.class})
     private String credential;
 
     /**

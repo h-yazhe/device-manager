@@ -34,19 +34,19 @@
 	  <div id="login-page">
 	  	<div class="container">
 	  	
-		      <form class="form-login" action="index.html">
+		      <form id="login-form" class="form-login">
 		        <h2 class="form-login-heading">设备管理系统</h2>
 		        <div class="login-wrap">
-		            <input type="text" class="form-control" placeholder="用户名" autofocus>
+		            <input v-model="identifier" type="text" class="form-control" placeholder="用户名" autofocus>
 		            <br>
-		            <input type="password" class="form-control" placeholder="密码">
+		            <input v-model="credential" type="password" class="form-control" placeholder="密码">
 		            <label class="checkbox">
 		                <span class="pull-right">
 		                    <a data-toggle="modal" href="login.html#myModal"> 忘记密码?</a>
 		
 		                </span>
 		            </label>
-		            <button class="btn btn-theme btn-block" href="index.html" type="submit"> 登录</button>
+		            <button v-on:click="login" class="btn btn-theme btn-block" type="button"> 登录</button>
 
 		            
 		            <!--<div class="login-social-link centered">-->
@@ -93,14 +93,50 @@
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="assets/js/jquery.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
-
     <!--BACKSTRETCH-->
     <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
     <script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
+      <script src="assets/js/jquery.cookie.js"></script>
+      <script src="assets/js/vue.js"></script>
+      <script src="assets/js/module/common.js"></script>
     <script>
         $.backstretch("assets/img/login.jpg", {speed: 500});
-    </script>
 
+        var loginVm = new Vue({
+            el: "#login-form",
+            data: {
+                identifier: "",
+                credential: "",
+                identifyType: 0
+            },
+            methods: {
+                login: function () {
+                    $.ajax({
+                        url: commonVm.getApi(commonVm.api.login),
+                        method: "post",
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            identifier: loginVm.identifier,
+                            credential: loginVm.credential,
+                            identifyType: loginVm.identifyType
+                        }),
+                        success: function (res) {
+                            if (res.code == 0){
+                                setLocalStorage(commonVm.storageKey.token, res.data.token);
+                                setLocalStorage(commonVm.storageKey.userInfo, JSON.stringify(res.data.userInfo));
+                                window.location.href = "index.html";
+                            }else {
+                                alert(res.msg);
+                            }
+                        },
+                        error: function (res) {
+                            alert("网络连接异常！");
+                        }
+                    })
+                }
+            }
+        })
+    </script>
 
   </body>
 </html>

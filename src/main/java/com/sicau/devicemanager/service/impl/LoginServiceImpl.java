@@ -7,6 +7,7 @@ import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.UserAuthMapper;
+import com.sicau.devicemanager.dao.UserMapper;
 import com.sicau.devicemanager.service.LoginService;
 import com.sicau.devicemanager.util.DateUtil;
 import com.sicau.devicemanager.util.JWTUtil;
@@ -36,6 +37,8 @@ public class LoginServiceImpl implements LoginService {
     private UserAuthMapper userAuthMapper;
     @Autowired
 	private RedisTemplate<String,String> redisTemplate;
+    @Autowired
+	private UserMapper userMapper;
 
     @Override
     public Map<String, Object> login(String identifier, String credential, Integer identifyType) {
@@ -45,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
         }
         //根据userId，密码，token过期时间生成token
 		String token = JWTUtil.sign(userAuth.getUserId(),
-				userAuthMapper.getPasswordByUserId(userAuth.getUserId()),
+				credential,
 				DateUtil.convertDay2Millisecond(tokenExpireTime));
         //存入redis
         redisTemplate.boundValueOps(CommonConstants.RedisKey.AUTH_TOKEN_PRIFIX + userAuth.getUserId()).
@@ -53,6 +56,7 @@ public class LoginServiceImpl implements LoginService {
         //返回给客户端
         Map<String,Object> res = new HashMap<>();
         res.put(HttpParamKey.TOKEN,token);
+        res.put("userInfo",userMapper.getUserById(userAuth.getUserId()));
         return res;
     }
 

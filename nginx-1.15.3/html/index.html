@@ -58,7 +58,7 @@
             </div>
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="login.html">Logout</a></li>
+                    <li id="logout"><a v-on:click="logout" class="logout" href="#">Logout</a></li>
             	</ul>
             </div>
         </header>
@@ -73,8 +73,8 @@
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
 
-                  <p class="centered"><a href="用户中心链接"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
-                  <h5 class="centered">name</h5>
+                  <p class="centered"><a href="#"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+                  <h5 class="centered">{{username}}</h5>
 
                   <li class="mt">
                       <a class="active" href="index.html">
@@ -210,12 +210,12 @@
 
               <div class="row">
                   <div class=".col-md-12 main-chart">
-                      <div class="content-panel table-responsive">
+                      <div id="device-list" class="content-panel table-responsive">
                           <h4><i class="fa fa-angle-right"></i>
                               设备详情
                           </h4>
                           <hr>
-                          <table id="device-list" class="table table-striped table-advance table-hover table-condensed cf">
+                          <table class="table table-striped table-advance table-hover table-condensed cf">
                               <thead>
                               <tr>
                                   <th>使用地点</th>
@@ -258,6 +258,9 @@
 
                               </tbody>
                           </table>
+                          <div>
+                              当前页码：{{pageNum}}，共{{pages}}页，总计{{total}}条
+                          </div>
                       </div>
 					
                   </div><!-- /col-lg-9 END SECTION MIDDLE -->
@@ -284,33 +287,15 @@
     <!--script for this page-->
     <script src="assets/js/sparkline-chart.js"></script>    
 	<script src="assets/js/zabuto_calendar.js"></script>
+    <script src="assets/js/jquery.cookie.js"></script>
     <script src="assets/js/vue.js"></script>
+  <script src="assets/js/module/common.js"></script>
 
   <!--数据渲染代码-->
   <script>
       $("#form-group select").change(function () {
          alert($("#"+$(this).attr("id")+" option:selected").text());
       });
-//      渲染表格
-      function initPage() {
-          $.ajax({
-              type:"",
-              url:"",
-              data:"",
-              success:function (data) {
-                  //渲染表格数据
-              }
-          })
-      }
-
-      //api统一定义
-      var api = {
-          apiPrefix: "/dev-manager/api_v1/",
-          listDevice: "device/list"
-      };
-      function getApi(name) {
-          return api.apiPrefix + name;
-      }
 
       var vueDeviceList = new Vue({
           el: "#device-list",
@@ -338,29 +323,48 @@
                       "useDepartment": "",
                       "deviceModel": ""
                   }
-              ]
+              ],
+              pageNum: 1,
+              pageSize: 10,
+              pages: 1,//总页数
+              total: 0//总条数
           },
           methods: {
               /**
                * 渲染表格
                */
-            listDevice: function () {
+            listDevice: function (vue) {
                 $.ajax({
-                    url: getApi(api.listDevice),
+                    url: commonVm.getApi(commonVm.api.listDevice),
                     method: "post",
                     data: JSON.stringify({
                         "queryPage": {
-                            "pageNum": 1,
-                            "pageSize": 10
+                            "pageNum": vue.pageNum,
+                            "pageSize": vue.pageSize
                         }
                     }),
                     contentType: "application/json",
                     headers: {
-                        //TODO 测试使用，应当从cookie获取
-                        token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE1MzU4Njk4MTgsImV4cCI6MTUzODQ2MTgxOCwiaWF0IjoxNTM1ODY5ODE4LCJ1c2VySWQiOiIxNTI2NDY3MzYzMzYyMTcxODQ0In0.KGIie9PeJ4Io5pzh8PiLC6_oYednVgk9UgyoWkseokQ'
+                        token: localStorage.getItem(commonVm.storageKey.token)
                     },
-                    success: function (data) {
-                        vueDeviceList.deviceList = data.data.list;
+                    success: function (res) {
+                        var data = res.data;
+                        if (res.code == 0) {
+                            vueDeviceList.deviceList = data.list;
+                            vueDeviceList.total = data.total;
+                            vueDeviceList.pages = data.pages;
+                        }else {
+                            alert(res.msg);
+                        }
+                    },
+                    error: function (res) {
+                        var json = res.responseJSON;
+                        if (json != null && json.code ==3){
+                            alert("登录异常！");
+                            window.location.href = "login.html";
+                        }else {
+                            alert("网络连接异常！");
+                        }
                     }
                 })
             },
@@ -380,7 +384,25 @@
               }
           },
           created: function () {
-              this.listDevice();
+              this.listDevice(this);
+          }
+      });
+
+      //侧边栏，注销
+      var sideBarVm = new Vue({
+          el: "#sidebar",
+          data: {
+              username: getLocalStorage(commonVm.storageKey.userInfo).username
+          }
+      });
+
+      var logoutVm = new Vue({
+          el: "#logout",
+          methods: {
+              logout: function () {
+                  localStorage.clear();
+                  window.location.href = "login.html";
+              }
           }
       })
   </script>

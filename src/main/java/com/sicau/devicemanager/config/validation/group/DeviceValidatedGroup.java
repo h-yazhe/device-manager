@@ -22,4 +22,6 @@ public class DeviceValidatedGroup {
 	 public interface InsertTree{}
 
 	 public interface ListTreeByPId{}
+
+	 public interface Login{}
 }

@@ -55,6 +55,7 @@ public class AuthFilter extends AccessControlFilter {
             // 如果没有抛出异常则代表登入成功，返回true
             return true;
         } catch (Exception e) {
+        	e.printStackTrace();
             log.error(e.getMessage());
             onLoginFail(response);
             return false;
