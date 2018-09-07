@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -12,400 +12,363 @@
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <!--external css-->
-    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="assets/css/zabuto_calendar.css">
-    <link rel="stylesheet" type="text/css" href="assets/js/gritter/css/jquery.gritter.css" />
+    <link rel="stylesheet" type="text/css" href="assets/js/gritter/css/jquery.gritter.css"/>
     <link rel="stylesheet" type="text/css" href="assets/lineicons/style.css">
-      <link rel="stylesheet" type="text/css" href="assets/css/zui.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/zui.css">
     <!-- Custom styles for this template -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
-    <script src="assets/js/jquery-1.8.3.min.js"></script>
+    <link href="assets/css/index.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="assets/js/jquery.SuperSlide.2.1.1.js"></script>
-      <script src="assets/js/html5shiv.js"></script>
-      <script src="assets/js/respond.min.js"></script>
+    <script src="assets/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="assets/js/html5shiv.js"></script>
+    <script src="assets/js/respond.min.js"></script>
     <![endif]-->
-      <style>
-          #device_number li{
-              list-style:none;
-              float: left;
-              margin-left: 20px;
-              padding:10px 10px;
-          }
-          .device_category button{
-              padding: 2px 6px;
-          }
-      </style>
-  </head>
+    <style>
+        #device_number li {
+            list-style: none;
+            float: left;
+            margin-left: 20px;
+            padding: 10px 10px;
+        }
 
-  <body>
+        .device_category button {
+            padding: 2px 6px;
+        }
+    </style>
+</head>
 
-  <section id="container" >
-      <!-- **********************************************************************************************************************************************************
-      TOP BAR CONTENT & NOTIFICATIONS
-      *********************************************************************************************************************************************************** -->
-      <!--header start-->
-      <header class="header black-bg">
-              <div class="sidebar-toggle-box">
-                  <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
-              </div>
-            <!--logo start-->
-            <a href="index.html" class="logo" style="color: black"><b>设备管理系统</b></a>
-            <!--logo end-->
-            <div class="nav notify-row" id="top_menu">
+<body>
+
+<section id="container">
+    <!-- **********************************************************************************************************************************************************
+    TOP BAR CONTENT & NOTIFICATIONS
+    *********************************************************************************************************************************************************** -->
+    <!--header start-->
+    <header class="header black-bg">
+        <div class="sidebar-toggle-box">
+            <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+        </div>
+        <!--logo start-->
+        <a href="index.html" class="logo" style="color: black"><b>设备管理系统</b></a>
+        <!--logo end-->
+        <div class="nav notify-row" id="top_menu">
+        </div>
+        <div class="top-menu">
+            <ul class="nav pull-right top-menu">
+                <li id="logout"><a v-on:click="logout" class="logout" href="#">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+    <!--header end-->
+
+    <!-- **********************************************************************************************************************************************************
+    MAIN SIDEBAR MENU
+    *********************************************************************************************************************************************************** -->
+    <!--sidebar start-->
+    <aside>
+        <div id="sidebar" class="nav-collapse ">
+            <!-- sidebar menu start-->
+            <ul class="sidebar-menu" id="nav-accordion">
+
+                <p class="centered"><a href="#"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+                <h5 class="centered">{{username}}</h5>
+
+                <li class="mt">
+                    <a class="active" href="index.html">
+                        <i class="fa fa-desktop"></i>
+                        <span>所有设备</span>
+                    </a>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="glyphicon glyphicon-home"></i>
+                        <span>库存设备</span>
+                    </a>
+                    <!--<ul class="sub">-->
+                    <!--<li><a  href="general.html">General</a></li>-->
+                    <!--<li><a  href="buttons.html">Buttons</a></li>-->
+                    <!--<li><a  href="panels.html">Panels</a></li>-->
+                    <!--</ul>-->
+                </li>
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="glyphicon glyphicon-play"></i>
+                        <span>使用中设备</span>
+                    </a>
+                    <!--<ul class="sub">-->
+                    <!--<li><a  href="calendar.html">Calendar</a></li>-->
+                    <!--<li><a  href="gallery.html">Gallery</a></li>-->
+                    <!--<li><a  href="todo_list.html">Todo List</a></li>-->
+                    <!--</ul>-->
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        <span>废弃设备</span>
+                    </a>
+                    <!--<ul class="sub">-->
+                    <!--<li><a  href="blank.html">Blank Page</a></li>-->
+                    <!--<li><a  href="login.html">Login</a></li>-->
+                    <!--<li><a  href="lock_screen.html">Lock Screen</a></li>-->
+                    <!--</ul>-->
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-cogs"></i>
+                        <span>系统设备</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="">用户管理</a></li>
+                        <li><a href="">菜单管理</a>
+                            <ul class="sub">
+                                <li><a href="">分类</a></li>
+                                <li><a href="">地点</a></li>
+                                <li><a href="">设备品牌</a></li>
+                                <li><a href="">设备型号</a></li>
+                                <li><a href="">工作性质</a></li>
+                                <li><a href="">计量单位</a></li>
+                            </ul>
+                    </ul>
+                </li>
+
+            </ul>
+
+            <!-- sidebar menu end-->
+        </div>
+
+    </aside>
+    <!--sidebar end-->
+    <!-- **********************************************************************************************************************************************************
+    MAIN CONTENT
+    *********************************************************************************************************************************************************** -->
+    <!--main content start-->
+    <section id="main-content">
+        <section class="wrapper">
+            <div class="row form-group" style="margin-bottom: 0" id="form-group">
+                <div class="col-md-1">
+                    <select class="form-control" id="device_class">
+                        <option>分类</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <select class="form-control" id="device_name">
+                        <option>设备名称</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <select class="form-control" id="device_brand">
+                        <option>全部品牌</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <select class="form-control" id="device_type">
+                        <option>全部型号</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <select class="form-control" id="device_number">
+                        <option>国资编号</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    检索关键词：<input type="text" style="width: 60%"/>
+                    <button type="button" class="btn btn-success">
+                        查询
+                    </button>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-warning">
+                        清除查询条件
+                    </button>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-info">
+                        导出为Excel
+                    </button>
+                </div>
             </div>
-            <div class="top-menu">
-            	<ul class="nav pull-right top-menu">
-                    <li id="logout"><a v-on:click="logout" class="logout" href="#">Logout</a></li>
-            	</ul>
+
+            <div class="row">
+                <div class=".col-md-12 main-chart">
+                    <div id="device-list" class="content-panel table-responsive">
+                        <h4 style="float: left"><i class="fa fa-angle-right"></i>
+                            设备详情
+                        </h4>
+                        <button type="button" class="btn btn-success turn-page-right" data-toggle="modal" data-target="#add-device">添加设备</button>
+                        <div class="clear"></div>
+                        <hr>
+                        <table class="table table-striped table-advance table-hover table-condensed cf">
+                            <thead>
+                            <tr>
+                                <th class="hidden-phone">设备名称</th>
+                                <th class="hidden-phone">使用地点</th>
+                                <th class="hidden-phone">主要设备品牌</th>
+                                <th class="hidden-phone">主要设备型号</th>
+                                <th class="hidden-phone">国资编号</th>
+                                <th class="hidden-phone">序列号</th>
+                                <th class="hidden-phone">所在校区</th>
+                                <th class="hidden-phone">使用部门</th>
+                                <th class="hidden-phone">领用时间</th>
+                                <th class="hidden-phone">工作性质</th>
+                                <th class="hidden-phone">保管人</th>
+                                <th class="hidden-phone">单价（元）</th>
+                                <th class="hidden-phone">状态</th>
+                                <th class="hidden-phone">Excel</th>
+                                <th class="hidden-phone">World</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="device in deviceList">
+                                <td>{{device.name}}</td>
+                                <td>{{device.locationStr}}</td>
+                                <td class="hidden-phone">{{device.brand!=undefined?device.brand.name:'未填写'}}</td>
+                                <td>{{device.deviceModel}}</td>
+                                <td>{{device.nationalId}}</td>
+                                <td>{{device.serialNumber}}</td>
+                                <td class="hidden-phone">{{device.locationStr.split('/')[0]}}</td>
+                                <td>{{device.useDepartment}}</td>
+                                <td>{{formatTime(device.useTime)}}</td>
+                                <td>{{device.workNature}}</td>
+                                <td class="hidden-phone">{{device.custodian}}</td>
+                                <td>{{device.unitPrice}}</td>
+                                <td>{{parseStatus(device.statusId)}}</td>
+                                <td>
+                                    <button class="btn btn-success btn-xs"><i class="fa fa-check"></i>Excel</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i>World</button>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                        <div class="page-info-left">
+                            当前页码：{{pageNum}}，共{{pages}}页，总计{{total}}条
+                        </div>
+                        <div class="turn-page-right">
+                            <button @click="lastPage" v-bind:disabled="disableLastPage" type="button"
+                                    class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span>
+                            </button>
+                            <button @click="nextPage" v-bind:disabled="disableNextPage" type="button"
+                                    class="btn btn-default"><span class="glyphicon glyphicon-arrow-right"></span>
+                            </button>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                </div><!-- /col-lg-9 END SECTION MIDDLE -->
+
             </div>
-        </header>
-      <!--header end-->
+            <! --/row -->
+        </section>
+    </section>
 
-      <!-- **********************************************************************************************************************************************************
-      MAIN SIDEBAR MENU
-      *********************************************************************************************************************************************************** -->
-      <!--sidebar start-->
-      <aside>
-          <div id="sidebar"  class="nav-collapse ">
-              <!-- sidebar menu start-->
-              <ul class="sidebar-menu" id="nav-accordion">
+    <!--main content end-->
 
-                  <p class="centered"><a href="#"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
-                  <h5 class="centered">{{username}}</h5>
+</section>
 
-                  <li class="mt">
-                      <a class="active" href="index.html">
-                          <i class="fa fa-desktop"></i>
-                          <span>所有设备</span>
-                      </a>
-                  </li>
+<!--添加设备模态框-->
+<div id="add-device" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="add-device">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">添加设备</h4>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label for="input-device-name">名称</label>
+                    <input v-model="device.name" type="text" class="form-control" id="input-device-name" placeholder="名称">
+                </div>
+                <div class="form-group">
+                    <label for="input-nationalId">国资编号</label>
+                    <input v-model="device.nationalId" type="text" class="form-control" id="input-nationalId" placeholder="国资编号">
+                </div>
+                <div class="form-group">
+                    <label for="input-serialNumber">序列号</label>
+                    <input v-model="device.serialNumber" type="text" class="form-control" id="input-serialNumber" placeholder="序列号">
+                </div>
+                <div class="form-group">
+                    <label for="input-brand">品牌</label>
+                    <select v-model="device.brandId" id="input-brand" class="form-control">
+                        <option v-for="brand in brandList" v-bind:value="brand.id">{{brand.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="input-deviceModel">型号</label>
+                    <select v-model="device.deviceModelId" id="input-deviceModel" class="form-control">
+                        <option v-for="deviceModel in deviceModelList" v-bind:value="deviceModel.id">{{deviceModel.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="input-partition">校区</label>
+                    <select v-model="device.locationId" id="input-partition" class="form-control">
+                        <option v-for="location in locationList" v-bind:value="location.id">{{location.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="input-workNature">工作性质</label>
+                    <select v-model="device.workNatureId" id="input-workNature" class="form-control">
+                        <option v-for="workNature in workNatureList" v-bind:value="workNature.id">{{workNature.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="input-custodian">保管人</label>
+                    <select v-model="device.custodianId" id="input-custodian" class="form-control">
+                        <option v-for="custodian in custodianList" v-bind:value="custodian.id">{{custodian.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="input-unitPrice">单价</label>
+                    <input v-model="device.unitPrice" type="number" class="form-control" id="input-unitPrice" placeholder="单价">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button @click="addDevice" type="button" class="btn btn-success">添加</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+    </div>
+</div>
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script class="include" type="text/javascript" src="assets/js/jquery.dcjqaccordion.2.7.js"></script>
+<script src="assets/js/jquery.scrollTo.min.js"></script>
+<script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
+<script src="assets/js/jquery.sparkline.js"></script>
+<!--common script for all pages-->
+<script src="assets/js/common-scripts.js"></script>
+<script type="text/javascript" src="assets/js/gritter/js/jquery.gritter.js"></script>
+<script type="text/javascript" src="assets/js/gritter-conf.js"></script>
+<!--script for this page-->
+<script src="assets/js/sparkline-chart.js"></script>
+<script src="assets/js/zabuto_calendar.js"></script>
+<script src="assets/js/jquery.cookie.js"></script>
+<script src="assets/js/vue.js"></script>
+<script src="assets/js/module/common.js"></script>
+<script src="assets/js/module/index.js"></script>
 
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="glyphicon glyphicon-home"></i>
-                          <span>库存设备</span>
-                      </a>
-                      <!--<ul class="sub">-->
-                      <!--<li><a  href="general.html">General</a></li>-->
-                      <!--<li><a  href="buttons.html">Buttons</a></li>-->
-                      <!--<li><a  href="panels.html">Panels</a></li>-->
-                      <!--</ul>-->
-                  </li>
-
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="glyphicon glyphicon-play"></i>
-                          <span>使用中设备</span>
-                      </a>
-                      <!--<ul class="sub">-->
-                      <!--<li><a  href="calendar.html">Calendar</a></li>-->
-                      <!--<li><a  href="gallery.html">Gallery</a></li>-->
-                      <!--<li><a  href="todo_list.html">Todo List</a></li>-->
-                      <!--</ul>-->
-                  </li>
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="glyphicon glyphicon-trash"></i>
-                          <span>废弃设备</span>
-                      </a>
-                      <!--<ul class="sub">-->
-                      <!--<li><a  href="blank.html">Blank Page</a></li>-->
-                      <!--<li><a  href="login.html">Login</a></li>-->
-                      <!--<li><a  href="lock_screen.html">Lock Screen</a></li>-->
-                      <!--</ul>-->
-                  </li>
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="fa fa-cogs"></i>
-                          <span>系统设备</span>
-                      </a>
-                      <ul class="sub">
-                          <li><a  href="">用户管理</a></li>
-                          <li><a  href="">菜单管理</a>
-                              <ul class="sub">
-                                  <li><a  href="">分类</a></li>
-                                  <li><a  href="">地点</a></li>
-                                  <li><a  href="">设备品牌</a></li>
-                                  <li><a  href="">设备型号</a></li>
-                                  <li><a  href="">工作性质</a></li>
-                                  <li><a  href="">计量单位</a></li>
-                              </ul>
-                      </ul>
-                  </li>
-
-              </ul>
-
-              <!-- sidebar menu end-->
-          </div>
-
-      </aside>
-      <!--sidebar end-->
-      <!-- **********************************************************************************************************************************************************
-      MAIN CONTENT
-      *********************************************************************************************************************************************************** -->
-      <!--main content start-->
-      <section id="main-content">
-          <section class="wrapper">
-                  <div class="row form-group" style="margin-bottom: 0" id="form-group">
-                      <div class="col-md-1">
-                          <select class="form-control" id="device_class">
-                              <option>分类</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                          </select>
-                      </div>
-                      <div class="col-md-1">
-                          <select class="form-control" id="device_name">
-                              <option>设备名称</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                          </select>
-                      </div>
-                      <div class="col-md-1">
-                          <select class="form-control" id="device_brand">
-                              <option>全部品牌</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                          </select>
-                      </div>
-                      <div class="col-md-1">
-                          <select class="form-control" id="device_type">
-                              <option>全部型号</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                          </select>
-                      </div>
-                      <div class="col-md-1">
-                          <select class="form-control" id="device_number">
-                              <option>国资编号</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                          </select>
-                      </div>
-                      <div class="col-md-3">
-                          检索关键词：<input type="text" style="width: 60%"/>
-                          <button type="button" class="btn btn-success">
-                              查询
-                          </button>
-                      </div>
-                      <div class="col-md-1">
-                          <button class="btn btn-warning">
-                              清除查询条件
-                          </button>
-                      </div>
-                      <div class="col-md-1">
-                          <button class="btn btn-info">
-                              导出为Excel
-                          </button>
-                      </div>
-                  </div>
-
-              <div class="row">
-                  <div class=".col-md-12 main-chart">
-                      <div id="device-list" class="content-panel table-responsive">
-                          <h4><i class="fa fa-angle-right"></i>
-                              设备详情
-                          </h4>
-                          <hr>
-                          <table class="table table-striped table-advance table-hover table-condensed cf">
-                              <thead>
-                              <tr>
-                                  <th>使用地点</th>
-                                  <th class="hidden-phone">主要设备品牌</th>
-                                  <th>主要设备型号</th>
-                                  <th>国资编号</th>
-                                  <th>序列号</th>
-                                  <th>所在校区</th>
-                                  <th>使用部门</th>
-                                  <th>领用时间</th>
-                                  <th>工作性质</th>
-                                  <th>保管人</th>
-                                  <th>单价（元）</th>
-                                  <th>状态</th>
-                                  <th>Excel</th>
-                                  <th>World</th>
-                              </tr>
-                              </thead>
-                              <tbody>
-                              <tr v-for="device in deviceList">
-                                  <td>{{device.locationStr}}</td>
-                                  <td class="hidden-phone">{{device.brand!=undefined?device.brand.name:'未填写'}}</td>
-                                  <td>{{device.deviceModel}}</td>
-                                  <td>{{device.nationalId}}</td>
-                                  <td>{{device.serialNumber}}</td>
-                                  <td class="hidden-phone">{{device.locationStr.split('/')[0]}}</td>
-                                  <td>{{device.useDepartment}}</td>
-                                  <td>{{formatTime(device.useTime)}}</td>
-                                  <td>{{device.workNature}}</td>
-                                  <td class="hidden-phone">{{device.custodian}}</td>
-                                  <td>{{device.unitPrice}}</td>
-                                  <td>{{parseStatus(device.statusId)}}</td>
-                                  <td>
-                                  <button class="btn btn-success btn-xs"><i class="fa fa-check"></i>Excel</button>
-                              </td>
-                                  <td>
-                                      <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i>World</button>
-                                  </td>
-                              </tr>
-
-                              </tbody>
-                          </table>
-                          <div>
-                              当前页码：{{pageNum}}，共{{pages}}页，总计{{total}}条
-                          </div>
-                      </div>
-					
-                  </div><!-- /col-lg-9 END SECTION MIDDLE -->
-
-              </div><! --/row -->
-          </section>
-      </section>
-
-      <!--main content end-->
-
-  </section>
-
-    <!-- js placed at the end of the document so the pages load faster -->
-    <script src="assets/js/jquery.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script class="include" type="text/javascript" src="assets/js/jquery.dcjqaccordion.2.7.js"></script>
-    <script src="assets/js/jquery.scrollTo.min.js"></script>
-    <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
-    <script src="assets/js/jquery.sparkline.js"></script>
-    <!--common script for all pages-->
-    <script src="assets/js/common-scripts.js"></script>
-    <script type="text/javascript" src="assets/js/gritter/js/jquery.gritter.js"></script>
-    <script type="text/javascript" src="assets/js/gritter-conf.js"></script>
-    <!--script for this page-->
-    <script src="assets/js/sparkline-chart.js"></script>    
-	<script src="assets/js/zabuto_calendar.js"></script>
-    <script src="assets/js/jquery.cookie.js"></script>
-    <script src="assets/js/vue.js"></script>
-  <script src="assets/js/module/common.js"></script>
-
-  <!--数据渲染代码-->
-  <script>
-      $("#form-group select").change(function () {
-         alert($("#"+$(this).attr("id")+" option:selected").text());
-      });
-
-      var vueDeviceList = new Vue({
-          el: "#device-list",
-          data: {
-              deviceList: [
-                  {
-                      "id": "0",
-                      "name": "",
-                      "nationalId": "",
-                      "serialNumber": "",
-                      "useTime": 0,
-                      "unitPrice": 0,
-                      "statusId": 0,
-                      "createTime": 0,
-                      "updateTime": 0,
-                      "brand": {
-                          "id": "0",
-                          "name": ""
-                      },
-                      "locationStr": "",
-                      "categoryStr": "",
-                      "workNature": "",
-                      "custodian": "",
-                      "amountUnit": "",
-                      "useDepartment": "",
-                      "deviceModel": ""
-                  }
-              ],
-              pageNum: 1,
-              pageSize: 10,
-              pages: 1,//总页数
-              total: 0//总条数
-          },
-          methods: {
-              /**
-               * 渲染表格
-               */
-            listDevice: function (vue) {
-                $.ajax({
-                    url: commonVm.getApi(commonVm.api.listDevice),
-                    method: "post",
-                    data: JSON.stringify({
-                        "queryPage": {
-                            "pageNum": vue.pageNum,
-                            "pageSize": vue.pageSize
-                        }
-                    }),
-                    contentType: "application/json",
-                    headers: {
-                        token: localStorage.getItem(commonVm.storageKey.token)
-                    },
-                    success: function (res) {
-                        var data = res.data;
-                        if (res.code == 0) {
-                            vueDeviceList.deviceList = data.list;
-                            vueDeviceList.total = data.total;
-                            vueDeviceList.pages = data.pages;
-                        }else {
-                            alert(res.msg);
-                        }
-                    },
-                    error: function (res) {
-                        var json = res.responseJSON;
-                        if (json != null && json.code ==3){
-                            alert("登录异常！");
-                            window.location.href = "login.html";
-                        }else {
-                            alert("网络连接异常！");
-                        }
-                    }
-                })
-            },
-              formatTime: function (timeStamp) {
-                var date = new Date(timeStamp);
-                  return date.getFullYear() + "." + date.getMonth() + "." + date.getDay();
-              },
-              parseStatus: function (status) {
-                  switch (status){
-                      case 1:
-                          return '入库';
-                      case 2:
-                          return '使用中';
-                      case 3:
-                          return '报废';
-                  }
-              }
-          },
-          created: function () {
-              this.listDevice(this);
-          }
-      });
-
-      //侧边栏，注销
-      var sideBarVm = new Vue({
-          el: "#sidebar",
-          data: {
-              username: getLocalStorage(commonVm.storageKey.userInfo).username
-          }
-      });
-
-      var logoutVm = new Vue({
-          el: "#logout",
-          methods: {
-              logout: function () {
-                  localStorage.clear();
-                  window.location.href = "login.html";
-              }
-          }
-      })
-  </script>
-
-  </body>
+</body>
 </html>

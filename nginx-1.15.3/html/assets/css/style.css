@@ -1,6 +1,6 @@
 
 /* Import fonts */
-@import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);
+@import url(../fonts/Ruda.css);
 
 /* BASIC THEME CONFIGURATION */
 body {

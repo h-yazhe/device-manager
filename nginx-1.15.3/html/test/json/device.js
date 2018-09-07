@@ -2,9 +2,11 @@
 var addDevice = {
     "amountUnitId": "1",
     "brandId": "2",
-    "categoryId": [
+    "categoryIds": [
     "1533627421723747003"
 ],
+    "deviceModelId": "0",
+    "useDepartmentId": "0",
     "custodianId": "1",
     "locationId": "1533106692421375227",
     "name": "测试设备",

@@ -1,0 +1,14 @@
+.page-info-left{
+    float: left;
+    margin-right: 4%;
+}
+
+.turn-page-right{
+    float: right;
+    margin-right: 4%;
+}
+
+.clear{
+    clear: both;
+}
+
