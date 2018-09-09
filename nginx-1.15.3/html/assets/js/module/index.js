@@ -39,7 +39,7 @@ var vueDeviceList = new Vue({
         listDevice: function () {
             var vue = this;
             sendPost({
-                url: commonVm.getApi(commonVm.api.listDevice),
+                url: API.getApi(API.listDevice),
                 data: JSON.stringify({
                     "queryPage": {
                         "pageNum": vue.pageNum,
@@ -121,14 +121,29 @@ var vueDeviceList = new Vue({
  * 添加设备组件
  * @type {*|Vue}
  */
-var categoryVm;//分类树组件，依赖于addDeviceVm
-var ComponentCategoryTree = {
-    data: function () {
-        return {
-
-        }
-    }
-};
+//生成分类树，依赖于addDeviceVm
+var categoryVm = new Vue({
+    el: '#category-tree',
+    components: {
+        'CategoryTree': CategoryTree
+    },
+    data: {
+        categoryList: [
+            {
+                id: '0',
+                name: '',
+                level: '',
+                children: [
+                ],
+                active: false,//是否激活
+                expanded: false//是否展开
+            }
+        ]
+    },
+    template: ' <div id="category-tree" class="panel-body">\n' +
+        '                            <CategoryTree v-for="item in categoryList" :parent="item" :key="item.id"></CategoryTree>\n' +
+        '                        </div>'
+});
 var addDeviceVm = new Vue({
     el: "#add-device",
     data: {
@@ -141,20 +156,13 @@ var addDeviceVm = new Vue({
             "deviceModelId": 0,
             "useDepartmentId": 0,
             "custodianId": "",
-            "locationId": "",
+            "locationId": "0",
             "name": "",
             "nationalId": "",
             "serialNumber": "",
             "unitPrice": 0,
             "workNatureId": "1"
         },
-        categoryPageNum: {
-            pageNum: 1,
-            pageSize: 10
-        },
-        categoryList: [
-
-        ],
         brandPage: {
             pageNum: 1,
             pageSize: 10
@@ -181,7 +189,7 @@ var addDeviceVm = new Vue({
         },
         locationList: [
             {
-                id: '',
+                id: '0',
                 name: ''
             }
         ],
@@ -211,7 +219,7 @@ var addDeviceVm = new Vue({
         addDevice: function () {
             var data = this.device;
             sendPost({
-                url: commonVm.getApi(commonVm.api.addDevice),
+                url: API.getApi(API.addDevice),
                 data: JSON.stringify(data),
                 success: function (res) {
                     if (res.code == 0){
@@ -226,44 +234,14 @@ var addDeviceVm = new Vue({
         getDeviceSelection: function () {
             var self = this;
             sendPost({
-                url: commonVm.getApi(commonVm.api.getDeviceSelection),
+                url: API.getApi(API.getDeviceSelection),
                 success: function (res) {
                     if (res.code === 0){
-                        //生成分类树
-                        categoryVm = new Vue({
-                            el: '#category-tree',
-                            data: {
-                                categoryList: [
-                                    {
-                                        id: '',
-                                        name: '',
-                                        level: '',
-                                        children: [
-                                        ],
-                                        active: false,//是否激活
-                                        expanded: false//是否展开
-                                    }
-                                ]
-                            },
-                            methods: {
-                                listLevelOne: function () {
-                                    var categoryList = res.data.categoryList;
-                                    for (var category of categoryList){
-                                        category.active = false;
-                                        category.expanded = false;
-                                        category.children = [];
-                                    }
-                                    this.categoryList = categoryList;
-                                },
-                                listChildren: function (event) {
-                                    $(event.target).after()
-                                }
-                            },
-                            created: function () {
-                                this.listLevelOne();
-                            }
-                        });
-
+                        var categoryList = res.data.categoryList;
+                        for (var category of categoryList){
+                            initCategory(category);
+                        }
+                        categoryVm.categoryList = categoryList;
                         //渲染选项卡数据
                         self.brandList = res.data.brandList;
                         self.deviceModelList = res.data.deviceModelList;
@@ -286,7 +264,7 @@ var addDeviceVm = new Vue({
 var sideBarVm = new Vue({
     el: "#sidebar",
     data: {
-        username: getLocalStorage(commonVm.storageKey.userInfo).username
+        username: getLocalStorage(STORAGE_KEY.userInfo).username
     }
 });
 

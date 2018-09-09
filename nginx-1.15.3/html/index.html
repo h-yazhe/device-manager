@@ -212,14 +212,7 @@
             <div class="row">
                 <div class="col-md-2" style="padding-right: 0">
                     <div class="panel panel-default pre-scrollable">
-                        <div id="category-tree" class="panel-body">
-                            <a v-for="item in categoryList" v-bind:class="{active: item.active}" @click="" href="#" class="list-group-item">
-                                <span v-bind:class="[item.expanded ?'glyphicon-chevron-down':'glyphicon-minus']" class="glyphicon"></span>{{item.name}}
-                            </a>
-                            <a href="#" class="list-group-item" style="left: 10%">
-                                <span class="glyphicon glyphicon-chevron-down"></span>Cras justo odio<span class="badge">14</span>
-                            </a>
-                        </div>
+                       <div id="category-tree"></div>
                     </div>
                 </div>
                 <div class="col-md-10 main-chart" style="padding-left: 0">
@@ -235,8 +228,8 @@
                             <tr>
                                 <th>设备名称</th>
                                 <th>使用地点</th>
-                                <th>主要设备品牌</th>
-                                <th>主要设备型号</th>
+                                <th>设备品牌</th>
+                                <th>设备型号</th>
                                 <th>国资编号</th>
                                 <th>序列号</th>
                                 <th>所在校区</th>
@@ -333,6 +326,7 @@
                 <div class="form-group">
                     <label for="input-partition">校区</label>
                     <select v-model="device.locationId" id="input-partition" class="form-control">
+                        <option disabled value="">请选择</option>
                         <option v-for="location in locationList" v-bind:value="location.id">{{location.name}}</option>
                     </select>
                 </div>
