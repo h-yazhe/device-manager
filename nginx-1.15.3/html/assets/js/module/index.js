@@ -26,7 +26,7 @@ var vueDeviceList = new Vue({
             }
         ],
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 20,
         pages: 1,//总页数
         total: 0,//总条数
         disableLastPage: true,
@@ -121,6 +121,14 @@ var vueDeviceList = new Vue({
  * 添加设备组件
  * @type {*|Vue}
  */
+var categoryVm;//分类树组件，依赖于addDeviceVm
+var ComponentCategoryTree = {
+    data: function () {
+        return {
+
+        }
+    }
+};
 var addDeviceVm = new Vue({
     el: "#add-device",
     data: {
@@ -140,6 +148,13 @@ var addDeviceVm = new Vue({
             "unitPrice": 0,
             "workNatureId": "1"
         },
+        categoryPageNum: {
+            pageNum: 1,
+            pageSize: 10
+        },
+        categoryList: [
+
+        ],
         brandPage: {
             pageNum: 1,
             pageSize: 10
@@ -214,6 +229,42 @@ var addDeviceVm = new Vue({
                 url: commonVm.getApi(commonVm.api.getDeviceSelection),
                 success: function (res) {
                     if (res.code === 0){
+                        //生成分类树
+                        categoryVm = new Vue({
+                            el: '#category-tree',
+                            data: {
+                                categoryList: [
+                                    {
+                                        id: '',
+                                        name: '',
+                                        level: '',
+                                        children: [
+                                        ],
+                                        active: false,//是否激活
+                                        expanded: false//是否展开
+                                    }
+                                ]
+                            },
+                            methods: {
+                                listLevelOne: function () {
+                                    var categoryList = res.data.categoryList;
+                                    for (var category of categoryList){
+                                        category.active = false;
+                                        category.expanded = false;
+                                        category.children = [];
+                                    }
+                                    this.categoryList = categoryList;
+                                },
+                                listChildren: function (event) {
+                                    $(event.target).after()
+                                }
+                            },
+                            created: function () {
+                                this.listLevelOne();
+                            }
+                        });
+
+                        //渲染选项卡数据
                         self.brandList = res.data.brandList;
                         self.deviceModelList = res.data.deviceModelList;
                         self.locationList = res.data.locationList;
@@ -247,4 +298,4 @@ var logoutVm = new Vue({
             window.location.href = "login.html";
         }
     }
-})
+});
