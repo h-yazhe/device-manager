@@ -1,5 +1,8 @@
 var vueDeviceList = new Vue({
     el: "#device-list",
+    components: {
+      'search-device': SearchDevice
+    },
     data: {
         deviceList: [
             {
@@ -35,7 +38,9 @@ var vueDeviceList = new Vue({
         pages: 1,//总页数
         total: 0,//总条数
         disableLastPage: true,
-        disableNextPage: true
+        disableNextPage: true,
+        //搜索的选项卡数据,
+        searchSelection: $.extend(true,{},deviceSearchSelection)
     },
     methods: {
         /**
@@ -155,61 +160,9 @@ var addDeviceVm = new Vue({
             "unitPrice": 0,
             "workNatureId": ""
         },
-        categoryList: {
-            id: '',
-            name: '',
-            level: 1
-        },
-        brandPage: {
-            pageNum: 1,
-            pageSize: 10
-        },
-        brandList: [
-            {
-                id: '',
-                name: ''
-            }
-        ],
-        deviceModelPage: {
-            pageNum: 1,
-            pageSize: 10
-        },
-        deviceModelList: [
-            {
-                id: 0,
-                name: ''
-            }
-        ],
-        locationPageNum: {
-            pageNum: 1,
-            pageSize: 10
-        },
-        locationList: [
-            {
-                id: '0',
-                name: ''
-            }
-        ],
-        workNaturePage: {
-            pageNum: 1,
-            pageSize: 10
-        },
-        workNatureList: [
-            {
-                id: '',
-                name: ''
-            }
-        ],
-        custodianPage: {
-            pageNum: '',
-            pageSize: ''
-        },
-        custodianList: [
-            {
-                id: '',
-                name: ''
-            }
-        ]
+        //选项卡数据
+        selection: $.extend(true,{},deviceSearchSelection)
+
     },
     methods:{
         //添加设备
@@ -240,12 +193,14 @@ var addDeviceVm = new Vue({
                         }
                         categoryVm.categoryList = categoryList;
                         //渲染选项卡数据
-                        self.categoryList = res.data.categoryList;
-                        self.brandList = res.data.brandList;
-                        self.deviceModelList = res.data.deviceModelList;
-                        self.locationList = res.data.locationList;
-                        self.workNatureList = res.data.workNatureList;
-                        self.custodianList = res.data.custodianList
+                        self.selection.categoryList = res.data.categoryList;
+                        self.selection.brandList = res.data.brandList;
+                        self.selection.deviceModelList = res.data.deviceModelList;
+                        self.selection.locationList = res.data.locationList;
+                        self.selection.workNatureList = res.data.workNatureList;
+                        self.selection.custodianList = res.data.custodianList;
+                        //选项数据同样给到搜索设备组件中
+                        vueDeviceList.searchSelection = res.data;
                     }else {
                         console.error(res.msg);
                     }

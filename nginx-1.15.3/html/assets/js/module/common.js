@@ -98,6 +98,65 @@ var initCategory = function (category) {
     category.children = [];
 };
 
+//设备搜索，添加设备的选项卡数据
+var deviceSearchSelection = {
+    categoryList: {
+        id: '',
+        name: '',
+        level: 1
+    },
+    brandPage: {
+        pageNum: 1,
+        pageSize: 10
+    },
+    brandList: [
+        {
+            id: '',
+            name: ''
+        }
+    ],
+    deviceModelPage: {
+        pageNum: 1,
+        pageSize: 10
+    },
+    deviceModelList: [
+        {
+            id: 0,
+            name: ''
+        }
+    ],
+    locationPageNum: {
+        pageNum: 1,
+        pageSize: 10
+    },
+    locationList: [
+        {
+            id: '',
+            name: ''
+        }
+    ],
+    workNaturePage: {
+        pageNum: 1,
+        pageSize: 10
+    },
+    workNatureList: [
+        {
+            id: '',
+            name: ''
+        }
+    ],
+    custodianPage: {
+        pageNum: '',
+        pageSize: ''
+    },
+    custodianList: [
+        {
+            id: '',
+            name: ''
+        }
+    ]
+};
+
 var CategoryTree = {
     name: 'CategoryTree',
     props: ['parent'],
@@ -144,5 +203,70 @@ var CategoryTree = {
             var level = this.parent.level;
             return {transform: 'translate(' + (level > 1 ? (level - 1) : 0) * 8 + '%)'}
         }
+    }
+};
+
+var SearchDevice = {
+    name: 'SearchDevice',
+    props: ['selection'],
+    data: function () {
+        return {
+            queryParams: {
+                queryPage: new defaultQueryPage(),
+                statusId: null,//状态码
+                locationId: null,//地点id
+                brandId: null,//品牌id
+                deviceModelId: null//设备型号id
+            }
+        }
+    },
+    template: "<div class=\"row form-group\" style=\"margin-bottom: 0\" id=\"form-group\">\n" +
+        "                        <div class=\"col-md-1\">\n" +
+        "<select v-model=\"queryParams.locationId\" id=\"input-partition\" class=\"form-control\">\n" +
+        "                        <option disabled value=\"-1\">选择地点</option>\n" +
+        "<option value=\"null\">全部地点</option>" +
+        "                        <option v-for=\"location in selection.locationList\" v-bind:value=\"location.id\">{{location.name}}</option>\n" +
+        "                    </select>"+
+        "                        </div>\n" +
+        "                        <div class=\"col-md-1\">\n" +
+        "<select v-model=\"queryParams.brandId\" id=\"input-brand\" class=\"form-control\">\n" +
+        "                        <option disabled value=\"null\">请选择</option>\n" +
+        "                        <option v-for=\"brand in selection.brandList\" v-bind:value=\"brand.id\">{{brand.name}}</option>\n" +
+        "                    </select>" +
+        "                        </div>\n" +
+        "                        <div class=\"col-md-1\">\n" +
+        "                            <select class=\"form-control\">\n" +
+        "                                <option>全部型号</option>\n" +
+        "                                <option>2</option>\n" +
+        "                                <option>3</option>\n" +
+        "                                <option>4</option>\n" +
+        "                            </select>\n" +
+        "                        </div>\n" +
+        "                        <div class=\"col-md-1\">\n" +
+        "                            <select class=\"form-control\" id=\"device_number\">\n" +
+        "                                <option>国资编号</option>\n" +
+        "                                <option>2</option>\n" +
+        "                                <option>3</option>\n" +
+        "                                <option>4</option>\n" +
+        "                            </select>\n" +
+        "                        </div>\n" +
+        "                        <div class=\"col-md-6\">\n" +
+        "                            检索关键词：<input type=\"text\" style=\"width: 60%\"/>\n" +
+        "                            <button @click=\"searchDevice\" type=\"button\" class=\"btn btn-success\">\n" +
+        "                                查询\n" +
+        "                            </button>\n" +
+        "                            <button class=\"btn btn-warning\">\n" +
+        "                                清除查询条件\n" +
+        "                            </button>\n" +
+        "                        </div>\n" +
+        "                    </div>",
+    methods: {
+        searchDevice: function () {
+            this.$parent.listDevice();
+        }
+    },
+    created: function () {
+        //传递参数到父组件
+        this.$parent.queryParams = this.queryParams;
     }
 };

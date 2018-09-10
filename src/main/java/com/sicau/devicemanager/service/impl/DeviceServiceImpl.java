@@ -144,6 +144,7 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 		//获取用户管理的地点（根地点）
 		List<Location> userLocationList = locationMapper.getByUserId(userId);
+		//存储用户管理的所有地点及子孙地点
 		List<Location> locationList = new ArrayList<>();
 		userLocationList.forEach((userLocation)->{
 			locationList.add(userLocation);
@@ -155,13 +156,22 @@ public class DeviceServiceImpl implements DeviceService {
 			if (!checkLocationId(deviceDTO.getLocationId(),locationList)){
 				throw new CommonException(ResultEnum.LOCATION_UNAUTHORIZED);
 			}
+			//设置地点id作为查询条件
+			List<String> locationIds = new ArrayList<>();
+			locationMapper.getDescendants(deviceDTO.getLocationId()).forEach(location -> {
+				locationIds.add(location.getId());
+			});
+			locationIds.add(deviceDTO.getLocationId());
+			deviceDTO.setLocationIds(locationIds);
 		}
-		//设置地点id作为查询条件
-		List<String> locationIds = new ArrayList<>();
-		for (Location item : locationList){
-			locationIds.add(item.getId());
+		//如果没有传入locationId，则默认查询用户管理的所有地点
+		else {
+			List<String> locationIds = new ArrayList<>();
+			locationList.forEach(location -> {
+				locationIds.add(location.getId());
+			});
+			deviceDTO.setLocationIds(locationIds);
 		}
-		deviceDTO.setLocationIds(locationIds);
 
 		//分页查询
 		QueryPage queryPage = deviceDTO.getQueryPage();
