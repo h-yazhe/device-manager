@@ -129,7 +129,7 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 
 		//获取查询条件的分类id及所有子分类id
-		if ("".equals(deviceDTO.getCategoryId())){
+		if (!StringUtils.isEmpty(deviceDTO.getCategoryId())){
 			List<Category> categoryList = categoryMapper.getDescendants(deviceDTO.getCategoryId());
 			List<String> categoryIds = new ArrayList<>();
 			categoryIds.add(deviceDTO.getCategoryId());
@@ -142,10 +142,14 @@ public class DeviceServiceImpl implements DeviceService {
 		if (userId == null){
 			throw new RuntimeException("用户id不能为空");
 		}
-		Location location = locationMapper.getByUserId(userId);
-		//获取所有子地点
-		List<Location> locationList = locationMapper.getDescendants(location.getId());
-		locationList.add(location);
+		//获取用户管理的地点（根地点）
+		List<Location> userLocationList = locationMapper.getByUserId(userId);
+		List<Location> locationList = new ArrayList<>();
+		userLocationList.forEach((userLocation)->{
+			locationList.add(userLocation);
+			//获取所有子地点
+			locationList.addAll(locationMapper.getDescendants(userLocation.getId()));
+		});
 		//开始校验地点
 		if (!StringUtils.isEmpty(deviceDTO.getLocationId())){
 			if (!checkLocationId(deviceDTO.getLocationId(),locationList)){

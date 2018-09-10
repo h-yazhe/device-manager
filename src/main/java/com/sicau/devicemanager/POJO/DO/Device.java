@@ -1,16 +1,12 @@
 package com.sicau.devicemanager.POJO.DO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sicau.devicemanager.POJO.DTO.QueryPage;
-import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UpdateDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddDeviceGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -22,6 +18,8 @@ public class Device {
     private String id;
 
 	@ApiModelProperty("设备名")
+	@Pattern(regexp = "^[a-zA-Z\u4e00-\u9fa5_0-9]+$",groups = {AddDeviceGroup.class},message = "设备名只能为汉字、英文字母、数字、下划线的组合")
+	@NotNull(groups = {AddDeviceGroup.class},message = "设备名不能为空")
 	private String name;
 
     @ApiModelProperty("所处地点id")
@@ -29,10 +27,12 @@ public class Device {
     private String locationId;
 
     @ApiModelProperty("国资编号")
+	@Pattern(regexp = "^[0-9a-zA-Z]+$",groups = {AddDeviceGroup.class},message = "国资编号只能为英文字母、数字的组合")
 	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
     private String nationalId;
 
     @ApiModelProperty("序列号")
+	@Pattern(regexp = "^[0-9a-zA-Z]+$",groups = {AddDeviceGroup.class},message = "序列号只能为英文字母、数字的组合")
 	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
     private String serialNumber;
 

@@ -23,7 +23,6 @@
     <link href="assets/css/index.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script src="assets/js/jquery.SuperSlide.2.1.1.js"></script>
     <script src="assets/js/html5shiv.js"></script>
     <script src="assets/js/respond.min.js"></script>
     <![endif]-->
@@ -42,7 +41,9 @@
 </head>
 
 <body>
+<div id="app">
 
+</div>
 <section id="container">
     <!-- **********************************************************************************************************************************************************
     TOP BAR CONTENT & NOTIFICATIONS
@@ -78,14 +79,14 @@
                 <h5 class="centered">{{username}}</h5>
 
                 <li class="mt">
-                    <a class="active" href="index.html">
+                    <a class="active" href="javascript:;" @click="listDevice(null)">
                         <i class="fa fa-desktop"></i>
                         <span>所有设备</span>
                     </a>
                 </li>
 
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a href="javascript:;" @click="listDevice(1)">
                         <i class="glyphicon glyphicon-home"></i>
                         <span>库存设备</span>
                     </a>
@@ -97,7 +98,7 @@
                 </li>
 
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a href="javascript:;" @click="listDevice(2)">
                         <i class="glyphicon glyphicon-play"></i>
                         <span>使用中设备</span>
                     </a>
@@ -108,7 +109,7 @@
                     <!--</ul>-->
                 </li>
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a href="javascript:;" @click="listDevice(3)">
                         <i class="glyphicon glyphicon-trash"></i>
                         <span>报废设备</span>
                     </a>
@@ -150,65 +151,6 @@
     <!--main content start-->
     <section id="main-content">
         <section class="wrapper">
-            <div class="row form-group" style="margin-bottom: 0" id="form-group">
-                <div class="col-md-1">
-                    <select class="form-control" id="device_class">
-                        <option>分类</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                    </select>
-                </div>
-                <div class="col-md-1">
-                    <select class="form-control" id="device_name">
-                        <option>设备名称</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                    </select>
-                </div>
-                <div class="col-md-1">
-                    <select class="form-control" id="device_brand">
-                        <option>全部品牌</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                    </select>
-                </div>
-                <div class="col-md-1">
-                    <select class="form-control" id="device_type">
-                        <option>全部型号</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                    </select>
-                </div>
-                <div class="col-md-1">
-                    <select class="form-control" id="device_number">
-                        <option>国资编号</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    检索关键词：<input type="text" style="width: 60%"/>
-                    <button type="button" class="btn btn-success">
-                        查询
-                    </button>
-                </div>
-                <div class="col-md-1">
-                    <button class="btn btn-warning">
-                        清除查询条件
-                    </button>
-                </div>
-                <div class="col-md-1">
-                    <button class="btn btn-info">
-                        导出为Excel
-                    </button>
-                </div>
-            </div>
-
             <div class="row">
                 <div class="col-md-2" style="padding-right: 0">
                     <div class="panel panel-default pre-scrollable">
@@ -216,18 +158,66 @@
                     </div>
                 </div>
                 <div class="col-md-10 main-chart" style="padding-left: 0">
+                    <div class="row form-group" style="margin-bottom: 0" id="form-group">
+                        <div class="col-md-1">
+                            <select class="form-control">
+                                <option>设备名称</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <select class="form-control">
+                                <option>全部品牌</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <select class="form-control">
+                                <option>全部型号</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <select class="form-control" id="device_number">
+                                <option>国资编号</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            检索关键词：<input type="text" style="width: 60%"/>
+                            <button type="button" class="btn btn-success">
+                                查询
+                            </button>
+                            <button class="btn btn-warning">
+                                清除查询条件
+                            </button>
+                        </div>
+                    </div>
                     <div id="device-list" class="content-panel table-responsive">
                         <h4 style="float: left"><i class="fa fa-angle-right"></i>
                             设备详情
                         </h4>
-                        <button type="button" class="btn btn-success turn-page-right" data-toggle="modal" data-target="#add-device">添加设备</button>
+                        <div class="turn-page-right">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-device">添加设备</button>
+                            <button type="button" class="btn btn-info">
+                                导出为Excel
+                            </button>
+                        </div>
                         <div class="clear"></div>
                         <hr>
                         <table class="table table-striped table-advance table-hover table-condensed cf">
                             <thead>
                             <tr>
                                 <th>设备名称</th>
-                                <th>使用地点</th>
+                                <th v-if="queryParams.statusId==2">使用地点</th>
                                 <th>设备品牌</th>
                                 <th>设备型号</th>
                                 <th>国资编号</th>
@@ -245,7 +235,7 @@
                             <tbody>
                             <tr v-for="device in deviceList">
                                 <td>{{device.name}}</td>
-                                <td>{{device.locationStr}}</td>
+                                <td v-if="queryParams.statusId==2">{{device.locationStr}}</td>
                                 <td>{{device.brand!=undefined?device.brand.name:'未填写'}}</td>
                                 <td>{{device.deviceModel}}</td>
                                 <td>{{device.nationalId}}</td>
@@ -266,7 +256,7 @@
                             </tbody>
                         </table>
                         <div class="page-info-left">
-                            当前页码：{{pageNum}}，共{{pages}}页，总计{{total}}条
+                            当前页码：{{queryParams.queryPage.pageNum}}，共{{pages}}页，总计{{total}}条
                         </div>
                         <div class="turn-page-right">
                             <button @click="lastPage" v-bind:disabled="disableLastPage" type="button"
@@ -300,6 +290,20 @@
         <div class="modal-body">
             <form>
                 <div class="form-group">
+                    <label for="input-category">分类</label>
+                    <select v-model="device.categoryIds[0]" id="input-category" class="form-control">
+                        <option disabled value="">请选择</option>
+                        <option v-for="category in categoryList" v-bind:value="category.id">{{category.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="input-partition">校区</label>
+                    <select v-model="device.locationId" id="input-partition" class="form-control">
+                        <option disabled value="">请选择</option>
+                        <option v-for="location in locationList" v-bind:value="location.id">{{location.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="input-device-name">名称</label>
                     <input v-model="device.name" type="text" class="form-control" id="input-device-name" placeholder="名称">
                 </div>
@@ -314,31 +318,28 @@
                 <div class="form-group">
                     <label for="input-brand">品牌</label>
                     <select v-model="device.brandId" id="input-brand" class="form-control">
+                        <option disabled value="">请选择</option>
                         <option v-for="brand in brandList" v-bind:value="brand.id">{{brand.name}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="input-deviceModel">型号</label>
                     <select v-model="device.deviceModelId" id="input-deviceModel" class="form-control">
+                        <option disabled value="0">请选择</option>
                         <option v-for="deviceModel in deviceModelList" v-bind:value="deviceModel.id">{{deviceModel.name}}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="input-partition">校区</label>
-                    <select v-model="device.locationId" id="input-partition" class="form-control">
-                        <option disabled value="">请选择</option>
-                        <option v-for="location in locationList" v-bind:value="location.id">{{location.name}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="input-workNature">工作性质</label>
                     <select v-model="device.workNatureId" id="input-workNature" class="form-control">
+                        <option disabled value="">请选择</option>
                         <option v-for="workNature in workNatureList" v-bind:value="workNature.id">{{workNature.name}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="input-custodian">保管人</label>
                     <select v-model="device.custodianId" id="input-custodian" class="form-control">
+                        <option disabled value="">请选择</option>
                         <option v-for="custodian in custodianList" v-bind:value="custodian.id">{{custodian.name}}</option>
                     </select>
                 </div>
@@ -368,7 +369,6 @@
 <!--script for this page-->
 <script src="assets/js/sparkline-chart.js"></script>
 <script src="assets/js/zabuto_calendar.js"></script>
-<script src="assets/js/jquery.cookie.js"></script>
 <script src="assets/js/vue.js"></script>
 <script src="assets/js/module/common.js"></script>
 <script src="assets/js/module/index.js"></script>

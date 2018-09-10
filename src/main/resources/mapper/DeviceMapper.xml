@@ -67,53 +67,56 @@
 		FROM device d
 		LEFT JOIN work_nature wn
 		ON d.work_nature_id = wn.id
-		<if test="workNatureId!=null">
-			and wn.id = #{workNatureId}
-		</if>
 		LEFT JOIN custodian cus
 		ON d.custodian_id = cus.id
-		<if test="custodianId!=null">
-			and cus.id = #{custodianId}
-		</if>
 		left join device_model dm
 		on dm.id = d.device_model_id
-		<if test="deviceModelId!=null">
-			and dm.id = #{deviceModelId}
-		</if>
 		LEFT JOIN department dep
 		on dep.id = d.use_department_id
-		<if test="useDepartmentId!=null">
-			and dep.id = #{useDepartmentId}
-		</if>
 		LEFT JOIN amount_unit amo
 		ON d.amount_unit_id = amo.id
-		<if test="amountUnitId!=null">
-			and amo.id = #{amountUnitId}
-		</if>
 		LEFT JOIN device_brand db
 		ON d.id = db.device_id
-		<if test="brand!=null">
-			and db.brand_id = #{brand.id}
-		</if>
 		LEFT JOIN brand bra
 		ON db.brand_id = bra.id
 		LEFT JOIN device_category dc
 		ON dc.device_id = d.id
-		<if test="categoryIds != null">
-			AND dc.id IN
-			<foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
-				#{categoryId}
-			</foreach>
-		</if>
 		LEFT JOIN category c
 		ON c.id = dc.category_id
-		JOIN location l
+		left JOIN location l
 		ON l.id = d.location_id
-		and l.id in
-		<foreach collection="locationIds" item="locationId" separator="," open="(" close=")">
-			#{locationId}
-		</foreach>
 		<where>
+			<if test="workNatureId!=null">
+				and wn.id = #{workNatureId}
+			</if>
+			<if test="custodianId!=null">
+				and cus.id = #{custodianId}
+			</if>
+			<if test="deviceModelId!=null">
+				and dm.id = #{deviceModelId}
+			</if>
+			<if test="useDepartmentId!=null">
+				and dep.id = #{useDepartmentId}
+			</if>
+			<if test="amountUnitId!=null">
+				and amo.id = #{amountUnitId}
+			</if>
+			<if test="brandId!=null">
+				and db.brand_id = #{brandId}
+			</if>
+			<if test="categoryIds != null">
+				AND c.id IN
+				<foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
+					#{categoryId}
+				</foreach>
+			</if>
+			<if test="locationIds!=null">
+				and l.id in
+				<foreach collection="locationIds" item="locationId" separator="," open="(" close=")">
+					#{locationId}
+				</foreach>
+			</if>
+
 			<if test="nationalId!=null">
 				and d.national_id = #{nationalId}
 			</if>

@@ -86,9 +86,9 @@ var commonVm = new Vue({
 });
 
 //默认分页参数
-var defaultQueryPage = {
-    pageNum: 1,
-    pageSize: 10
+var defaultQueryPage = function () {
+    this.pageNum = 1;
+    this.pageSize = 20;
 };
 
 //构造category对象的初始参数
@@ -103,12 +103,12 @@ var CategoryTree = {
     props: ['parent'],
     data: function () {
         return {
-            queryPage: defaultQueryPage
+            queryPage: new defaultQueryPage()
         }
     },
     template: '<div>\n' +
         '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item">\n' +
-        '                                    <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon-minus\']" class="glyphicon"></span>{{parent.name}}\n' +
+        '                                    <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
         '                                </a>\n' +
         '                                <CategoryTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></CategoryTree>\n' +
         '                            </div>',
@@ -134,7 +134,9 @@ var CategoryTree = {
                         self.parent.expanded = !self.parent.expanded;
                     }
                 }
-            })
+            });
+            vueDeviceList.queryParams.categoryId = self.parent.id;
+            vueDeviceList.listDevice();
         }
     },
     computed: {

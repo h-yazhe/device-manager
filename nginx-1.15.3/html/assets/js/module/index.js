@@ -25,8 +25,13 @@ var vueDeviceList = new Vue({
                 "deviceModel": ""
             }
         ],
-        pageNum: 1,
-        pageSize: 20,
+        queryParams: {
+            queryPage: new defaultQueryPage(),
+            statusId: null,//状态码
+            locationId: null,//地点id
+            brandId: null,//品牌id
+            deviceModelId: null//设备型号id
+        },
         pages: 1,//总页数
         total: 0,//总条数
         disableLastPage: true,
@@ -40,28 +45,15 @@ var vueDeviceList = new Vue({
             var vue = this;
             sendPost({
                 url: API.getApi(API.listDevice),
-                data: JSON.stringify({
-                    "queryPage": {
-                        "pageNum": vue.pageNum,
-                        "pageSize": vue.pageSize
-                    }
-                }),
+                data: JSON.stringify(vue.queryParams),
                 success: function (res) {
                     var data = res.data;
                     if (res.code == 0) {
                         vueDeviceList.deviceList = data.list;
                         vueDeviceList.total = data.total;
                         vueDeviceList.pages = data.pages;
-                        if (vueDeviceList.pageNum != data.pages) {
-                            vueDeviceList.disableNextPage = false;
-                        } else {
-                            vueDeviceList.disableNextPage = true;
-                        }
-                        if (vueDeviceList.pageNum > 1) {
-                            vueDeviceList.disableLastPage = false;
-                        } else {
-                            vueDeviceList.disableLastPage = true;
-                        }
+                        vueDeviceList.disableNextPage = vueDeviceList.queryParams.queryPage.pageNum === data.pages;
+                        vueDeviceList.disableLastPage = vueDeviceList.queryParams.queryPage.pageNum <= 1;
                     } else {
                         alert(res.msg);
                     }
@@ -79,15 +71,15 @@ var vueDeviceList = new Vue({
         },
         //翻到上一页
         lastPage: function () {
-            if (this.pageNum > 1) {
+            if (this.queryParams.queryPage.pageNum > 1) {
                 this.pageNum--;
                 this.listDevice();
             }
         },
         //翻到下一页
         nextPage: function () {
-            if (this.pages > this.pageNum) {
-                this.pageNum++;
+            if (this.pages > this.queryParams.queryPage.pageNum) {
+                this.queryParams.pageNum++;
                 this.listDevice();
             }
         },
@@ -156,12 +148,17 @@ var addDeviceVm = new Vue({
             "deviceModelId": 0,
             "useDepartmentId": 0,
             "custodianId": "",
-            "locationId": "0",
+            "locationId": "",
             "name": "",
             "nationalId": "",
             "serialNumber": "",
             "unitPrice": 0,
-            "workNatureId": "1"
+            "workNatureId": ""
+        },
+        categoryList: {
+            id: '',
+            name: '',
+            level: 1
         },
         brandPage: {
             pageNum: 1,
@@ -237,12 +234,13 @@ var addDeviceVm = new Vue({
                 url: API.getApi(API.getDeviceSelection),
                 success: function (res) {
                     if (res.code === 0){
-                        var categoryList = res.data.categoryList;
+                        var categoryList = $.extend(true,[],res.data.categoryList);
                         for (var category of categoryList){
                             initCategory(category);
                         }
                         categoryVm.categoryList = categoryList;
                         //渲染选项卡数据
+                        self.categoryList = res.data.categoryList;
                         self.brandList = res.data.brandList;
                         self.deviceModelList = res.data.deviceModelList;
                         self.locationList = res.data.locationList;
@@ -260,11 +258,18 @@ var addDeviceVm = new Vue({
     }
 });
 
-//侧边栏，注销
+//侧边栏
 var sideBarVm = new Vue({
     el: "#sidebar",
     data: {
         username: getLocalStorage(STORAGE_KEY.userInfo).username
+    },
+    methods: {
+        listDevice: function (statusId) {
+            vueDeviceList.queryParams.statusId = statusId;
+            vueDeviceList.listDevice();
+        }
+
     }
 });
 

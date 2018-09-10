@@ -53,7 +53,7 @@
 	</select>
 	<select id="getByUserId" resultType="com.sicau.devicemanager.POJO.DO.Location">
 		SELECT * FROM location
-		WHERE id = (
+		WHERE id in (
 				SELECT rl.location_id FROM user u
 				JOIN user_role ur
 				ON u.id = ur.user_id
@@ -68,6 +68,6 @@
 										 SELECT `level` FROM(
 											 (SELECT * FROM location WHERE id = #{rootId}) a
 										 )
-									 ) AND path LIKE concat("%",#{rootId},"%")
+									 ) AND path LIKE concat("%/",#{rootId},"/%")
 	</select>
 </mapper>

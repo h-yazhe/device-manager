@@ -59,7 +59,7 @@ public interface LocationMapper {
 	 */
 	List<Location> getLocationsInIds(List<String> locationIds);
 
-	Location getByUserId(String userId);
+	List<Location> getByUserId(String userId);
 
 	/**
 	 * 查询所有后代

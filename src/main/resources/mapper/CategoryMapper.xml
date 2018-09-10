@@ -21,7 +21,7 @@
 										 SELECT `level` FROM(
 											 (SELECT * FROM category WHERE id = #{rootId}) a
 										 )
-									 ) AND path LIKE concat("%",#{rootId},"%")
+									 ) AND path LIKE concat("%/",#{rootId},"/%")
 	</select>
 	<delete id="deleteByIds">
 		DELETE FROM category
