@@ -1,3 +1,4 @@
+
 var vueDeviceList = new Vue({
     el: "#device-list",
     components: {
@@ -28,13 +29,7 @@ var vueDeviceList = new Vue({
                 "deviceModel": ""
             }
         ],
-        queryParams: {
-            queryPage: new defaultQueryPage(),
-            statusId: null,//状态码
-            locationId: null,//地点id
-            brandId: null,//品牌id
-            deviceModelId: null//设备型号id
-        },
+        queryParams: $.extend(true,{},searchDeviceParams),
         pages: 1,//总页数
         total: 0,//总条数
         disableLastPage: true,
@@ -89,9 +84,8 @@ var vueDeviceList = new Vue({
             }
         },
         //格式化时间
-        formatTime: function (timeStamp) {
-            var date = new Date(timeStamp);
-            return date.getFullYear() + "." + date.getMonth() + "." + date.getDay();
+        formatTime: function (timestamp,deviceStatusId) {
+            return deviceStatusId===1 ? '' : formatTime(timestamp);
         },
         /**
          * 解析设备状态
@@ -107,11 +101,43 @@ var vueDeviceList = new Vue({
                 case 3:
                     return '报废';
             }
+        },
+        showDistributeModal: function (deviceId) {
+            deviceModalVm.distributeDeviceParam.deviceIdList.push(deviceId);
+            $('#distribute-device-modal').modal('toggle');
+        },
+        showDiscardModal: function (deviceId) {
+            deviceModalVm.discardDeviceParam.deviceId = deviceId;
+            $('#discard-device-modal').modal('toggle');
         }
     },
     created: function () {
         this.listDevice(this);
     }
+});
+
+//渲染分发设备模态框，报废设备模态框
+var deviceModalVm = new Vue({
+    el: '#device-modals',
+    components: {
+        'distribute-device': DistributeDevice,
+        'discard-device': DiscardDevice
+    },
+    data: {
+        //分发设备的参数
+        distributeDeviceParam: {
+            deviceIdList: [],
+            locationId: null
+        },
+        distributeSelection: $.extend(true,{},deviceSearchSelection),
+        discardDeviceParam: {
+            deviceId: null
+        }
+    },
+    template: '<div>'+
+        '<distribute-device :distributeParam=\"distributeDeviceParam\" :selection=\"distributeSelection\"></distribute-device>'+
+        "<discard-device :discardParams=\"discardDeviceParam\"></discard-device>"+
+        '</div>'
 });
 
 /**
@@ -138,7 +164,7 @@ var categoryVm = new Vue({
         ]
     },
     template: ' <div id="category-tree" class="panel-body">\n' +
-        '                            <CategoryTree v-for="item in categoryList" :parent="item" :key="item.id"></CategoryTree>\n' +
+        '                            <CategoryTree v-for="(item,i) in categoryList" :index="i" :parent="item" :key="item.id"></CategoryTree>\n' +
         '                        </div>'
 });
 var addDeviceVm = new Vue({
@@ -175,6 +201,8 @@ var addDeviceVm = new Vue({
                     if (res.code == 0){
                         alert("添加成功！");
                         $("#add-device").modal('toggle');
+                        //刷新设备列表
+                        vueDeviceList.listDevice();
                     }else {
                         alert(res.msg);
                     }
@@ -200,7 +228,9 @@ var addDeviceVm = new Vue({
                         self.selection.workNatureList = res.data.workNatureList;
                         self.selection.custodianList = res.data.custodianList;
                         //选项数据同样给到搜索设备组件中
-                        vueDeviceList.searchSelection = res.data;
+                        vueDeviceList.searchSelection = $.extend(true,{},res.data);
+                        //选项数据复制给分发设备组件
+                        deviceModalVm.distributeSelection = $.extend(true,{},res.data);
                     }else {
                         console.error(res.msg);
                     }
