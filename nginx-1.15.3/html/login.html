@@ -112,7 +112,7 @@
             methods: {
                 login: function () {
                     $.ajax({
-                        url: commonVm.getApi(commonVm.api.login),
+                        url: API.getApi(API.login),
                         method: "post",
                         contentType: "application/json",
                         data: JSON.stringify({
@@ -122,8 +122,8 @@
                         }),
                         success: function (res) {
                             if (res.code == 0){
-                                setLocalStorage(commonVm.storageKey.token, res.data.token);
-                                setLocalStorage(commonVm.storageKey.userInfo, JSON.stringify(res.data.userInfo));
+                                setLocalStorage(STORAGE_KEY.token, res.data.token);
+                                setLocalStorage(STORAGE_KEY.userInfo, JSON.stringify(res.data.userInfo));
                                 window.location.href = "index.html";
                             }else {
                                 alert(res.msg);
