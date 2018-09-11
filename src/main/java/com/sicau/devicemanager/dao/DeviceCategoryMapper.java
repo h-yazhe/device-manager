@@ -22,4 +22,12 @@ public interface DeviceCategoryMapper {
 	int deleteByDeviceIds(List<String> deviceIds);
 
 	int deleteByCategoryIds(List<String> categoryIds);
+
+	/**
+	 * 更改分类id
+	 * @param categoryId 要修改为的分类id
+	 * @param categoryIds 需要更改的分类id
+	 * @return
+	 */
+	int updateCategoryIdInCategoryIds(String categoryId, List<String> categoryIds);
 }

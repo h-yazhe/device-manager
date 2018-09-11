@@ -177,13 +177,12 @@
                                 <th>id</th>
                                 <th>设备名称</th>
                                 <th>类别</th>
-                                <th v-if="queryParams.statusId==2">使用地点</th>
+                                <th v-if="queryParams.statusId!=1">使用部门</th>
                                 <th>设备品牌</th>
                                 <th>设备型号</th>
                                 <th>国资编号</th>
                                 <th>序列号</th>
                                 <th>所在校区</th>
-                                <th>使用部门</th>
                                 <th v-if="queryParams.statusId!=1">领用时间</th>
                                 <th>工作性质</th>
                                 <th>保管人</th>
@@ -197,13 +196,12 @@
                                 <td>{{device.id}}</td>
                                 <td>{{device.name}}</td>
                                 <td>{{device.categoryStr}}</td>
-                                <td v-if="queryParams.statusId==2">{{device.locationStr}}</td>
+                                <td v-if="queryParams.statusId!=1">{{getDepartment(device.locationStr)}}</td>
                                 <td>{{device.brand!=undefined?device.brand.name:'未填写'}}</td>
                                 <td>{{device.deviceModel}}</td>
                                 <td>{{device.nationalId}}</td>
                                 <td>{{device.serialNumber}}</td>
                                 <td>{{device.locationStr.split('/')[0]}}</td>
-                                <td>{{device.useDepartment}}</td>
                                 <td v-if="queryParams.statusId!=1">{{formatTime(device.useTime,device.statusId)}}</td>
                                 <td>{{device.workNature}}</td>
                                 <td>{{device.custodian}}</td>

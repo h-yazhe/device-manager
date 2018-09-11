@@ -2,6 +2,7 @@ package com.sicau.devicemanager.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.sicau.devicemanager.POJO.DO.Category;
+import com.sicau.devicemanager.POJO.DO.DeviceCategory;
 import com.sicau.devicemanager.POJO.DTO.CategoryDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.CategoryVO;
@@ -80,13 +81,14 @@ public class CategoryServiceImpl implements CategoryService{
 
 	@Override
 	public void deleteCategoryTree(String rootId) {
+		//该分类下的所有设备全部转移到默认分类下
 		List<String> categoryIds = new ArrayList<>();
-		List<Category> categoryList = categoryMapper.getDescendants(rootId);
-		for (Category category : categoryList){
+		categoryMapper.getDescendants(rootId).forEach(category->{
 			categoryIds.add(category.getId());
-		}
+		});
 		categoryIds.add(rootId);
-		deviceCategoryMapper.deleteByCategoryIds(categoryIds);
+		deviceCategoryMapper.updateCategoryIdInCategoryIds("0",categoryIds);
+		//删除分类
 		categoryMapper.deleteByIds(categoryIds);
 	}
 

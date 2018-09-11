@@ -321,7 +321,7 @@ var DistributeDevice = {
         '            <h2>分发设备</h2>\n' +
         '        </div>\n' +
         '        <div class="modal-body">\n' +
-        '            <label for="distribute-location">请选择分发的地点</label>\n' +
+        '            <label for="distribute-location">请选择分发的部门</label>\n' +
         '            <select v-model="distributeParam.locationId" id="distribute-location" class="form-control">\n' +
         '                <option disabled :value="null">请选择</option>\n' +
         '                <option v-for="location in selection.locationList" v-bind:value="location.id">{{location.name}}</option>\n' +

@@ -72,14 +72,14 @@ var vueDeviceList = new Vue({
         //翻到上一页
         lastPage: function () {
             if (this.queryParams.queryPage.pageNum > 1) {
-                this.pageNum--;
+                this.queryParams.queryPage.pageNum--;
                 this.listDevice();
             }
         },
         //翻到下一页
         nextPage: function () {
             if (this.pages > this.queryParams.queryPage.pageNum) {
-                this.queryParams.pageNum++;
+                this.queryParams.queryPage.pageNum++;
                 this.listDevice();
             }
         },
@@ -101,6 +101,9 @@ var vueDeviceList = new Vue({
                 case 3:
                     return '报废';
             }
+        },
+        getDepartment: function (locationStr) {
+            return locationStr.substring(locationStr.indexOf('/') + 1 ,locationStr.length);
         },
         showDistributeModal: function (deviceId) {
             deviceModalVm.distributeDeviceParam.deviceIdList.push(deviceId);
