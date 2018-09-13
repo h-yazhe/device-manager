@@ -44,4 +44,10 @@ public interface CategoryService {
 	 * @return
 	 */
 	List<Category> listCategoryByPId(CategoryVO categoryVO);
+
+	/**
+	 * 根据父id插入一个子分类
+	 * @param category
+	 */
+	void insertCategoryByPId(Category category);
 }

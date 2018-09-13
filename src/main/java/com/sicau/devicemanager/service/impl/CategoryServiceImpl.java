@@ -119,6 +119,18 @@ public class CategoryServiceImpl implements CategoryService{
 		return categoryMapper.getChildrenById(categoryVO.getParentId());
 	}
 
+	@Override
+	public void insertCategoryByPId(Category category) {
+		List<Category> categories = new ArrayList<>(1);
+		category.setId(KeyUtil.genUniqueKey());
+		//根据父节点信息设置当前节点其他信息
+		Category pCategory = categoryMapper.getById(category.getParentId());
+		category.setLevel(pCategory.getLevel() + 1);
+		category.setPath(pCategory.getPath() + category.getId());
+		categories.add(category);
+		categoryMapper.insertList(categories);
+	}
+
 	/**
 	 * 由当前节点生成子节点的DTO
 	 * @param root 当前节点

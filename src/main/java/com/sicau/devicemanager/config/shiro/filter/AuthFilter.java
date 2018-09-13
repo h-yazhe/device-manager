@@ -49,9 +49,6 @@ public class AuthFilter extends AccessControlFilter {
             SimpleToken token = new SimpleToken(authorization);
             // 提交给realm进行登入，如果错误他会抛出异常并被捕获
             getSubject(request, response).login(token);
-            //登录成功后设置cookie，方便下次请求
-            CookieUtil.addCookie(response,HttpParamKey.TOKEN, authorization,
-                    DateUtil.convertDay2Second(tokenExpireTime));
             // 如果没有抛出异常则代表登入成功，返回true
             return true;
         } catch (Exception e) {

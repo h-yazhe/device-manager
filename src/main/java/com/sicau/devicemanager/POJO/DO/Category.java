@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.POJO.DO;
 
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.InsertTree;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.InsertTreeByPId;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.ListTreeByPId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,19 +18,21 @@ import javax.validation.constraints.NotNull;
 @ApiModel("设备分类")
 public class Category {
 
+	@NotNull(message = "id不能为空",groups = {InsertTree.class})
 	private String id;
 
 	/**
 	 * 父级地点id
 	 */
 	@ApiModelProperty("父级分类id")
-	@NotNull(message = "父级分类id不能为空",groups = {InsertTree.class, ListTreeByPId.class})
+	@NotNull(message = "父级分类id不能为空",groups = {InsertTree.class, ListTreeByPId.class, InsertTreeByPId.class})
 	private String parentId;
 
 	/**
 	 * 地名
 	 */
 	@ApiModelProperty("分类名")
+	@NotNull(message = "名称不能为空",groups = {InsertTree.class,InsertTreeByPId.class})
 	private String name;
 
 	/**

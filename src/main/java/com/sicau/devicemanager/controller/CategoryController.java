@@ -75,4 +75,16 @@ public class CategoryController {
 		categoryService.insertCategoryTree(categoryList);
 		return ResultVOUtil.success();
 	}
+
+	/**
+	 * 根据父id插入一个子分类
+	 * @param category
+	 * @return
+	 */
+	@PostMapping("insert-category-by-pid")
+	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.ADD)
+	public ResultVO insertCategoryByPId(@RequestBody Category category){
+		categoryService.insertCategoryByPId(category);
+		return ResultVOUtil.success();
+	}
 }
