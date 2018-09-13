@@ -16,7 +16,7 @@ spring:
         #监控视图配置
         stat-view-servlet:
           login-username: admin
-          login-password: 123456
+          login-password: ENC(KV+OuaEiZx5AG3/24nzcoA==)
 
 mybatis:
    mapperLocations: classpath:/mapper/*.xml
@@ -24,12 +24,16 @@ mybatis:
    configuration:
      map-underscore-to-camel-case: true
 
+jasypt:
+  encryptor:
+    password:
+
 #token过期时间（天）
 token-expire-time: 30
 
-logging:
-  level:
-    com:
-      sicau:
-        devicemanager:
-          dao: debug
+#logging:
+#  level:
+#    com:
+#      sicau:
+#        devicemanager:
+#          dao: debug
