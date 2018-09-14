@@ -14,7 +14,7 @@ import com.sicau.devicemanager.dao.*;
 import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.util.DateUtil;
 import com.sicau.devicemanager.util.KeyUtil;
-import org.apache.shiro.SecurityUtils;
+import com.sicau.devicemanager.util.web.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,19 +58,21 @@ public class DeviceServiceImpl implements DeviceService {
 
 	@Override
 	public void addDevice(DeviceDTO deviceDTO) {
+		//插入设备信息
 		deviceDTO.setId(KeyUtil.genUniqueKey());
 		deviceDTO.setStatusId(DeviceStatusEnum.IN_STORAGE.getCode());
 		deviceMapper.insertSelective(deviceDTO);
-		deviceStatusRecordMapper.insert(
-				new DeviceStatusRecord(KeyUtil.genUniqueKey(),deviceDTO.getId(),
-						DeviceStatusEnum.UNCONNECTED.getCode(),DeviceStatusEnum.IN_STORAGE.getCode(),
-						(String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal())
-		);
 		insertDeviceBrand(deviceDTO);
 		insertDeviceCategory(deviceDTO);
+		//插入设备状态记录
+		deviceStatusRecordMapper.insert(
+				new DeviceStatusRecord(KeyUtil.genUniqueKey(), deviceDTO.getId(),
+						DeviceStatusEnum.UNCONNECTED.getCode(), DeviceStatusEnum.IN_STORAGE.getCode(),
+						"",deviceDTO.getLocationId(),RequestUtil.getCurrentUserId())
+		);
 	}
 
-	private void insertDeviceBrand(DeviceDTO deviceDTO){
+	private void insertDeviceBrand(DeviceDTO deviceDTO) {
 		DeviceBrand deviceBrand = new DeviceBrand();
 		deviceBrand.setId(KeyUtil.genUniqueKey());
 		deviceBrand.setBrandId(deviceDTO.getBrandId());
@@ -78,7 +80,7 @@ public class DeviceServiceImpl implements DeviceService {
 		deviceBrandMapper.insert(deviceBrand);
 	}
 
-	private void insertDeviceCategory(DeviceDTO deviceDTO){
+	private void insertDeviceCategory(DeviceDTO deviceDTO) {
 		for (String categoryId :
 				deviceDTO.getCategoryIds()) {
 			DeviceCategory deviceCategory = new DeviceCategory();
@@ -102,11 +104,16 @@ public class DeviceServiceImpl implements DeviceService {
 
 	@Override
 	public void deleteDeviceById(List<String> ids) {
-		if (ids.isEmpty()){
+		if (ids.isEmpty()) {
 			return;
 		}
+		//删除设备分类
 		deviceCategoryMapper.deleteByDeviceIds(ids);
+		//删除设备品牌
 		deviceBrandMapper.deleteByDeviceIds(ids);
+		//删除设备状态记录
+		deviceStatusRecordMapper.deleteByDeviceIds(ids);
+		//删除设备
 		deviceMapper.deleteByIds(ids);
 	}
 
@@ -115,13 +122,12 @@ public class DeviceServiceImpl implements DeviceService {
 		//校验时间
 		Date startTime = deviceDTO.getStartTime();
 		Date endTime = deviceDTO.getEndTime();
-		if (startTime!=null && endTime!=null){
+		if (startTime != null && endTime != null) {
 			int result = startTime.compareTo(endTime);
 			//开始时间大于结束时间
-			if (result == 1){
-				throw new CommonException(ResultEnum.DATE_INCORRECT.getCode(),"请选择合适的日期");
-			}
-			else if (result == 0){
+			if (result == 1) {
+				throw new CommonException(ResultEnum.DATE_INCORRECT.getCode(), "请选择合适的日期");
+			} else if (result == 0) {
 				//开始时间=结束时间
 				deviceDTO.setStartTime(DateUtil.getStartTimeToday(startTime));
 				deviceDTO.setEndTime(DateUtil.getEndTimeToday(endTime));
@@ -129,7 +135,7 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 
 		//获取查询条件的分类id及所有子分类id
-		if (!StringUtils.isEmpty(deviceDTO.getCategoryId())){
+		if (!StringUtils.isEmpty(deviceDTO.getCategoryId())) {
 			List<Category> categoryList = categoryMapper.getDescendants(deviceDTO.getCategoryId());
 			List<String> categoryIds = new ArrayList<>();
 			categoryIds.add(deviceDTO.getCategoryId());
@@ -139,21 +145,21 @@ public class DeviceServiceImpl implements DeviceService {
 
 		//获取查询条件的地点id及所有子地点id，若查询的地点id不属于角色管理区域下的id，则抛出异常
 		String userId = deviceDTO.getUserId();
-		if (userId == null){
+		if (userId == null) {
 			throw new RuntimeException("用户id不能为空");
 		}
 		//获取用户管理的地点（根地点）
 		List<Location> userLocationList = locationMapper.getByUserId(userId);
 		//存储用户管理的所有地点及子孙地点
 		List<Location> locationList = new ArrayList<>();
-		userLocationList.forEach((userLocation)->{
+		userLocationList.forEach((userLocation) -> {
 			locationList.add(userLocation);
 			//获取所有子地点
 			locationList.addAll(locationMapper.getDescendants(userLocation.getId()));
 		});
 		//开始校验地点
-		if (!StringUtils.isEmpty(deviceDTO.getLocationId())){
-			if (!checkLocationId(deviceDTO.getLocationId(),locationList)){
+		if (!StringUtils.isEmpty(deviceDTO.getLocationId())) {
+			if (!checkLocationId(deviceDTO.getLocationId(), locationList)) {
 				throw new CommonException(ResultEnum.LOCATION_UNAUTHORIZED);
 			}
 			//设置地点id作为查询条件
@@ -176,12 +182,12 @@ public class DeviceServiceImpl implements DeviceService {
 		//分页查询
 		QueryPage queryPage = deviceDTO.getQueryPage();
 		//默认id升序
-		if (queryPage.getOrderBy() == null){
+		if (queryPage.getOrderBy() == null) {
 			queryPage.setOrderBy("id");
 			queryPage.setOrderDirection("asc");
 		}
-		PageHelper.startPage(queryPage.getPageNum(),queryPage.getPageSize(),
-				queryPage.getOrderBy() + " " +queryPage.getOrderDirection());
+		PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(),
+				queryPage.getOrderBy() + " " + queryPage.getOrderDirection());
 		List<DeviceDTO> deviceDTOList = deviceMapper.getDeviceInfo(deviceDTO);
 		//组装地点和分类信息
 		setLocationAndCategory(deviceDTOList);
@@ -190,52 +196,80 @@ public class DeviceServiceImpl implements DeviceService {
 
 	@Override
 	public void distributeDevice(DistributeDeviceDTO distributeDeviceDTO) {
+		//分发
 		distributeDeviceDTO.setUseTime(new Date());
 		deviceMapper.distributeDevice(distributeDeviceDTO);
+		//写入分发记录
+		List<DeviceStatusRecord> records = new ArrayList<>(1);
+		deviceMapper.getByIds(distributeDeviceDTO.getDeviceIdList()).forEach(device -> {
+			records.add(new DeviceStatusRecord(
+					KeyUtil.genUniqueKey(),
+					device.getId(),
+					device.getStatusId(),
+					DeviceStatusEnum.USING.getCode(),
+					device.getLocationId(),
+					distributeDeviceDTO.getLocationId(),
+					RequestUtil.getCurrentUserId()
+			));
+		});
+		deviceStatusRecordMapper.insertBatch(records);
 	}
 
 	@Override
 	public void discardDevice(String deviceId) {
+		//报废
 		deviceMapper.discardDevice(deviceId);
+		//插入报废记录
+		Device device = deviceMapper.selectByPrimaryKey(deviceId);
+		deviceStatusRecordMapper.insert(new DeviceStatusRecord(
+				KeyUtil.genUniqueKey(),
+				deviceId,
+				device.getStatusId(),
+				DeviceStatusEnum.DISCARDED.getCode(),
+				device.getLocationId(),
+				device.getLocationId(),
+				RequestUtil.getCurrentUserId()
+		));
 	}
 
 	@Override
 	public DeviceSearchSelectionVO getSearchSelections(int pageSize) {
 		DeviceSearchSelectionVO deviceSearchSelectionVO = new DeviceSearchSelectionVO();
-		PageHelper.startPage(1,pageSize);
+		PageHelper.startPage(1, pageSize);
 		deviceSearchSelectionVO.setCategoryList(categoryMapper.getChildrenById(""));
-		PageHelper.startPage(1,pageSize);
+		PageHelper.startPage(1, pageSize);
 		deviceSearchSelectionVO.setLocationList(locationMapper.getChildrenById(""));
-		PageHelper.startPage(1,pageSize);
+		PageHelper.startPage(1, pageSize);
 		deviceSearchSelectionVO.setBrandList(brandMapper.listBrand());
-		PageHelper.startPage(1,pageSize);
+		PageHelper.startPage(1, pageSize);
 		deviceSearchSelectionVO.setCustodianList(custodianMapper.listAll());
-		PageHelper.startPage(1,pageSize);
+		PageHelper.startPage(1, pageSize);
 		deviceSearchSelectionVO.setDepartmentList(departmentMapper.listAll());
-		PageHelper.startPage(1,pageSize);
+		PageHelper.startPage(1, pageSize);
 		deviceSearchSelectionVO.setDeviceModelList(deviceModelMapper.listAll());
-		PageHelper.startPage(1,pageSize);
+		PageHelper.startPage(1, pageSize);
 		deviceSearchSelectionVO.setWorkNatureList(workNatureMapper.listAll());
 		return deviceSearchSelectionVO;
 	}
 
 	/**
 	 * 校验locationId是否在目标list中
+	 *
 	 * @param locationId
 	 * @param locationList
 	 * @return 存在返回true，否则返回false
 	 */
-	private boolean checkLocationId(String locationId, List<Location> locationList){
-		for (Location location : locationList){
-			if (locationId.equals(location.getId())){
+	private boolean checkLocationId(String locationId, List<Location> locationList) {
+		for (Location location : locationList) {
+			if (locationId.equals(location.getId())) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private void setLocationAndCategory(List<DeviceDTO> deviceDTOList){
-		for (DeviceDTO deviceDTO : deviceDTOList){
+	private void setLocationAndCategory(List<DeviceDTO> deviceDTOList) {
+		for (DeviceDTO deviceDTO : deviceDTOList) {
 			//地点信息
 			StringBuilder locationStr = new StringBuilder();
 			Location location = deviceDTO.getLocation();
@@ -243,15 +277,15 @@ public class DeviceServiceImpl implements DeviceService {
 			deviceDTO.setLocation(null);
 			List<String> locationIds = new ArrayList<>(Arrays.asList(location.getPath().split("/")));
 			//字符串分割后第一个元素为空，去掉
-			if (locationIds.size()>0){
+			if (locationIds.size() > 0) {
 				locationIds.remove(0);
 				List<Location> locationList = locationMapper.getLocationsInIds(locationIds);
-				for (Location item : locationList){
+				for (Location item : locationList) {
 					locationStr.append(item.getName());
 					locationStr.append("/");
 				}
 				deviceDTO.setLocationStr(locationStr.append(location.getName()).toString());
-			}else {
+			} else {
 				//否则为顶级区域
 				deviceDTO.setLocationStr(location.getName());
 			}
@@ -260,21 +294,21 @@ public class DeviceServiceImpl implements DeviceService {
 			StringBuilder categoryStr = new StringBuilder();
 			Category category = deviceDTO.getCategory();
 			//TODO 上线删除，测试用
-			if (category == null){
+			if (category == null) {
 				deviceDTO.setCategoryStr("未分类");
 				continue;
 			}
 			deviceDTO.setCategory(null);
 			List<String> categoryIds = new ArrayList<>(Arrays.asList(category.getPath().split("/")));
-			if (categoryIds.size()>0){
+			if (categoryIds.size() > 0) {
 				categoryIds.remove(0);
 				List<Category> categoryList = categoryMapper.getCategoryInIds(categoryIds);
-				for (Category item : categoryList){
+				for (Category item : categoryList) {
 					categoryStr.append(item.getName());
 					categoryStr.append("/");
 				}
 				deviceDTO.setCategoryStr(categoryStr.append(category.getName()).toString());
-			}else {
+			} else {
 				deviceDTO.setCategoryStr(category.getName());
 			}
 		}

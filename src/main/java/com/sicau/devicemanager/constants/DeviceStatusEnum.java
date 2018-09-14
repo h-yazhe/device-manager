@@ -9,9 +9,10 @@ public enum DeviceStatusEnum {
 
 	UNCONNECTED(-1,"未接入"),
 
-	IN_STORAGE(1,"入库"),
+	IN_STORAGE(1,"库存中"),
 	USING(2,"使用中"),
-	DISCARDED(3,"报废")
+	DISCARDED(3,"报废"),
+	FIXING(4,"维修中")
 	;
 
 	/**

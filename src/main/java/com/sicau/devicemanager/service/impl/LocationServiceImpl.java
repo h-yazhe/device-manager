@@ -5,7 +5,9 @@ import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.DTO.LocationDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
+import com.sicau.devicemanager.dao.DeviceMapper;
 import com.sicau.devicemanager.dao.LocationMapper;
+import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.service.LocationService;
 import com.sicau.devicemanager.util.KeyUtil;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +28,8 @@ public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	private LocationMapper locationMapper;
+	@Autowired
+	private DeviceService deviceService;
 
 	@Override
 	public void insertLocationTree(List<Location> locationList) {
@@ -46,6 +50,18 @@ public class LocationServiceImpl implements LocationService {
 		if (rootCount == 0){
 			throw new RuntimeException("根节点数量不能为0");
 		}
+		locationMapper.insertList(locationList);
+	}
+
+	@Override
+	public void insertLocationByPId(Location location) {
+		List<Location> locationList = new ArrayList<>(1);
+		location.setId(KeyUtil.genUniqueKey());
+		//根据父节点信息设置当前节点其他信息
+		Location pLocation = locationMapper.getById(location.getParentId());
+		location.setLevel(pLocation.getLevel() + 1);
+		location.setPath(pLocation.getPath() + location.getId());
+		locationList.add(location);
 		locationMapper.insertList(locationList);
 	}
 
@@ -76,11 +92,15 @@ public class LocationServiceImpl implements LocationService {
 
 	@Override
 	public void deleteLocationTree(String rootId) {
-		for (String childId: locationMapper.getChildrenIdById(rootId)){
-			deleteLocationTree(childId);
-			locationMapper.deleteById(childId);
-		}
-		locationMapper.deleteById(rootId);
+		List<String> ids = new ArrayList<>();
+		locationMapper.getDescendants(rootId).forEach(location -> {
+			ids.add(location.getId());
+		});
+		ids.add(rootId);
+		//删除与地点关联的设备
+		deviceService.deleteDeviceById(ids);
+		//删除地点
+		locationMapper.deleteByIds(ids);
 	}
 
 	@Override

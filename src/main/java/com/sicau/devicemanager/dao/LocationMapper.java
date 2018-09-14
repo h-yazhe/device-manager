@@ -23,6 +23,8 @@ public interface LocationMapper {
 	 */
 	int deleteById(String id);
 
+	int deleteByIds(List<String> ids);
+
 	/**
 	 * 查询所有的地点
 	 * @return

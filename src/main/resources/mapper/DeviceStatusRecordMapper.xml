@@ -8,9 +8,11 @@
     <result column="to_status" property="toStatus" jdbcType="TINYINT" />
     <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP" />
     <result column="operate_user_id" property="operateUserId" jdbcType="VARCHAR" />
+	  <result column="from_location_id" property="fromLocationId" jdbcType="VARCHAR"/>
+	  <result column="to_location_id" property="toLocationId" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, device_id, from_status, to_status, operate_time, operate_user_id
+    id, device_id, from_status, to_status, operate_time, operate_user_id, from_location_id, to_location_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -22,12 +24,19 @@
     delete from device_status_record
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
+	<delete id="deleteByDeviceIds">
+		delete from device_status_record
+		where device_id in
+		<foreach collection="list" item="i" separator="," open="(" close=")">
+			#{i}
+		</foreach>
+	</delete>
+	<insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
     insert into device_status_record (id, device_id, from_status, 
-      to_status, operate_user_id
+      to_status, operate_user_id,from_location_id,to_location_id
       )
     values (#{id,jdbcType=VARCHAR}, #{deviceId,jdbcType=VARCHAR}, #{fromStatus,jdbcType=TINYINT}, 
-      #{toStatus,jdbcType=TINYINT}, #{operateUserId,jdbcType=VARCHAR}
+      #{toStatus,jdbcType=TINYINT}, #{operateUserId,jdbcType=VARCHAR},#{fromLocationId},#{toLocationId}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
@@ -51,6 +60,12 @@
       <if test="operateUserId != null" >
         operate_user_id,
       </if>
+		<if test="fromLocationId != null">
+			from_location_id
+		</if>
+		<if test="toLocationId != null">
+			to_location_id
+		</if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -71,9 +86,23 @@
       <if test="operateUserId != null" >
         #{operateUserId,jdbcType=VARCHAR},
       </if>
+		<if test="fromLocationId != null">
+			#{fromLocationId}
+		</if>
+		<if test="toLocationId != null">
+			#{toLocationId}
+		</if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
+	<insert id="insertBatch">
+		insert into device_status_record(id, device_id, from_status,
+		to_status, operate_user_id,from_location_id,to_location_id
+		) values
+			<foreach collection="list" item="i" separator=",">
+				(#{i.id},#{ideviceId},#{i.fromStatus},#{i.toStatus},#{i.operateUserId},#{fromLocationId},#{toLocationId})
+			</foreach>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
     update device_status_record
     <set >
       <if test="deviceId != null" >
@@ -91,6 +120,12 @@
       <if test="operateUserId != null" >
         operate_user_id = #{operateUserId,jdbcType=VARCHAR},
       </if>
+		<if test="fromLocationId != null">
+			from_location_id = #{fromLocationId}
+		</if>
+		<if test="toLocationId != null">
+			to_location_id = #{toLocationId}
+		</if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -100,7 +135,9 @@
       from_status = #{fromStatus,jdbcType=TINYINT},
       to_status = #{toStatus,jdbcType=TINYINT},
       operate_time = #{operateTime,jdbcType=TIMESTAMP},
-      operate_user_id = #{operateUserId,jdbcType=VARCHAR}
+      operate_user_id = #{operateUserId,jdbcType=VARCHAR},
+		from_location_id = #{fromLocationId},
+		to_location_id = #{toLocationId}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

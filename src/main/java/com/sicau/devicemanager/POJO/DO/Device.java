@@ -18,8 +18,8 @@ public class Device {
     private String id;
 
 	@ApiModelProperty("设备名")
-	@Pattern(regexp = "^[a-zA-Z\u4e00-\u9fa5_0-9]+$",groups = {AddDeviceGroup.class},message = "设备名只能为汉字、英文字母、数字、下划线的组合")
-	@NotNull(groups = {AddDeviceGroup.class},message = "设备名不能为空")
+	@Pattern(regexp = "^[a-zA-Z\u4e00-\u9fa5_0-9]+$",groups = {AddDeviceGroup.class,UpdateDeviceGroup.class},message = "设备名只能为汉字、英文字母、数字、下划线的组合")
+	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class},message = "设备名不能为空")
 	private String name;
 
     @ApiModelProperty("所处地点id")
@@ -27,8 +27,7 @@ public class Device {
     private String locationId;
 
     @ApiModelProperty("国资编号")
-	@Pattern(regexp = "^[0-9a-zA-Z]+$",groups = {AddDeviceGroup.class},message = "国资编号只能为英文字母、数字的组合")
-	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
+	@Pattern(regexp = "^[0-9a-zA-Z]+$",groups = {AddDeviceGroup.class,UpdateDeviceGroup.class},message = "国资编号只能为英文字母、数字的组合")
     private String nationalId;
 
     @ApiModelProperty("序列号")
@@ -43,9 +42,9 @@ public class Device {
 	private Integer deviceModelId;
 
 	/**
+	 * TODO 该字段在数据库中已删除
 	 * 使用部门id
 	 */
-	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
 	private Integer useDepartmentId;
 
     @ApiModelProperty("领用时间")
@@ -63,8 +62,11 @@ public class Device {
 	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
     private BigDecimal unitPrice;
 
-    @ApiModelProperty("计量单位id")
-	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
+	/**
+	 * 计量单位id
+	 * 预留字段，暂不使用
+	 */
+	@ApiModelProperty("计量单位id")
     private String amountUnitId;
 
     @ApiModelProperty(value = "当前设备状态id",notes = "1为入库，2为使用，3为报废")

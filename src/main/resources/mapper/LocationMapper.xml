@@ -16,6 +16,13 @@
 		DELETE FROM location
 		WHERE id = #{id}
 	</delete>
+	<delete id="deleteByIds">
+		delete from location
+		where id in
+		<foreach collection="list" item="i" separator="," open="(" close=")">
+			#{i}
+		</foreach>
+	</delete>
 
 	<select id="selectAll" resultType="com.sicau.devicemanager.POJO.DO.Location">
 		SELECT * FROM location

@@ -15,6 +15,13 @@ public interface DeviceMapper {
 
     Device selectByPrimaryKey(String id);
 
+	/**
+	 * 根据设备id批量查询设备表信息
+	 * @param ids
+	 * @return
+	 */
+	List<Device> getByIds(List<String> ids);
+
     int updateByPrimaryKeySelective(Device record);
 
     int updateByPrimaryKey(Device record);
@@ -41,4 +48,11 @@ public interface DeviceMapper {
 	 * @return
 	 */
 	int discardDevice(String deviceId);
+
+	/**
+	 * 根据地点id删除设备
+	 * @param locationId
+	 * @return
+	 */
+	int deleteByLocationIds(List<String> locationId);
 }

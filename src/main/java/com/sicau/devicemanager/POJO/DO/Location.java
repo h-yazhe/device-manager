@@ -3,6 +3,7 @@ package com.sicau.devicemanager.POJO.DO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.InsertTree;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.InsertTreeByPId;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.ListTreeByPId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,20 +21,21 @@ import javax.validation.constraints.NotNull;
 @JsonInclude(Include.NON_NULL)
 public class Location {
 
+	@NotNull(message = "id不能为空",groups = {InsertTree.class})
 	private String id;
 
 	/**
 	 * 父级地点id
 	 */
 	@ApiModelProperty("父级地点id")
-	@NotNull(message = "父级地点id不能为空",groups = {InsertTree.class, ListTreeByPId.class})
+	@NotNull(message = "父级地点id不能为空",groups = {InsertTree.class, ListTreeByPId.class, InsertTreeByPId.class})
 	private String parentId;
 
 	/**
 	 * 地名
 	 */
 	@ApiModelProperty("地名")
-	@NotNull(message = "地名不能为空",groups = {InsertTree.class})
+	@NotNull(message = "地名不能为空",groups = {InsertTree.class, InsertTreeByPId.class})
 	private String name;
 
 	/**

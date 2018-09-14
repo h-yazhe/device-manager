@@ -21,6 +21,12 @@ public interface LocationService {
 	void insertLocationTree(List<Location> locationList);
 
 	/**
+	 * 根据父id插入一个地点
+	 * @param location
+	 */
+	void insertLocationByPId(Location location);
+
+	/**
 	 * 删除该节点为根的树
 	 * @param rootId 根节点id
 	 */

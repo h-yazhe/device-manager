@@ -44,13 +44,7 @@
 		</javaClientGenerator>
 
 		<!--对应数据库表 mysql可以加入主键自增 字段命名 忽略某字段等 -->
-		<table tableName="department"  domainObjectName="Department"
-			   enableCountByExample="false" enableUpdateByExample="false"
-			   enableDeleteByExample="false" enableSelectByExample="false"
-			   selectByExampleQueryId="false" >
-			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
-		</table>
-		<table tableName="device_model"  domainObjectName="DeviceModel"
+		<table tableName="device_status_record"  domainObjectName="device_status_record"
 			   enableCountByExample="false" enableUpdateByExample="false"
 			   enableDeleteByExample="false" enableSelectByExample="false"
 			   selectByExampleQueryId="false" >

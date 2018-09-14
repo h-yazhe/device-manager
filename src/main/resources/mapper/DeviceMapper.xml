@@ -146,6 +146,13 @@
 	<select id="getDeviceInfo" parameterType="com.sicau.devicemanager.POJO.DTO.DeviceDTO" resultMap="deviceDTO">
 		<include refid="getDeviceInfo"/>
 	</select>
+	<select id="getByIds" resultType="com.sicau.devicemanager.POJO.DO.Device">
+		select * from device
+		where id in
+		<foreach collection="list" separator="," close=")" open="(" item="i">
+			#{i}
+		</foreach>
+	</select>
 
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
 		DELETE FROM device
@@ -156,6 +163,13 @@
 		WHERE id IN
 		<foreach collection="list" item="id" separator="," open="(" close=")">
 			#{id}
+		</foreach>
+	</delete>
+	<delete id="deleteByLocationIds">
+		delete from device
+		where location_id in
+		<foreach collection="list" item="i" open="(" separator="," close=")">
+			#{i}
 		</foreach>
 	</delete>
 	<insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.Device">
