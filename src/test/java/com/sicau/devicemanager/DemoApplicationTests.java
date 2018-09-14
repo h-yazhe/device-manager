@@ -17,10 +17,4 @@ public class DemoApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-
-	@Test
-	public void encrypt(){
-		System.out.println(stringEncryptor.encrypt("123456"));
-	}
-
 }
