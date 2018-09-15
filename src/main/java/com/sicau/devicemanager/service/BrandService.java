@@ -1,6 +1,8 @@
 package com.sicau.devicemanager.service;
 
+import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.Brand;
+import com.sicau.devicemanager.POJO.DTO.QueryPage;
 
 import java.util.List;
 
@@ -16,6 +18,8 @@ public interface BrandService {
      * @return
      */
     List<Brand> listBrand();
+
+    PageInfo<Brand> listBrandByPage(QueryPage queryPage);
 
     /**
      * 新增品牌

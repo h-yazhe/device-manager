@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.controller;
 
 import com.sicau.devicemanager.POJO.DO.Brand;
+import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
@@ -10,7 +11,6 @@ import com.sicau.devicemanager.service.BrandService;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +36,18 @@ public class BrandController {
     public ResultVO listBrand(){
         return ResultVOUtil.success(brandService.listBrand());
     }
+
+	/**
+	 * 分页查询品牌
+	 * @param queryPage
+	 * @return
+	 */
+	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+	@PostMapping("get-brands")
+	@RequiresPermissions(ResourceConstants.BRAND + PermissionActionConstant.GET)
+    public ResultVO listBrandByPage(@RequestBody QueryPage queryPage){
+    	return ResultVOUtil.success(brandService.listBrandByPage(queryPage));
+	}
 
     @ApiOperation("新增品牌")
     @ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")

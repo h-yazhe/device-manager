@@ -36,6 +36,7 @@ public class ExceptionHandle {
         }
         //资源异常
         else if (e instanceof ResourceException){
+        	e.printStackTrace();
             ResourceException resourceException = (ResourceException) e;
             ResourceExceptionEnum resourceExceptionEnum = resourceException.getResourceExceptionEnum();
             return ResultVOUtil.error(resourceExceptionEnum.getCode(),

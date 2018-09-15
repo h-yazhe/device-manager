@@ -51,7 +51,7 @@ public class CategoryController {
 
 	@ApiOperation("删除该节点为根的树")
 	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@DeleteMapping("category/{rootId}")
+	@PostMapping("delete-category-by-id/{rootId}")
 	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.DELETE)
 	public ResultVO deleteCategoryTree(@PathVariable("rootId") String rootId){
 		categoryService.deleteCategoryTree(rootId);

@@ -20,7 +20,7 @@ public interface CategoryService {
 	void insertCategoryTree(List<Category> locationList);
 
 	/**
-	 * 删除该节点为根的树
+	 * 删除该节点为根的树,该分类下的所有设备全部转移到默认分类下
 	 * @param rootId 根节点id
 	 */
 	void deleteCategoryTree(String rootId);
