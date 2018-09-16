@@ -54,6 +54,145 @@ categoryIds | 分类id列表 | str |
 字段名 | 描述 | 备注
 :-----: | :-------: | :-------:
 
+2.根据条件查询设备列表
+tips:若有多个参数，匹配结果取交集
+url:`device/list`
+
+data: 
+```
+{
+	"workNatureId": "111",
+	"custodianId": "2222",
+	"deviceModelId": 111,
+	"amountUnitId": "asdz",
+	"brandId": "123",
+	"categoryId": "aaa",
+	"locationId": "zzz",
+	"nationalId": "ada123",
+	"statusId": 1,
+	"startTime": 1537112303701,
+	"endTime": 1537112303704,
+	"queryKey": "测试",
+	"queryPage": {
+		"pageNum": 1,
+		"pageSize": 20
+	}
+}
+```
+参数说明：
+
+字段名 | 描述 | 参数类型 | 必要 | 备注
+:-----: | :-------: | :-------: | :------: | :-------:
+workNatureId | 工作性质id | str | 0 | 
+custodianId | 保管人id | str | 0 | 
+deviceModelId | 设备型号id | int | 0 |
+amountUnitId | 计量单位id | str | 
+brandId | 品牌id | str | 0| 序列号只能为英文字母、数字的组合
+categoryId | 分类id | str | 0 | 匹配该分类及其子分类下的设备
+locationId | 地点d | str | 0 | 匹配该地点及其子地点下的设备
+nationalId | 国资编号 | str | 0 | 
+statusId | 状态码 | num | 0 |  
+startTime | 领用时间范围的的起始时间 | 时间戳 | 0 |
+endTime | 领用时间范围的结束时间 | 时间戳 | 0 |
+queryKey | 搜索键 | str | 0 | 模糊匹配设备id、名称、序列号
+queryPage | 分页参数 | obj | 1 | 
+
+返回值示例:
+```
+{
+    "code": 0,
+    "msg": "成功",
+    "data": {
+        "pageNum": 1,
+        "pageSize": 2,
+        "size": 2,
+        "startRow": 1,
+        "endRow": 2,
+        "total": 6,
+        "pages": 3,
+        "list": [
+            {
+                "id": "1533799349223338772",
+                "name": "测试设备1",
+                "nationalId": "a111345423",
+                "serialNumber": "44444444",
+                "useTime": 1536657241000,
+                "unitPrice": 100.4,
+                "description": "",
+                "statusId": 2,
+                "createTime": 1533770481000,
+                "updateTime": 1536628442000,
+                "brand": {
+                    "id": "2",
+                    "name": "苹果"
+                },
+                "locationStr": "雅安",
+                "categoryStr": "电脑/台式机/神舟",
+                "workNature": "自用",
+                "custodian": "李四",
+                "amountUnit": "个"
+            },
+            {
+                "id": "1536216465902587143",
+                "name": "测试设备4",
+                "nationalId": "a111345423",
+                "serialNumber": "44444444",
+                "useTime": 1536662272000,
+                "unitPrice": 100.4,
+                "description": "",
+                "statusId": 3,
+                "createTime": 1536187669000,
+                "updateTime": 1536634036000,
+                "brand": {
+                    "id": "2",
+                    "name": "苹果"
+                },
+                "locationStr": "都江堰",
+                "categoryStr": "电脑/台式机/神舟",
+                "workNature": "自用",
+                "custodian": "李四",
+                "amountUnit": "个"
+            }
+        ],
+        "prePage": 0,
+        "nextPage": 2,
+        "isFirstPage": true,
+        "isLastPage": false,
+        "hasPreviousPage": false,
+        "hasNextPage": true,
+        "navigatePages": 8,
+        "navigatepageNums": [
+            1,
+            2,
+            3
+        ],
+        "navigateFirstPage": 1,
+        "navigateLastPage": 3,
+        "firstPage": 1,
+        "lastPage": 3
+    }
+}
+```
+字段说明：
+
+字段名 | 描述 | 备注
+:-----: | :-------: | :-------:
+name | 设备名称 | 
+nationalId | 国资编号 |
+serialNumber | 序列号 |
+useTime | 领用时间 | 
+unitPrice | 单价 | 
+description | 设备描述 | 
+statusId | 设备状态码 | 1:入库，2：使用中，3：报废，4：报修
+createTime | 入库时间 |
+updateTime | 更新时间 |
+brand.name | 品牌名称 | 
+locationStr | 设备所属地点 | 
+categoryStr | 分类 |
+workNature | 工作性质 |
+custodian | 保管人名字 |
+amountUnit | 计量单位 | 
+
 ###分类
 1.根据父id查询分类
 

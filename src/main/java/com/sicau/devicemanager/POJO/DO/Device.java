@@ -41,12 +41,6 @@ public class Device {
 	@NotNull(groups = {AddDeviceGroup.class,UpdateDeviceGroup.class})
 	private Integer deviceModelId;
 
-	/**
-	 * TODO 该字段在数据库中已删除
-	 * 使用部门id
-	 */
-	private Integer useDepartmentId;
-
     @ApiModelProperty("领用时间")
     private Date useTime;
 
@@ -69,6 +63,11 @@ public class Device {
 	@ApiModelProperty("计量单位id")
     private String amountUnitId;
 
+	/**
+	 * 设备描述，用户输入，例如配置信息等
+	 */
+	private String description;
+
     @ApiModelProperty(value = "当前设备状态id",notes = "1为入库，2为使用，3为报废")
     private Integer statusId;
 
@@ -78,20 +77,20 @@ public class Device {
     @ApiModelProperty("更新时间")
     private Date updateTime;
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public Integer getDeviceModelId() {
 		return deviceModelId;
 	}
 
 	public void setDeviceModelId(Integer deviceModelId) {
 		this.deviceModelId = deviceModelId;
-	}
-
-	public Integer getUseDepartmentId() {
-		return useDepartmentId;
-	}
-
-	public void setUseDepartmentId(Integer useDepartmentId) {
-		this.useDepartmentId = useDepartmentId;
 	}
 
 	public String getId() {

@@ -8,12 +8,12 @@
 		<result column="national_id" property="nationalId" jdbcType="VARCHAR"/>
 		<result column="serial_number" property="serialNumber" jdbcType="VARCHAR"/>
 		<result column="device_model_id" property="deviceModelId" jdbcType="INTEGER"/>
-		<result column="use_department_id" property="useDepartmentId" jdbcType="INTEGER"/>
 		<result column="use_time" property="useTime" jdbcType="TIMESTAMP"/>
 		<result column="work_nature_id" property="workNatureId" jdbcType="VARCHAR"/>
 		<result column="custodian_id" property="custodianId" jdbcType="VARCHAR"/>
 		<result column="unit_price" property="unitPrice" jdbcType="DECIMAL"/>
 		<result column="amount_unit_id" property="amountUnitId" jdbcType="VARCHAR"/>
+		<result column="description" property="description" jdbcType="VARCHAR"/>
 		<result column="status_id" property="statusId" jdbcType="INTEGER"/>
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
@@ -31,8 +31,7 @@
 		<result column="wn_name" property="workNature" jdbcType="VARCHAR"/>
 		<result column="cus_name" property="custodian" jdbcType="VARCHAR"/>
 		<result column="amo_name" property="amountUnit" jdbcType="VARCHAR"/>
-		<result column="sta_name" property="status" jdbcType="VARCHAR"/>
-		<result column="dep_name" property="useDepartment" jdbcType="VARCHAR"/>
+		<result column="description" property="description" jdbcType="VARCHAR"/>
 		<result column="dm_name" property="deviceModel" jdbcType="VARCHAR"/>
 		<association property="brand" javaType="Brand">
 			<id column="bra_id" property="id"/>
@@ -59,9 +58,9 @@
 	</sql>
 	<sql id="getDeviceInfo">
 		SELECT d.id,d.`name`, d.national_id,d.serial_number,d.use_time,d.unit_price,
-		d.status_id,d.create_time,d.update_time,
+		description, d.status_id,d.create_time,d.update_time,
 		wn.name wn_name,cus.name cus_name,amo.name amo_name,
-		bra.id bra_id, bra.name bra_name,dep.name dep_name,dm.name dm_name,
+		bra.id bra_id, bra.name bra_name,dm.name dm_name,
 		l.id l_id,l.parent_id l_pid,l.name l_name,l.level l_level,l.path l_path,
 		c.id c_id,c.parent_id c_pid,c.name c_name,c.level c_level,c.path c_path
 		FROM device d
@@ -71,8 +70,6 @@
 		ON d.custodian_id = cus.id
 		left join device_model dm
 		on dm.id = d.device_model_id
-		LEFT JOIN department dep
-		on dep.id = d.use_department_id
 		LEFT JOIN amount_unit amo
 		ON d.amount_unit_id = amo.id
 		LEFT JOIN device_brand db
@@ -94,9 +91,6 @@
 			</if>
 			<if test="deviceModelId!=null">
 				and dm.id = #{deviceModelId}
-			</if>
-			<if test="useDepartmentId!=null">
-				and dep.id = #{useDepartmentId}
 			</if>
 			<if test="amountUnitId!=null">
 				and amo.id = #{amountUnitId}
@@ -175,19 +169,17 @@
 	<insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.Device">
 		INSERT INTO device (id, `name`, location_id, national_id,
 							serial_number, use_time, work_nature_id,
-							custodian_id, unit_price, amount_unit_id,
-							status_id, create_time, update_time, device_model_id,
-							use_department_id
+							custodian_id, unit_price, amount_unit_id,description,
+							status_id, create_time, update_time, device_model_id
 		)
 		VALUES (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{locationId,jdbcType=VARCHAR},
 										#{nationalId,jdbcType=VARCHAR},
 										#{serialNumber,jdbcType=VARCHAR}, #{useTime,jdbcType=TIMESTAMP},
 										#{workNatureId,jdbcType=VARCHAR},
 										#{custodianId,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL},
-										#{amountUnitId,jdbcType=VARCHAR},
+										#{amountUnitId,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},
 										#{statusId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-				#{updateTime,jdbcType=TIMESTAMP},
-				#{deviceModelId,jdbcType=INTEGER}, #{useDepartmentId,jdbcType=INTEGER}
+				#{updateTime,jdbcType=TIMESTAMP},#{deviceModelId,jdbcType=INTEGER}
 		)
 	</insert>
 	<insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.Device">
@@ -201,9 +193,6 @@
 			</if>
 			<if test="deviceModelId != null">
 				`device_model_id`,
-			</if>
-			<if test="useDepartmentId != null">
-				use_department_id,
 			</if>
 			<if test="locationId != null">
 				location_id,
@@ -229,6 +218,9 @@
 			<if test="amountUnitId != null">
 				amount_unit_id,
 			</if>
+			<if test="description != null">
+				description,
+			</if>
 			<if test="statusId != null">
 				status_id,
 			</if>
@@ -248,9 +240,6 @@
 			</if>
 			<if test="deviceModelId != null">
 				#{deviceModelId,jdbcType=INTEGER},
-			</if>
-			<if test="useDepartmentId != null">
-				#{useDepartmentId,jdbcType=INTEGER},
 			</if>
 			<if test="locationId != null">
 				#{locationId,jdbcType=VARCHAR},
@@ -276,6 +265,9 @@
 			<if test="amountUnitId != null">
 				#{amountUnitId,jdbcType=VARCHAR},
 			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
 			<if test="statusId != null">
 				#{statusId,jdbcType=INTEGER},
 			</if>
@@ -295,9 +287,6 @@
 			</if>
 			<if test="deviceModelId != null">
 				device_model_id = #{deviceModelId,jdbcType=VARCHAR},
-			</if>
-			<if test="useDepartmentId != null">
-				use_department_id = #{useDepartmentId,jdbcType=VARCHAR},
 			</if>
 			<if test="locationId != null">
 				location_id = #{locationId,jdbcType=VARCHAR},
@@ -323,6 +312,9 @@
 			<if test="amountUnitId != null">
 				amount_unit_id = #{amountUnitId,jdbcType=VARCHAR},
 			</if>
+			<if test="description != null">
+				description = #{description,jdbcType=VARCHAR},
+			</if>
 			<if test="statusId != null">
 				status_id = #{statusId,jdbcType=VARCHAR},
 			</if>
@@ -340,7 +332,6 @@
 		SET `name`          = #{name,jdbcType=VARCHAR},
 			location_id     = #{locationId,jdbcType=VARCHAR},
 			device_model_id = #{deviceModelId,jdbcType=VARCHAR},
-			device_model_id = #{deviceModelId,jdbcType=VARCHAR},
 			national_id     = #{nationalId,jdbcType=VARCHAR},
 			serial_number   = #{serialNumber,jdbcType=VARCHAR},
 			use_time        = #{useTime,jdbcType=TIMESTAMP},
@@ -348,6 +339,7 @@
 			custodian_id    = #{custodianId,jdbcType=VARCHAR},
 			unit_price      = #{unitPrice,jdbcType=DECIMAL},
 			amount_unit_id  = #{amountUnitId,jdbcType=VARCHAR},
+			description = #{description,jdbcType=VARCHAR},
 			status_id       = #{statusId,jdbcType=VARCHAR},
 			create_time     = #{createTime,jdbcType=TIMESTAMP},
 			update_time     = #{updateTime,jdbcType=TIMESTAMP}

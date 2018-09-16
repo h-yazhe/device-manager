@@ -64,9 +64,6 @@ public class DeviceDTO extends Device {
 	@ApiModelProperty("计量单位")
 	private String amountUnit;
 
-	@ApiModelProperty("设备状态")
-	private String status;
-
 	@ApiModelProperty("入库的开始时间")
 	@JsonFormat(pattern = "yyyy-MM-dd", locale = "zh", timezone = "GMT+8")
 	private Date startTime;
@@ -244,14 +241,6 @@ public class DeviceDTO extends Device {
 		this.amountUnit = amountUnit;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
 	public String getCategoryStr() {
 		return categoryStr;
 	}
@@ -284,7 +273,6 @@ public class DeviceDTO extends Device {
 				", workNature='" + workNature + '\'' +
 				", custodian='" + custodian + '\'' +
 				", amountUnit='" + amountUnit + '\'' +
-				", status='" + status + '\'' +
 				", startTime=" + startTime +
 				", endTime=" + endTime +
 				", queryPage=" + queryPage +

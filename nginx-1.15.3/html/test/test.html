@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Title</title>
     <script src="../assets/js/jquery-1.8.3.min.js"></script>
 </head>
@@ -9,23 +9,32 @@
 <body>
 <script type="text/javascript">
 
-//    $.ajax({
-//        type: "post",
-//        url: "http://localhost:8080/dev-manager/api_v1/login",
-//        data: {
-//            identifier: 'hyz',
-//            credential: '123456',
-//            identifyType: 0
-//        }
-//    })
+    //    $.ajax({
+    //        type: "post",
+    //        url: "http://localhost:8080/dev-manager/api_v1/login",
+    //        data: {
+    //            identifier: 'hyz',
+    //            credential: '123456',
+    //            identifyType: 0
+    //        }
+    //    })
 
     $.ajax({
         headers: {
-            'token': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE1MzI5OTk5MzcsImV4cCI6MTUzNTU5MTkzNywiaWF0IjoxNTMyOTk5OTM3LCJ1c2VySWQiOiIxNTMyOTk5MTgyMjkyNjQ4MTcxIn0.0P0yucQTJcgr1Uv5ummRWooTzkR47WMPp4peRbb4X8k"
+            'token': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE1MzY5OTA1MDMsImV4cCI6MTUzOTU4MjUwMywiaWF0IjoxNTM2OTkwNTAzLCJ1c2VySWQiOiIxNTM2OTg4MTEyNTY4MzY1ODUxIn0.DFdTPpXwBbDOQbcxxtlfWQZWkmjeLHuugZiMsXokC5w"
         },
-        type: "get",
-        url: "http://localhost:8080/dev-manager/api_v1/brand"
-    })
+        type: "post",
+        contentType: "application/json",
+        url: "http://39.108.97.103:8080/dev-manager/api_v1/get-brands",
+        data: JSON.stringify({
+            pageNum: 1,
+            pageSize: 10
+        }),
+        success: function (res) {
+            console.log(res);
+        }
+    });
+
     function insertOne() {
         $.ajax({
             headers: {
