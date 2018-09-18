@@ -16,10 +16,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -90,8 +87,19 @@ public class DeviceController {
 
 	@ApiOperation("获取搜索的选项卡第一页数据")
 	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PostMapping("/search-selection")
-	public ResultVO getSearchSelections(){
-		return ResultVOUtil.success(deviceService.getSearchSelections(10));
+	@PostMapping("/search-selection/{pageSize}")
+	public ResultVO getSearchSelections(@PathVariable Integer pageSize){
+		return ResultVOUtil.success(deviceService.getSearchSelections(pageSize));
+	}
+
+	/**
+	 * 报修设备
+	 * @param deviceId 设备id
+	 * @return
+	 */
+	@PostMapping("/repair/{deviceId}")
+	public ResultVO repairDevice(@PathVariable String deviceId){
+		deviceService.repairDevice(deviceId);
+		return ResultVOUtil.success();
 	}
 }

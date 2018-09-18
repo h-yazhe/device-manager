@@ -50,8 +50,6 @@ public class DeviceServiceImpl implements DeviceService {
 	@Autowired
 	private CustodianMapper custodianMapper;
 	@Autowired
-	private DepartmentMapper departmentMapper;
-	@Autowired
 	private DeviceModelMapper deviceModelMapper;
 	@Autowired
 	private WorkNatureMapper workNatureMapper;
@@ -196,31 +194,32 @@ public class DeviceServiceImpl implements DeviceService {
 
 	@Override
 	public void distributeDevice(DistributeDeviceDTO distributeDeviceDTO) {
+		//查询设备原始记录
+		List<Device> devices = deviceMapper.getByIds(distributeDeviceDTO.getDeviceIdList());
 		//分发
 		distributeDeviceDTO.setUseTime(new Date());
 		deviceMapper.distributeDevice(distributeDeviceDTO);
 		//写入分发记录
 		List<DeviceStatusRecord> records = new ArrayList<>(1);
-		deviceMapper.getByIds(distributeDeviceDTO.getDeviceIdList()).forEach(device -> {
-			records.add(new DeviceStatusRecord(
-					KeyUtil.genUniqueKey(),
-					device.getId(),
-					device.getStatusId(),
-					DeviceStatusEnum.USING.getCode(),
-					device.getLocationId(),
-					distributeDeviceDTO.getLocationId(),
-					RequestUtil.getCurrentUserId()
-			));
-		});
+		devices.forEach(device -> records.add(new DeviceStatusRecord(
+				KeyUtil.genUniqueKey(),
+				device.getId(),
+				device.getStatusId(),
+				DeviceStatusEnum.USING.getCode(),
+				device.getLocationId(),
+				distributeDeviceDTO.getLocationId(),
+				RequestUtil.getCurrentUserId()
+		)));
 		deviceStatusRecordMapper.insertBatch(records);
 	}
 
 	@Override
 	public void discardDevice(String deviceId) {
+		//查询设备原始记录
+		Device device = deviceMapper.selectByPrimaryKey(deviceId);
 		//报废
 		deviceMapper.discardDevice(deviceId);
 		//插入报废记录
-		Device device = deviceMapper.selectByPrimaryKey(deviceId);
 		deviceStatusRecordMapper.insert(new DeviceStatusRecord(
 				KeyUtil.genUniqueKey(),
 				deviceId,
@@ -244,12 +243,28 @@ public class DeviceServiceImpl implements DeviceService {
 		PageHelper.startPage(1, pageSize);
 		deviceSearchSelectionVO.setCustodianList(custodianMapper.listAll());
 		PageHelper.startPage(1, pageSize);
-		deviceSearchSelectionVO.setDepartmentList(departmentMapper.listAll());
-		PageHelper.startPage(1, pageSize);
 		deviceSearchSelectionVO.setDeviceModelList(deviceModelMapper.listAll());
 		PageHelper.startPage(1, pageSize);
 		deviceSearchSelectionVO.setWorkNatureList(workNatureMapper.listAll());
 		return deviceSearchSelectionVO;
+	}
+
+	@Override
+	public void repairDevice(String deviceId) {
+		//查询设备原始记录
+		Device device = deviceMapper.selectByPrimaryKey(deviceId);
+		//修改设备状态
+		deviceMapper.updateStatusIdById(deviceId,DeviceStatusEnum.FIXING.getCode());
+		//插入设备状态修改记录
+		deviceStatusRecordMapper.insert(new DeviceStatusRecord(
+				KeyUtil.genUniqueKey(),
+				deviceId,
+				device.getStatusId(),
+				DeviceStatusEnum.FIXING.getCode(),
+				device.getLocationId(),
+				device.getLocationId(),
+				RequestUtil.getCurrentUserId()
+		));
 	}
 
 	/**

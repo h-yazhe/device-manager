@@ -21,8 +21,6 @@ public class DeviceSearchSelectionVO {
 
 	private List<DeviceModel> deviceModelList;
 
-	private List<Department> departmentList;
-
 	private List<WorkNature> workNatureList;
 
 	private List<Custodian> custodianList;

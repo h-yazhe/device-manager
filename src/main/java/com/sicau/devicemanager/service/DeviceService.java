@@ -57,4 +57,11 @@ public interface DeviceService {
 	 * @return
 	 */
 	DeviceSearchSelectionVO getSearchSelections(int pageSize);
+
+	/**
+	 * 报修设备
+	 * TODO 目前仅修改设备状态字段，后期加入报修记录信息
+	 * @param deviceId
+	 */
+	void repairDevice(String deviceId);
 }

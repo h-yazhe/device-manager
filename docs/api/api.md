@@ -6,7 +6,55 @@ tips:公共api前使用*标注,非公共api需在header中设置`token`参数，
 
 ##设备管理
 ###设备
-1.更新设备
+1.添加设备
+url:`device/add`
+
+data: 
+```
+{
+	"name": "测试zzz",
+	"locationId": "1536914080429756317",
+	"nationalId": "zzzzz",
+	"serialNumber": "1234567",
+	"deviceModelId": "2",
+	"workNatureId": "1",
+	"custodianId": "1",
+	"unitPrice": "250",
+	"brandId": "1527745606203104480",
+	"categoryIds": ["1536859612504237330"],
+	"description": "设备描述"
+}
+```
+参数说明：
+
+字段名 | 描述 | 参数类型 | 必要 | 备注
+:-----: | :-------: | :-------: | :------: | :-------:
+name | 设备名 | str | 1 | 设备名只能为汉字、英文字母、数字、下划线的组合
+locationId | 地点id | str | 1 |
+nationalId | 国资编号 | str | 0 | 国资编号只能为英文字母、数字的组合
+serialNumber | 序列号 | str | 1 | 序列号只能为英文字母、数字的组合
+deviceModelId | 设备型号id | int | 1 | 
+workNatureId | 工作性质id | str | 1 |
+custodianId | 保管人id | str | 1 |
+unitPrice | 单价 | num | 0 | 预留字段，暂不需要
+brandId | 品牌id | str | 1 |
+categoryIds | 分类id列表 | str | 1 |
+description | 设备描述 | str | 0 | 设备的详细信息，如配置信息等
+
+返回值示例:
+```
+{
+    "code": 0,
+    "msg": "成功",
+    "data": null
+}
+```
+字段说明：
+
+字段名 | 描述 | 备注
+:-----: | :-------: | :-------:
+
+2.更新设备
 url:`device/update`
 
 data: 
@@ -22,24 +70,26 @@ data:
 	"custodianId": "1",
 	"unitPrice": "250",
 	"brandId": "1527745606203104480",
-	"categoryIds": ["1536859612504237330"]
+	"categoryIds": ["1536859612504237330"],
+    "description": "设备描述"
 }
 ```
 参数说明：
 
 字段名 | 描述 | 参数类型 | 必要 | 备注
 :-----: | :-------: | :-------: | :------: | :-------:
-id | 父地点id | str | 1 | 为空字符串则查询根节点
+id | 设备id | str | 1 | 
 name | 设备名 | str | 1 | 设备名只能为汉字、英文字母、数字、下划线的组合
 locationId | 地点id | str | 1 |
-nationalId | 国资编号 | str | 国资编号只能为英文字母、数字的组合
-serialNumber | 序列号 | str | 序列号只能为英文字母、数字的组合
-deviceModelId | 设备型号id | int | 
-workNatureId | 工作性质id | str | 
-custodianId | 保管人id | str |
-unitPrice | 单价 | num | 
-brandId | 品牌id | str | 
-categoryIds | 分类id列表 | str | 
+nationalId | 国资编号 | str | 0 | 国资编号只能为英文字母、数字的组合
+serialNumber | 序列号 | str | 1 | 序列号只能为英文字母、数字的组合
+deviceModelId | 设备型号id | int | 1 | 
+workNatureId | 工作性质id | str | 1 |
+custodianId | 保管人id | str | 1 |
+unitPrice | 单价 | num | 0 | 预留字段，暂不需要
+brandId | 品牌id | str | 1 |
+categoryIds | 分类id列表 | str | 1 |
+description | 设备描述 | str | 0 | 设备的详细信息，如配置信息等
 
 返回值示例:
 ```
@@ -54,7 +104,7 @@ categoryIds | 分类id列表 | str |
 字段名 | 描述 | 备注
 :-----: | :-------: | :-------:
 
-2.根据条件查询设备列表
+3.根据条件查询设备列表
 tips:若有多个参数，匹配结果取交集
 url:`device/list`
 
@@ -192,6 +242,55 @@ categoryStr | 分类 |
 workNature | 工作性质 |
 custodian | 保管人名字 |
 amountUnit | 计量单位 | 
+
+4.获取搜索的选项卡第一页数据
+url:`device-search-selection/{pageSize}`
+
+data: 
+```
+```
+参数说明：
+
+字段名 | 描述 | 参数类型 | 必要 | 备注
+:-----: | :-------: | :-------: | :------: | :-------:
+pageSize | 每页数据量 | int | 1 | 
+
+返回值示例:
+```
+{
+    "code": 0,
+    "msg": "成功",
+    "data": null
+}
+```
+字段说明：
+
+字段名 | 描述 | 备注
+:-----: | :-------: | :-------:
+5.获取搜索的选项卡第一页数据
+url:`device/repair/{deviceId}`
+
+data: 
+```
+```
+参数说明：
+
+字段名 | 描述 | 参数类型 | 必要 | 备注
+:-----: | :-------: | :-------: | :------: | :-------:
+deviceId | 设备id | str | 1 | 
+
+返回值示例:
+```
+{
+    "code": 0,
+    "msg": "成功",
+    "data": null
+}
+```
+字段说明：
+
+字段名 | 描述 | 备注
+:-----: | :-------: | :-------:
 
 ###分类
 1.根据父id查询分类

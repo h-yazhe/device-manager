@@ -360,4 +360,9 @@
 		SET status_id = 3
 		WHERE id = #{diviceId}
 	</update>
+	<update id="updateStatusIdById">
+		update device
+		set status_id = #{deviceId}
+		where id = #{deviceId}
+	</update>
 </mapper>

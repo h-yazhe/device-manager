@@ -3,6 +3,7 @@ package com.sicau.devicemanager.dao;
 import com.sicau.devicemanager.POJO.DO.Device;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -55,4 +56,12 @@ public interface DeviceMapper {
 	 * @return
 	 */
 	int deleteByLocationIds(List<String> locationId);
+
+	/**
+	 * 根据设备id修改设备状态
+	 * @param deviceId 要修改的设备
+	 * @param statusId 修改的状态
+	 * @return
+	 */
+	int updateStatusIdById(@Param("deviceId") String deviceId, @Param("statusId") Integer statusId);
 }

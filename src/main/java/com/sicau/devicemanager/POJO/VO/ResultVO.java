@@ -1,5 +1,6 @@
 package com.sicau.devicemanager.POJO.VO;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Data;
  * Created in 12:07 2018/1/18
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResultVO {
     /** 错误码. */
     private Integer code;
