@@ -47,7 +47,7 @@ public class UserRegisterDTO {
     /**
      * 地址
      */
-    private String address = "";
+    private String address;
 
     /**
      * 角色id

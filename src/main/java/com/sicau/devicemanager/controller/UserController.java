@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Api(tags = "用户操作")
 @RestController
-@RequestMapping(CommonConstants.API_PREFIX)
+@RequestMapping(CommonConstants.API_PREFIX + "/" + ResourceConstants.USER)
 public class UserController {
 
     @Autowired
@@ -58,7 +58,7 @@ public class UserController {
     @ApiImplicitParams(
             @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
     )
-    @GetMapping(ResourceConstants.USER )
+    @PostMapping("list-by-page")
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.GET)
     public ResultVO listUser(@Valid QueryPage queryPage){
         return ResultVOUtil.success(userService.listUser(queryPage));
@@ -72,7 +72,7 @@ public class UserController {
     @ApiImplicitParams(
             @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
     )
-    @PostMapping(ResourceConstants.USER)
+    @PostMapping("add")
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.ADD)
     public ResultVO addUser(@Valid @RequestBody UserRegisterDTO userRegisterDTO){
         userService.addUser(userRegisterDTO);
@@ -103,7 +103,7 @@ public class UserController {
     @ApiImplicitParams(
             @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
     )
-    @DeleteMapping(ResourceConstants.USER + "/{userId}")
+    @PostMapping("delete/{userId}")
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.DELETE)
     public ResultVO deleteUserById(@PathVariable String userId){
         userService.deleteUserById(userId);

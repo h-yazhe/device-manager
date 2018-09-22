@@ -56,15 +56,29 @@
         (`id`,
          `username`,
          `real_name`,
-         `email`,
-         `phone`,
-         `address`)
+		<if test="phone != null">
+			, `email`
+		</if>
+		<if test="phone != null">
+			, `phone`
+		</if>
+		 <if test="address != null">
+			 ,`address`
+		 </if>
+			)
         VALUES (#{id},
                 #{username},
-                #{realName},
-                #{email},
-                #{phone},
-                #{address})
+                #{realName}
+		<if test="address != null">
+			, #{email}
+		</if>
+		<if test="address != null">
+			, #{phone}
+		</if>
+				<if test="address != null">
+					, #{address}
+				</if>
+		)
     </insert>
 
     <insert id="insertUserAuth">

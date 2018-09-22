@@ -7,6 +7,7 @@ tips:公共api前使用*标注,非公共api需在header中设置`token`参数，
 ##设备管理
 ###设备
 1.添加设备
+
 url:`device/add`
 
 data: 
