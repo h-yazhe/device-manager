@@ -213,7 +213,7 @@ var addDeviceVm = new Vue({
         getDeviceSelection: function () {
             var self = this;
             sendPost({
-                url: API.getApi(API.getDeviceSelection),
+                url: API.getApi(API.getDeviceSelection) + "/20",
                 success: function (res) {
                     if (res.code === 0){
                         var categoryList = $.extend(true,[],res.data.categoryList);
