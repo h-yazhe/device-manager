@@ -1,4 +1,4 @@
-
+//表格渲染
 var vueDeviceList = new Vue({
     el: "#device-list",
     components: {
@@ -143,10 +143,6 @@ var deviceModalVm = new Vue({
         '</div>'
 });
 
-/**
- * 添加设备组件
- * @type {*|Vue}
- */
 //生成分类树，依赖于addDeviceVm
 var categoryVm = new Vue({
     el: '#category-tree',
@@ -170,6 +166,7 @@ var categoryVm = new Vue({
         '                            <CategoryTree v-for="(item,i) in categoryList" :index="i" :parent="item" :key="item.id"></CategoryTree>\n' +
         '                        </div>'
 });
+//添加设备
 var addDeviceVm = new Vue({
     el: "#add-device",
     data: {
@@ -212,6 +209,7 @@ var addDeviceVm = new Vue({
                 }
             });
         },
+        //获取添加设备选项卡数据
         getDeviceSelection: function () {
             var self = this;
             sendPost({
@@ -260,7 +258,7 @@ var sideBarVm = new Vue({
 
     }
 });
-
+//注销
 var logoutVm = new Vue({
     el: "#logout",
     methods: {

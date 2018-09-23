@@ -1,3 +1,4 @@
+//设置本地存储的值
 function setLocalStorage(key, val) {
     if (typeof val == 'string') {
         localStorage.setItem(key, val);
@@ -5,18 +6,23 @@ function setLocalStorage(key, val) {
         localStorage.setItem(key, JSON.stringify(val));
     }
 }
-
+//获取本地存储的值
 function getLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
 }
 
+/**
+ * 发送api请求
+ * 重载$.ajax()方法，method默认为post，请求数据类型为json，header中添加了token
+ * @param params 同$.ajax()的参数
+ */
 function sendPost(params) {
     var defaultParams = {
         url: params.url,
         method: 'post',
         contentType: "application/json",
         headers: {
-            token: localStorage.getItem(commonVm.storageKey.token)
+            token: localStorage.getItem(STORAGE_KEY.token)
         },
         data: params.data
     };
@@ -34,22 +40,24 @@ function sendPost(params) {
         alert(resBody.msg);
     }
 }
-
+//api统一定义
 var API = {
     prefix: '/dev-manager/api_v1/',
-
+    //登录
     login: "login",
-
+    //查询设备列表
     listDevice: "device/list",
+    //添加设备
     addDevice: "device/add",
+    //获取添加设备的选项卡数据
     getDeviceSelection: "device/search-selection",
     //分发设备
     distributeDevice: "device/distribute",
     //报废设备
     discardDevice: "device/discard",
-
+    //查询品牌列表
     listBrand: "brand",
-
+    //根据父id查询子分类
     listCategoryByPId: 'list-category-by-pId',
 
     getApi: function (name) {
@@ -154,6 +162,7 @@ function formatTime(timestamp) {
     return date.getFullYear() + "." + date.getMonth() + "." + date.getDay();
 }
 
+//分类树组件
 var CategoryTree = {
     name: 'CategoryTree',
     props: ['parent','index'],
@@ -203,7 +212,7 @@ var CategoryTree = {
         }
     }
 };
-
+//搜索设备组件
 var SearchDevice = {
     name: 'SearchDevice',
     props: ['selection'],
@@ -257,7 +266,7 @@ var SearchDevice = {
         this.$parent.queryParams = this.queryParams;
     }
 };
-
+//分发设备组件
 var DistributeDevice = {
     name: 'distribute-device',
     props: ['distributeParam','selection'],
@@ -308,7 +317,7 @@ var DistributeDevice = {
         '    </div>\n' +
         '</div>'
 };
-
+//报废设备组件
 var DiscardDevice = {
   name: 'discard-device',
   props: ['discardParams'],
