@@ -63,32 +63,6 @@ var STORAGE_KEY = {
     userInfo: "u_in"
 };
 
-var commonVm = new Vue({
-    data: {
-        //api统一定义
-        api: {
-            apiPrefix: "",
-
-            login: "login",
-
-            listDevice: "device/list",
-            addDevice: "device/add",
-            getDeviceSelection: "device/search-selection",
-
-            listBrand: "brand"
-        },
-        storageKey: {
-            token: "token",
-            userInfo: "u_in"
-        }
-    },
-    methods: {
-        getApi: function (name) {
-            return this.api.apiPrefix + name;
-        }
-    }
-});
-
 //默认分页参数
 var defaultQueryPage = function () {
     this.pageNum = 1;
