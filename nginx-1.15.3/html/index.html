@@ -125,11 +125,11 @@
                         <span>系统设置</span>
                     </a>
                     <ul class="sub">
-                        <li><a href="">用户管理</a></li>
+                        <li><a href="javascript:;" @click="ListUser()">用户管理</a></li>
                         <li><a href="">菜单管理</a>
                             <ul class="sub">
-                                <li><a href="">分类</a></li>
-                                <li><a href="">地点</a></li>
+                                <li><a href="javascript:;" @click="sortList()">分类</a></li>
+                                <li><a href="javascript:;" @click="addressDevice()">地点</a></li>
                                 <li><a href="">设备品牌</a></li>
                                 <li><a href="">设备型号</a></li>
                                 <li><a href="">工作性质</a></li>
@@ -157,9 +157,9 @@
                        <div id="category-tree"></div>
                     </div>
                 </div>
-                <div id="device-list" class="col-md-10 main-chart" style="padding-left: 0">
-                    <search-device :selection="searchSelection"></search-device>
-                    <div class="content-panel table-responsive">
+                <div id="device-list" class="col-md-10 main-chart"  style="padding-left: 0">
+                    <search-device :selection="searchSelection" v-if="device"></search-device>
+                    <div class="content-panel table-responsive" v-if="device">
                         <h4 style="float: left"><i class="fa fa-angle-right"></i>
                             设备详情
                         </h4>
@@ -228,16 +228,104 @@
                         </div>
                         <div class="clear"></div>
                     </div>
+                   <!-- //用户详情页-->
+                    <div class="content-panel table-responsive" v-if="user">
+                        <h4 style="float: left"><i class="fa fa-angle-right"></i>
+                            用户详情
+                        </h4>
+                        <div class="turn-page-right">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-list">添加用户</button>
+                        </div>
+                        <div class="clear"></div>
+                        <hr>
+                        <table class="table table-striped table-advance table-hover table-condensed cf">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>用户名</th>
+                                <th>真实姓名</th>
+                                <th>邮箱</th>
+                                <th>电话</th>
+                                <th>最后一次登录时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="user in userList">
+                                <td>{{user.id}}</td>
+                                <td>{{user.username}}</td>
+                                <td>{{user.realName}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.phone}}</td>
+                                <td>{{user.lastTime}}</td>
+                            </tr>
 
+                            </tbody>
+                        </table>
+                    </div>
+                   <!-- //分类详情页-->
+                    <div class="content-panel table-responsive" v-if="category">
+                        <h4 style="float: left"><i class="fa fa-angle-right"></i>
+                            分类详情
+                        </h4>
+                        <div class="clear"></div>
+                        <hr>
+                        <table class="table table-striped table-advance table-hover table-condensed cf">
+                            <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>name</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="item in sortList">
+                                <td>{{item.id}}</td>
+                                <td>{{item.name}}</td>
+                                <td>  <button @click="deleteCategory(item.id)"  class="btn btn-danger btn-xs">删除</button>
+                                    <button  class="btn btn-success btn-xs" data-toggle="modal" data-target="#add-category" @click="getValue(item.id,item.name)">增加</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="clear"></div>
+                    </div>
+
+                 <!--   //地点详情页-->
+                    <div class="content-panel table-responsive" v-if="address">
+                        <h4 style="float: left"><i class="fa fa-angle-right"></i>
+                            地址详情
+                        </h4>
+                        <div class="turn-page-right">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#address-device">添加地点</button>
+                        </div>
+                        <div class="clear"></div>
+                        <hr>
+                        <table class="table table-striped table-advance table-hover table-condensed cf">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>地点</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="address in addressList">
+                                <td>{{address.id}}</td>
+                                <td>{{address.name}}</td>
+                                <td><button  class="btn btn-danger btn-xs">删除</button></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div><!-- /col-lg-9 END SECTION MIDDLE -->
+
 
             </div>
             <! --/row -->
         </section>
     </section>
-
     <!--main content end-->
-
 </section>
 
 <!--添加设备模态框-->
@@ -311,6 +399,53 @@
         </div>
         <div class="modal-footer">
             <button @click="addDevice" type="button" class="btn btn-success">添加</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+    </div>
+</div>
+<!--添加分类模态框-->
+<div id="add-category" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="add-category">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title text-center">在{{parentName}}添加分类</h4>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label for="input-device-name">添加分类名称</label>
+                    <input v-model="category.name" type="text" class="form-control" placeholder="分类名称">
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button @click="addCategory" type="button" class="btn btn-success">添加</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+    </div>
+</div>
+<!--添加地点模态框-->
+<div id="address-device" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="address-device">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">添加地点</h4>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label for="input-category">序号</label>
+                    <input v-model="address.parentId" type="text" class="form-control"  placeholder="序号">
+                </div>
+                <div class="form-group">
+                    <label for="input-device-name">地点</label>
+                    <input v-model="address.name" type="text" class="form-control"  placeholder="地点">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button @click="AddAddress" type="button" class="btn btn-success">添加</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         </div>
     </div>
