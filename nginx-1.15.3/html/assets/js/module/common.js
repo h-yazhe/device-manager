@@ -59,9 +59,15 @@ var API = {
     listBrand: "brand",
     //根据父id查询子分类
     listCategoryByPId: 'list-category-by-pId',
+    //分页查询所有用户
     ListUser:"user/list-by-page",
+    //添加用户
+    AddUser:"user/add",
+    //根据父id查询地点
     addressDevice:"list-location-by-pid",
+    //根据父id插入一个子分类
     AddAddress:"insert-location-by-pid",
+    //删除该节点为根的地点树
     DeleteAddress:"delete-location-tree-by-Id",
     getApi: function (name) {
         return this.prefix + name;

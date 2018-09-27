@@ -91,10 +91,11 @@ var vueDeviceList = new Vue({
                 }
             })
         },
+        /*获取设备列表*/
         listDevice: function () {
             var vue = this;
             sendPost({
-                url: "http://39.108.97.103:8080"+API.getApi(API.listDevice),
+                url: API.getApi(API.listDevice),
                 data: JSON.stringify(vue.queryParams),
                 success: function (res) {
                     var data = res.data;
@@ -120,9 +121,10 @@ var vueDeviceList = new Vue({
             });
 
         },
+        /*获取用户列表*/
          ListUser:function(){
             sendPost({
-                url: "http://39.108.97.103:8080"+API.getApi(API.ListUser),
+                url: API.getApi(API.ListUser),
                 data: JSON.stringify(
                     {
                         "pageNum": 1,
@@ -142,16 +144,16 @@ var vueDeviceList = new Vue({
                     var json = res.responseJSON;
                     if (json != null && json.code == 3) {
                         alert("登录异常！");
-                        window.location.href = "login.html";
                     } else {
                         alert("网络连接异常！");
                     }
                 }
             });
         },
+        /*获取地点列表*/
         addressDevice:function(){
             sendPost({
-                url: "http://39.108.97.103:8080"+API.getApi(API.addressDevice),
+                url: API.getApi(API.addressDevice),
                 data: JSON.stringify(
                     {
                         "parentId": "",
@@ -174,7 +176,6 @@ var vueDeviceList = new Vue({
                     var json = res.responseJSON;
                     if (json != null && json.code == 3) {
                         alert("登录异常！");
-                        window.location.href = "login.html";
                     } else {
                         alert("网络连接异常！");
                     }
@@ -204,6 +205,7 @@ var vueDeviceList = new Vue({
          * @param status 状态吗
          * @returns {*}中文释义
          */
+        /*设备状态*/
         parseStatus: function (status) {
             switch (status) {
                 case 1:
@@ -270,7 +272,7 @@ var categoryVm = new Vue({
                 active: false,//是否激活
                 expanded: false//是否展开
             }
-        ]
+        ],
     },
     template: ' <div id="category-tree" class="panel-body">\n' +
         '                            <CategoryTree v-for="(item,i) in categoryList" :index="i" :parent="item" :key="item.id"></CategoryTree>\n' +
@@ -311,20 +313,19 @@ var addCategory=new Vue({
     }
 
 });
-
 //添加地点
 var addressVm = new Vue({
     el: "#address-device",
     data: {
         address: {
-            "parentId": "",
+            "parentId":"",
             "name": "",
         },
         //选项卡数据
         selection: $.extend(true,{},deviceSearchSelection)
 
     },
-    methods:{
+    methods: {
         //添加地点
         AddAddress: function () {
             var data = this.address;
@@ -332,19 +333,18 @@ var addressVm = new Vue({
                 url: API.getApi(API.AddAddress),
                 data: JSON.stringify(data),
                 success: function (res) {
-                    if (res.code == 0){
+                    if (res.code == 0) {
                         alert("添加成功！");
                         $("#address-device").modal('toggle');
                         //刷新设备列表
                         vueDeviceList.addressDevice();
-                    }else {
+                    } else {
                         alert("添加失败！");
                     }
                 }
             });
         },
-
-    },
+    }
 });
 //添加设备
 var addDeviceVm = new Vue({
@@ -375,7 +375,7 @@ var addDeviceVm = new Vue({
         addDevice: function () {
             var data = this.device;
             sendPost({
-                url: "http://39.108.97.103:8080"+API.getApi(API.addDevice),
+                url: API.getApi(API.addDevice),
                 data: JSON.stringify(data),
                 success: function (res) {
                     if (res.code == 0){
@@ -393,7 +393,7 @@ var addDeviceVm = new Vue({
         getDeviceSelection: function () {
             var self = this;
             sendPost({
-                url: "http://39.108.97.103:8080"+API.getApi(API.getDeviceSelection) + "/20",
+                url:API.getApi(API.getDeviceSelection) + "/20",
                 success: function (res) {
                     if (res.code === 0){
                         var categoryList = $.extend(true,[],res.data.categoryList);
@@ -424,7 +424,6 @@ var addDeviceVm = new Vue({
     }
 });
 //侧边栏
-
 var sideBarVm = new Vue({
     el: "#sidebar",
     data: {
@@ -445,7 +444,6 @@ var sideBarVm = new Vue({
             vueDeviceList.category=true;
             vueDeviceList.address=false;
             vueDeviceList.user=false;
-            category:true;
         },
         addressDevice:function(statusId){
             vueDeviceList.queryParams.statusId = statusId;
