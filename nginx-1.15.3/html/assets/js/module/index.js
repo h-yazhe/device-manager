@@ -5,6 +5,10 @@ var vueDeviceList = new Vue({
       'search-device': SearchDevice
     },
     data: {
+        device:true,
+        category:"",
+        address:"",
+        user:"",
         deviceList: [
             {
                 "id": "0",
@@ -29,6 +33,31 @@ var vueDeviceList = new Vue({
                 "deviceModel": ""
             }
         ],
+        sortList: [
+            {
+                id: '0',
+                name: '',
+                level: '',
+                children: [
+                ]
+            }
+        ],
+        addressList: [
+            {
+                "id": "",
+                "name": "",
+            },
+        ],
+        userList: [
+            {
+                "id": "",
+                "username": "",
+                "realName": "",
+                "email": "",
+                "phone": "",
+                "lastTime": "",
+            },
+        ],
         queryParams: $.extend(true,{},searchDeviceParams),
         pages: 1,//总页数
         total: 0,//总条数
@@ -41,10 +70,31 @@ var vueDeviceList = new Vue({
         /**
          * 渲染表格
          */
+        getValue:function (a,b) {
+        addCategory.category.parentId=a;
+        addCategory.parentName=b;
+},
+        deleteCategory:function (rootId) {
+            sendPost({
+                url: "http://39.108.97.103:8080/dev-manager/api_v1/delete-category-by-id/"+rootId,
+                type:'post',
+                dataType:"json",
+                contentType:"application/json",
+                headers: {
+                    token: localStorage.getItem(STORAGE_KEY.token)
+                },
+                success:function (data) {
+                    console.log(data);
+                },
+                error:function () {
+                    alert("失败");
+                }
+            })
+        },
         listDevice: function () {
             var vue = this;
             sendPost({
-                url: API.getApi(API.listDevice),
+                url: "http://39.108.97.103:8080"+API.getApi(API.listDevice),
                 data: JSON.stringify(vue.queryParams),
                 success: function (res) {
                     var data = res.data;
@@ -54,6 +104,68 @@ var vueDeviceList = new Vue({
                         vueDeviceList.pages = data.pages;
                         vueDeviceList.disableNextPage = vueDeviceList.queryParams.queryPage.pageNum === data.pages;
                         vueDeviceList.disableLastPage = vueDeviceList.queryParams.queryPage.pageNum <= 1;
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                error: function (res) {
+                    var json = res.responseJSON;
+                    if (json != null && json.code == 3) {
+                        alert("登录异常！");
+                        window.location.href = "login.html";
+                    } else {
+                        alert("网络连接异常！");
+                    }
+                }
+            });
+
+        },
+         ListUser:function(){
+            sendPost({
+                url: "http://39.108.97.103:8080"+API.getApi(API.ListUser),
+                data: JSON.stringify(
+                    {
+                        "pageNum": 1,
+                        "pageSize": 20,
+                    }
+                ),
+                success: function (res) {
+                    var data = res.data;
+                    if (res.code == 0) {
+                        vueDeviceList.userList = data;
+                        console.log(data);
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                error: function (res) {
+                    var json = res.responseJSON;
+                    if (json != null && json.code == 3) {
+                        alert("登录异常！");
+                        window.location.href = "login.html";
+                    } else {
+                        alert("网络连接异常！");
+                    }
+                }
+            });
+        },
+        addressDevice:function(){
+            sendPost({
+                url: "http://39.108.97.103:8080"+API.getApi(API.addressDevice),
+                data: JSON.stringify(
+                    {
+                        "parentId": "",
+                        "queryPage": {
+                            "pageNum": 1,
+                            "pageSize": 10
+                        }
+                    }
+                ),
+                success: function (res) {
+                    var data = res.data;
+                    if (res.code == 0) {
+                        vueDeviceList.addressList = data;
+                        console.log(data);
                     } else {
                         alert(res.msg);
                     }
@@ -118,7 +230,6 @@ var vueDeviceList = new Vue({
         this.listDevice(this);
     }
 });
-
 //渲染分发设备模态框，报废设备模态框
 var deviceModalVm = new Vue({
     el: '#device-modals',
@@ -142,7 +253,6 @@ var deviceModalVm = new Vue({
         "<discard-device :discardParams=\"discardDeviceParam\"></discard-device>"+
         '</div>'
 });
-
 //生成分类树，依赖于addDeviceVm
 var categoryVm = new Vue({
     el: '#category-tree',
@@ -154,7 +264,7 @@ var categoryVm = new Vue({
             {
                 id: '0',
                 name: '',
-                level: '',
+                level:'',
                 children: [
                 ],
                 active: false,//是否激活
@@ -165,6 +275,76 @@ var categoryVm = new Vue({
     template: ' <div id="category-tree" class="panel-body">\n' +
         '                            <CategoryTree v-for="(item,i) in categoryList" :index="i" :parent="item" :key="item.id"></CategoryTree>\n' +
         '                        </div>'
+});
+//添加分类
+var addCategory=new Vue({
+    el:"#add-category",
+    data:{
+        parentName:'',
+        category: {
+            "parentId":"",
+            "name":"",
+        }
+    },
+    methods: {
+        addCategory: function () {
+            var data =this.category;
+            sendPost({
+                url: "http://39.108.97.103:8080/dev-manager/api_v1/insert-category-by-pid",
+                data: JSON.stringify(data),
+                headers: {
+                    token: localStorage.getItem(STORAGE_KEY.token)
+                },
+                success: function (res) {
+                    if (res.code == 0) {
+                        alert("添加成功！");
+                        $("#add-category").modal('toggle');
+                        sideBarVm.sortList;
+
+                    } else {
+                        console.log(res)
+                        alert(res.msg);
+                    }
+                }
+            });
+        }
+    }
+
+});
+
+//添加地点
+var addressVm = new Vue({
+    el: "#address-device",
+    data: {
+        address: {
+            "parentId": "",
+            "name": "",
+        },
+        //选项卡数据
+        selection: $.extend(true,{},deviceSearchSelection)
+
+    },
+    methods:{
+        //添加地点
+        AddAddress: function () {
+            var data = this.address;
+            sendPost({
+                url: API.getApi(API.AddAddress),
+                data: JSON.stringify(data),
+                success: function (res) {
+                    if (res.code == 0){
+                        alert("添加成功！");
+                        $("#address-device").modal('toggle');
+                        //刷新设备列表
+                        vueDeviceList.addressDevice();
+                    }else {
+                        alert("添加失败！");
+                    }
+                }
+            });
+        },
+
+    },
 });
 //添加设备
 var addDeviceVm = new Vue({
@@ -195,7 +375,7 @@ var addDeviceVm = new Vue({
         addDevice: function () {
             var data = this.device;
             sendPost({
-                url: API.getApi(API.addDevice),
+                url: "http://39.108.97.103:8080"+API.getApi(API.addDevice),
                 data: JSON.stringify(data),
                 success: function (res) {
                     if (res.code == 0){
@@ -213,7 +393,7 @@ var addDeviceVm = new Vue({
         getDeviceSelection: function () {
             var self = this;
             sendPost({
-                url: API.getApi(API.getDeviceSelection) + "/20",
+                url: "http://39.108.97.103:8080"+API.getApi(API.getDeviceSelection) + "/20",
                 success: function (res) {
                     if (res.code === 0){
                         var categoryList = $.extend(true,[],res.data.categoryList);
@@ -243,8 +423,8 @@ var addDeviceVm = new Vue({
         this.getDeviceSelection();
     }
 });
-
 //侧边栏
+
 var sideBarVm = new Vue({
     el: "#sidebar",
     data: {
@@ -252,10 +432,36 @@ var sideBarVm = new Vue({
     },
     methods: {
         listDevice: function (statusId) {
+            vueDeviceList.device=true;
+            vueDeviceList.category=false;
+            vueDeviceList.address=false;
+            vueDeviceList.user=false;
             vueDeviceList.queryParams.statusId = statusId;
             vueDeviceList.listDevice();
+        },
+        sortList:function () {
+            sort();
+            vueDeviceList.device=false;
+            vueDeviceList.category=true;
+            vueDeviceList.address=false;
+            vueDeviceList.user=false;
+            category:true;
+        },
+        addressDevice:function(statusId){
+            vueDeviceList.queryParams.statusId = statusId;
+            vueDeviceList.addressDevice();
+            vueDeviceList.device=false;
+            vueDeviceList.address=true;
+            vueDeviceList.category=false;
+            vueDeviceList.user=false;
+        },
+        ListUser:function () {
+            vueDeviceList.ListUser();
+            vueDeviceList.user=true;
+            vueDeviceList.device=false;
+            vueDeviceList.address=false;
+            vueDeviceList.category=false;
         }
-
     }
 });
 //注销
@@ -268,3 +474,30 @@ var logoutVm = new Vue({
         }
     }
 });
+var data={
+    "parentId": "",
+    "queryPage": {
+        "pageNum": 1,
+        "pageSize": 10
+    }
+};
+
+function sort(){
+    $.ajax({
+        url: "http://39.108.97.103:8080/dev-manager/api_v1/list-category-by-pId",
+        data: JSON.stringify(data),
+        type:'post',
+        dataType:"json",
+        contentType:"application/json",
+        headers: {
+                token: localStorage.getItem(STORAGE_KEY.token)
+            },
+        success:function (data) {
+            console.log(data.data);
+            vueDeviceList.sortList=data.data;
+        },
+        error:function () {
+            alert("失败");
+        }
+    })
+}

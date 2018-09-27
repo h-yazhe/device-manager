@@ -59,7 +59,10 @@ var API = {
     listBrand: "brand",
     //根据父id查询子分类
     listCategoryByPId: 'list-category-by-pId',
-
+    ListUser:"user/list-by-page",
+    addressDevice:"list-location-by-pid",
+    AddAddress:"insert-location-by-pid",
+    DeleteAddress:"delete-location-tree-by-Id",
     getApi: function (name) {
         return this.prefix + name;
     }
@@ -317,21 +320,21 @@ var DistributeDevice = {
         '    </div>\n' +
         '</div>'
 };
-//报废设备组件
-var DiscardDevice = {
-  name: 'discard-device',
-  props: ['discardParams'],
+/*////删除地点
+var DeleteAddress = {
+  name: 'delete-address',
+  props: ['distributeParam'],
   methods: {
-      discard: function () {
+      delete: function () {
           var self = this;
           sendPost({
-             url: API.getApi(API.discardDevice),
-             data: self.discardParams.deviceId,
+             url: API.getApi(API.DeleteAddress),
+             data: JSON.stringify(self.parentId),
               success: function (res) {
                   if (res.code === 0){
-                      alert("设备" + self.discardParams.deviceId + "已报废！");
-                      $('#discard-device-modal').modal('toggle');
-                      vueDeviceList.listDevice();
+                      alert("地点" + self.parentId + "已删除！");
+                      $('#delete-address-modal').modal('toggle');
+                      vueDeviceList.addressDevice();
                   } else {
                       alert(res.msg);
                   }
@@ -342,6 +345,44 @@ var DiscardDevice = {
           });
       }
   },
+    template: '<div id="#delete-address-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="#delete-address">\n' +
+        '    <div class="modal-dialog modal-lg" role="document">\n' +
+        '        <div class="modal-body">\n' +
+        '         <h2>确定删除id为 {{parentId}} 的地点吗？</h2>   '+
+        '        </div>\n' +
+        '<div class="modal-footer">\n' +
+        '            <button @click="delete" type="button" class="btn btn-success">确定</button>\n' +
+        '            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>\n' +
+        '        </div>'+
+        '    </div>\n' +
+        '</div>'
+};*/
+
+//报废设备组件
+var DiscardDevice = {
+    name: 'discard-device',
+    props: ['discardParams'],
+    methods: {
+        discard: function () {
+            var self = this;
+            sendPost({
+                url: API.getApi(API.discardDevice),
+                data: self.discardParams.deviceId,
+                success: function (res) {
+                    if (res.code === 0){
+                        alert("设备" + self.discardParams.deviceId + "已报废！");
+                        $('#discard-device-modal').modal('toggle');
+                        vueDeviceList.listDevice();
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                error: function (res) {
+                    alert("网络异常！");
+                }
+            });
+        }
+    },
     template: '<div id="discard-device-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="distribute-device">\n' +
         '    <div class="modal-dialog modal-lg" role="document">\n' +
         '        <div class="modal-body">\n' +
