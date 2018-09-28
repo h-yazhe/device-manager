@@ -152,13 +152,15 @@
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
-                <div class="col-md-2" style="padding-right: 0">
+                <div class="col-md-2" style="padding-right: 0" >
                     <div class="panel panel-default pre-scrollable">
                        <div id="category-tree"></div>
                     </div>
                 </div>
                 <div id="device-list" class="col-md-10 main-chart"  style="padding-left: 0">
+                    <!--搜索模块-->
                     <search-device :selection="searchSelection" v-if="device"></search-device>
+                    <!--设备详情页-->
                     <div class="content-panel table-responsive" v-if="device">
                         <h4 style="float: left"><i class="fa fa-angle-right"></i>
                             设备详情
@@ -228,13 +230,13 @@
                         </div>
                         <div class="clear"></div>
                     </div>
-                   <!-- //用户详情页-->
+                    <!-- 用户详情页-->
                     <div class="content-panel table-responsive" v-if="user">
                         <h4 style="float: left"><i class="fa fa-angle-right"></i>
                             用户详情
                         </h4>
                         <div class="turn-page-right">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-list">添加用户</button>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-user">添加用户</button>
                         </div>
                         <div class="clear"></div>
                         <hr>
@@ -247,6 +249,7 @@
                                 <th>邮箱</th>
                                 <th>电话</th>
                                 <th>最后一次登录时间</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -257,12 +260,13 @@
                                 <td>{{user.email}}</td>
                                 <td>{{user.phone}}</td>
                                 <td>{{user.lastTime}}</td>
+                                <td><button  class="btn btn-danger btn-xs">删除</button></td>
                             </tr>
 
                             </tbody>
                         </table>
                     </div>
-                   <!-- //分类详情页-->
+                    <!-- 分类详情页-->
                     <div class="content-panel table-responsive" v-if="category">
                         <h4 style="float: left"><i class="fa fa-angle-right"></i>
                             分类详情
@@ -289,8 +293,7 @@
                         </table>
                         <div class="clear"></div>
                     </div>
-
-                 <!--   //地点详情页-->
+                    <!-- 地点详情页-->
                     <div class="content-panel table-responsive" v-if="address">
                         <h4 style="float: left"><i class="fa fa-angle-right"></i>
                             地址详情
@@ -446,6 +449,44 @@
         </div>
         <div class="modal-footer">
             <button @click="AddAddress" type="button" class="btn btn-success">添加</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+    </div>
+</div>
+<!--添加用户模态框-->
+<div id="add-user" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="add-user">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">添加用户</h4>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label for="input-device-name">用户名</label>
+                    <input v-model="user.username" type="text" class="form-control"  placeholder="用户名">
+                </div>
+                <div class="form-group">
+                    <label for="input-device-name">密码</label>
+                    <input v-model="user.password" type="text" class="form-control"  placeholder="密码">
+                </div>
+                <div class="form-group">
+                    <label for="input-device-name">真实姓名</label>
+                    <input v-model="user.realName" type="text" class="form-control"  placeholder="真实姓名">
+                </div>
+                <div class="form-group">
+                    <label for="input-device-name">邮箱</label>
+                    <input v-model="user.email" type="text" class="form-control"  placeholder="邮箱">
+                </div>
+                <div class="form-group">
+                    <label for="input-device-name">地址</label>
+                    <input v-model="user.address" type="text" class="form-control"  placeholder="地址">
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button @click="addUser" type="button" class="btn btn-success">添加</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         </div>
     </div>
