@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.DeviceStatusRecord;
+import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 
 import java.util.List;
 
@@ -25,4 +26,11 @@ public interface DeviceStatusRecordMapper {
     int updateByPrimaryKey(DeviceStatusRecord record);
 
     int deleteByDeviceIds(List<String> deviceIds);
+
+	/**
+	 * 根据设备id查询设备状态变更记录
+	 * @param deviceId
+	 * @return
+	 */
+	List<DeviceStatusRecordDTO> getByDeviceId(String deviceId);
 }

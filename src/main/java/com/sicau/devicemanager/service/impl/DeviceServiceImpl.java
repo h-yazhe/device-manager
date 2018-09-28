@@ -2,8 +2,10 @@ package com.sicau.devicemanager.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageParams;
 import com.sicau.devicemanager.POJO.DO.*;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
+import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
@@ -267,6 +269,13 @@ public class DeviceServiceImpl implements DeviceService {
 		));
 	}
 
+	@Override
+	public PageInfo<DeviceStatusRecordDTO> getDeviceStatusRecordByDeviceId(DeviceStatusRecordDTO deviceStatusRecordDTO) {
+		QueryPage queryPage = deviceStatusRecordDTO.getQueryPage();
+		PageHelper.startPage(queryPage.getPageNum(),queryPage.getPageSize(),"operate_time");
+		return new PageInfo<>(deviceStatusRecordMapper.getByDeviceId(deviceStatusRecordDTO.getDeviceId()));
+	}
+
 	/**
 	 * 校验locationId是否在目标list中
 	 *
@@ -281,6 +290,30 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * 根据地点的路径来获取地点名称表示路径，如 /雅安/十教
+	 * @param locationPath 地点的路径
+	 * @return
+	 */
+	private String getLocationStrBLocationPath(String locationPath){
+		StringBuilder locationStr = new StringBuilder();
+		List<String> locationIds = new ArrayList<>(Arrays.asList(locationPath.split("/")));
+		//字符串分割后第一个元素为空，去掉
+		if (locationIds.size() > 0) {
+			locationIds.remove(0);
+			List<Location> locationList = locationMapper.getLocationsInIds(locationIds);
+			for (int i=0;i<locationList.size();i++) {
+				locationStr.append(locationList.get(i).getName());
+				//最后一个地点后不加斜杠
+				if (i != locationList.size()-1){
+					locationStr.append("/");
+				}
+			}
+		}
+		//否则为顶级区域
+		return locationStr.toString();
 	}
 
 	private void setLocationAndCategory(List<DeviceDTO> deviceDTOList) {

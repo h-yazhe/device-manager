@@ -1,11 +1,12 @@
 package com.sicau.devicemanager.controller;
 
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
+import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
-import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.DistributeDeviceGroup;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.GetDeviceStatusRecordByDeviceId;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.service.DeviceService;
@@ -101,5 +102,16 @@ public class DeviceController {
 	public ResultVO repairDevice(@PathVariable String deviceId){
 		deviceService.repairDevice(deviceId);
 		return ResultVOUtil.success();
+	}
+
+	/**
+	 * 根据设备id查询设备状态变更记录
+	 * @param deviceStatusRecordDTO
+	 * @return
+	 */
+	@PostMapping("get-status-record-by-deviceId")
+	public ResultVO getDeviceStatusRecordByDeviceId(@Validated({GetDeviceStatusRecordByDeviceId.class})
+																@RequestBody DeviceStatusRecordDTO deviceStatusRecordDTO){
+		return ResultVOUtil.success(deviceService.getDeviceStatusRecordByDeviceId(deviceStatusRecordDTO));
 	}
 }

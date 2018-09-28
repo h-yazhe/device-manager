@@ -19,6 +19,8 @@ public class DeviceValidatedGroup {
 
 	 public interface DistributeDeviceGroup{}
 
+	 public interface GetDeviceStatusRecordByDeviceId{}
+
 	 public interface InsertTree{}
 
 	 public interface ListTreeByPId{}

@@ -1,9 +1,13 @@
 package com.sicau.devicemanager.POJO.DO;
 
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.GetDeviceStatusRecordByDeviceId;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
  * 设备状态记录表
+ * @author hyz
  */
 public class DeviceStatusRecord {
     private String id;
@@ -11,6 +15,7 @@ public class DeviceStatusRecord {
 	/**
 	 * 设备id
 	 */
+	@NotNull(message = "设备id不能为空",groups = {GetDeviceStatusRecordByDeviceId.class})
 	private String deviceId;
 
 	/**

@@ -268,6 +268,7 @@ pageSize | 每页数据量 | int | 1 |
 
 字段名 | 描述 | 备注
 :-----: | :-------: | :-------:
+
 5.获取搜索的选项卡第一页数据
 url:`device/repair/{deviceId}`
 
@@ -292,6 +293,80 @@ deviceId | 设备id | str | 1 |
 
 字段名 | 描述 | 备注
 :-----: | :-------: | :-------:
+
+6.根据设备id查询设备状态变更记录
+url:`device/get-status-record-by-deviceId`
+
+data: 
+```
+{
+	"deviceId": "1536510045396168455",
+	"queryPage": {
+		"pageNum": 1,
+		"pageSize": 20
+	}
+}
+```
+参数说明：
+
+字段名 | 描述 | 参数类型 | 必要 | 备注
+:-----: | :-------: | :-------: | :------: | :-------:
+deviceId | 设备id | str | 1 | 
+queryPage | 分页参数 | obj |
+
+返回值示例:
+```
+{
+    "code": 0,
+    "msg": "成功",
+    "data": {
+        "pageNum": 1,
+        "pageSize": 20,
+        "size": 1,
+        "startRow": 1,
+        "endRow": 1,
+        "total": 1,
+        "pages": 1,
+        "list": [
+            {
+                "id": "1537970859852284993",
+                "fromStatus": -1,
+                "toStatus": 1,
+                "operateTime": 1537942059000,
+                "operateUserId": "1526467363362171844",
+                "fromLocation": "十教",
+                "toLocation": "温江",
+                "operateUserRealName": "黄雅哲"
+            }
+        ],
+        "prePage": 0,
+        "nextPage": 0,
+        "isFirstPage": true,
+        "isLastPage": true,
+        "hasPreviousPage": false,
+        "hasNextPage": false,
+        "navigatePages": 8,
+        "navigatepageNums": [
+            1
+        ],
+        "navigateFirstPage": 1,
+        "navigateLastPage": 1,
+        "firstPage": 1,
+        "lastPage": 1
+    }
+}
+```
+字段说明：
+
+字段名 | 描述 | 备注
+:-----: | :-------: | :-------:
+fromStatus | 本来的状态 | 若为-1，则表示新添加的设备 
+toStatus | 改变的状态 | 
+fromLocation | 变更前的地点 | 
+toLocation | 变更后的地点 |
+operateUserId | 操作的用户id |
+operateUserRealName | 操作用户的真实姓名 | 
+operateTime | 改变设备状态的操作时间 |
 
 ###分类
 1.根据父id查询分类

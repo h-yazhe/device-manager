@@ -20,7 +20,21 @@
     from device_status_record
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+
+	<select id="getByDeviceId" resultType="com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO">
+		select dsr.id, dsr.operate_time,dsr.from_status,dsr.to_status , u.id operateUserId, u.real_name operateUserRealName,
+			   l.name fromLocation,l2.name toLocation
+		from device_status_record dsr
+		left join user u
+		on u.id = dsr.operate_user_id
+		left join location l
+		on l.id = dsr.from_location_id
+		left join location l2
+		on l2.id = dsr.to_location_id
+		where device_id = #{deviceId}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from device_status_record
     where id = #{id,jdbcType=VARCHAR}
   </delete>
