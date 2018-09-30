@@ -70,10 +70,29 @@ var vueDeviceList = new Vue({
         /**
          * 渲染表格
          */
+        //模态框传参
         getValue:function (a,b) {
         addCategory.category.parentId=a;
         addCategory.parentName=b;
 },
+        //分类
+        sort:function(){
+            sendPost({
+                url:API.getApi(API.listCategoryByPId),
+                data: JSON.stringify(data),
+                type:'post',
+                dataType:"json",
+                contentType:"application/json",
+                success:function (data) {
+                    console.log(data.data);
+                    vueDeviceList.sortList=data.data;
+                },
+                error:function () {
+                    alert("失败");
+                }
+            })
+        },
+        //删除
         deleteCategory:function (rootId) {
             sendPost({
                 url: "http://39.108.97.103:8080/dev-manager/api_v1/delete-category-by-id/"+rootId,
@@ -124,7 +143,7 @@ var vueDeviceList = new Vue({
         /*获取用户列表*/
          ListUser:function(){
             sendPost({
-                url: API.getApi(API.ListUser),
+                url:API.getApi(API.ListUser),
                 data: JSON.stringify(
                     {
                         "pageNum": 1,
@@ -153,7 +172,7 @@ var vueDeviceList = new Vue({
         /*获取地点列表*/
         addressDevice:function(){
             sendPost({
-                url: API.getApi(API.addressDevice),
+                url:API.getApi(API.addressDevice),
                 data: JSON.stringify(
                     {
                         "parentId": "",
@@ -439,7 +458,7 @@ var sideBarVm = new Vue({
             vueDeviceList.listDevice();
         },
         sortList:function () {
-            sort();
+            vueDeviceList.sort();
             vueDeviceList.device=false;
             vueDeviceList.category=true;
             vueDeviceList.address=false;
@@ -480,22 +499,3 @@ var data={
     }
 };
 
-function sort(){
-    $.ajax({
-        url: "http://39.108.97.103:8080/dev-manager/api_v1/list-category-by-pId",
-        data: JSON.stringify(data),
-        type:'post',
-        dataType:"json",
-        contentType:"application/json",
-        headers: {
-                token: localStorage.getItem(STORAGE_KEY.token)
-            },
-        success:function (data) {
-            console.log(data.data);
-            vueDeviceList.sortList=data.data;
-        },
-        error:function () {
-            alert("失败");
-        }
-    })
-}
