@@ -3,14 +3,17 @@ package com.sicau.devicemanager.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.Role;
+import com.sicau.devicemanager.POJO.DO.RoleLocation;
 import com.sicau.devicemanager.POJO.DO.RolePermission;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.RoleAddDTO;
 import com.sicau.devicemanager.POJO.DTO.RoleDTO;
+import com.sicau.devicemanager.dao.RoleLocationMapper;
 import com.sicau.devicemanager.dao.RoleMapper;
 import com.sicau.devicemanager.dao.UserRoleMapper;
 import com.sicau.devicemanager.service.RoleService;
 import com.sicau.devicemanager.util.KeyUtil;
+import com.sicau.devicemanager.util.web.RequestUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,8 @@ public class RoleServiceImpl implements RoleService{
     private RoleMapper roleMapper;
     @Autowired
     private UserRoleMapper userRoleMapper;
+    @Autowired
+	private RoleLocationMapper roleLocationMapper;
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
@@ -47,6 +52,14 @@ public class RoleServiceImpl implements RoleService{
             rolePermission.setPermissionId(permissionId);
             roleMapper.insertRolePermission(rolePermission);
         }
+        //角色管理的地点写入
+		for (String locationId : roleAddDTO.getLocationIds()){
+			roleLocationMapper.insert(
+					new RoleLocation(
+						KeyUtil.genUniqueKey(),roleId,locationId, RequestUtil.getCurrentUserId()
+					)
+			);
+		}
     }
 
     @Transactional(rollbackFor = RuntimeException.class)

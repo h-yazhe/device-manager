@@ -107,13 +107,7 @@ public class DeviceServiceImpl implements DeviceService {
 		if (ids.isEmpty()) {
 			return;
 		}
-		//删除设备分类
-		deviceCategoryMapper.deleteByDeviceIds(ids);
-		//删除设备品牌
-		deviceBrandMapper.deleteByDeviceIds(ids);
-		//删除设备状态记录
-		deviceStatusRecordMapper.deleteByDeviceIds(ids);
-		//删除设备
+		//逻辑删除设备
 		deviceMapper.deleteByIds(ids);
 	}
 

@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.DO.User;
 import com.sicau.devicemanager.POJO.DO.UserAuth;
 import com.sicau.devicemanager.POJO.DO.UserRole;

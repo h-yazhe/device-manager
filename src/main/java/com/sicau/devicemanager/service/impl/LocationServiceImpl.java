@@ -58,9 +58,14 @@ public class LocationServiceImpl implements LocationService {
 		List<Location> locationList = new ArrayList<>(1);
 		location.setId(KeyUtil.genUniqueKey());
 		//根据父节点信息设置当前节点其他信息
-		Location pLocation = locationMapper.getById(location.getParentId());
-		location.setLevel(pLocation.getLevel() + 1);
-		location.setPath(pLocation.getPath() + location.getId());
+		if (location.getParentId().isEmpty()){
+			location.setLevel(1);
+			location.setPath("/");
+		}else {
+			Location pLocation = locationMapper.getById(location.getParentId());
+			location.setLevel(pLocation.getLevel() + 1);
+			location.setPath(pLocation.getPath() + pLocation.getId() + "/");
+		}
 		locationList.add(location);
 		locationMapper.insertList(locationList);
 	}

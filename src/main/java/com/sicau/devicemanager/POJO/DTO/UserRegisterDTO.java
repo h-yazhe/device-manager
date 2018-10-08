@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Email;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * 注册用户传输的数据

@@ -71,11 +71,24 @@ public class Device {
     @ApiModelProperty(value = "当前设备状态id",notes = "1为入库，2为使用，3为报废")
     private Integer statusId;
 
+	/**
+	 * 逻辑删除状态
+	 */
+	private Boolean deleted;
+
     @ApiModelProperty("创建时间，即第一次入库的时间")
     private Date createTime;
 
     @ApiModelProperty("更新时间")
     private Date updateTime;
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 
 	public String getDescription() {
 		return description;
