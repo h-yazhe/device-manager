@@ -113,7 +113,7 @@
 		to_status, operate_user_id,from_location_id,to_location_id
 		) values
 			<foreach collection="list" item="i" separator=",">
-				(#{i.id},#{ideviceId},#{i.fromStatus},#{i.toStatus},#{i.operateUserId},#{fromLocationId},#{toLocationId})
+				(#{i.id},#{i.deviceId},#{i.fromStatus},#{i.toStatus},#{i.operateUserId},#{fromLocationId},#{toLocationId})
 			</foreach>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
