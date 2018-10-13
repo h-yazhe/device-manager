@@ -274,7 +274,7 @@ roleList.name | 角色名 |
 
 4.通过用户id删除用户
 
-url:`delete/{userId}`
+url:`user/delete/{userId}`
 
 data: 
 ```

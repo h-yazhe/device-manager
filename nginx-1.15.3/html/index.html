@@ -152,7 +152,7 @@
     <section id="main-content">
         <section class="wrapper">
             <div class="row">
-                <div class="col-md-2" style="padding-right: 0" >
+                <div class="col-md-2" style="padding-right: 0">
                     <div class="panel panel-default pre-scrollable">
                        <div id="category-tree"></div>
                     </div>
@@ -214,7 +214,6 @@
                                     <button @click="showDiscardModal(device.id)" v-if="device.statusId==2" class="btn btn-danger btn-xs"><i class="fa fa-dropbox"></i>报废</button>
                                 </td>
                             </tr>
-
                             </tbody>
                         </table>
                         <div class="page-info-left">
@@ -246,6 +245,7 @@
                                 <th>Id</th>
                                 <th>用户名</th>
                                 <th>真实姓名</th>
+                                <th>角色名</th>
                                 <th>邮箱</th>
                                 <th>电话</th>
                                 <th>最后一次登录时间</th>
@@ -257,10 +257,15 @@
                                 <td>{{user.id}}</td>
                                 <td>{{user.username}}</td>
                                 <td>{{user.realName}}</td>
+                                <td>{{listRole(user.roleList)}}</td>
                                 <td>{{user.email}}</td>
                                 <td>{{user.phone}}</td>
-                                <td>{{user.lastTime}}</td>
-                                <td><button  class="btn btn-danger btn-xs">删除</button></td>
+                                <td>{{userFormatTime(user.lastTime)}}</td>
+                                <td>
+                                   <button type="button" class="btn btn-danger btn-xs" @click="showDeleteUserModal(user.id)"> <!--@click="showDeleteUserModal(user.id)" -->
+                                    删除
+                                    </button>
+                                </td>
                             </tr>
 
                             </tbody>
@@ -475,8 +480,19 @@
                     <input v-model="user.realName" type="text" class="form-control"  placeholder="真实姓名">
                 </div>
                 <div class="form-group">
+                    <label for="input-role">角色名</label>
+                    <select v-model="user.roleId" id="input-role" class="form-control">
+                        <option disabled value="0">请选择</option>
+                        <option v-for="role in roleIds" v-bind:value="role.id">{{role.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="input-device-name">邮箱</label>
                     <input v-model="user.email" type="text" class="form-control"  placeholder="邮箱">
+                </div>
+                <div class="form-group">
+                    <label for="input-device-name">电话</label>
+                    <input v-model="user.phone" type="text" class="form-control"  placeholder="电话">
                 </div>
                 <div class="form-group">
                     <label for="input-device-name">地址</label>
@@ -491,8 +507,30 @@
         </div>
     </div>
 </div>
+
+<!--删除用户模态框-->
+<div class="modal fade" id="delete-user" tabindex="-1" role="dialog" aria-labelledby="deleteUserLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="deleteUserLabel">删除用户</h4>
+            </div>
+            <div class="modal-body">
+                确定删除该用户的信息吗？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" @click="deleteUser(user.id)">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--分发设备组件-->
 <div id="device-modals"></div>
+<!--删除组件用户-->
+<!--<div id="delete-user-modals"></div>-->
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="assets/js/jquery.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
