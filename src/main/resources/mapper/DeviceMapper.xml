@@ -15,6 +15,7 @@
 		<result column="amount_unit_id" property="amountUnitId" jdbcType="VARCHAR"/>
 		<result column="description" property="description" jdbcType="VARCHAR"/>
 		<result column="status_id" property="statusId" jdbcType="INTEGER"/>
+		<result column="deleted" property="deleted" jdbcType="BOOLEAN"/>
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
 	</resultMap>
@@ -54,7 +55,7 @@
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, `name`, location_id, national_id, serial_number, use_time, work_nature_id, custodian_id,
-		unit_price, amount_unit_id, status_id, create_time, update_time, device_model_id, use_department_id
+		unit_price, amount_unit_id, status_id, deleted, create_time, update_time, device_model_id, use_department_id
 	</sql>
 	<sql id="getDeviceInfo">
 		SELECT d.id,d.`name`, d.national_id,d.serial_number,d.use_time,d.unit_price,
@@ -83,6 +84,7 @@
 		left JOIN location l
 		ON l.id = d.location_id
 		<where>
+			deleted = 0
 			<if test="workNatureId!=null">
 				and wn.id = #{workNatureId}
 			</if>
@@ -98,13 +100,13 @@
 			<if test="brandId!=null">
 				and db.brand_id = #{brandId}
 			</if>
-			<if test="categoryIds != null">
+			<if test="categoryIds != null and categoryIds.size>0">
 				AND c.id IN
 				<foreach collection="categoryIds" item="categoryId" open="(" close=")" separator=",">
 					#{categoryId}
 				</foreach>
 			</if>
-			<if test="locationIds!=null">
+			<if test="locationIds!=null and locationIds.size>0">
 				and l.id in
 				<foreach collection="locationIds" item="locationId" separator="," open="(" close=")">
 					#{locationId}
@@ -153,7 +155,8 @@
 		WHERE id = #{id,jdbcType=VARCHAR}
 	</delete>
 	<delete id="deleteByIds">
-		DELETE FROM device
+		update device
+		set deleted = 1
 		WHERE id IN
 		<foreach collection="list" item="id" separator="," open="(" close=")">
 			#{id}

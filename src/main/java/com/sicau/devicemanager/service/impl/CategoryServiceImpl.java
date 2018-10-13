@@ -124,10 +124,15 @@ public class CategoryServiceImpl implements CategoryService{
 		List<Category> categories = new ArrayList<>(1);
 		category.setId(KeyUtil.genUniqueKey());
 		//根据父节点信息设置当前节点其他信息
-		Category pCategory = categoryMapper.getById(category.getParentId());
-		category.setLevel(pCategory.getLevel() + 1);
-		category.setPath(pCategory.getPath() + category.getId());
-		categories.add(category);
+		if (category.getParentId().isEmpty()){
+			category.setPath("/");
+			category.setLevel(1);
+		}else {
+			Category pCategory = categoryMapper.getById(category.getParentId());
+			category.setLevel(pCategory.getLevel() + 1);
+			category.setPath(pCategory.getPath() + pCategory.getId() + "/");
+			categories.add(category);
+		}
 		categoryMapper.insertList(categories);
 	}
 

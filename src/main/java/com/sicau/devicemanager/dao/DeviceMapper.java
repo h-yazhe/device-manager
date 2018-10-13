@@ -34,6 +34,11 @@ public interface DeviceMapper {
 	 */
 	List<DeviceDTO> getDeviceInfo(DeviceDTO deviceDTO);
 
+	/**
+	 * 逻辑删除
+	 * @param ids
+	 * @return
+	 */
 	int deleteByIds(List<String> ids);
 
 	/**

@@ -67,14 +67,14 @@ public class LocationController {
 		return ResultVOUtil.success();
 	}
 
-	@ApiOperation("插入一个地点树")
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PostMapping("location")
-	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.ADD)
-	public ResultVO insertLocationTree(@RequestBody List<Location> locationList){
-		locationService.insertLocationTree(locationList);
-		return ResultVOUtil.success();
-	}
+//	@ApiOperation("插入一个地点树")
+//	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+//	@PostMapping("location")
+//	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.ADD)
+//	public ResultVO insertLocationTree(@RequestBody List<Location> locationList){
+//		locationService.insertLocationTree(locationList);
+//		return ResultVOUtil.success();
+//	}
 
 	/**
 	 * 根据父id插入一个子地点
