@@ -272,12 +272,180 @@ var vueDeviceList = new Vue({
             deviceModalVm.discardDeviceParam.deviceId = deviceId;
             $('#discard-device-modal').modal('toggle');
         },
+        showDetailsModal:function (device) {
+            console.log(device)
+            $("#detail-id").val(device.id);
+            deviceDetails.id=device.id;
+            deviceChange.id=device.id;
+            $("#detail-name").val(device.name);
+            $("#detail-locationStr").val(device.locationStr);
+            $("#detail-nationlId").val(device.nationalId);
+            $("#detail-serialNumber").val(device.serialNumber);
+            $("#detail-unitPrice").val(device.unitPrice);
+            $("#detail-workNature").val(device.workNature);
+            $("#detail-custodian").val(device.custodian);
+            $("#detail-time").val(vueDeviceList.formatTime(device.useTime,device.statusId))
+            $("#detail-status").val(vueDeviceList.parseStatus(device.statusId));
+            $('#device-detail').modal('toggle');
+            $("#device-description").val(device.desciption);
+            deviceDetails.getCategory();
+            deviceDetails.getLocation();
+            deviceChange.getData();
+
+        }
     },
     created: function () {
         this.listDevice(this);
     }
 });
-
+//详情模态框
+var deviceDetails=new Vue({
+    el:'#device-details',
+    data:{
+        categoryList: [
+            {
+                id: '0',
+                name: '',
+                level: '',
+                children: [
+                ]
+            }
+        ],
+        locationList: [
+            {
+                "id": "",
+                "name": "",
+            },
+        ],
+        id:'',
+    },
+    methods:{
+        getLocation:function(){
+            sendPost({
+                url:API.getApi(API.addressDevice),
+                data: JSON.stringify(
+                    {
+                        "parentId":"",
+                        "queryPage": {
+                            "pageNum": 1,
+                            "pageSize": 10
+                        }
+                    }
+                ),
+                success: function (res) {
+                    var data = res.data;
+                    if (res.code == 0) {
+                        deviceDetails.locationList= data;
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                error: function (res) {
+                    var json = res.responseJSON;
+                    if (json != null && json.code == 3) {
+                        alert("登录异常！");
+                    } else {
+                        alert("网络连接异常！");
+                    }
+                }
+            });
+        },
+        getCategory:function(){
+            sendPost({
+                url:API.getApi(API.listCategoryByPId),
+                data: JSON.stringify(
+                    {
+                        "parentId":"",
+                        "queryPage": {
+                            "pageNum": 1,
+                            "pageSize": 10
+                        }
+                    }
+                ),
+                success: function (res) {
+                    var data = res.data;
+                    if (res.code == 0) {
+                        deviceDetails.categoryList= data;
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                error: function (res) {
+                    var json = res.responseJSON;
+                    if (json != null && json.code == 3) {
+                        alert("登录异常！");
+                    } else {
+                        alert("网络连接异常！");
+                    }
+                }
+            });
+        },
+    }
+})
+var deviceChange=new Vue({
+    el:'#device-change',
+    data:{
+        id:'',
+        List: [
+            {
+                "id": "",
+                "fromStatus": -1,
+                "toStatus": 1,
+                "operateTime": 1537942059000,
+                "operateUserId": "1526467363362171844",
+                "fromLocation": "十教",
+                "toLocation": "温江",
+                "operateUserRealName": "黄雅哲"
+            }
+        ]
+    },
+    methods:{
+        getData:function(){
+            sendPost({
+                url:API.getApi(API.DeviceRecord),
+                data: JSON.stringify({
+                    "deviceId":this.id,
+                        "queryPage": {
+                    "pageNum": 1,
+                    "pageSize": 20
+                }
+            }
+                ),
+                success: function (res) {
+                    var data = res.data.list;
+                    console.log("haha")
+                    if (res.code == 0) {
+                        deviceChange.List= data;
+                        console.log(data);
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                error: function (res) {
+                    var json = res.responseJSON;
+                    if (json != null && json.code == 3) {
+                        alert("登录异常！");
+                    } else {
+                        alert("网络连接异常！");
+                    }
+                }
+            });
+        },
+        formatTime: function (timestamp,deviceStatusId) {
+            return deviceStatusId===1 ? '' : formatTime(timestamp);
+        },
+        parseStatus: function (status) {
+            switch (status) {
+                case 1:
+                    return '入库';
+                case 2:
+                    return '使用中';
+                case 3:
+                    return '报废';
+            }
+        },
+    }
+})
 //渲染分发设备模态框，报废设备模态框
 var deviceModalVm = new Vue({
     el: '#device-modals',
@@ -301,6 +469,7 @@ var deviceModalVm = new Vue({
         "<discard-device :discardParams=\"discardDeviceParam\"></discard-device>"+
         '</div>'
 });
+
 //生成分类树，依赖于addDeviceVm
 var categoryVm = new Vue({
     el: '#category-tree',
@@ -362,7 +531,7 @@ var addCategory=new Vue({
 });
 //添加地点
 var addressVm = new Vue({
-    el: "#address-device",
+    el: "#addres",
     data: {
         address: {
             "parentId":"",

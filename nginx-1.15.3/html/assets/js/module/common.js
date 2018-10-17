@@ -75,6 +75,7 @@ var API = {
     AddAddress:"insert-location-by-pid",
     //删除该节点为根的地点树
     DeleteAddress:"delete-location-tree-by-Id",
+    DeviceRecord:"device/get-status-record-by-deviceId",
     getApi: function (name) {
         return this.prefix + name;
     }
