@@ -28,4 +28,6 @@ public class DeviceValidatedGroup {
 	 public interface InsertTreeByPId{}
 
 	 public interface Login{}
+
+	 public interface SubmitRepairOrder{}
 }

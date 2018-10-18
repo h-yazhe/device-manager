@@ -601,3 +601,11 @@ rootId | 要删除的根节点id | str | 1 |
   name  |  地点名 | 
   level | 层级 |
   path | 节点路径 |  以id作为标识，根节点为/
+  
+  
+  ###设备维修
+  1.报修设备，提交报修设备订单
+  
+  url:`submit-repair-order`
+  
+  

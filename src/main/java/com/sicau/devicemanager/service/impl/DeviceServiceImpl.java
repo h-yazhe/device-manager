@@ -2,7 +2,6 @@ package com.sicau.devicemanager.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.page.PageParams;
 import com.sicau.devicemanager.POJO.DO.*;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
@@ -11,6 +10,7 @@ import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
 import com.sicau.devicemanager.config.exception.CommonException;
 import com.sicau.devicemanager.constants.DeviceStatusEnum;
+import com.sicau.devicemanager.constants.RepairStatusCodeEnum;
 import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.*;
 import com.sicau.devicemanager.service.DeviceService;
@@ -55,6 +55,8 @@ public class DeviceServiceImpl implements DeviceService {
 	private DeviceModelMapper deviceModelMapper;
 	@Autowired
 	private WorkNatureMapper workNatureMapper;
+	@Autowired
+	private RepairOrderMapper repairOrderMapper;
 
 	@Override
 	public void addDevice(DeviceDTO deviceDTO) {
@@ -243,24 +245,6 @@ public class DeviceServiceImpl implements DeviceService {
 		PageHelper.startPage(1, pageSize);
 		deviceSearchSelectionVO.setWorkNatureList(workNatureMapper.listAll());
 		return deviceSearchSelectionVO;
-	}
-
-	@Override
-	public void repairDevice(String deviceId) {
-		//查询设备原始记录
-		Device device = deviceMapper.selectByPrimaryKey(deviceId);
-		//修改设备状态
-		deviceMapper.updateStatusIdById(deviceId,DeviceStatusEnum.FIXING.getCode());
-		//插入设备状态修改记录
-		deviceStatusRecordMapper.insert(new DeviceStatusRecord(
-				KeyUtil.genUniqueKey(),
-				deviceId,
-				device.getStatusId(),
-				DeviceStatusEnum.FIXING.getCode(),
-				device.getLocationId(),
-				device.getLocationId(),
-				RequestUtil.getCurrentUserId()
-		));
 	}
 
 	@Override

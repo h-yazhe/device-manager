@@ -45,6 +45,7 @@
 			#{i}
 		</foreach>
 	</delete>
+
 	<insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
     insert into device_status_record (id, device_id, from_status, 
       to_status, operate_user_id,from_location_id,to_location_id
@@ -53,6 +54,7 @@
       #{toStatus,jdbcType=TINYINT}, #{operateUserId,jdbcType=VARCHAR},#{fromLocationId},#{toLocationId}
       )
   </insert>
+
   <insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.DeviceStatusRecord" >
     insert into device_status_record
     <trim prefix="(" suffix=")" suffixOverrides="," >

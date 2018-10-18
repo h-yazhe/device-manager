@@ -1,12 +1,10 @@
 package com.sicau.devicemanager.service;
 
 import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.page.PageParams;
-import com.sicau.devicemanager.POJO.DO.DeviceStatusRecord;
+import com.sicau.devicemanager.POJO.DO.RepairOrder;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
-import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
 
 import java.util.List;
@@ -61,13 +59,6 @@ public interface DeviceService {
 	 * @return
 	 */
 	DeviceSearchSelectionVO getSearchSelections(int pageSize);
-
-	/**
-	 * 报修设备
-	 * TODO 目前仅修改设备状态字段，后期加入报修记录信息
-	 * @param deviceId
-	 */
-	void repairDevice(String deviceId);
 
 	/**
 	 * 根据设备id查询设备状态变更记录

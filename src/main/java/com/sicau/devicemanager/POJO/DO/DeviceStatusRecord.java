@@ -115,7 +115,9 @@ public class DeviceStatusRecord {
 	public DeviceStatusRecord() {
 	}
 
-	public DeviceStatusRecord(String id, String deviceId, Integer fromStatus, Integer toStatus, String fromLocationId, String toLocationId, String operateUserId) {
+	public DeviceStatusRecord(String id, String deviceId,
+							  Integer fromStatus, Integer toStatus,
+							  String fromLocationId, String toLocationId, String operateUserId) {
 		this.id = id;
 		this.deviceId = deviceId;
 		this.fromStatus = fromStatus;

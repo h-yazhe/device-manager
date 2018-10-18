@@ -6,6 +6,7 @@ import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import java.util.List;
 
 public interface DeviceStatusRecordMapper {
+
     int deleteByPrimaryKey(String id);
 
     int insert(DeviceStatusRecord record);

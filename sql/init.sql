@@ -2,7 +2,8 @@
 SQLyog v10.2 
 MySQL - 5.7.22 : Database - device_manager
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -375,6 +376,20 @@ END WHILE;
 COMMIT;
     END */$$
 DELIMITER ;
+
+DROP TABLE IF EXISTS `repair_order`;
+CREATE TABLE `repair_order`  (
+  `id` int(11) NOT NULL,
+  `apply_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '申请用户的id',
+  `deal_user_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '处理该订单的用户的id',
+  `description` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '问题描述',
+  `status_code` tinyint(1) NOT NULL COMMENT '订单状态，0:待维修，1:维修中，2:已维修,3:维修失败',
+  `expected_time` datetime(0) NOT NULL COMMENT '预计时间',
+  `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_apply_user_id`(`apply_user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
