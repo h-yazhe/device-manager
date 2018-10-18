@@ -87,7 +87,6 @@ var vueDeviceList = new Vue({
                 dataType:"json",
                 contentType:"application/json",
                 success:function (data) {
-                    console.log(data.data);
                     vueDeviceList.sortList=data.data;
                 },
                 error:function () {
@@ -95,10 +94,10 @@ var vueDeviceList = new Vue({
                 }
             })
         },
-        //删除
+        //删除分类
         deleteCategory:function (rootId) {
             sendPost({
-                url: "http://39.108.97.103:8080/dev-manager/api_v1/delete-category-by-id/"+rootId,
+                url:API.getApi(API.deleteCategory)+rootId,
                 type:'post',
                 dataType:"json",
                 contentType:"application/json",
@@ -106,7 +105,8 @@ var vueDeviceList = new Vue({
                     token: localStorage.getItem(STORAGE_KEY.token)
                 },
                 success:function (data) {
-                    console.log(data);
+                    alert(data.msg);
+                    vueDeviceList.sort();
                 },
                 error:function () {
                     alert("失败");
@@ -273,7 +273,6 @@ var vueDeviceList = new Vue({
             $('#discard-device-modal').modal('toggle');
         },
         showDetailsModal:function (device) {
-            console.log(device)
             $("#detail-id").val(device.id);
             deviceDetails.id=device.id;
             deviceChange.id=device.id;
@@ -321,6 +320,7 @@ var deviceDetails=new Vue({
     },
     methods:{
         getLocation:function(){
+            console.log(vueDeviceList.sortList);
             sendPost({
                 url:API.getApi(API.addressDevice),
                 data: JSON.stringify(
@@ -413,10 +413,8 @@ var deviceChange=new Vue({
                 ),
                 success: function (res) {
                     var data = res.data.list;
-                    console.log("haha")
                     if (res.code == 0) {
                         deviceChange.List= data;
-                        console.log(data);
                     } else {
                         alert(res.msg);
                     }
@@ -508,7 +506,7 @@ var addCategory=new Vue({
         addCategory: function () {
             var data =this.category;
             sendPost({
-                url: "http://39.108.97.103:8080/dev-manager/api_v1/insert-category-by-pid",
+                url: API.getApi(API.insertCategory),
                 data: JSON.stringify(data),
                 headers: {
                     token: localStorage.getItem(STORAGE_KEY.token)
@@ -517,7 +515,7 @@ var addCategory=new Vue({
                     if (res.code == 0) {
                         alert("添加成功！");
                         $("#add-category").modal('toggle');
-                        sideBarVm.sortList;
+                        vueDeviceList.sort();
 
                     } else {
                         console.log(res)
@@ -677,7 +675,6 @@ var addDeviceVm = new Vue({
                         for (var category of categoryList){
                             initCategory(category);
                         }
-                        console.log(data);
                         categoryVm.categoryList = categoryList;
                         //渲染选项卡数据
                         self.selection.categoryList = res.data.categoryList;
@@ -745,7 +742,12 @@ var sideBarVm = new Vue({
             vueDeviceList.listDevice();
             categoryVm.tree=true;
         },
-        sortList:function () {
+        sortList:function (id) {
+            if(id==-1){
+                data.parentId="";
+            }else {
+                data.parentId=id;
+            }
             vueDeviceList.sort();
             vueDeviceList.device=false;
             vueDeviceList.category=true;

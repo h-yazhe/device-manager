@@ -128,7 +128,7 @@
                         <li><a href="javascript:;" @click="ListUser()">用户管理</a></li>
                         <li><a href="">菜单管理</a>
                             <ul class="sub">
-                                <li><a href="javascript:;" @click="sortList()">分类</a></li>
+                                <li><a href="javascript:;" @click="sortList(-1)">分类</a></li>
                                 <li><a href="javascript:;" @click="addressDevice()">地点</a></li>
                                 <li><a href="">设备品牌</a></li>
                                 <li><a href="">设备型号</a></li>
@@ -281,7 +281,7 @@
                             分类详情
                         </h4>
                         <div class="turn-page-right">
-                            <button type="button" class="btn btn-success" data-toggle="modal"  data-target="#add-category" @click="getValue(item.id,item.name)">添加地点</button>
+                            <button type="button" class="btn btn-success" data-toggle="modal"  data-target="#add-category">添加分类</button>
                         </div>
                         <div class="clear"></div>
                         <hr>
@@ -456,7 +456,7 @@
                             <td><input type="text" id="detail-name"></td>
                             <td>
                                 <select>
-                                    <option v-for="i in categoryList">{{i.name}}</option>
+                                    <option v-for="i in categoryList" >{{i.name}}</option>
                                 </select>
                             </td>
                             <td><input type="text" id="detail-locationStr"></td>
