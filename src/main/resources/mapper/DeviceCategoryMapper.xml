@@ -89,7 +89,7 @@
 	<update id="updateCategoryIdInCategoryIds">
 		update device_category
 		set category_id = #{categoryId} in
-		<foreach collection="list" item="item" open="(" close=")" separator=",">
+		<foreach collection="categoryIds" item="item" open="(" close=")" separator=",">
 			#{item}
 		</foreach>
 	</update>
