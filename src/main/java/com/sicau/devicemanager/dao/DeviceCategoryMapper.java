@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.DeviceCategory;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -29,5 +30,5 @@ public interface DeviceCategoryMapper {
 	 * @param categoryIds 需要更改的分类id
 	 * @return
 	 */
-	int updateCategoryIdInCategoryIds(String categoryId, List<String> categoryIds);
+	int updateCategoryIdInCategoryIds(@Param("categoryId") String categoryId, @Param("categoryIds") List<String> categoryIds);
 }

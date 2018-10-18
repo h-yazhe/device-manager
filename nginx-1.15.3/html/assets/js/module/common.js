@@ -11,6 +11,8 @@ function getLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
 }
 
+//格式化时间
+
 /**
  * 发送api请求
  * 重载$.ajax()方法，method默认为post，请求数据类型为json，header中添加了token
@@ -62,13 +64,21 @@ var API = {
     //分页查询所有用户
     ListUser:"user/list-by-page",
     //添加用户
-    AddUser:"user/add",
+    addUser:"user/add",
+    //删除用户
+    deleteUser:"user/delete/",
+    //查询用户角色
+    getUserSelection: "role/list-by-page",
     //根据父id查询地点
     addressDevice:"list-location-by-pid",
+    //删除分类
+    deleteCategory:"delete-category-by-id/",
     //根据父id插入一个子分类
+    insertCategory:"insert-category-by-pid",
     AddAddress:"insert-location-by-pid",
     //删除该节点为根的地点树
     DeleteAddress:"delete-location-tree-by-Id",
+    DeviceRecord:"device/get-status-record-by-deviceId",
     getApi: function (name) {
         return this.prefix + name;
     }
@@ -181,7 +191,7 @@ var CategoryTree = {
         }
     },
     template: '<div>\n' +
-        '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item">\n' +
+        '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item" >\n' +
         '                                    <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
         '                                </a>\n' +
         '                                <CategoryTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></CategoryTree>\n' +
@@ -189,6 +199,8 @@ var CategoryTree = {
     methods: {
         listChildren: function () {
             var self = this;
+            sideBarVm.sortList(self.parent.id);
+            vueDeviceList.getValue(self.parent.id,self.parent.name);
             if (self.parent.expanded) {
                 self.parent.expanded = !self.parent.expanded;
                 return;
@@ -326,43 +338,7 @@ var DistributeDevice = {
         '    </div>\n' +
         '</div>'
 };
-/*////删除地点
-var DeleteAddress = {
-  name: 'delete-address',
-  props: ['distributeParam'],
-  methods: {
-      delete: function () {
-          var self = this;
-          sendPost({
-             url: API.getApi(API.DeleteAddress),
-             data: JSON.stringify(self.parentId),
-              success: function (res) {
-                  if (res.code === 0){
-                      alert("地点" + self.parentId + "已删除！");
-                      $('#delete-address-modal').modal('toggle');
-                      vueDeviceList.addressDevice();
-                  } else {
-                      alert(res.msg);
-                  }
-              },
-              error: function (res) {
-                  alert("网络异常！");
-              }
-          });
-      }
-  },
-    template: '<div id="#delete-address-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="#delete-address">\n' +
-        '    <div class="modal-dialog modal-lg" role="document">\n' +
-        '        <div class="modal-body">\n' +
-        '         <h2>确定删除id为 {{parentId}} 的地点吗？</h2>   '+
-        '        </div>\n' +
-        '<div class="modal-footer">\n' +
-        '            <button @click="delete" type="button" class="btn btn-success">确定</button>\n' +
-        '            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>\n' +
-        '        </div>'+
-        '    </div>\n' +
-        '</div>'
-};*/
+
 
 //报废设备组件
 var DiscardDevice = {
@@ -401,3 +377,41 @@ var DiscardDevice = {
         '    </div>\n' +
         '</div>'
 };
+
+//删除用户
+// var deleteUser = {
+//     name: 'delete-user',
+//     props: ['UserParam'],
+//     methods: {
+//         deleteUser: function () {
+//             var self = this;
+//             sendPost({
+//                 url: API.getApi(API.deleteUser),
+//                 data: self.UserParam.userId,
+//                 success: function (res) {
+//                     if (res.code === 0){
+//                         alert("用户" + self.UserParam.userId + "已删除！");
+//                         $('#delete-user-modal').modal('toggle');
+//                         vueDeviceList.ListUser();
+//                     } else {
+//                         alert(res.msg);
+//                     }
+//                 },
+//                 error: function (res) {
+//                     alert("网络异常！");
+//                 }
+//             });
+//         }
+//     },
+//     template: '<div id="delete-user-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="delete-user">\n' +
+//         '    <div class="modal-dialog modal-lg" role="document">\n' +
+//         '        <div class="modal-body">\n' +
+//         '         <h2>确定删除id为 {{UserParam.userId}} 的用户吗？</h2>   '+
+//         '        </div>\n' +
+//         '<div class="modal-footer">\n' +
+//         '            <button @click="deleteUser" type="button" class="btn btn-success">确定</button>\n' +
+//         '            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>\n' +
+//         '        </div>'+
+//         '    </div>\n' +
+//         '</div>'
+// };
