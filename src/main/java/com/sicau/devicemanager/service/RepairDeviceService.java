@@ -1,6 +1,8 @@
 package com.sicau.devicemanager.service;
 
+import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.RepairOrder;
+import com.sicau.devicemanager.POJO.DTO.RepairOrderDTO;
 
 /**
  * 维修设备
@@ -14,4 +16,5 @@ public interface RepairDeviceService {
      * @param repairOrder
      */
     void submitRepairDeviceOrder(RepairOrder repairOrder);
+
 }

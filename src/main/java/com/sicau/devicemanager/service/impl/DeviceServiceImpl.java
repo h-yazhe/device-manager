@@ -249,9 +249,11 @@ public class DeviceServiceImpl implements DeviceService {
 
 	@Override
 	public PageInfo<DeviceStatusRecordDTO> getDeviceStatusRecordByDeviceId(DeviceStatusRecordDTO deviceStatusRecordDTO) {
+
 		QueryPage queryPage = deviceStatusRecordDTO.getQueryPage();
 		PageHelper.startPage(queryPage.getPageNum(),queryPage.getPageSize(),"operate_time");
 		return new PageInfo<>(deviceStatusRecordMapper.getByDeviceId(deviceStatusRecordDTO.getDeviceId()));
+
 	}
 
 	/**

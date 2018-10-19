@@ -58,10 +58,12 @@ public class DeviceController {
 	@ApiOperation("根据条件查询设备列表")
 	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
 	@PostMapping("/list")
-	public ResultVO listDeviceByCondition(@Validated(DeviceValidatedGroup.QueryDeviceGroup.class)@RequestBody DeviceDTO deviceDTO,
-										  HttpServletRequest request){
+	public ResultVO listDeviceByCondition(@Validated(DeviceValidatedGroup.QueryDeviceGroup.class)
+											  @RequestBody DeviceDTO deviceDTO, HttpServletRequest request){
+
 		deviceDTO.setUserId(JWTUtil.getUserId(request.getHeader(HttpParamKey.TOKEN)));
 		return ResultVOUtil.success(deviceService.listDevice(deviceDTO));
+
 	}
 
 	@ApiOperation("删除设备")
