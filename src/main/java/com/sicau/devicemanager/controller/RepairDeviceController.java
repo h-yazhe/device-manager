@@ -65,6 +65,10 @@ public class RepairDeviceController {
         return ResultVOUtil.success();
     }
 
+    /**
+     * 根据设备id获取订单
+     * @author Xiao W
+     */
     @GetMapping("/get-orders-by-device-id")
     public ResultVO getOrders(@RequestParam String deviceId) {
         if (StringUtils.isEmpty(deviceId)) {
@@ -73,6 +77,10 @@ public class RepairDeviceController {
         return ResultVOUtil.success(repairDeviceService.getOrdersByDeviceId(deviceId));
     }
 
+    /**
+     * 管理员（维修人员）调用完成订单
+     * @author Xiao W
+     */
     @GetMapping("/finish-order-admin")
     public ResultVO finishAdmin(@RequestParam int orderId, @RequestParam int orderStatus) {
         if (StringUtils.isEmpty(orderId)||StringUtils.isEmpty(orderStatus)) {
@@ -82,6 +90,11 @@ public class RepairDeviceController {
         return ResultVOUtil.success();
     }
 
+
+    /**
+     * 用户（订单提交人员）调用完成订单
+     * @author Xiao W
+     */
     @GetMapping("/finish-order-user")
     public ResultVO finishUser(@RequestParam int orderId, @RequestParam int deviceStatus) {
         if (StringUtils.isEmpty(orderId)||StringUtils.isEmpty(deviceStatus)) {
