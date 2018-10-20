@@ -31,5 +31,9 @@ public class DeviceValidatedGroup {
 
 	 public interface SubmitRepairOrder{}
 
+	public interface ModifyRepairOrder {
+	}
+
+
 
 }

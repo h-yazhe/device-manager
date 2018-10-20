@@ -1,5 +1,6 @@
 package com.sicau.devicemanager.POJO.DO;
 
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.ModifyRepairOrder;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.SubmitRepairOrder;
 import lombok.Data;
 import javax.validation.constraints.NotNull;
@@ -8,6 +9,7 @@ import java.util.Date;
 @Data
 public class RepairOrder {
 
+    @NotNull(message = "订单id不能为空",groups = {ModifyRepairOrder.class})
     private Integer id;
 
     /** 设备id */

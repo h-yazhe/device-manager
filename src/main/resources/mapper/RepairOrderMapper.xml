@@ -22,6 +22,12 @@
     from repair_order
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getOrdersByDeviceId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from repair_order
+    where device_id = #{id,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from repair_order
     where id = #{id,jdbcType=INTEGER}

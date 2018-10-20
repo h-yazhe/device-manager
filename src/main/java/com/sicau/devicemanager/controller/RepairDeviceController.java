@@ -4,12 +4,17 @@ import com.sicau.devicemanager.POJO.DO.RepairOrder;
 import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.RepairOrderDTO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.exception.CommonException;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.DeviceStatusEnum;
+import com.sicau.devicemanager.constants.OrderStatusEnum;
+import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.service.RepairDeviceService;
+import com.sicau.devicemanager.util.EnumUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,4 +53,42 @@ public class RepairDeviceController {
         repairDeviceService.submitRepairDeviceOrder(repairOrder);
         return ResultVOUtil.success();
     }
+
+    /**
+     * 修改订单，用户调用
+     * @author Xiao W
+     */
+    @PostMapping("/modify-repair-order")
+    public ResultVO modifyOrder(@Validated(DeviceValidatedGroup.ModifyRepairOrder.class)
+                                @RequestBody RepairOrder repairOrder) {
+        repairDeviceService.modifyOrder(repairOrder);
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/get-orders-by-device-id")
+    public ResultVO getOrders(@RequestParam String deviceId) {
+        if (StringUtils.isEmpty(deviceId)) {
+            throw new CommonException(ResultEnum.DEVICE_ID_CANNOT_BE_NULL);
+        }
+        return ResultVOUtil.success(repairDeviceService.getOrdersByDeviceId(deviceId));
+    }
+
+    @GetMapping("/finish-order-admin")
+    public ResultVO finishAdmin(@RequestParam int orderId, @RequestParam int orderStatus) {
+        if (StringUtils.isEmpty(orderId)||StringUtils.isEmpty(orderStatus)) {
+            throw new CommonException(ResultEnum.ORDER_PARAMS_NOT_SATIFIED);
+        }
+        repairDeviceService.finishOrder(orderId, EnumUtil.getByCode(orderStatus,OrderStatusEnum.class));
+        return ResultVOUtil.success();
+    }
+
+    @GetMapping("/finish-order-user")
+    public ResultVO finishUser(@RequestParam int orderId, @RequestParam int deviceStatus) {
+        if (StringUtils.isEmpty(orderId)||StringUtils.isEmpty(deviceStatus)) {
+            throw new CommonException(ResultEnum.ORDER_PARAMS_NOT_SATIFIED);
+        }
+        repairDeviceService.finishOrder(orderId, EnumUtil.getByCode(deviceStatus,DeviceStatusEnum.class));
+        return ResultVOUtil.success();
+    }
+
 }

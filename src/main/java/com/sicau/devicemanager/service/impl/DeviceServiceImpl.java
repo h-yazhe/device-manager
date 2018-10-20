@@ -10,7 +10,6 @@ import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
 import com.sicau.devicemanager.config.exception.CommonException;
 import com.sicau.devicemanager.constants.DeviceStatusEnum;
-import com.sicau.devicemanager.constants.RepairStatusCodeEnum;
 import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.*;
 import com.sicau.devicemanager.service.DeviceService;
