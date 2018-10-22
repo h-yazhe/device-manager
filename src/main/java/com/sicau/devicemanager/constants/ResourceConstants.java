@@ -31,4 +31,9 @@ public interface ResourceConstants {
 	 * 地点
 	 */
 	String LOCATION = "location";
+
+	/**
+	 * 订单
+	 */
+	String ORDER = "order";
 }

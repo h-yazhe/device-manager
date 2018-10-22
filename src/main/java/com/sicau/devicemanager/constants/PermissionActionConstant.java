@@ -8,4 +8,6 @@ public interface PermissionActionConstant {
     String GET = ":get";
     String UPDATE = ":update";
     String DELETE = ":delete";
+    String FINISH_ADMIN = ":finish-admin";
+    String FINISH_USER = ":finish-user";
 }

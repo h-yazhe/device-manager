@@ -6,13 +6,12 @@ import com.sicau.devicemanager.POJO.DTO.RepairOrderDTO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.exception.CommonException;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
-import com.sicau.devicemanager.constants.CommonConstants;
-import com.sicau.devicemanager.constants.DeviceStatusEnum;
-import com.sicau.devicemanager.constants.OrderStatusEnum;
-import com.sicau.devicemanager.constants.ResultEnum;
+import com.sicau.devicemanager.constants.*;
 import com.sicau.devicemanager.service.RepairDeviceService;
 import com.sicau.devicemanager.util.EnumUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -47,6 +46,7 @@ public class RepairDeviceController {
      * @param repairOrder
      * @return
      */
+    @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.ADD)
     @PostMapping("/submit-repair-order")
     public ResultVO repairDevice(@Validated(DeviceValidatedGroup.SubmitRepairOrder.class)
                                  @RequestBody RepairOrder repairOrder){
@@ -58,6 +58,7 @@ public class RepairDeviceController {
      * 修改订单，用户调用
      * @author Xiao W
      */
+    @RequiresRoles("用户")
     @PostMapping("/modify-repair-order")
     public ResultVO modifyOrder(@Validated(DeviceValidatedGroup.ModifyRepairOrder.class)
                                 @RequestBody RepairOrder repairOrder) {
@@ -81,6 +82,7 @@ public class RepairDeviceController {
      * 管理员（维修人员）调用完成订单
      * @author Xiao W
      */
+    @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.FINISH_ADMIN)
     @GetMapping("/finish-order-admin")
     public ResultVO finishAdmin(@RequestParam int orderId, @RequestParam int orderStatus) {
         if (StringUtils.isEmpty(orderId)||StringUtils.isEmpty(orderStatus)) {
@@ -95,6 +97,7 @@ public class RepairDeviceController {
      * 用户（订单提交人员）调用完成订单
      * @author Xiao W
      */
+    @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.FINISH_USER)
     @GetMapping("/finish-order-user")
     public ResultVO finishUser(@RequestParam int orderId, @RequestParam int deviceStatus) {
         if (StringUtils.isEmpty(orderId)||StringUtils.isEmpty(deviceStatus)) {
