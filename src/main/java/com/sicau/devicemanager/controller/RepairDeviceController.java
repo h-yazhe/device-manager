@@ -8,6 +8,7 @@ import com.sicau.devicemanager.config.exception.CommonException;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.*;
 import com.sicau.devicemanager.service.RepairDeviceService;
+import com.sicau.devicemanager.util.EnumUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;

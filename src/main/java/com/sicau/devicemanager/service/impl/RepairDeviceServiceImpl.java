@@ -53,7 +53,7 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
         //插入维修订单信息
         repairOrder.setApplyUserId(RequestUtil.getCurrentUserId());
         //状态变成 维修中
-        repairOrder.setStatusCode(RepairStatusCodeEnum.TO_BE_REPAIRED.getCode());
+        repairOrder.setStatusCode(OrderStatusEnum.TO_BE_REPAIRED.getCode());
         repairOrderMapper.insertSelective(repairOrder);
 
         String deviceId = repairOrder.getDeviceId();
