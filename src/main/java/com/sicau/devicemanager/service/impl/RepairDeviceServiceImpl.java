@@ -8,7 +8,6 @@ import com.sicau.devicemanager.POJO.DO.RepairOrder;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.RepairOrderDTO;
 import com.sicau.devicemanager.constants.DeviceStatusEnum;
-import com.sicau.devicemanager.constants.RepairStatusCodeEnum;
 import com.sicau.devicemanager.dao.DeviceMapper;
 import com.sicau.devicemanager.dao.DeviceStatusRecordMapper;
 import com.sicau.devicemanager.dao.RepairOrderMapper;
