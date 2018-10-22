@@ -1,5 +1,6 @@
 package com.sicau.devicemanager.controller;
 
+import com.sicau.devicemanager.POJO.DO.Device;
 import com.sicau.devicemanager.POJO.DO.RepairOrder;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
@@ -107,5 +108,11 @@ public class DeviceController {
 	public ResultVO getDeviceStatusRecordByDeviceId(@Validated({GetDeviceStatusRecordByDeviceId.class})
 																@RequestBody DeviceStatusRecordDTO deviceStatusRecordDTO){
 		return ResultVOUtil.success(deviceService.getDeviceStatusRecordByDeviceId(deviceStatusRecordDTO));
+	}
+
+	@PostMapping("/update-repair-status-by-deviceId")
+	public ResultVO updateRepairedStatusByDeviceId(@RequestBody Device device){
+		deviceService.updateRepairedStatusByDeviceId(device.getId(), device.getStatusId());
+		return ResultVOUtil.success();
 	}
 }

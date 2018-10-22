@@ -7,6 +7,7 @@ import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.DeviceStatusEnum;
+import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.service.RepairDeviceService;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,13 @@ public class RepairDeviceController {
                                  @RequestBody RepairOrder repairOrder){
         repairDeviceService.submitRepairDeviceOrder(repairOrder);
         return ResultVOUtil.success();
+    }
+
+    @PostMapping("/delete-repair-order")
+    public ResultVO deleteRepairDeviceOrder(@RequestBody RepairOrder repairOrder){
+        if (repairDeviceService.deleteRepairDeviceOrder(repairOrder.getId())){
+            return ResultVOUtil.success();
+        }
+        return ResultVOUtil.error(ResultEnum.DELETE_FAILED);
     }
 }

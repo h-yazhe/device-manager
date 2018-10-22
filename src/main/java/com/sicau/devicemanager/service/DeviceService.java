@@ -66,4 +66,11 @@ public interface DeviceService {
 	 * @return
 	 */
 	PageInfo<DeviceStatusRecordDTO> getDeviceStatusRecordByDeviceId(DeviceStatusRecordDTO deviceStatusRecordDTO);
+
+	/**
+	 * 根据设备id修改用户维护状态
+	 * @param deviceId
+	 * @param statusId
+	 */
+	void updateRepairedStatusByDeviceId(String deviceId,Integer statusId);
 }

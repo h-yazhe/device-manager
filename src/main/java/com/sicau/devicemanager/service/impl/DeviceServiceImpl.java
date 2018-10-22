@@ -341,4 +341,29 @@ public class DeviceServiceImpl implements DeviceService {
 			}
 		}
 	}
+
+	/**
+	 * 根据设备id修改设备维护状态
+	 * @param deviceId
+	 * @param statusId
+	 */
+	@Override
+	public void updateRepairedStatusByDeviceId(String deviceId,Integer statusId) {
+		//查询设备原始记录
+		Device device = deviceMapper.selectByPrimaryKey(deviceId);
+		//修改设备状态
+		deviceMapper.updateStatusIdById(deviceId, statusId);
+
+		//插入设备状态修改记录
+		deviceStatusRecordMapper.insert(new DeviceStatusRecord(
+				//生成唯一的主键 格式: 时间+随机数
+				KeyUtil.genUniqueKey(),
+				deviceId,
+				device.getStatusId(),
+				statusId,
+				device.getLocationId(),
+				device.getLocationId(),
+				RequestUtil.getCurrentUserId()
+		));
+	}
 }
