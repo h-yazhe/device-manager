@@ -9,6 +9,7 @@ import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.*;
 import com.sicau.devicemanager.service.RepairDeviceService;
 import com.sicau.devicemanager.util.EnumUtil;
+import com.sicau.devicemanager.util.web.RequestUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -35,15 +36,30 @@ public class RepairDeviceController {
 
     /**
      * 根据用户id查询所有维修设备订单
-     * @param userId
+     * 如果查的是当前用户提交的维修表，则根据用户id查询
+     * @author 郭效坤
      * @return 视图对象
-     * TODO
      */
-    @GetMapping("/select-repair-order/{userId}")
-    public ResultVO selectRepairOrderByUserId(@PathVariable("userId") String userId) {
-        return null;
+    @PostMapping("/select-repair-order-userId")
+    public ResultVO selectRepairOrderByUserId(@RequestBody RepairOrderDTO repairOrderDTO) {
+        //在前台传递过来的数据中解析出userId
+        repairOrderDTO.setApplyUserId(RequestUtil.getCurrentUserId());
+        //如果逻辑层抽查到数据，则顺利返回，如果逻辑层未查到数据则逻辑层抛出资源不存在异常
+        return ResultVOUtil.success(repairDeviceService.selectRepairOrderByUserId(repairOrderDTO));
     }
 
+    /**
+     * 根据设备状态查询所有维修设备
+     * 维修设备可能存在四种状态，只要传入对应状态代码即可
+     * @author 郭效坤
+     * @param repairOrderDTO 传递过来的是RepairOrderDTO的对象,包含状态代码，分页信息
+     * @return 视图对象
+     */
+    @PostMapping("/select-repair-order-statusCode")
+    public ResultVO selectRepairOrderByStatus(@RequestBody RepairOrderDTO repairOrderDTO) {
+        //如果逻辑层抽查到数据，则顺利返回，如果逻辑层未查到数据则逻辑层抛出资源不存在异常
+        return ResultVOUtil.success(repairDeviceService.selectRepairOrderByStatus(repairOrderDTO));
+    }
 
     /**
      * 报修设备

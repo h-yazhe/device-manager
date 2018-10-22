@@ -1,6 +1,8 @@
 package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.RepairOrder;
+import com.sicau.devicemanager.POJO.DTO.RepairOrderDTO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +20,8 @@ public interface RepairOrderMapper {
     int updateByPrimaryKey(RepairOrder record);
 
     List<RepairOrder> getOrdersByDeviceId(String deviceId);
+
+    List<RepairOrderDTO> selectRepairOrderByUserId(@Param("applyUserId") String applyUserId);
+
+    List<RepairOrderDTO> selectRepairOrderByStatus(@Param("statusCode") Integer statusCode);
 }

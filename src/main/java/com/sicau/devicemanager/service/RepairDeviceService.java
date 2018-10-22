@@ -15,7 +15,6 @@ import java.util.List;
  */
 public interface RepairDeviceService {
 
-
     /**
      * 提交报修设备订单
      * @param repairOrder
@@ -53,5 +52,17 @@ public interface RepairDeviceService {
      * @param deviceStatusEnum 维修完成后:已维修或维修失败
      */
     void finishOrder(int orderId, DeviceStatusEnum deviceStatusEnum);
+
+    /**
+     * 根据用户Id查找保修设备
+     * @param repairOrderDTO
+     */
+    PageInfo<RepairOrderDTO> selectRepairOrderByUserId(RepairOrderDTO repairOrderDTO);
+
+    /**
+     * 根据状态代码查找保修设备
+     * @param repairOrderDTO
+     */
+    PageInfo<RepairOrderDTO> selectRepairOrderByStatus(RepairOrderDTO repairOrderDTO);
 
 }

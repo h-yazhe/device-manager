@@ -1,146 +1,174 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sicau.devicemanager.dao.RepairOrderMapper" >
-  <resultMap id="BaseResultMap" type="com.sicau.devicemanager.POJO.DO.RepairOrder" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="device_id" property="deviceId" jdbcType="VARCHAR" />
-    <result column="apply_user_id" property="applyUserId" jdbcType="VARCHAR" />
-    <result column="deal_user_id" property="dealUserId" jdbcType="VARCHAR" />
-    <result column="description" property="description" jdbcType="VARCHAR" />
-    <result column="status_code" property="statusCode" jdbcType="BIT" />
-    <result column="expected_time" property="expectedTime" jdbcType="TIMESTAMP" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, device_id, apply_user_id, deal_user_id, description, status_code, expected_time, 
-    create_time, update_time
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from repair_order
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="getOrdersByDeviceId" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from repair_order
-    where device_id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from repair_order
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.RepairOrder" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into repair_order (device_id, apply_user_id, deal_user_id, 
-      description, status_code, expected_time, 
-      create_time, update_time)
-    values (#{deviceId,jdbcType=VARCHAR}, #{applyUserId,jdbcType=VARCHAR}, #{dealUserId,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR}, #{statusCode,jdbcType=BIT}, #{expectedTime,jdbcType=TIMESTAMP}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.RepairOrder" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into repair_order
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="deviceId != null" >
-        device_id,
-      </if>
-      <if test="applyUserId != null" >
-        apply_user_id,
-      </if>
-      <if test="dealUserId != null" >
-        deal_user_id,
-      </if>
-      <if test="description != null" >
-        description,
-      </if>
-      <if test="statusCode != null" >
-        status_code,
-      </if>
-      <if test="expectedTime != null" >
-        expected_time,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="deviceId != null" >
-        #{deviceId,jdbcType=VARCHAR},
-      </if>
-      <if test="applyUserId != null" >
-        #{applyUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="dealUserId != null" >
-        #{dealUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null" >
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="statusCode != null" >
-        #{statusCode,jdbcType=BIT},
-      </if>
-      <if test="expectedTime != null" >
-        #{expectedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.sicau.devicemanager.POJO.DO.RepairOrder" >
-    update repair_order
-    <set >
-      <if test="deviceId != null" >
-        device_id = #{deviceId,jdbcType=VARCHAR},
-      </if>
-      <if test="applyUserId != null" >
-        apply_user_id = #{applyUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="dealUserId != null" >
-        deal_user_id = #{dealUserId,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null" >
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="statusCode != null" >
-        status_code = #{statusCode,jdbcType=BIT},
-      </if>
-      <if test="expectedTime != null" >
-        expected_time = #{expectedTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.sicau.devicemanager.POJO.DO.RepairOrder" >
-    update repair_order
-    set device_id = #{deviceId,jdbcType=VARCHAR},
-      apply_user_id = #{applyUserId,jdbcType=VARCHAR},
-      deal_user_id = #{dealUserId,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      status_code = #{statusCode,jdbcType=BIT},
-      expected_time = #{expectedTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+<mapper namespace="com.sicau.devicemanager.dao.RepairOrderMapper">
+    <resultMap id="BaseResultMap" type="com.sicau.devicemanager.POJO.DO.RepairOrder">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="device_id" property="deviceId" jdbcType="VARCHAR"/>
+        <result column="apply_user_id" property="applyUserId" jdbcType="VARCHAR"/>
+        <result column="deal_user_id" property="dealUserId" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="status_code" property="statusCode" jdbcType="BIT"/>
+        <result column="expected_time" property="expectedTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="RepairOrderDTO" type="com.sicau.devicemanager.POJO.DTO.RepairOrderDTO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="device_id" property="deviceId" jdbcType="VARCHAR"/>
+        <result column="apply_user_id" property="applyUserId" jdbcType="VARCHAR"/>
+        <result column="deal_user_id" property="dealUserId" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="status_code" property="statusCode" jdbcType="BIT"/>
+        <result column="expected_time" property="expectedTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--根据用户id查询报修订单-->
+    <select id="selectRepairOrderByUserId" resultMap="RepairOrderDTO">
+        SELECT device_id, apply_user_id, deal_user_id, description, status_code, expected_time
+        FROM repair_order
+        WHERE apply_user_id = #{applyUserId}
+    </select>
+
+    <!--根据状态码查找保修设备-->
+    <select id="selectRepairOrderByStatus" resultMap="RepairOrderDTO">
+        SELECT device_id, apply_user_id, deal_user_id, description, status_code, expected_time
+        FROM repair_order
+        WHERE status_code = #{statusCode}
+    </select>
+
+
+    <sql id="Base_Column_List">
+        id, device_id, apply_user_id, deal_user_id, description, status_code, expected_time,
+        create_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from repair_order
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="getOrdersByDeviceId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from repair_order
+        where device_id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from repair_order
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.RepairOrder">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into repair_order (device_id, apply_user_id, deal_user_id,
+        description, status_code, expected_time,
+        create_time, update_time)
+        values (#{deviceId,jdbcType=VARCHAR}, #{applyUserId,jdbcType=VARCHAR}, #{dealUserId,jdbcType=VARCHAR},
+        #{description,jdbcType=VARCHAR}, #{statusCode,jdbcType=BIT}, #{expectedTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.RepairOrder">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into repair_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">
+                device_id,
+            </if>
+            <if test="applyUserId != null">
+                apply_user_id,
+            </if>
+            <if test="dealUserId != null">
+                deal_user_id,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="statusCode != null">
+                status_code,
+            </if>
+            <if test="expectedTime != null">
+                expected_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">
+                #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="applyUserId != null">
+                #{applyUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="dealUserId != null">
+                #{dealUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="statusCode != null">
+                #{statusCode,jdbcType=BIT},
+            </if>
+            <if test="expectedTime != null">
+                #{expectedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.sicau.devicemanager.POJO.DO.RepairOrder">
+        update repair_order
+        <set>
+            <if test="deviceId != null">
+                device_id = #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="applyUserId != null">
+                apply_user_id = #{applyUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="dealUserId != null">
+                deal_user_id = #{dealUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="statusCode != null">
+                status_code = #{statusCode,jdbcType=BIT},
+            </if>
+            <if test="expectedTime != null">
+                expected_time = #{expectedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.sicau.devicemanager.POJO.DO.RepairOrder">
+        update repair_order
+        set device_id     = #{deviceId,jdbcType=VARCHAR},
+            apply_user_id = #{applyUserId,jdbcType=VARCHAR},
+            deal_user_id  = #{dealUserId,jdbcType=VARCHAR},
+            description   = #{description,jdbcType=VARCHAR},
+            status_code   = #{statusCode,jdbcType=BIT},
+            expected_time = #{expectedTime,jdbcType=TIMESTAMP},
+            create_time   = #{createTime,jdbcType=TIMESTAMP},
+            update_time   = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>
