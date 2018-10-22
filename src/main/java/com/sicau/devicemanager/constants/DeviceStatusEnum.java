@@ -5,7 +5,7 @@ package com.sicau.devicemanager.constants;
  * @author Yazhe
  * Created at 16:22 2018/9/3
  */
-public enum DeviceStatusEnum {
+public enum DeviceStatusEnum implements CodeEnum{
 
 	UNCONNECTED(-1,"未接入"),
 
@@ -30,7 +30,8 @@ public enum DeviceStatusEnum {
 		this.value = value;
 	}
 
-	public int getCode() {
+	@Override
+	public Integer getCode() {
 		return code;
 	}
 }

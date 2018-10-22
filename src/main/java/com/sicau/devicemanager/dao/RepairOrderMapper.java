@@ -2,6 +2,8 @@ package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.RepairOrder;
 
+import java.util.List;
+
 public interface RepairOrderMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface RepairOrderMapper {
     int updateByPrimaryKeySelective(RepairOrder record);
 
     int updateByPrimaryKey(RepairOrder record);
+
+    List<RepairOrder> getOrdersByDeviceId(String deviceId);
 }
