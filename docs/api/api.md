@@ -634,7 +634,7 @@ rootId | 要删除的根节点id | str | 1 |
   path | 节点路径 |  以id作为标识，根节点为/
   
   
-  ###设备维修
+  ### 设备维修
   1.报修设备，提交报修设备订单
   
   url:`submit-repair-order`
@@ -662,10 +662,10 @@ rootId | 要删除的根节点id | str | 1 |
 ```
   3.根据状态码查找保修设备
     
-    url:`/select-repair-order-statusCode`
+  url:`/select-repair-order-statusCode`
     
-    data:
-    ```
+  data:
+  
     {
     	"statusCode": 2,
     	"queryPage": {
@@ -673,20 +673,19 @@ rootId | 要删除的根节点id | str | 1 |
     		"pageSize": 3
     	}
     }
-    ```
-    字段说明：
     
-    字段名 | 描述 | 参数类型 | 必要
-    :-----: | :------: | :-----: | :-----:
-    statusCode | 状态代码 | tinyint | 1 |
-    queryPage | 分页参数 | obj | 1 | 
-    pageNum | 页码 | int | 1 |
-    pageSize | 每页数量 | int | 1 |
+  字段说明：
     
-    返回值示例：
+   字段名 | 描述 | 参数类型 | 必要
+   :-----: | :------: | :-----: | :-----:
+   statusCode | 状态代码 | tinyint | 1 |
+   queryPage | 分页参数 | obj | 1 | 
+   pageNum | 页码 | int | 1 |
+   pageSize | 每页数量 | int | 1 |
     
-  ```
-  {
+   返回值示例：
+    
+    {
       "code": 0,
       "msg": "成功",
       "data": {
@@ -739,36 +738,34 @@ rootId | 要删除的根节点id | str | 1 |
           "firstPage": 1,
           "lastPage": 2
       }
-  }
+    }
   
-  ```
   4.根据userId查找保修设备
     
-    url:`/select-repair-order-userId`
+   url:`/select-repair-order-userId`
     
-    data:
-    ```
-  {
-  	"userId": "1526467363362171844",
-  	"queryPage": {
+   data:
+   
+     {
+  	 "userId": "1526467363362171844",
+  	 "queryPage": {
   		"pageNum": 1,
   		"pageSize": 3
-  	}
-  }
-    ```
-    字段说明：
+  	    }
+     }
+     
+   字段说明：
     
-    字段名 | 描述 | 参数类型 | 必要
-    :-----: | :------: | :-----: | :-----:
-    userId | 用户id| string | 1 |
-    queryPage | 分页参数 | obj | 1 | 
-    pageNum | 页码 | int | 1 |
-    pageSize | 每页数量 | int | 1 |
+   字段名 | 描述 | 参数类型 | 必要
+   :-----: | :------: | :-----: | :-----:
+   userId | 用户id| string | 1 |
+   queryPage | 分页参数 | obj | 1 | 
+   pageNum | 页码 | int | 1 |
+   pageSize | 每页数量 | int | 1 |
     
-    返回值示例：
+   返回值示例：
     
-   ```$xslt
-  {
+      {
       "code": 0,
       "msg": "成功",
       "data": {
@@ -805,7 +802,6 @@ rootId | 要删除的根节点id | str | 1 |
           "firstPage": 1
       }
   }
-  ```
   
    5.修改订单(申请维修的用户调用)
     
