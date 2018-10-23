@@ -223,6 +223,11 @@ var vueDeviceList = new Vue({
                 }
             });
         },
+        /*获取点击的地点*/
+        getaddress:function(address){
+            id = address.id;
+            console.log(id)
+        },
         //翻到上一页
         lastPage: function () {
             if (this.queryParams.queryPage.pageNum > 1) {
@@ -468,7 +473,7 @@ var deviceModalVm = new Vue({
         '</div>'
 });
 
-//生成分类树，依赖于addDeviceVm
+//生成设备分类树，依赖于addDeviceVm
 var categoryVm = new Vue({
     el: '#category-tree',
     components: {
@@ -490,6 +495,30 @@ var categoryVm = new Vue({
     },
     template: ' <div id="category-tree" v-if="tree" class="panel-body">\n' +
         '                            <CategoryTree v-for="(item,i) in categoryList" :index="i" :parent="item" :key="item.id"></CategoryTree>\n' +
+        '                        </div>'
+});
+//生成地点分类树，依赖于addressVm
+var addresstreeVm = new Vue({
+    el: '#address-tree',
+    components: {
+        'AddressTree': AddressTree
+    },
+    data: {
+        addressList: [
+            {
+                parentId: "",
+                level:'',
+                children: [
+                ],
+                active: false,//是否激活
+                expanded: false,//是否展开
+
+            }
+        ],
+        atree:false
+    },
+    template: ' <div id="address-tree" class="panel-body" v-if="atree">\n' +
+        '                            <AddressTree v-for="(item,i) in addressList" :index="i" :parent="item" :key="item.id"></AddressTree>\n' +
         '                        </div>'
 });
 //添加分类
@@ -529,7 +558,7 @@ var addCategory=new Vue({
 });
 //添加地点
 var addressVm = new Vue({
-    el: "#addres",
+    el: "#address-device",
     data: {
         address: {
             "parentId":"",
@@ -698,7 +727,35 @@ var addDeviceVm = new Vue({
         this.getDeviceSelection();
     }
 });
+//删除地点
+var deleteaddressVm = new Vue({
+    el: "#delete-address",
+    data: {
 
+    },
+    methods: {
+        //删除地点
+        DeleteAddress: function () {
+            var self = this;
+            sendPost({
+                url: API.getApi(API.DeleteAddress+"/1540262828641833573"),
+                data:{
+
+                },
+                success: function (res) {
+                    if (res.code == 0) {
+                        alert("删除成功！");
+                        $("#delete-address").modal('toggle');
+                        //刷新设备列表
+                        vueDeviceList.addressDevice();
+                    } else {
+                        alert("删除失败！");
+                    }
+                }
+            });
+        },
+    }
+});
 //删除用户
 var deleteUserVm = new Vue({
     el: "#delete-user",
@@ -738,6 +795,7 @@ var sideBarVm = new Vue({
             vueDeviceList.category=false;
             vueDeviceList.address=false;
             vueDeviceList.user=false;
+            addresstreeVm.atree=false;
             vueDeviceList.queryParams.statusId = statusId;
             vueDeviceList.listDevice();
             categoryVm.tree=true;
@@ -754,6 +812,7 @@ var sideBarVm = new Vue({
             vueDeviceList.address=false;
             vueDeviceList.user=false;
             categoryVm.tree=true;
+            addresstreeVm.atree=false;
         },
         addressDevice:function(statusId){
             vueDeviceList.queryParams.statusId = statusId;
@@ -762,7 +821,8 @@ var sideBarVm = new Vue({
             vueDeviceList.address=true;
             vueDeviceList.category=false;
             vueDeviceList.user=false;
-            categoryVm.tree=true;
+            categoryVm.tree=false;
+            addresstreeVm.atree=true;
         },
         ListUser:function () {
             vueDeviceList.ListUser();
@@ -771,6 +831,7 @@ var sideBarVm = new Vue({
             vueDeviceList.address=false;
             vueDeviceList.category=false;
             categoryVm.tree=false;
+            addresstreeVm.atree=false;
         }
     }
 });

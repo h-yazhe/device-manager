@@ -181,7 +181,7 @@ function formatTime(timestamp) {
     return date.getFullYear() + "." + date.getMonth() + "." + date.getDay();
 }
 
-//分类树组件
+//设备分类树组件
 var CategoryTree = {
     name: 'CategoryTree',
     props: ['parent','index'],
@@ -224,6 +224,58 @@ var CategoryTree = {
             //设置设备查询参数，重新渲染表格数据
             vueDeviceList.queryParams.categoryId = self.parent.id;
             vueDeviceList.listDevice();
+        }
+    },
+    computed: {
+        indent: function () {
+            var level = this.parent.level;
+            return {transform: 'translate(' + (level > 1 ? (level - 1) : 0) * 8 + '%)'}
+        }
+    }
+};
+//地点分类树组件
+var AddressTree = {
+    name: 'AddressTree',
+    props: ['parent','index'],
+    data: function () {
+        return {
+            queryPage: new defaultQueryPage()
+        }
+    },
+    template: '<div>\n' +
+        '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item">\n' +
+        '                                    <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
+        '                                </a>\n' +
+        '                                <AddressTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></AddressTree>\n' +
+        '                            </div>',
+    methods: {
+        listChildren: function () {
+            var self = this;
+            if (self.parent.expanded) {
+                self.parent.expanded = !self.parent.expanded;
+                return;
+            }
+            sendPost({
+                url: API.getApi(API.addressDevice),
+                data: JSON.stringify({
+                    "parentId": "",
+                    "queryPage": {
+                        "pageNum": 1,
+                        "pageSize": 10
+                    }
+                }),
+                success: function (res) {
+                    if (res.code === 0){
+                        for (var item of res.data){
+                            initCategory(item);
+                        }
+                        self.parent.children = res.data;
+                        self.parent.expanded = !self.parent.expanded;
+                    }
+                }
+            });
+            //设置设备查询参数，重新渲染表格数据
+            vueDeviceList.addressDevice();
         }
     },
     computed: {
@@ -378,40 +430,3 @@ var DiscardDevice = {
         '</div>'
 };
 
-//删除用户
-// var deleteUser = {
-//     name: 'delete-user',
-//     props: ['UserParam'],
-//     methods: {
-//         deleteUser: function () {
-//             var self = this;
-//             sendPost({
-//                 url: API.getApi(API.deleteUser),
-//                 data: self.UserParam.userId,
-//                 success: function (res) {
-//                     if (res.code === 0){
-//                         alert("用户" + self.UserParam.userId + "已删除！");
-//                         $('#delete-user-modal').modal('toggle');
-//                         vueDeviceList.ListUser();
-//                     } else {
-//                         alert(res.msg);
-//                     }
-//                 },
-//                 error: function (res) {
-//                     alert("网络异常！");
-//                 }
-//             });
-//         }
-//     },
-//     template: '<div id="delete-user-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="delete-user">\n' +
-//         '    <div class="modal-dialog modal-lg" role="document">\n' +
-//         '        <div class="modal-body">\n' +
-//         '         <h2>确定删除id为 {{UserParam.userId}} 的用户吗？</h2>   '+
-//         '        </div>\n' +
-//         '<div class="modal-footer">\n' +
-//         '            <button @click="deleteUser" type="button" class="btn btn-success">确定</button>\n' +
-//         '            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>\n' +
-//         '        </div>'+
-//         '    </div>\n' +
-//         '</div>'
-// };
