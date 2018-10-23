@@ -807,3 +807,109 @@ rootId | 要删除的根节点id | str | 1 |
   }
   ```
   
+   5.修改订单(申请维修的用户调用)
+    
+   url: `modify-repair-order` (POST方法)
+    
+   data: 
+   
+    {
+         "id": 1,
+         "description":"Oops，Something Wrong!",
+         "deviceId":"1"
+    }
+   
+   字段名 | 描述 | 备注 
+    :-----: | :-------: | :-------: 
+    id | 维修订单的id | 
+    description | 设备故障问题描述 
+    deviceId | 故障设备id
+   
+  返回值示例:
+  ```
+  {
+      "code": 0,
+      "msg": "成功"
+  }
+  ```
+   
+   6.根据设备id获取订单
+      
+   url:`get-orders-by-device-id`(GET方法)
+      
+   data: 
+      
+      deviceId=1
+      
+     
+   字段名 | 描述 | 备注 
+      :-----: | :-------: | :-------: 
+      deviceId | 要查询的设备id |
+     
+   返回值示例:
+    
+    {
+        "code": 0,
+        "msg": "成功",
+        "data": [
+            {
+                "id": 7,
+                "deviceId": "1529668662622323236",
+                "applyUserId": "1526467363362171844",
+                "dealUserId": "教务处",
+                "description": "hhhhh",
+                "statusCode": 2,
+                "expectedTime": 1539016055000,
+                "createTime": 1540196850000,
+                "updateTime": 1540196850000
+            }
+        ]
+    }
+ 
+ 
+  7.管理员（维修人员）调用来完结订单
+       
+   url:`finish-order-admin` (GET方法)
+       
+   data: 
+       
+       orderId=2&orderStatus=2
+       
+      
+   字段名 | 描述 | 备注 
+   :-----: | :-------: | :-------: 
+   orderId | 要完结的订单的id |
+   orderStatus | 完结后的状态(已维修或失败)
+      
+   返回值示例:
+     
+     {
+         "code": 0,
+         "msg": "成功"
+     }
+   
+   8.申请人员调用来完结订单
+          
+   url:`finish-order-user` (GET方法)
+          
+   data: 
+
+    orderId=2&deviceStatus=2
+          
+         
+   字段名 | 描述 | 备注 
+   :-----: | :-------: | :-------: 
+   orderId | 要完结的订单的id |
+   deviceStatus | 完结后的设备状态(使用中、报废等等)
+         
+   返回值示例:
+        
+        {
+            "code": 0,
+            "msg": "成功"
+        }
+     
+    
+   
+  
+  

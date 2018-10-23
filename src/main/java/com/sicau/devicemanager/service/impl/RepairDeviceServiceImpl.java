@@ -109,6 +109,10 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
         return false;
     }
 
+    /**
+     * 修改订单，用户调用
+     * @author Xiao W
+     */
     @Override
     public void modifyOrder(RepairOrder repairOrder) {
         if (repairOrder == null || StringUtils.isEmpty(repairOrder.getId())) {
@@ -122,6 +126,10 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
         repairOrderMapper.updateByPrimaryKeySelective(repairOrder);
     }
 
+    /**
+     * 根据设备id获取订单
+     * @author Xiao W
+     */
     @Override
     public List<RepairOrder> getOrdersByDeviceId(String deviceId) {
         if (StringUtils.isEmpty(deviceId)) {
@@ -130,6 +138,10 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
         return repairOrderMapper.getOrdersByDeviceId(deviceId);
     }
 
+    /**
+     * 管理员（维修人员）调用完成订单
+     * @author Xiao W
+     */
     @Override
     public void finishOrder(int orderId, OrderStatusEnum orderStatusEnum) {
         RepairOrder oldOrder = repairOrderMapper.selectByPrimaryKey(orderId);
@@ -143,6 +155,10 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
         repairOrderMapper.updateByPrimaryKeySelective(repairOrder);
     }
 
+    /**
+     * 用户（订单提交人员）调用完成订单
+     * @author Xiao W
+     */
     @Override
     public void finishOrder(int orderId, DeviceStatusEnum deviceStatusEnum) {
         RepairOrder oldOrder = repairOrderMapper.selectByPrimaryKey(orderId);
