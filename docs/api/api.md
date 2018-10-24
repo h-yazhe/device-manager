@@ -1,11 +1,11 @@
-#API文档
+# API文档
 api前缀：`http://39.108.97.103:8080/dev-manager/api_v1/`
 
 tips:公共api前使用*标注,非公共api需在header中设置`token`参数，token由登录接口获取，
 所有接口均使用post方法，数据类型采用json格式
 
-##设备管理
-###设备
+## 设备管理
+### 设备
 1.添加设备
 
 url:`device/add`
@@ -398,7 +398,7 @@ statusId | 希望修改后设备的状态值 | Integer |s
 ```
 
 
-###分类
+### 分类
 1.根据父id查询分类
 
 url:`list-category-by-pId`
@@ -512,7 +512,7 @@ rootId | 要删除的根节点id | str | 1 |
 字段名 | 描述 | 备注
 :-----: | :-------: | :-------:
 
-###地点
+### 地点
 1.根据父id插入一个子分类
 url:`insert-location-by-pid`
 

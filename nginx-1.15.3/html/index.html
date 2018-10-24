@@ -155,6 +155,7 @@
                 <div class="col-md-2" style="padding-right: 0" >
                     <div class="panel panel-default pre-scrollable">
                        <div id="category-tree"></div>
+                        <div id="address-tree" ></div>
                     </div>
                 </div>
                 <div id="device-list" class="col-md-10 main-chart"  style="padding-left: 0">
@@ -319,7 +320,7 @@
                             <tr v-for="address in addressList">
                                 <td>{{address.id}}</td>
                                 <td>{{address.name}}</td>
-                                <td><button  class="btn btn-danger btn-xs">删除</button></td>
+                                <td><button  class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete-address" @click="getaddress(address)">删除</button></td>
                             </tr>
 
                             </tbody>
@@ -580,6 +581,26 @@
         </div>
         <div class="modal-footer">
             <button @click="AddAddress" type="button" class="btn btn-success">添加</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+    </div>
+</div>
+<!--删除地点模态框-->
+<div id="delete-address" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="delete-address">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">删除地点</h4>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <h2>确定删除id为的地点吗？</h2>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button @click="DeleteAddress" type="button" class="btn btn-success">删除</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         </div>
     </div>
