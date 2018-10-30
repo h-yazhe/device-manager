@@ -22,10 +22,17 @@ public interface RepairDeviceService {
     void submitRepairDeviceOrder(RepairOrder repairOrder);
 
     /**
-     * 删除维修订单(申请用户可删除自己的，管理员都可以删除)
+     * 删除自己的维修订单
      * @param id
      */
-    boolean deleteRepairDeviceOrder(Integer id);
+    boolean deleteOneselfRepairDeviceOrder(Integer id);
+
+    /**
+     * 删除任意维修订单
+     * @param id
+     * @return
+     */
+    void deleteAnyRepairDeviceOrder(Integer id);
     /**
      * 修改维修订单
      * @author Xiao W

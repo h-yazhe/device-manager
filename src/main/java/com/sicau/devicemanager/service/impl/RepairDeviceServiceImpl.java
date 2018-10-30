@@ -83,34 +83,36 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
      * @author pettrgo
      */
     @Override
-    public boolean deleteRepairDeviceOrder(Integer id) {
+    public boolean deleteOneselfRepairDeviceOrder(Integer id) {
         String userId = RequestUtil.getCurrentUserId();
         //获取用户角色信息
-        UserDTO userDTO = userMapper.getUserById(userId);
         RepairOrder repairOrder = repairOrderMapper.selectByPrimaryKey(id);
-        if (userDTO == null) {
-            throw new ResourceException(ResourceExceptionEnum.RESOURCE_NOT_FOUND, ResourceConstants.USER);
-        }
         if (repairOrder == null) {
             throw new ResourceException(ResourceExceptionEnum.RESOURCE_NOT_FOUND, ResourceConstants.USER);
         }
-        for (Role role : userDTO.getRoleList()) {
-            switch (role.getName()) {
-                case "管理员":
-                    repairOrderMapper.deleteByPrimaryKey(id);
-                    return true;
-                default:
-                    if (repairOrder.getApplyUserId().equals(userId)) {
-                        repairOrderMapper.deleteByPrimaryKey(id);
-                        return true;
-                    }
-            }
+        if (repairOrder.getApplyUserId().equals(userId)) {
+            repairOrderMapper.deleteByPrimaryKey(id);
+            return true;
         }
         return false;
     }
 
     /**
+     * 管理员删除维护订单（可删除任意订单）
+     * @param id 订单id
+     */
+    @Override
+    public void deleteAnyRepairDeviceOrder(Integer id) {
+        RepairOrder repairOrder = repairOrderMapper.selectByPrimaryKey(id);
+        if (repairOrder == null) {
+            throw new ResourceException(ResourceExceptionEnum.RESOURCE_NOT_FOUND, ResourceConstants.USER);
+        }
+        repairOrderMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
      * 修改订单，用户调用
+     *
      * @author Xiao W
      */
     @Override
@@ -128,6 +130,7 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
 
     /**
      * 根据设备id获取订单
+     *
      * @author Xiao W
      */
     @Override
@@ -140,6 +143,7 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
 
     /**
      * 管理员（维修人员）调用完成订单
+     *
      * @author Xiao W
      */
     @Override
@@ -157,6 +161,7 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
 
     /**
      * 用户（订单提交人员）调用完成订单
+     *
      * @author Xiao W
      */
     @Override

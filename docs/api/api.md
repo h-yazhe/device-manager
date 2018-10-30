@@ -6,7 +6,7 @@ tips:公共api前使用*标注,非公共api需在header中设置`token`参数，
 
 ## 设备管理
 ### 设备
-#### 1.添加设备
+1.添加设备
 
 url:`device/add`
 
@@ -55,7 +55,7 @@ description | 设备描述 | str | 0 | 设备的详细信息，如配置信息�
 字段名 | 描述 | 备注
 :-----: | :-------: | :-------:
 
-#### 2.更新设备
+2.更新设备
 url:`device/update`
 
 data: 
@@ -105,7 +105,7 @@ description | 设备描述 | str | 0 | 设备的详细信息，如配置信息�
 字段名 | 描述 | 备注
 :-----: | :-------: | :-------:
 
-#### 3.根据条件查询设备列表
+3.根据条件查询设备列表
 tips:若有多个参数，匹配结果取交集
 url:`device/list`
 
@@ -244,7 +244,7 @@ workNature | 工作性质 |
 custodian | 保管人名字 |
 amountUnit | 计量单位 | 
 
-#### 4.获取搜索的选项卡第一页数据
+4.获取搜索的选项卡第一页数据
 url:`device-search-selection/{pageSize}`
 
 data: 
@@ -399,7 +399,7 @@ statusId | 希望修改后设备的状态值 | Integer |s
 
 
 ### 分类
-#### 1.根据父id查询分类
+1.根据父id查询分类
 
 url:`list-category-by-pId`
 
@@ -512,9 +512,8 @@ rootId | 要删除的根节点id | str | 1 |
 字段名 | 描述 | 备注
 :-----: | :-------: | :-------:
 
-
 ### 地点
-#### 1.根据父id插入一个子分类
+1.根据父id插入一个子分类
 url:`insert-location-by-pid`
 
 data: 

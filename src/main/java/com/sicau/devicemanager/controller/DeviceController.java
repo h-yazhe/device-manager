@@ -110,8 +110,14 @@ public class DeviceController {
 		return ResultVOUtil.success(deviceService.getDeviceStatusRecordByDeviceId(deviceStatusRecordDTO));
 	}
 
+	/**
+	 * 根据设备id更新设备状态
+	 * @param device
+	 * @return
+	 */
 	@PostMapping("/update-repair-status-by-deviceId")
-	public ResultVO updateRepairedStatusByDeviceId(@RequestBody Device device){
+	public ResultVO updateRepairedStatusByDeviceId(@Validated({DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class})
+													   @RequestBody Device device){
 		deviceService.updateRepairedStatusByDeviceId(device.getId(), device.getStatusId());
 		return ResultVOUtil.success();
 	}

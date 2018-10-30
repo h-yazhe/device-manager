@@ -127,11 +127,28 @@ public class RepairDeviceController {
         return ResultVOUtil.success();
     }
 
-    @PostMapping("/delete-repair-order")
-    public ResultVO deleteRepairDeviceOrder(@RequestBody RepairOrder repairOrder){
-        if (repairDeviceService.deleteRepairDeviceOrder(repairOrder.getId())){
+    /**
+     *删除自己的维修订单
+     * @param repairId
+     * @return
+     */
+    @PostMapping("/delete-onself-repair-order/{repairId}")
+    public ResultVO deleteRepairDeviceOrder(@PathVariable Integer repairId){
+        if (repairDeviceService.deleteOneselfRepairDeviceOrder(repairId)){
             return ResultVOUtil.success();
         }
         return ResultVOUtil.error(ResultEnum.DELETE_FAILED);
+    }
+
+    /**
+     * 可以删除任意维修订单
+     * @param repairId
+     * @return
+     */
+    @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.DELETE)
+    @PostMapping("/delete-any-repair-order/{repairId}")
+    public ResultVO deleteAnyRepairDeviceOrder(@PathVariable Integer repairId){
+        repairDeviceService.deleteAnyRepairDeviceOrder(repairId);
+        return ResultVOUtil.success();
     }
 }
