@@ -197,12 +197,7 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
         //查询符合条件的RepairOrderDTO列表
         List<RepairOrderDTO> repairOrderDTOList =
                 repairOrderMapper.selectRepairOrderByUserId(repairOrderDTO.getApplyUserId());
-        //如果没有查到抛出资源不存在异常
-        if (repairOrderDTOList.size() == 0) {
-            throw new CommonException(ResultEnum.RESOURCE_NOT_FOUND);
-        }
         return new PageInfo<>(repairOrderDTOList);
-
     }
 
     @Override
@@ -214,12 +209,7 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
         //查询符合条件的RepairOrderDTO列表
         List<RepairOrderDTO> repairOrderDTOList =
                 repairOrderMapper.selectRepairOrderByStatus(repairOrderDTO.getStatusCode());
-        //如果没有查到抛出资源不存在异常
-        if (repairOrderDTOList.size() == 0) {
-            throw new CommonException(ResultEnum.RESOURCE_NOT_FOUND);
-        }
         return new PageInfo<>(repairOrderDTOList);
-
     }
 
 }
