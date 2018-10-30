@@ -1,7 +1,6 @@
 package com.sicau.devicemanager.controller;
 
 import com.sicau.devicemanager.POJO.DO.RepairOrder;
-import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.RepairOrderDTO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.exception.CommonException;
@@ -17,12 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.sicau.devicemanager.constants.CommonConstants;
-import com.sicau.devicemanager.constants.DeviceStatusEnum;
-import com.sicau.devicemanager.constants.ResultEnum;
-import com.sicau.devicemanager.constants.*;
-
-import javax.xml.transform.Result;
 
 /**
  * 维修设备
@@ -57,7 +50,6 @@ public class RepairDeviceController {
      */
     @PostMapping("/select-repair-order-statusCode")
     public ResultVO selectRepairOrderByStatus(@RequestBody RepairOrderDTO repairOrderDTO) {
-        //如果逻辑层抽查到数据，则顺利返回，如果逻辑层未查到数据则逻辑层抛出资源不存在异常
         return ResultVOUtil.success(repairDeviceService.selectRepairOrderByStatus(repairOrderDTO));
     }
 

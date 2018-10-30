@@ -1,7 +1,5 @@
 package com.sicau.devicemanager.constants;
 
-import lombok.Data;
-
 /**
  * 订单状态的枚举
  *
