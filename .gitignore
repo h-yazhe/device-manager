@@ -13,7 +13,6 @@
 ### IntelliJ IDEA ###
 .idea
 *.iws
-*.iml
 *.ipr
 
 ### NetBeans ###
@@ -23,6 +22,7 @@
 /dist/
 /nbdist/
 /.nb-gradle/
-src/test
-src/main/resources/*.yml
+/src/test
+/src/main/resources/*.yml
 /.gitignore
+/nginx-1.15.3

@@ -49,4 +49,8 @@ public class DeviceValidatedGroup {
 
     }
 
+    public interface addDeviceModel {
+    }
+
+
 }
