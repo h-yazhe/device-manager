@@ -740,7 +740,7 @@ rootId | 要删除的根节点id | str | 1 |
   ```
   2.查询所有工作性质的记录
   
-  url:`work_nature/闪电stAll`
+  url:`work_nature/listAll`
   
   
   返回值示例:
