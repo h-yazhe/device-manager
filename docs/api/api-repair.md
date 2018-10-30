@@ -128,7 +128,7 @@
                 {
                     "deviceId": "1529668662622323236",
                     "applyUserId": "1526467363362171844",
-                    "dealUserId": "hyz",
+                    "dealUserId": "123456789",
                     "description": "hhhhh",
                     "statusCode": 2,
                     "expectedTime": 1539867619000
