@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.POJO.DO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UpdateDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddDeviceGroup;
 import io.swagger.annotations.ApiModel;
@@ -14,7 +15,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Device {
 
-	@NotNull(groups = {UpdateDeviceGroup.class})
+    @NotNull(groups = {UpdateDeviceGroup.class,DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class})
     private String id;
 
 	@ApiModelProperty("设备名")
@@ -69,6 +70,7 @@ public class Device {
 	private String description;
 
     @ApiModelProperty(value = "当前设备状态id",notes = "1为入库，2为使用，3为报废")
+    @NotNull(groups = {DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class})
     private Integer statusId;
 
 	/**

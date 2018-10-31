@@ -5,35 +5,58 @@ package com.sicau.devicemanager.config.validation.group;
  * Created at 15:23 2018/8/7
  */
 public class DeviceValidatedGroup {
-	 public interface InsertDeviceCategoryGroup{
-	 }
+    public interface InsertDeviceCategoryGroup {
+    }
 
-	 public interface AddDeviceGroup {
-	 }
+    public interface AddDeviceGroup {
+    }
 
-	 public interface UpdateDeviceGroup{
-	 }
+    public interface UpdateDeviceGroup {
+    }
 
-	 public interface QueryDeviceGroup{
-	 }
+    public interface QueryDeviceGroup {
+    }
 
-	 public interface DistributeDeviceGroup{}
+    public interface DistributeDeviceGroup {
+    }
 
-	 public interface GetDeviceStatusRecordByDeviceId{}
+    public interface GetDeviceStatusRecordByDeviceId {
+    }
 
-	 public interface InsertTree{}
+    public interface InsertTree {
+    }
 
-	 public interface ListTreeByPId{}
+    public interface ListTreeByPId {
+    }
 
-	 public interface InsertTreeByPId{}
+    public interface InsertTreeByPId {
+    }
 
-	 public interface Login{}
+    public interface Login {
+    }
 
-	 public interface SubmitRepairOrder{}
+    public interface SubmitRepairOrder {
+    }
 
-	public interface ModifyRepairOrder {
-	}
+    public interface ModifyRepairOrder {
+    }
 
+    public interface AdminFinishOrder {
+    }
+
+    public interface UserFinishOrder {
+    }
+
+	public interface UpdateRepairedStatusByDeviceId{
+
+    }
+
+    public interface addWorkNature{
+
+    }
+
+    public interface addDeviceModel {
+    }
 
 
 }

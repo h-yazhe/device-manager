@@ -2,7 +2,6 @@ package com.sicau.devicemanager.service;
 
 import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.DTO.LocationDTO;
-import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
 
 import java.util.List;

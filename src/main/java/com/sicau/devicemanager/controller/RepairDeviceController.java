@@ -1,7 +1,6 @@
 package com.sicau.devicemanager.controller;
 
 import com.sicau.devicemanager.POJO.DO.RepairOrder;
-import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.RepairOrderDTO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.exception.CommonException;
@@ -17,12 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.sicau.devicemanager.constants.CommonConstants;
-import com.sicau.devicemanager.constants.DeviceStatusEnum;
-import com.sicau.devicemanager.constants.ResultEnum;
-import com.sicau.devicemanager.constants.*;
-
-import javax.xml.transform.Result;
 
 /**
  * 维修设备
@@ -57,7 +50,6 @@ public class RepairDeviceController {
      */
     @PostMapping("/select-repair-order-statusCode")
     public ResultVO selectRepairOrderByStatus(@RequestBody RepairOrderDTO repairOrderDTO) {
-        //如果逻辑层抽查到数据，则顺利返回，如果逻辑层未查到数据则逻辑层抛出资源不存在异常
         return ResultVOUtil.success(repairDeviceService.selectRepairOrderByStatus(repairOrderDTO));
     }
 
@@ -75,10 +67,9 @@ public class RepairDeviceController {
     }
 
     /**
-     * 修改订单，用户调用
+     * 修改订单
      * @author Xiao W
      */
-    @RequiresRoles("用户")
     @PostMapping("/modify-repair-order")
     public ResultVO modifyOrder(@Validated(DeviceValidatedGroup.ModifyRepairOrder.class)
                                 @RequestBody RepairOrder repairOrder) {
@@ -90,8 +81,8 @@ public class RepairDeviceController {
      * 根据设备id获取订单
      * @author Xiao W
      */
-    @GetMapping("/get-orders-by-device-id")
-    public ResultVO getOrders(@RequestParam String deviceId) {
+    @PostMapping("/orders/device/{deviceId}")
+    public ResultVO getOrders(@PathVariable String deviceId) {
         if (StringUtils.isEmpty(deviceId)) {
             throw new CommonException(ResultEnum.DEVICE_ID_CANNOT_BE_NULL);
         }
@@ -103,12 +94,10 @@ public class RepairDeviceController {
      * @author Xiao W
      */
     @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.FINISH_ADMIN)
-    @GetMapping("/finish-order-admin")
-    public ResultVO finishAdmin(@RequestParam int orderId, @RequestParam int orderStatus) {
-        if (StringUtils.isEmpty(orderId)||StringUtils.isEmpty(orderStatus)) {
-            throw new CommonException(ResultEnum.ORDER_PARAMS_NOT_SATIFIED);
-        }
-        repairDeviceService.finishOrder(orderId, EnumUtil.getByCode(orderStatus,OrderStatusEnum.class));
+    @PostMapping("/finish-order-admin")
+    public ResultVO finishAdmin(@Validated(DeviceValidatedGroup.AdminFinishOrder.class)
+                                            @RequestBody RepairOrder repairOrder) {
+        repairDeviceService.finishOrder(repairOrder.getId(), EnumUtil.getByCode(repairOrder.getStatusCode(),OrderStatusEnum.class));
         return ResultVOUtil.success();
     }
 
@@ -118,20 +107,35 @@ public class RepairDeviceController {
      * @author Xiao W
      */
     @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.FINISH_USER)
-    @GetMapping("/finish-order-user")
-    public ResultVO finishUser(@RequestParam int orderId, @RequestParam int deviceStatus) {
-        if (StringUtils.isEmpty(orderId)||StringUtils.isEmpty(deviceStatus)) {
-            throw new CommonException(ResultEnum.ORDER_PARAMS_NOT_SATIFIED);
-        }
-        repairDeviceService.finishOrder(orderId, EnumUtil.getByCode(deviceStatus,DeviceStatusEnum.class));
+    @PostMapping("/finish-order-user")
+    public ResultVO finishUser(@Validated(DeviceValidatedGroup.UserFinishOrder.class)
+                                           @RequestBody RepairOrder repairOrder) {
+        repairDeviceService.finishOrder(repairOrder.getId(), EnumUtil.getByCode(repairOrder.getDeviceStatus(),DeviceStatusEnum.class));
         return ResultVOUtil.success();
     }
 
-    @PostMapping("/delete-repair-order")
-    public ResultVO deleteRepairDeviceOrder(@RequestBody RepairOrder repairOrder){
-        if (repairDeviceService.deleteRepairDeviceOrder(repairOrder.getId())){
+    /**
+     *删除自己的维修订单
+     * @param repairId
+     * @return
+     */
+    @PostMapping("/delete-onself-repair-order/{repairId}")
+    public ResultVO deleteRepairDeviceOrder(@PathVariable Integer repairId){
+        if (repairDeviceService.deleteOneselfRepairDeviceOrder(repairId)){
             return ResultVOUtil.success();
         }
         return ResultVOUtil.error(ResultEnum.DELETE_FAILED);
+    }
+
+    /**
+     * 可以删除任意维修订单
+     * @param repairId
+     * @return
+     */
+    @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.DELETE)
+    @PostMapping("/delete-any-repair-order/{repairId}")
+    public ResultVO deleteAnyRepairDeviceOrder(@PathVariable Integer repairId){
+        repairDeviceService.deleteAnyRepairDeviceOrder(repairId);
+        return ResultVOUtil.success();
     }
 }

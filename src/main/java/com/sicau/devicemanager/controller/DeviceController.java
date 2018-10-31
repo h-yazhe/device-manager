@@ -1,7 +1,6 @@
 package com.sicau.devicemanager.controller;
 
 import com.sicau.devicemanager.POJO.DO.Device;
-import com.sicau.devicemanager.POJO.DO.RepairOrder;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
@@ -9,7 +8,6 @@ import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.DistributeDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.GetDeviceStatusRecordByDeviceId;
-import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.SubmitRepairOrder;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.service.DeviceService;
@@ -110,8 +108,14 @@ public class DeviceController {
 		return ResultVOUtil.success(deviceService.getDeviceStatusRecordByDeviceId(deviceStatusRecordDTO));
 	}
 
+	/**
+	 * 根据设备id更新设备状态
+	 * @param device
+	 * @return
+	 */
 	@PostMapping("/update-repair-status-by-deviceId")
-	public ResultVO updateRepairedStatusByDeviceId(@RequestBody Device device){
+	public ResultVO updateRepairedStatusByDeviceId(@Validated({DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class})
+													   @RequestBody Device device){
 		deviceService.updateRepairedStatusByDeviceId(device.getId(), device.getStatusId());
 		return ResultVOUtil.success();
 	}

@@ -1,6 +1,5 @@
 package com.sicau.devicemanager.controller;
 
-import com.sicau.devicemanager.POJO.DO.Permission;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;

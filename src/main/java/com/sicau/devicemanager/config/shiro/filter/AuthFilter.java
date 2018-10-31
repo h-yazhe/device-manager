@@ -1,11 +1,8 @@
 package com.sicau.devicemanager.config.shiro.filter;
 
-import com.sicau.devicemanager.config.shiro.token.JWTToken;
 import com.sicau.devicemanager.config.shiro.token.SimpleToken;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.constants.ResultEnum;
-import com.sicau.devicemanager.util.DateUtil;
-import com.sicau.devicemanager.util.web.CookieUtil;
 import com.sicau.devicemanager.util.web.ResponseUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;

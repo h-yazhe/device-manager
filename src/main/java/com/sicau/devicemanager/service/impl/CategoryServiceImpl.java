@@ -2,7 +2,6 @@ package com.sicau.devicemanager.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.sicau.devicemanager.POJO.DO.Category;
-import com.sicau.devicemanager.POJO.DO.DeviceCategory;
 import com.sicau.devicemanager.POJO.DTO.CategoryDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.CategoryVO;
@@ -25,7 +24,6 @@ import java.util.List;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class CategoryServiceImpl implements CategoryService{
-
 
 	@Autowired
 	private CategoryMapper categoryMapper;

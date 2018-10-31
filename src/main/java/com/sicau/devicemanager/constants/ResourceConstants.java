@@ -36,4 +36,9 @@ public interface ResourceConstants {
 	 * 订单
 	 */
 	String ORDER = "order";
+
+	/**
+	 * 型号
+	 */
+	String MODEl = "model";
 }
