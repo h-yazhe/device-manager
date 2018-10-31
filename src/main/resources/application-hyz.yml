@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/device-manager?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://39.108.97.103:3306/device-manager?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     username: root
     password: ENC(KV+OuaEiZx5AG3/24nzcoA==)
   redis:
     host: 39.108.97.103
-    port: 6379
+  port: 6379
