@@ -2,9 +2,7 @@ package com.sicau.devicemanager.service;
 
 import com.sicau.devicemanager.POJO.DO.Category;
 import com.sicau.devicemanager.POJO.DTO.CategoryDTO;
-import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.CategoryVO;
-
 import java.util.List;
 
 /**

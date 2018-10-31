@@ -15,7 +15,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Device {
 
-	@NotNull(groups = {UpdateDeviceGroup.class,DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class})
+    @NotNull(groups = {UpdateDeviceGroup.class,DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class})
     private String id;
 
 	@ApiModelProperty("设备名")

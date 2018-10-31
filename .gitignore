@@ -1,28 +1,7 @@
-/target/
-!.mvn/wrapper/maven-wrapper.jar
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
+### 忽略文件 ###
 .idea
-*.iws
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/build/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-/src/test
-/src/main/resources/*.yml
 /.gitignore
+*.yml
+/target/
+/src/test
 /nginx-1.15.3

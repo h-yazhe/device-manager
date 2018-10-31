@@ -1,7 +1,6 @@
 package com.sicau.devicemanager.service.impl;
 
 import com.sicau.devicemanager.POJO.DO.UserAuth;
-import com.sicau.devicemanager.config.RedisConfig;
 import com.sicau.devicemanager.config.exception.CommonException;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;

@@ -1,6 +1,5 @@
 package com.sicau.devicemanager.POJO.DO;
 
-import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.Login;
 import lombok.Data;
 

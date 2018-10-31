@@ -1,13 +1,9 @@
 package com.sicau.devicemanager.POJO.DO;
 
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.QueryDeviceGroup;
-import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddDeviceGroup;
-import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UpdateDeviceGroup;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 

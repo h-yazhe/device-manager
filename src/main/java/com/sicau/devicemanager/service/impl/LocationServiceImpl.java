@@ -5,7 +5,6 @@ import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.DTO.LocationDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
-import com.sicau.devicemanager.dao.DeviceMapper;
 import com.sicau.devicemanager.dao.LocationMapper;
 import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.service.LocationService;

@@ -4,7 +4,6 @@ import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.RepairOrder;
 import com.sicau.devicemanager.POJO.DTO.RepairOrderDTO;
 import com.sicau.devicemanager.constants.DeviceStatusEnum;
-import com.sicau.devicemanager.constants.DeviceStatusEnum;
 import com.sicau.devicemanager.constants.OrderStatusEnum;
 
 import java.util.List;

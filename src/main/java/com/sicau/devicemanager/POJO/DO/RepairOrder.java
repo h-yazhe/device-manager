@@ -3,6 +3,7 @@ package com.sicau.devicemanager.POJO.DO;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.ModifyRepairOrder;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.SubmitRepairOrder;
 import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
