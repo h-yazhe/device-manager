@@ -2,66 +2,75 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sicau.devicemanager.dao.CategoryMapper">
 
-	<insert id="insertList">
-		INSERT INTO category
-		VALUES
-		<foreach collection="list" item="category" separator=",">
-			(#{category.id},#{category.parentId},#{category.name},
-			#{category.level},#{category.path})
-		</foreach>
-	</insert>
+    <insert id="insertList">
+        INSERT INTO category
+        VALUES
+        <foreach collection="list" item="category" separator=",">
+            (#{category.id},#{category.parentId},#{category.name},
+            #{category.level},#{category.path})
+        </foreach>
+    </insert>
 
-	<delete id="deleteById">
-		DELETE FROM category
-		WHERE id = #{id}
-	</delete>
-	<select id="getDescendants" resultType="Category">
-		SELECT * FROM category WHERE `level` <![CDATA[ > ]]>
-									 (
-										 SELECT `level` FROM(
-											 (SELECT * FROM category WHERE id = #{rootId}) a
-										 )
-									 ) AND path LIKE concat("%/",#{rootId},"/%")
-	</select>
-	<delete id="deleteByIds">
-		DELETE FROM category
-		WHERE id IN
-		<foreach collection="list" item="id" open="(" close=")" separator=",">
-			#{id}
-		</foreach>
-	</delete>
+    <delete id="deleteById">
+        DELETE
+        FROM category
+        WHERE id = #{id}
+    </delete>
+    <select id="getDescendants" resultType="Category">
+        SELECT *
+        FROM category
+        WHERE `level` <![CDATA[ > ]]>
+									 (SELECT `level` FROM (
+                      (SELECT * FROM category WHERE id = #{rootId}) a
+                      ))
+          AND path LIKE concat("%/", #{rootId}, "/%")
+    </select>
 
-	<select id="selectAll" resultType="com.sicau.devicemanager.POJO.DO.Category">
-		SELECT * FROM category
-	</select>
+    <delete id="deleteByIds">
+        DELETE FROM category
+        WHERE id IN
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 
-	<select id="getByDeviceId" resultType="com.sicau.devicemanager.POJO.DO.Category">
-		SELECT * FROM category
-		WHERE id = (
-		SELECT category_id FROM device_category dc
-		WHERE dc.device_id = #{deviceId}
-		)
-	</select>
-	<select id="getChildrenById" resultType="Category">
-		SELECT * FROM category
-		WHERE parent_id = #{id}
-	</select>
+    <select id="selectAll" resultType="com.sicau.devicemanager.POJO.DO.Category">
+        SELECT *
+        FROM category
+    </select>
 
-	<select id="getChildrenIdById" resultType="java.lang.String">
-		SELECT id FROM category
-		WHERE parent_id = #{id}
-	</select>
-	<select id="getById" resultType="com.sicau.devicemanager.POJO.DO.Category">
-		SELECT * FROM category
-		WHERE id = #{id}
-	</select>
-	<select id="getCategoryInIds" resultType="com.sicau.devicemanager.POJO.DO.Category">
-		SELECT * FROM category
-		<if test="list!=null and list.size>0">
-			WHERE id IN
-			<foreach collection="list" item="id" index="idx" open="(" close=")" separator=",">
-				#{id}
-			</foreach>
-		</if>
-	</select>
+    <select id="getByDeviceId" resultType="com.sicau.devicemanager.POJO.DO.Category">
+        SELECT *
+        FROM category
+        WHERE id = (SELECT category_id FROM device_category dc WHERE dc.device_id = #{deviceId})
+    </select>
+
+    <select id="getChildrenById" resultType="Category">
+        SELECT *
+        FROM category
+        WHERE parent_id = #{id}
+    </select>
+
+    <select id="getChildrenIdById" resultType="java.lang.String">
+        SELECT id
+        FROM category
+        WHERE parent_id = #{id}
+    </select>
+
+    <select id="getById" resultType="com.sicau.devicemanager.POJO.DO.Category">
+        SELECT *
+        FROM category
+        WHERE id = #{id}
+    </select>
+
+    <select id="getCategoryInIds" resultType="com.sicau.devicemanager.POJO.DO.Category">
+        SELECT * FROM category
+        <if test="list!=null and list.size>0">
+            WHERE id IN
+            <foreach collection="list" item="id" index="idx" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+
 </mapper>

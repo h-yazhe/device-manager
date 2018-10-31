@@ -14,7 +14,7 @@
         SELECT user_auth.credential
         FROM user_auth
         WHERE user_id = #{userId}
-        AND locked = 0
-        And identify_type = 0
+          AND locked = 0
+          And identify_type = 0
     </select>
 </mapper>

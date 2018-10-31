@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.POJO.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import lombok.Data;
 
@@ -14,7 +15,11 @@ import java.util.Date;
  * @Description: 设备报修订单的信息传递类，用作分页查询
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RepairOrderDTO {
+
+    /** 订单id */
+    private Integer id;
 
     /** 设备id */
     @NotNull(message = "设备id不能为空",groups = {DeviceValidatedGroup.SubmitRepairOrder.class})
@@ -48,4 +53,5 @@ public class RepairOrderDTO {
     @Valid
     @NotNull(groups = {DeviceValidatedGroup.QueryDeviceGroup.class},message = "分页参数不能为空")
     private QueryPage queryPage;
+
 }

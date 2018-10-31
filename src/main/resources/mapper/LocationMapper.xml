@@ -2,79 +2,86 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sicau.devicemanager.dao.LocationMapper">
 
+    <insert id="insertList">
+        INSERT INTO location
+        VALUES
+        <foreach collection="list" item="location" separator=",">
+            (#{location.id},#{location.parentId},#{location.name},
+            #{location.level},#{location.path})
+        </foreach>
+    </insert>
 
-	<insert id="insertList">
-		INSERT INTO location
-		VALUES
-		<foreach collection="list" item="location" separator=",">
-			(#{location.id},#{location.parentId},#{location.name},
-			#{location.level},#{location.path})
-		</foreach>
-	</insert>
+    <delete id="deleteById">
+        DELETE
+        FROM location
+        WHERE id = #{id}
+    </delete>
 
-	<delete id="deleteById">
-		DELETE FROM location
-		WHERE id = #{id}
-	</delete>
-	<delete id="deleteByIds">
-		delete from location
-		where id in
-		<foreach collection="list" item="i" separator="," open="(" close=")">
-			#{i}
-		</foreach>
-	</delete>
+    <delete id="deleteByIds">
+        delete from location
+        where id in
+        <foreach collection="list" item="i" separator="," open="(" close=")">
+            #{i}
+        </foreach>
+    </delete>
 
-	<select id="selectAll" resultType="com.sicau.devicemanager.POJO.DO.Location">
-		SELECT * FROM location
-	</select>
+    <select id="selectAll" resultType="com.sicau.devicemanager.POJO.DO.Location">
+        SELECT *
+        FROM location
+    </select>
 
-	<select id="getByDeviceId" resultType="com.sicau.devicemanager.POJO.DO.Location">
-		SELECT * FROM location
-		WHERE id = (
-			SELECT location_id FROM device
-			WHERE device.id = #{deviceId}
-		)
-	</select>
-	<select id="getChildrenById" resultType="Location">
-		SELECT * FROM location
-		WHERE parent_id = #{id}
-	</select>
+    <select id="getByDeviceId" resultType="com.sicau.devicemanager.POJO.DO.Location">
+        SELECT *
+        FROM location
+        WHERE id = (SELECT location_id FROM device WHERE device.id = #{deviceId})
+    </select>
 
-	<select id="getChildrenIdById" resultType="java.lang.String">
-		SELECT id FROM location
-		WHERE parent_id = #{id}
-	</select>
+    <select id="getChildrenById" resultType="Location">
+        SELECT *
+        FROM location
+        WHERE parent_id = #{id}
+    </select>
 
-	<select id="getById" resultType="com.sicau.devicemanager.POJO.DO.Location">
-		SELECT * FROM location
-		WHERE id = #{id}
-	</select>
-	<select id="getLocationsInIds" resultType="com.sicau.devicemanager.POJO.DO.Location">
-		SELECT * FROM location
-		<if test="list!=null and list.size>0">
-			WHERE id IN
-			<foreach collection="list" item="id" index="idx" separator="," open="(" close=")">
-				#{id}
-			</foreach>
-		</if>
-	</select>
-	<select id="getByUserId" resultType="com.sicau.devicemanager.POJO.DO.Location">
-		SELECT * FROM location
-		WHERE id in (
-				SELECT rl.location_id FROM user u
-				JOIN user_role ur
-				ON u.id = ur.user_id
-				JOIN role_location rl
-				ON ur.role_id = rl.role_id
-			WHERE ur.user_id = #{userId}
-				)
-	</select>
-	<select id="getDescendants" resultType="com.sicau.devicemanager.POJO.DO.Location">
-		SELECT * FROM location WHERE `level` <![CDATA[ > ]]>
-									 (
-										 SELECT `level` FROM(
-											 (SELECT * FROM location WHERE id = #{rootId}) a
-										 )
-									 ) AND path LIKE concat("%/",#{rootId},"/%")
-	</select>
+    <select id="getChildrenIdById" resultType="java.lang.String">
+        SELECT id
+        FROM location
+        WHERE parent_id = #{id}
+    </select>
+
+    <select id="getById" resultType="com.sicau.devicemanager.POJO.DO.Location">
+        SELECT *
+        FROM location
+        WHERE id = #{id}
+    </select>
+
+    <select id="getLocationsInIds" resultType="com.sicau.devicemanager.POJO.DO.Location">
+        SELECT * FROM location
+        <if test="list!=null and list.size>0">
+            WHERE id IN
+            <foreach collection="list" item="id" index="idx" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getByUserId" resultType="com.sicau.devicemanager.POJO.DO.Location">
+        SELECT *
+        FROM location
+        WHERE id in (SELECT rl.location_id
+                     FROM user u
+                              JOIN user_role ur ON u.id = ur.user_id
+                              JOIN role_location rl ON ur.role_id = rl.role_id
+                     WHERE ur.user_id = #{userId})
+    </select>
+
+    <select id="getDescendants" resultType="com.sicau.devicemanager.POJO.DO.Location">
+        SELECT *
+        FROM location
+        WHERE `level` <![CDATA[ > ]]>
+									 (SELECT `level` FROM (
+                      (SELECT * FROM location WHERE id = #{rootId}) a
+                      ))
+          AND path LIKE concat("%/", #{rootId}, "/%")
+    </select>
+
 </mapper>
