@@ -11,8 +11,6 @@ function getLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
 }
 
-//格式化时间
-
 /**
  * 发送api请求
  * 重载$.ajax()方法，method默认为post，请求数据类型为json，header中添加了token
@@ -64,21 +62,13 @@ var API = {
     //分页查询所有用户
     ListUser:"user/list-by-page",
     //添加用户
-    addUser:"user/add",
-    //删除用户
-    deleteUser:"user/delete/",
-    //查询用户角色
-    getUserSelection: "role/list-by-page",
+    AddUser:"user/add",
     //根据父id查询地点
     addressDevice:"list-location-by-pid",
-    //删除分类
-    deleteCategory:"delete-category-by-id/",
     //根据父id插入一个子分类
-    insertCategory:"insert-category-by-pid",
     AddAddress:"insert-location-by-pid",
     //删除该节点为根的地点树
     DeleteAddress:"delete-location-tree-by-Id",
-    DeviceRecord:"device/get-status-record-by-deviceId",
     getApi: function (name) {
         return this.prefix + name;
     }
@@ -191,7 +181,7 @@ var CategoryTree = {
         }
     },
     template: '<div>\n' +
-        '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item" >\n' +
+        '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item">\n' +
         '                                    <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
         '                                </a>\n' +
         '                                <CategoryTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></CategoryTree>\n' +
@@ -199,8 +189,6 @@ var CategoryTree = {
     methods: {
         listChildren: function () {
             var self = this;
-            sideBarVm.sortList(self.parent.id);
-            vueDeviceList.getValue(self.parent.id,self.parent.name);
             if (self.parent.expanded) {
                 self.parent.expanded = !self.parent.expanded;
                 return;
@@ -390,8 +378,6 @@ var DistributeDevice = {
         '    </div>\n' +
         '</div>'
 };
-
-
 //报废设备组件
 var DiscardDevice = {
     name: 'discard-device',
@@ -429,4 +415,3 @@ var DiscardDevice = {
         '    </div>\n' +
         '</div>'
 };
-
