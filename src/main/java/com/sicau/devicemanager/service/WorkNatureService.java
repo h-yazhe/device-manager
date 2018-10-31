@@ -18,4 +18,12 @@ public interface WorkNatureService {
      * 查询所有工作性质的记录
      */
     List<WorkNature> findAllWorkNature();
+
+    /**
+     * 根据id删除工作性质
+     * @param id 工作性质id
+     * @author Xiao W
+     * @return
+     */
+    void deleteWordNatureById(String id);
 }

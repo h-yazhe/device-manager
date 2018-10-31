@@ -1,5 +1,7 @@
 package com.sicau.devicemanager.POJO.DO;
 
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AdminFinishOrder;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UserFinishOrder;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.ModifyRepairOrder;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.SubmitRepairOrder;
 import lombok.Data;
@@ -10,12 +12,18 @@ import java.util.Date;
 @Data
 public class RepairOrder {
 
-    @NotNull(message = "订单id不能为空",groups = {ModifyRepairOrder.class})
+    @NotNull(message = "订单id不能为空",groups = {ModifyRepairOrder.class, AdminFinishOrder.class, UserFinishOrder.class})
     private Integer id;
 
     /** 设备id */
     @NotNull(message = "设备id不能为空",groups = {SubmitRepairOrder.class})
     private String deviceId;
+
+    /**
+     * 设备状态
+     */
+    @NotNull(message = "设备状态不能为空",groups = {UserFinishOrder.class})
+    private Integer deviceStatus;
 
     /** 申请人id */
     private String applyUserId;
@@ -28,6 +36,7 @@ public class RepairOrder {
     private String description;
 
     /** 状态代码 0待维修，1维修中，2已维修，3无法维修*/
+    @NotNull(message = "订单状态不能为空",groups = {AdminFinishOrder.class})
     private Integer statusCode;
 
     /** 预计维修时间 */

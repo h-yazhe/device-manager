@@ -11,10 +11,7 @@ import com.sicau.devicemanager.util.web.ResultVOUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author 郭效坤
@@ -50,6 +47,17 @@ public class DeviceModelController {
     @RequiresPermissions(ResourceConstants.MODEl + PermissionActionConstant.GET)
     public ResultVO findDeviceModel() {
         return ResultVOUtil.success(deviceModelService.listAllDeviceModel());
+    }
+
+    /**
+     * 根据id删除设备型号
+     * @author Xiao W
+     * @return
+     */
+    @PostMapping("/device-model-delete/{id}")
+    public ResultVO deleteById(@PathVariable String id){
+        deviceModelService.deleteDeviceModelById(Integer.valueOf(id));
+        return ResultVOUtil.success();
     }
 
 }

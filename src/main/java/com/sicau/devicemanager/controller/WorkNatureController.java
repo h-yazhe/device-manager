@@ -39,4 +39,15 @@ public class WorkNatureController {
     public ResultVO listAllWorkNature(){
         return ResultVOUtil.success(workNatureService.findAllWorkNature());
     }
+
+    /**
+     * 根据id删除工作性质
+     * @author Xiao W
+     * @return
+     */
+    @PostMapping("/delete/{id}")
+    public ResultVO deleteById(@PathVariable String id){
+        workNatureService.deleteWordNatureById(id);
+        return ResultVOUtil.success();
+    }
 }

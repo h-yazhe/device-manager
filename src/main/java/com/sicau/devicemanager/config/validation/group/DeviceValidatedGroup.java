@@ -41,6 +41,12 @@ public class DeviceValidatedGroup {
     public interface ModifyRepairOrder {
     }
 
+    public interface AdminFinishOrder {
+    }
+
+    public interface UserFinishOrder {
+    }
+
 	public interface UpdateRepairedStatusByDeviceId{
 
     }

@@ -25,4 +25,12 @@ public interface DeviceModelService {
      */
     PageInfo<DeviceModel> listAllDeviceModel();
 
+    /**
+     * 根据id删除设备型号
+     * @param id 设备型号id
+     * @author Xiao W
+     * @return
+     */
+    void deleteDeviceModelById(int id);
+
 }

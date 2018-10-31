@@ -176,9 +176,9 @@
      }
      ```
 
- #### 2.修改订单(申请维修的用户调用)
+ #### 2.修改订单
     
-   url: `modify-repair-order` (POST方法)
+   url: `modify-repair-order` 
     
    data: 
    
@@ -204,12 +204,8 @@
    
  #### 3.根据设备id获取订单
       
-   url:`get-orders-by-device-id`(GET方法)
-      
-   data: 
-      
-      deviceId=1
-      
+   url:`orders/device/{deviceId}`
+       
      
    字段名 | 描述 | 备注 
    :-----: | :-------: | :-------: 
@@ -217,38 +213,42 @@
      
    返回值示例:
     
-    {
-        "code": 0,
-        "msg": "成功",
-        "data": [
-            {
-                "id": 7,
-                "deviceId": "1529668662622323236",
-                "applyUserId": "1526467363362171844",
-                "dealUserId": "教务处",
-                "description": "hhhhh",
-                "statusCode": 2,
-                "expectedTime": 1539016055000,
-                "createTime": 1540196850000,
-                "updateTime": 1540196850000
-            }
-        ]
-    }
+     {
+         "code": 0,
+         "msg": "成功",
+         "data": [
+             {
+                 "id": 7,
+                 "deviceId": "1529668662622323236",
+                 "deviceStatus": null,
+                 "applyUserId": "1526467363362171844",
+                 "dealUserId": "hyz",
+                 "description": "hhhhh",
+                 "statusCode": 3,
+                 "expectedTime": 1539016055000,
+                 "createTime": 1540196850000,
+                 "updateTime": 1540232444000
+             }
+         ]
+     }
  
  
  #### 4.管理员（维修人员）调用来完结订单
        
-   url:`finish-order-admin` (GET方法)
+   url:`finish-order-admin` 
        
    data: 
        
-       orderId=2&orderStatus=2
+       {
+        "id":2,
+        "statusCode":3
+       }
        
       
    字段名 | 描述 | 备注 
    :-----: | :-------: | :-------: 
-   orderId | 要完结的订单的id |
-   orderStatus | 完结后的状态(已维修或失败)
+   id | 要完结的订单的id |
+   statusCode | 完结后的订单状态(已维修或失败)
       
    返回值示例:
      
@@ -259,16 +259,19 @@
    
  #### 5.申请人员调用来完结订单
           
-   url:`finish-order-user` (GET方法)
+   url:`finish-order-user` 
           
    data: 
 
-    orderId=2&deviceStatus=2
+        {
+            "id":2,
+            "deviceStatus":3
+        }
           
          
    字段名 | 描述 | 备注 
    :-----: | :-------: | :-------: 
-   orderId | 要完结的订单的id |
+   id | 要完结的订单的id |
    deviceStatus | 完结后的设备状态(使用中、报废等等)
          
    返回值示例:

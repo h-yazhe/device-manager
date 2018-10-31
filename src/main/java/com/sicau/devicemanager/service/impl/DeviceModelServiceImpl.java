@@ -46,4 +46,9 @@ public class DeviceModelServiceImpl implements DeviceModelService {
         PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(), "id");
         return new PageInfo<>(deviceModelMapper.listAll());
     }
+
+    @Override
+    public void deleteDeviceModelById(int id) {
+        deviceModelMapper.deleteByPrimaryKey(id);
+    }
 }

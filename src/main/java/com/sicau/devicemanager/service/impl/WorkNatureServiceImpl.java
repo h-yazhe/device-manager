@@ -38,4 +38,9 @@ public class WorkNatureServiceImpl implements WorkNatureService {
     public List<WorkNature> findAllWorkNature() {
         return workNatureMapper.listAll();
     }
+
+    @Override
+    public void deleteWordNatureById(String id) {
+        workNatureMapper.deleteByPrimaryKey(id);
+    }
 }

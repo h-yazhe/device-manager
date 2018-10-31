@@ -67,10 +67,9 @@ public class RepairDeviceController {
     }
 
     /**
-     * 修改订单，用户调用
+     * 修改订单
      * @author Xiao W
      */
-    @RequiresRoles("用户")
     @PostMapping("/modify-repair-order")
     public ResultVO modifyOrder(@Validated(DeviceValidatedGroup.ModifyRepairOrder.class)
                                 @RequestBody RepairOrder repairOrder) {
@@ -82,8 +81,8 @@ public class RepairDeviceController {
      * 根据设备id获取订单
      * @author Xiao W
      */
-    @GetMapping("/get-orders-by-device-id")
-    public ResultVO getOrders(@RequestParam String deviceId) {
+    @PostMapping("/orders/device/{deviceId}")
+    public ResultVO getOrders(@PathVariable String deviceId) {
         if (StringUtils.isEmpty(deviceId)) {
             throw new CommonException(ResultEnum.DEVICE_ID_CANNOT_BE_NULL);
         }
@@ -95,12 +94,10 @@ public class RepairDeviceController {
      * @author Xiao W
      */
     @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.FINISH_ADMIN)
-    @GetMapping("/finish-order-admin")
-    public ResultVO finishAdmin(@RequestParam int orderId, @RequestParam int orderStatus) {
-        if (StringUtils.isEmpty(orderId)||StringUtils.isEmpty(orderStatus)) {
-            throw new CommonException(ResultEnum.ORDER_PARAMS_NOT_SATIFIED);
-        }
-        repairDeviceService.finishOrder(orderId, EnumUtil.getByCode(orderStatus,OrderStatusEnum.class));
+    @PostMapping("/finish-order-admin")
+    public ResultVO finishAdmin(@Validated(DeviceValidatedGroup.AdminFinishOrder.class)
+                                            @RequestBody RepairOrder repairOrder) {
+        repairDeviceService.finishOrder(repairOrder.getId(), EnumUtil.getByCode(repairOrder.getStatusCode(),OrderStatusEnum.class));
         return ResultVOUtil.success();
     }
 
@@ -110,12 +107,10 @@ public class RepairDeviceController {
      * @author Xiao W
      */
     @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.FINISH_USER)
-    @GetMapping("/finish-order-user")
-    public ResultVO finishUser(@RequestParam int orderId, @RequestParam int deviceStatus) {
-        if (StringUtils.isEmpty(orderId)||StringUtils.isEmpty(deviceStatus)) {
-            throw new CommonException(ResultEnum.ORDER_PARAMS_NOT_SATIFIED);
-        }
-        repairDeviceService.finishOrder(orderId, EnumUtil.getByCode(deviceStatus,DeviceStatusEnum.class));
+    @PostMapping("/finish-order-user")
+    public ResultVO finishUser(@Validated(DeviceValidatedGroup.UserFinishOrder.class)
+                                           @RequestBody RepairOrder repairOrder) {
+        repairDeviceService.finishOrder(repairOrder.getId(), EnumUtil.getByCode(repairOrder.getDeviceStatus(),DeviceStatusEnum.class));
         return ResultVOUtil.success();
     }
 
