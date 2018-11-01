@@ -28,10 +28,10 @@ public class RepairDeviceController {
     public RepairDeviceService repairDeviceService;
 
     /**
+     * @author 郭效坤
      * 根据用户id查询所有维修设备订单
      * 如果查的是当前用户提交的维修表，则根据用户id查询
      * @return 视图对象
-     * @author 郭效坤
      */
     @PostMapping("/select-repair-order-userId")
     public ResultVO selectRepairOrderByUserId(@RequestBody RepairOrderDTO repairOrderDTO) {
@@ -42,11 +42,11 @@ public class RepairDeviceController {
     }
 
     /**
+     * @author 郭效坤
      * 根据设备状态查询所有维修设备
      * 维修设备可能存在四种状态，只要传入对应状态代码即可
      * @param repairOrderDTO 传递过来的是RepairOrderDTO的对象,包含状态代码，分页信息
      * @return 视图对象
-     * @author 郭效坤
      */
     @PostMapping("/select-repair-order-statusCode")
     public ResultVO selectRepairOrderByStatus(@RequestBody RepairOrderDTO repairOrderDTO) {

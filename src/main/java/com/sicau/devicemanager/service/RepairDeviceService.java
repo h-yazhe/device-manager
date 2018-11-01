@@ -48,15 +48,15 @@ public interface RepairDeviceService {
 
     /**
      * 完结订单，设备维修后【管理员(维修人员)】调用
-     * @param orderStatusEnum 维修完成后:已维修或维修失败
      * @author Xiao W
+     * @param orderStatusEnum 维修完成后:已维修或维修失败
      */
     void finishOrder(int orderId, OrderStatusEnum orderStatusEnum);
 
     /**
      * 完结订单，订单完结后【用户】调用
-     * @param deviceStatusEnum 维修完成后:已维修或维修失败
      * @author Xiao W
+     * @param deviceStatusEnum 维修完成后:已维修或维修失败
      */
     void finishOrder(int orderId, DeviceStatusEnum deviceStatusEnum);
 

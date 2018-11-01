@@ -27,10 +27,10 @@ public class DeviceModelController {
     private DeviceModelService deviceModelService;
 
     /**
-     * @param deviceModel 设备型号表单
-     * @return 成功返回视图对象，失败（设备型号重名）抛出异常
      * @author 郭效坤
      * @description 新增设备型号
+     * @param deviceModel 设备型号表单
+     * @return 成功返回视图对象，失败（设备型号重名）抛出异常
      */
     @PostMapping("/device-model-submit")
     @RequiresPermissions(ResourceConstants.MODEl + PermissionActionConstant.ADD)
@@ -39,9 +39,9 @@ public class DeviceModelController {
     }
 
     /**
-     * @return 成功返回PResultVO下的PageInfo分页对象，如果没有则其中的DeviceModel列表为空
      * @author 郭效坤
      * @description 查找所有设备型号
+     * @return 成功返回PResultVO下的PageInfo分页对象，如果没有则其中的DeviceModel列表为空
      */
     @PostMapping("/device-model-listAll")
     @RequiresPermissions(ResourceConstants.MODEl + PermissionActionConstant.GET)
@@ -51,8 +51,8 @@ public class DeviceModelController {
 
     /**
      * 根据id删除设备型号
-     * @return
      * @author Xiao W
+     * @return
      */
     @PostMapping("/device-model-delete/{id}")
     public ResultVO deleteById(@PathVariable String id) {
