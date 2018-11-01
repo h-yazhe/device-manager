@@ -33,90 +33,90 @@ import java.util.List;
 @Api(tags = "设备管理")
 public class DeviceController {
 
-	@Autowired
-	private DeviceService deviceService;
+    @Autowired
+    private DeviceService deviceService;
 
-	@ApiOperation("添加设备")
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PostMapping("/add")
-	public ResultVO addDevice(@Validated(DeviceValidatedGroup.AddDeviceGroup.class)
-						  @RequestBody DeviceDTO deviceDTO){
-		deviceService.addDevice(deviceDTO);
-		return ResultVOUtil.success();
-	}
+    @ApiOperation("添加设备")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
+    @PostMapping("/add")
+    public ResultVO addDevice(@Validated(DeviceValidatedGroup.AddDeviceGroup.class)
+                              @RequestBody DeviceDTO deviceDTO) {
+        deviceService.addDevice(deviceDTO);
+        return ResultVOUtil.success();
+    }
 
-	@ApiOperation("更新设备")
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PostMapping("/update")
-	public ResultVO updateDeviceById(@Validated(DeviceValidatedGroup.UpdateDeviceGroup.class)
-										 @RequestBody DeviceDTO deviceDTO){
-		deviceService.updateDeviceById(deviceDTO);
-		return ResultVOUtil.success();
-	}
+    @ApiOperation("更新设备")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
+    @PostMapping("/update")
+    public ResultVO updateDeviceById(@Validated(DeviceValidatedGroup.UpdateDeviceGroup.class)
+                                     @RequestBody DeviceDTO deviceDTO) {
+        deviceService.updateDeviceById(deviceDTO);
+        return ResultVOUtil.success();
+    }
 
-	@ApiOperation("根据条件查询设备列表")
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PostMapping("/list")
-	public ResultVO listDeviceByCondition(@Validated(DeviceValidatedGroup.QueryDeviceGroup.class)
-											  @RequestBody DeviceDTO deviceDTO, HttpServletRequest request){
+    @ApiOperation("根据条件查询设备列表")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
+    @PostMapping("/list")
+    public ResultVO listDeviceByCondition(@Validated(DeviceValidatedGroup.QueryDeviceGroup.class)
+                                          @RequestBody DeviceDTO deviceDTO, HttpServletRequest request) {
 
-		deviceDTO.setUserId(JWTUtil.getUserId(request.getHeader(HttpParamKey.TOKEN)));
-		return ResultVOUtil.success(deviceService.listDevice(deviceDTO));
+        deviceDTO.setUserId(JWTUtil.getUserId(request.getHeader(HttpParamKey.TOKEN)));
+        return ResultVOUtil.success(deviceService.listDevice(deviceDTO));
 
-	}
+    }
 
-	@ApiOperation("删除设备")
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PostMapping("/delete-device")
-	public ResultVO deleteDeviceById(@RequestBody List<String> ids){
-		deviceService.deleteDeviceById(ids);
-		return ResultVOUtil.success();
-	}
+    @ApiOperation("删除设备")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
+    @PostMapping("/delete-device")
+    public ResultVO deleteDeviceById(@RequestBody List<String> ids) {
+        deviceService.deleteDeviceById(ids);
+        return ResultVOUtil.success();
+    }
 
-	@ApiOperation("分发设备")
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PostMapping("/distribute")
-	public ResultVO distributeDevice(@Validated(DistributeDeviceGroup.class)@RequestBody DistributeDeviceDTO distributeDeviceDTO){
-		deviceService.distributeDevice(distributeDeviceDTO);
-		return ResultVOUtil.success();
-	}
+    @ApiOperation("分发设备")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
+    @PostMapping("/distribute")
+    public ResultVO distributeDevice(@Validated(DistributeDeviceGroup.class) @RequestBody DistributeDeviceDTO distributeDeviceDTO) {
+        deviceService.distributeDevice(distributeDeviceDTO);
+        return ResultVOUtil.success();
+    }
 
-	@ApiOperation("报废设备")
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PostMapping("/discard")
-	public ResultVO discardDevice(@RequestBody String deviceId){
-		deviceService.discardDevice(deviceId);
-		return ResultVOUtil.success();
-	}
+    @ApiOperation("报废设备")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
+    @PostMapping("/discard")
+    public ResultVO discardDevice(@RequestBody String deviceId) {
+        deviceService.discardDevice(deviceId);
+        return ResultVOUtil.success();
+    }
 
-	@ApiOperation("获取搜索的选项卡第一页数据")
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PostMapping("/search-selection/{pageSize}")
-	public ResultVO getSearchSelections(@PathVariable Integer pageSize){
-		return ResultVOUtil.success(deviceService.getSearchSelections(pageSize));
-	}
+    @ApiOperation("获取搜索的选项卡第一页数据")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
+    @PostMapping("/search-selection/{pageSize}")
+    public ResultVO getSearchSelections(@PathVariable Integer pageSize) {
+        return ResultVOUtil.success(deviceService.getSearchSelections(pageSize));
+    }
 
 
-	/**
-	 * 根据设备id查询设备状态变更记录
-	 * @param deviceStatusRecordDTO
-	 * @return
-	 */
-	@PostMapping("get-status-record-by-deviceId")
-	public ResultVO getDeviceStatusRecordByDeviceId(@Validated({GetDeviceStatusRecordByDeviceId.class})
-																@RequestBody DeviceStatusRecordDTO deviceStatusRecordDTO){
-		return ResultVOUtil.success(deviceService.getDeviceStatusRecordByDeviceId(deviceStatusRecordDTO));
-	}
+    /**
+     * 根据设备id查询设备状态变更记录
+     * @param deviceStatusRecordDTO
+     * @return
+     */
+    @PostMapping("get-status-record-by-deviceId")
+    public ResultVO getDeviceStatusRecordByDeviceId(@Validated({GetDeviceStatusRecordByDeviceId.class})
+                                                    @RequestBody DeviceStatusRecordDTO deviceStatusRecordDTO) {
+        return ResultVOUtil.success(deviceService.getDeviceStatusRecordByDeviceId(deviceStatusRecordDTO));
+    }
 
-	/**
-	 * 根据设备id更新设备状态
-	 * @param device
-	 * @return
-	 */
-	@PostMapping("/update-repair-status-by-deviceId")
-	public ResultVO updateRepairedStatusByDeviceId(@Validated({DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class})
-													   @RequestBody Device device){
-		deviceService.updateRepairedStatusByDeviceId(device.getId(), device.getStatusId());
-		return ResultVOUtil.success();
-	}
+    /**
+     * 根据设备id更新设备状态
+     * @param device
+     * @return
+     */
+    @PostMapping("/update-repair-status-by-deviceId")
+    public ResultVO updateRepairedStatusByDeviceId(@Validated({DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class})
+                                                   @RequestBody Device device) {
+        deviceService.updateRepairedStatusByDeviceId(device.getId(), device.getStatusId());
+        return ResultVOUtil.success();
+    }
 }

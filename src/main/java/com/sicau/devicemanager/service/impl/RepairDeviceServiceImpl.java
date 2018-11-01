@@ -105,7 +105,6 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
 
     /**
      * 修改订单，用户调用
-     *
      * @author Xiao W
      */
     @Override
@@ -123,7 +122,6 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
 
     /**
      * 根据设备id获取订单
-     *
      * @author Xiao W
      */
     @Override
@@ -136,7 +134,6 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
 
     /**
      * 管理员（维修人员）调用完成订单
-     *
      * @author Xiao W
      */
     @Override
@@ -154,7 +151,6 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
 
     /**
      * 用户（订单提交人员）调用完成订单
-     *
      * @author Xiao W
      */
     @Override

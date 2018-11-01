@@ -9,7 +9,7 @@ import com.sicau.devicemanager.constants.ResultEnum;
  * @author BeFondOfTaro
  * Created in 12:24 2018/1/18
  */
-public class ResultVOUtil{
+public class ResultVOUtil {
 
     public static ResultVO success(Object object) {
         ResultVO resultVO = new ResultVO();
@@ -30,7 +30,7 @@ public class ResultVOUtil{
         return resultVO;
     }
 
-    public static ResultVO error(ResultEnum resultEnum){
+    public static ResultVO error(ResultEnum resultEnum) {
         ResultVO resultVO = new ResultVO();
         resultVO.setCode(resultEnum.getCode());
         resultVO.setMsg(resultEnum.getMessage());

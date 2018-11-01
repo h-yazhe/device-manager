@@ -30,8 +30,8 @@ public class RepairDeviceController {
     /**
      * 根据用户id查询所有维修设备订单
      * 如果查的是当前用户提交的维修表，则根据用户id查询
-     * @author 郭效坤
      * @return 视图对象
+     * @author 郭效坤
      */
     @PostMapping("/select-repair-order-userId")
     public ResultVO selectRepairOrderByUserId(@RequestBody RepairOrderDTO repairOrderDTO) {
@@ -44,9 +44,9 @@ public class RepairDeviceController {
     /**
      * 根据设备状态查询所有维修设备
      * 维修设备可能存在四种状态，只要传入对应状态代码即可
-     * @author 郭效坤
      * @param repairOrderDTO 传递过来的是RepairOrderDTO的对象,包含状态代码，分页信息
      * @return 视图对象
+     * @author 郭效坤
      */
     @PostMapping("/select-repair-order-statusCode")
     public ResultVO selectRepairOrderByStatus(@RequestBody RepairOrderDTO repairOrderDTO) {
@@ -58,10 +58,10 @@ public class RepairDeviceController {
      * @param repairOrder
      * @return
      */
-    @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.ADD)
+    @RequiresPermissions(ResourceConstants.ORDER + PermissionActionConstant.ADD)
     @PostMapping("/submit-repair-order")
     public ResultVO repairDevice(@Validated(DeviceValidatedGroup.SubmitRepairOrder.class)
-                                 @RequestBody RepairOrder repairOrder){
+                                 @RequestBody RepairOrder repairOrder) {
         repairDeviceService.submitRepairDeviceOrder(repairOrder);
         return ResultVOUtil.success();
     }
@@ -93,11 +93,11 @@ public class RepairDeviceController {
      * 管理员（维修人员）调用完成订单
      * @author Xiao W
      */
-    @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.FINISH_ADMIN)
+    @RequiresPermissions(ResourceConstants.ORDER + PermissionActionConstant.FINISH_ADMIN)
     @PostMapping("/finish-order-admin")
     public ResultVO finishAdmin(@Validated(DeviceValidatedGroup.AdminFinishOrder.class)
-                                            @RequestBody RepairOrder repairOrder) {
-        repairDeviceService.finishOrder(repairOrder.getId(), EnumUtil.getByCode(repairOrder.getStatusCode(),OrderStatusEnum.class));
+                                @RequestBody RepairOrder repairOrder) {
+        repairDeviceService.finishOrder(repairOrder.getId(), EnumUtil.getByCode(repairOrder.getStatusCode(), OrderStatusEnum.class));
         return ResultVOUtil.success();
     }
 
@@ -106,22 +106,22 @@ public class RepairDeviceController {
      * 用户（订单提交人员）调用完成订单
      * @author Xiao W
      */
-    @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.FINISH_USER)
+    @RequiresPermissions(ResourceConstants.ORDER + PermissionActionConstant.FINISH_USER)
     @PostMapping("/finish-order-user")
     public ResultVO finishUser(@Validated(DeviceValidatedGroup.UserFinishOrder.class)
-                                           @RequestBody RepairOrder repairOrder) {
-        repairDeviceService.finishOrder(repairOrder.getId(), EnumUtil.getByCode(repairOrder.getDeviceStatus(),DeviceStatusEnum.class));
+                               @RequestBody RepairOrder repairOrder) {
+        repairDeviceService.finishOrder(repairOrder.getId(), EnumUtil.getByCode(repairOrder.getDeviceStatus(), DeviceStatusEnum.class));
         return ResultVOUtil.success();
     }
 
     /**
-     *删除自己的维修订单
+     * 删除自己的维修订单
      * @param repairId
      * @return
      */
     @PostMapping("/delete-onself-repair-order/{repairId}")
-    public ResultVO deleteRepairDeviceOrder(@PathVariable Integer repairId){
-        if (repairDeviceService.deleteOneselfRepairDeviceOrder(repairId)){
+    public ResultVO deleteRepairDeviceOrder(@PathVariable Integer repairId) {
+        if (repairDeviceService.deleteOneselfRepairDeviceOrder(repairId)) {
             return ResultVOUtil.success();
         }
         return ResultVOUtil.error(ResultEnum.DELETE_FAILED);
@@ -132,9 +132,9 @@ public class RepairDeviceController {
      * @param repairId
      * @return
      */
-    @RequiresPermissions(ResourceConstants.ORDER+PermissionActionConstant.DELETE)
+    @RequiresPermissions(ResourceConstants.ORDER + PermissionActionConstant.DELETE)
     @PostMapping("/delete-any-repair-order/{repairId}")
-    public ResultVO deleteAnyRepairDeviceOrder(@PathVariable Integer repairId){
+    public ResultVO deleteAnyRepairDeviceOrder(@PathVariable Integer repairId) {
         repairDeviceService.deleteAnyRepairDeviceOrder(repairId);
         return ResultVOUtil.success();
     }

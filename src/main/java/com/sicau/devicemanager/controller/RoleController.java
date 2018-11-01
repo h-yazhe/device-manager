@@ -37,11 +37,11 @@ public class RoleController {
      * @param roleAddDTO 角色信息
      */
     @ApiImplicitParams(
-            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
+            @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header")
     )
     @PostMapping("add")
     @RequiresPermissions(ResourceConstants.ROLE + PermissionActionConstant.ADD)
-    public ResultVO addRole(@RequestBody RoleAddDTO roleAddDTO){
+    public ResultVO addRole(@RequestBody RoleAddDTO roleAddDTO) {
         roleService.addRole(roleAddDTO);
         return ResultVOUtil.success();
     }
@@ -51,26 +51,26 @@ public class RoleController {
      * @param roleId 角色id
      */
     @ApiImplicitParams(
-            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
+            @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header")
     )
     @PostMapping("delete/{roleId}")
     @RequiresPermissions(ResourceConstants.ROLE + PermissionActionConstant.DELETE)
-    public ResultVO deleteRoleById(@PathVariable String roleId){
+    public ResultVO deleteRoleById(@PathVariable String roleId) {
         roleService.deleteRoleById(roleId);
         return ResultVOUtil.success();
     }
 
     /**
      * 更新角色的权限
-     * @param roleId 角色id
+     * @param roleId           角色id
      * @param permissionIdList 权限id列表
      */
     @ApiImplicitParams(
-            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
+            @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header")
     )
     @PostMapping("update-permission-list/{roleId}")
-    public ResultVO updateRolePermission(@PathVariable String roleId, @RequestBody List<String> permissionIdList){
-        roleService.updateRolePermission(roleId,permissionIdList);
+    public ResultVO updateRolePermission(@PathVariable String roleId, @RequestBody List<String> permissionIdList) {
+        roleService.updateRolePermission(roleId, permissionIdList);
         return ResultVOUtil.success();
     }
 
@@ -80,11 +80,11 @@ public class RoleController {
      * @return
      */
     @ApiImplicitParams(
-            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
+            @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header")
     )
     @PostMapping("list-by-page")
     @RequiresPermissions(ResourceConstants.ROLE + PermissionActionConstant.GET)
-    public ResultVO listRole(@Valid @RequestBody QueryPage queryPage){
+    public ResultVO listRole(@Valid @RequestBody QueryPage queryPage) {
         return ResultVOUtil.success(roleService.listRole(queryPage));
     }
 }

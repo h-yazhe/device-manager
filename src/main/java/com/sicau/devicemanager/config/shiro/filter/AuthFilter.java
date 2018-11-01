@@ -39,7 +39,7 @@ public class AuthFilter extends AccessControlFilter {
         try {
             String authorization = request.getHeader(HttpParamKey.TOKEN);
             //检测是否请求中包含token
-            if (authorization == null){
+            if (authorization == null) {
                 throw new Exception("token为空!");
             }
             //登录
@@ -49,7 +49,7 @@ public class AuthFilter extends AccessControlFilter {
             // 如果没有抛出异常则代表登入成功，返回true
             return true;
         } catch (Exception e) {
-        	e.printStackTrace();
+            e.printStackTrace();
             log.error(e.getMessage());
             onLoginFail(response);
             return false;
@@ -76,7 +76,7 @@ public class AuthFilter extends AccessControlFilter {
         ResponseUtil.toJson(
                 httpServletResponse,
                 ResultVOUtil.error(ResultEnum.LOGIN_EXCEPTION)
-                );
+        );
     }
 
 }

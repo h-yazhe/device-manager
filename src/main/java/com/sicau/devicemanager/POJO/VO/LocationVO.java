@@ -13,22 +13,22 @@ import javax.validation.constraints.NotNull;
  */
 public class LocationVO extends Location {
 
-	@NotNull(message = "分页参数不能为空",groups = {ListTreeByPId.class})
-	@Valid
-	private QueryPage queryPage;
+    @NotNull(message = "分页参数不能为空", groups = {ListTreeByPId.class})
+    @Valid
+    private QueryPage queryPage;
 
-	public QueryPage getQueryPage() {
-		return queryPage;
-	}
+    public QueryPage getQueryPage() {
+        return queryPage;
+    }
 
-	public void setQueryPage(QueryPage queryPage) {
-		this.queryPage = queryPage;
-	}
+    public void setQueryPage(QueryPage queryPage) {
+        this.queryPage = queryPage;
+    }
 
-	@Override
-	public String toString() {
-		return "LocationVO{" +
-				"queryPage=" + queryPage +
-				"} " + super.toString();
-	}
+    @Override
+    public String toString() {
+        return "LocationVO{" +
+                "queryPage=" + queryPage +
+                "} " + super.toString();
+    }
 }

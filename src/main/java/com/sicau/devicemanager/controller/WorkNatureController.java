@@ -26,7 +26,7 @@ public class WorkNatureController {
      */
     @PostMapping("/add")
     public ResultVO addWorkNature(@Validated({DeviceValidatedGroup.addWorkNature.class})
-                                      @RequestBody WorkNature workNature){
+                                  @RequestBody WorkNature workNature) {
         workNatureService.addWorkNature(workNature);
         return ResultVOUtil.success();
     }
@@ -36,17 +36,17 @@ public class WorkNatureController {
      * @return
      */
     @PostMapping("/listAll")
-    public ResultVO listAllWorkNature(){
+    public ResultVO listAllWorkNature() {
         return ResultVOUtil.success(workNatureService.findAllWorkNature());
     }
 
     /**
      * 根据id删除工作性质
-     * @author Xiao W
      * @return
+     * @author Xiao W
      */
     @PostMapping("/delete/{id}")
-    public ResultVO deleteById(@PathVariable String id){
+    public ResultVO deleteById(@PathVariable String id) {
         workNatureService.deleteWordNatureById(id);
         return ResultVOUtil.success();
     }

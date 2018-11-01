@@ -30,13 +30,13 @@ public class UserAuth {
     /**
      * 标识（手机号 邮箱 用户名或第三方应用的唯一标识）
      */
-	@NotNull(groups = {Login.class})
+    @NotNull(groups = {Login.class})
     private String identifier;
 
     /**
      * 登录凭证
      */
-	@NotNull(groups = {Login.class})
+    @NotNull(groups = {Login.class})
     private String credential;
 
     /**

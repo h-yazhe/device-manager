@@ -27,21 +27,21 @@ public class DeviceModelController {
     private DeviceModelService deviceModelService;
 
     /**
-     * @author 郭效坤
      * @param deviceModel 设备型号表单
-     * @description 新增设备型号
      * @return 成功返回视图对象，失败（设备型号重名）抛出异常
+     * @author 郭效坤
+     * @description 新增设备型号
      */
     @PostMapping("/device-model-submit")
     @RequiresPermissions(ResourceConstants.MODEl + PermissionActionConstant.ADD)
     public ResultVO submitDeviceModel(@Validated(DeviceValidatedGroup.addDeviceModel.class) @RequestBody DeviceModel deviceModel) {
-       return ResultVOUtil.success(deviceModelService.submitDeviceModel(deviceModel));
+        return ResultVOUtil.success(deviceModelService.submitDeviceModel(deviceModel));
     }
 
     /**
+     * @return 成功返回PResultVO下的PageInfo分页对象，如果没有则其中的DeviceModel列表为空
      * @author 郭效坤
      * @description 查找所有设备型号
-     * @return 成功返回PResultVO下的PageInfo分页对象，如果没有则其中的DeviceModel列表为空
      */
     @PostMapping("/device-model-listAll")
     @RequiresPermissions(ResourceConstants.MODEl + PermissionActionConstant.GET)
@@ -51,11 +51,11 @@ public class DeviceModelController {
 
     /**
      * 根据id删除设备型号
-     * @author Xiao W
      * @return
+     * @author Xiao W
      */
     @PostMapping("/device-model-delete/{id}")
-    public ResultVO deleteById(@PathVariable String id){
+    public ResultVO deleteById(@PathVariable String id) {
         deviceModelService.deleteDeviceModelById(Integer.valueOf(id));
         return ResultVOUtil.success();
     }

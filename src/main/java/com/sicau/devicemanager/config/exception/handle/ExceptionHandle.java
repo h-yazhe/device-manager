@@ -23,20 +23,20 @@ public class ExceptionHandle {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public ResultVO handle(Exception e){
+    public ResultVO handle(Exception e) {
         //如果是我们自定义的异常
-        if (e instanceof CommonException){
+        if (e instanceof CommonException) {
             CommonException commonException = (CommonException) e;
-            return ResultVOUtil.error(commonException.getCode(),commonException.getMessage());
+            return ResultVOUtil.error(commonException.getCode(), commonException.getMessage());
         }
         //权限异常
-        else if (e instanceof UnauthorizedException){
+        else if (e instanceof UnauthorizedException) {
             UnauthorizedException unauthorizedException = (UnauthorizedException) e;
-            return ResultVOUtil.error(ResultEnum.UNAUTHORIZED.getCode(),unauthorizedException.getMessage());
+            return ResultVOUtil.error(ResultEnum.UNAUTHORIZED.getCode(), unauthorizedException.getMessage());
         }
         //资源异常
-        else if (e instanceof ResourceException){
-        	e.printStackTrace();
+        else if (e instanceof ResourceException) {
+            e.printStackTrace();
             ResourceException resourceException = (ResourceException) e;
             ResourceExceptionEnum resourceExceptionEnum = resourceException.getResourceExceptionEnum();
             return ResultVOUtil.error(resourceExceptionEnum.getCode(),
@@ -44,7 +44,7 @@ public class ExceptionHandle {
         }
         //如果不是我们自定义的异常
         else {
-            log.error("【系统异常】{}",e);
+            log.error("【系统异常】{}", e);
             return ResultVOUtil.error(
                     ResultEnum.UNKNOWN_ERROR.getCode(),
                     e.getMessage());

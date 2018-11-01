@@ -11,25 +11,25 @@ import com.sicau.devicemanager.POJO.DO.DeviceModel;
 public interface DeviceModelService {
 
     /**
-     * @author 郭效坤
      * @param deviceModel 设备型号表单
-     * @description 新增设备型号
      * @return 成功返回true，失败抛出异常
+     * @author 郭效坤
+     * @description 新增设备型号
      */
     boolean submitDeviceModel(DeviceModel deviceModel);
 
     /**
+     * @return 成功返回分页对象，内含设备型号列表，失败返回null
      * @author 郭效坤
      * @description 一次查找全部设备型号
-     * @return 成功返回分页对象，内含设备型号列表，失败返回null
      */
     PageInfo<DeviceModel> listAllDeviceModel();
 
     /**
      * 根据id删除设备型号
      * @param id 设备型号id
-     * @author Xiao W
      * @return
+     * @author Xiao W
      */
     void deleteDeviceModelById(int id);
 

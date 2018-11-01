@@ -16,10 +16,10 @@ public class ResponseUtil {
     /**
      * 返回json格式数据
      * @param httpServletResponse
-     * @param data 数据对象
+     * @param data                数据对象
      * @throws IOException
      */
-    public static void toJson(HttpServletResponse httpServletResponse, Object data) throws IOException{
+    public static void toJson(HttpServletResponse httpServletResponse, Object data) throws IOException {
         Gson gson = GsonUtil.getGson();
         httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletResponse.setContentType("application/json; charset=utf-8");

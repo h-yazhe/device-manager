@@ -22,23 +22,23 @@ public interface ResourceConstants {
      */
     String PERMISSION = "permission";
 
-	/**
-	 * 品牌
-	 */
-	String BRAND = "brand";
+    /**
+     * 品牌
+     */
+    String BRAND = "brand";
 
-	/**
-	 * 地点
-	 */
-	String LOCATION = "location";
+    /**
+     * 地点
+     */
+    String LOCATION = "location";
 
-	/**
-	 * 订单
-	 */
-	String ORDER = "order";
+    /**
+     * 订单
+     */
+    String ORDER = "order";
 
-	/**
-	 * 型号
-	 */
-	String MODEl = "model";
+    /**
+     * 型号
+     */
+    String MODEl = "model";
 }

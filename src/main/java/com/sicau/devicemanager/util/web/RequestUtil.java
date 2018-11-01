@@ -8,11 +8,11 @@ import org.apache.shiro.SecurityUtils;
  */
 public class RequestUtil {
 
-	/**
-	 * 获取当前请求的用户id
-	 * @return
-	 */
-	public static String getCurrentUserId(){
-		return (String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
-	}
+    /**
+     * 获取当前请求的用户id
+     * @return
+     */
+    public static String getCurrentUserId() {
+        return (String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal();
+    }
 }

@@ -13,15 +13,15 @@ import java.util.List;
 @Data
 public class DeviceSearchSelectionVO {
 
-	private List<Category> categoryList;
+    private List<Category> categoryList;
 
-	private List<Location> locationList;
+    private List<Location> locationList;
 
-	private List<Brand> brandList;
+    private List<Brand> brandList;
 
-	private List<DeviceModel> deviceModelList;
+    private List<DeviceModel> deviceModelList;
 
-	private List<WorkNature> workNatureList;
+    private List<WorkNature> workNatureList;
 
-	private List<Custodian> custodianList;
+    private List<Custodian> custodianList;
 }

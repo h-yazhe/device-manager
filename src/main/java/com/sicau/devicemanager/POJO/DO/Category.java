@@ -18,32 +18,32 @@ import javax.validation.constraints.NotNull;
 @ApiModel("设备分类")
 public class Category {
 
-	@NotNull(message = "id不能为空",groups = {InsertTree.class})
-	private String id;
+    @NotNull(message = "id不能为空", groups = {InsertTree.class})
+    private String id;
 
-	/**
-	 * 父级地点id
-	 */
-	@ApiModelProperty("父级分类id")
-	@NotNull(message = "父级分类id不能为空",groups = {InsertTree.class, ListTreeByPId.class, InsertTreeByPId.class})
-	private String parentId;
+    /**
+     * 父级地点id
+     */
+    @ApiModelProperty("父级分类id")
+    @NotNull(message = "父级分类id不能为空", groups = {InsertTree.class, ListTreeByPId.class, InsertTreeByPId.class})
+    private String parentId;
 
-	/**
-	 * 地名
-	 */
-	@ApiModelProperty("分类名")
-	@NotNull(message = "名称不能为空",groups = {InsertTree.class,InsertTreeByPId.class})
-	private String name;
+    /**
+     * 地名
+     */
+    @ApiModelProperty("分类名")
+    @NotNull(message = "名称不能为空", groups = {InsertTree.class, InsertTreeByPId.class})
+    private String name;
 
-	/**
-	 * 层级
-	 */
-	@ApiModelProperty("层级")
-	private Integer level;
+    /**
+     * 层级
+     */
+    @ApiModelProperty("层级")
+    private Integer level;
 
-	/**
-	 * 路径
-	 */
-	@ApiModelProperty("路径")
-	private String path;
+    /**
+     * 路径
+     */
+    @ApiModelProperty("路径")
+    private String path;
 }

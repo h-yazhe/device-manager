@@ -25,7 +25,7 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping("/login")
-    public ResultVO login(@Validated({Login.class}) @RequestBody UserAuth userAuth){
+    public ResultVO login(@Validated({Login.class}) @RequestBody UserAuth userAuth) {
         return ResultVOUtil.success(loginService.login(userAuth.getIdentifier(), userAuth.getCredential(), userAuth.getIdentifyType()));
     }
 }

@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 public class WorkNature {
     private String id;
 
-    @NotNull(message = "名称不能为空",groups = {DeviceValidatedGroup.addWorkNature.class})
+    @NotNull(message = "名称不能为空", groups = {DeviceValidatedGroup.addWorkNature.class})
     private String name;
 
     public String getId() {

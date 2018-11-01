@@ -30,37 +30,37 @@ public class BrandController {
     private BrandService brandService;
 
     @ApiOperation("查询所有品牌")
-    @ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @GetMapping(ResourceConstants.BRAND)
     @RequiresPermissions(ResourceConstants.BRAND + PermissionActionConstant.GET)
-    public ResultVO listBrand(){
+    public ResultVO listBrand() {
         return ResultVOUtil.success(brandService.listBrand());
     }
 
-	/**
-	 * 分页查询品牌
-	 * @param queryPage
-	 * @return
-	 */
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PostMapping("get-brands")
-	@RequiresPermissions(ResourceConstants.BRAND + PermissionActionConstant.GET)
-    public ResultVO listBrandByPage(@RequestBody QueryPage queryPage){
-    	return ResultVOUtil.success(brandService.listBrandByPage(queryPage));
-	}
+    /**
+     * 分页查询品牌
+     * @param queryPage
+     * @return
+     */
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
+    @PostMapping("get-brands")
+    @RequiresPermissions(ResourceConstants.BRAND + PermissionActionConstant.GET)
+    public ResultVO listBrandByPage(@RequestBody QueryPage queryPage) {
+        return ResultVOUtil.success(brandService.listBrandByPage(queryPage));
+    }
 
     @ApiOperation("新增品牌")
-    @ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping(ResourceConstants.BRAND)
-    public ResultVO insertBrand(Brand brand){
+    public ResultVO insertBrand(Brand brand) {
         brandService.insertBrand(brand);
         return ResultVOUtil.success();
     }
 
     @ApiOperation("根据id删除品牌")
-    @ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @DeleteMapping(ResourceConstants.BRAND + "/{id}")
-    public ResultVO deleteBrandById(@PathVariable String id){
+    public ResultVO deleteBrandById(@PathVariable String id) {
         brandService.deleteBrandById(id);
         return ResultVOUtil.success();
     }

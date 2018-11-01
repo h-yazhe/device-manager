@@ -40,11 +40,11 @@ public class UserController {
      */
     @ApiOperation("根据用户id查询用户信息")
     @ApiImplicitParams(
-            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
+            @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header")
     )
     @GetMapping(ResourceConstants.USER + "/{userId}")
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.GET)
-    public ResultVO getUserById(@PathVariable("userId") String userId){
+    public ResultVO getUserById(@PathVariable("userId") String userId) {
         return ResultVOUtil.success(userService.getUserById(userId));
     }
 
@@ -55,11 +55,11 @@ public class UserController {
      */
     @ApiOperation("分页查询所有用户")
     @ApiImplicitParams(
-            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
+            @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header")
     )
     @PostMapping("list-by-page")
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.GET)
-    public ResultVO listUser(@Valid QueryPage queryPage){
+    public ResultVO listUser(@Valid QueryPage queryPage) {
         return ResultVOUtil.success(userService.listUser(queryPage));
     }
 
@@ -69,28 +69,28 @@ public class UserController {
      */
     @ApiOperation("添加用户")
     @ApiImplicitParams(
-            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
+            @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header")
     )
     @PostMapping("add")
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.ADD)
-    public ResultVO addUser(@Valid @RequestBody UserRegisterDTO userRegisterDTO){
+    public ResultVO addUser(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
         userService.addUser(userRegisterDTO);
         return ResultVOUtil.success();
     }
 
     /**
      * 为用户批量更新角色
-     * @param userId 用户id
+     * @param userId     用户id
      * @param roleIdList 角色id列表
      */
     @ApiOperation("为用户批量更新角色")
     @ApiImplicitParams(
-            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header",required = true)
+            @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header", required = true)
     )
     @PostMapping(ResourceConstants.USER + "/{userId}/" + ResourceConstants.ROLE)
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.UPDATE)
-    public ResultVO updateUserRole(@PathVariable String userId, @RequestBody List<String> roleIdList){
-        userService.updateUserRole(userId,roleIdList);
+    public ResultVO updateUserRole(@PathVariable String userId, @RequestBody List<String> roleIdList) {
+        userService.updateUserRole(userId, roleIdList);
         return ResultVOUtil.success();
     }
 
@@ -100,11 +100,11 @@ public class UserController {
      */
     @ApiOperation("通过用户id删除用户")
     @ApiImplicitParams(
-            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header")
+            @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header")
     )
     @PostMapping("delete/{userId}")
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.DELETE)
-    public ResultVO deleteUserById(@PathVariable String userId){
+    public ResultVO deleteUserById(@PathVariable String userId) {
         userService.deleteUserById(userId);
         return ResultVOUtil.success();
     }

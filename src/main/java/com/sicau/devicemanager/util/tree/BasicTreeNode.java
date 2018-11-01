@@ -8,73 +8,73 @@ package com.sicau.devicemanager.util.tree;
  */
 public class BasicTreeNode {
 
-	private String id;
+    private String id;
 
-	private String parentId;
+    private String parentId;
 
-	/**
-	 * 该节点的值
-	 */
-	private String value;
+    /**
+     * 该节点的值
+     */
+    private String value;
 
-	/**
-	 * 层级
-	 */
-	private Integer level;
+    /**
+     * 层级
+     */
+    private Integer level;
 
-	/**
-	 * 路径
-	 */
-	private String path;
+    /**
+     * 路径
+     */
+    private String path;
 
-	public BasicTreeNode() {
-	}
+    public BasicTreeNode() {
+    }
 
-	public BasicTreeNode(String id, String parentId, String value, Integer level, String path) {
-		this.id = id;
-		this.parentId = parentId;
-		this.value = value;
-		this.level = level;
-		this.path = path;
-	}
+    public BasicTreeNode(String id, String parentId, String value, Integer level, String path) {
+        this.id = id;
+        this.parentId = parentId;
+        this.value = value;
+        this.level = level;
+        this.path = path;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getParentId() {
-		return parentId;
-	}
+    public String getParentId() {
+        return parentId;
+    }
 
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public Integer getLevel() {
-		return level;
-	}
+    public Integer getLevel() {
+        return level;
+    }
 
-	public void setLevel(Integer level) {
-		this.level = level;
-	}
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
 
-	public String getPath() {
-		return path;
-	}
+    public String getPath() {
+        return path;
+    }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    public void setPath(String path) {
+        this.path = path;
+    }
 }

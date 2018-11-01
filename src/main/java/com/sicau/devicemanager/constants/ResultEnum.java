@@ -4,7 +4,6 @@ import lombok.Getter;
 
 /**
  * http响应数据状态code
- *
  * @author BeFondOfTaro
  * Created in 12:43 2018/1/18
  */
@@ -33,7 +32,7 @@ public enum ResultEnum {
     ORDER_CANNOT_MODIFY(101, "修改失败，订单正在处理或已经处理"),
     ORDER_CANNOT_FINISHED(102, "完结订单失败，订单已完结，或还未接单"),
     ORDERS_DEVICE_STATUS_CANNOT_CHANGE(103, "不能更改设备状态，订单还没处理完成或设备状态已经更改"),
-    DEVICE_ID_CANNOT_BE_NULL(104,"设备id不能为空" ),
+    DEVICE_ID_CANNOT_BE_NULL(104, "设备id不能为空"),
     ORDER_PARAMS_NOT_SATIFIED(105, "传入订单参数不满足");
 
     private Integer code;

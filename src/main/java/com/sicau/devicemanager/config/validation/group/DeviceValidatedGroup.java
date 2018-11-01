@@ -47,11 +47,11 @@ public class DeviceValidatedGroup {
     public interface UserFinishOrder {
     }
 
-	public interface UpdateRepairedStatusByDeviceId{
+    public interface UpdateRepairedStatusByDeviceId {
 
     }
 
-    public interface addWorkNature{
+    public interface addWorkNature {
 
     }
 

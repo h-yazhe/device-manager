@@ -6,9 +6,9 @@ package com.sicau.devicemanager.config;
  */
 public class RedisConfig {
 
-	/**
-	 * 逻辑数据库名
-	 */
-	public static final String DATABASE = "dev_man";
+    /**
+     * 逻辑数据库名
+     */
+    public static final String DATABASE = "dev_man";
 
 }

@@ -33,11 +33,11 @@ public class PermissionController {
      * @return
      */
     @ApiImplicitParams(
-            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header",required = true)
+            @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header", required = true)
     )
     @GetMapping(ResourceConstants.PERMISSION)
     @RequiresPermissions(ResourceConstants.PERMISSION + PermissionActionConstant.GET)
-    public ResultVO listPermission(){
+    public ResultVO listPermission() {
         return ResultVOUtil.success(permissionService.listPermission());
     }
 }

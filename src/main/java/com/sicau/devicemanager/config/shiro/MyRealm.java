@@ -27,7 +27,7 @@ public class MyRealm extends AuthorizingRealm {
     @Autowired
     private UserService userService;
     @Autowired
-	private RedisTemplate<String,String> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     /**
      * 大坑！，必须重写此方法，不然Shiro会报错
@@ -45,10 +45,10 @@ public class MyRealm extends AuthorizingRealm {
         String userId = principals.toString();
         UserDTO user = userService.getUserById(userId);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        for (Role role : user.getRoleList()){
+        for (Role role : user.getRoleList()) {
             simpleAuthorizationInfo.addRole(role.getName());
         }
-        for (Permission permission : user.getPermissionList()){
+        for (Permission permission : user.getPermissionList()) {
             simpleAuthorizationInfo.addStringPermission(permission.getPermissionCode());
         }
         return simpleAuthorizationInfo;

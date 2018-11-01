@@ -11,12 +11,12 @@ public interface DeviceStatusRecordMapper {
 
     int insert(DeviceStatusRecord record);
 
-	/**
-	 * 批量插入
-	 * @param recordList
-	 * @return
-	 */
-	int insertBatch(List<DeviceStatusRecord> recordList);
+    /**
+     * 批量插入
+     * @param recordList
+     * @return
+     */
+    int insertBatch(List<DeviceStatusRecord> recordList);
 
     int insertSelective(DeviceStatusRecord record);
 
@@ -28,10 +28,10 @@ public interface DeviceStatusRecordMapper {
 
     int deleteByDeviceIds(List<String> deviceIds);
 
-	/**
-	 * 根据设备id查询设备状态变更记录
-	 * @param deviceId
-	 * @return
-	 */
-	List<DeviceStatusRecordDTO> getByDeviceId(String deviceId);
+    /**
+     * 根据设备id查询设备状态变更记录
+     * @param deviceId
+     * @return
+     */
+    List<DeviceStatusRecordDTO> getByDeviceId(String deviceId);
 }

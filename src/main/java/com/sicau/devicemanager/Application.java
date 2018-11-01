@@ -11,15 +11,15 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 @MapperScan("com.sicau.devicemanager.dao")
 public class Application extends SpringBootServletInitializer implements CommandLineRunner {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class,args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 
-	@Value("${websocket.port}")
-	private String port;
+    @Value("${websocket.port}")
+    private String port;
 
-	@Override
-	public void run(String... strings) throws Exception {
-		//new WebSocketServer().start(Integer.valueOf(port));
-	}
+    @Override
+    public void run(String... strings) throws Exception {
+        //new WebSocketServer().start(Integer.valueOf(port));
+    }
 }

@@ -22,8 +22,8 @@ public interface WorkNatureService {
     /**
      * 根据id删除工作性质
      * @param id 工作性质id
-     * @author Xiao W
      * @return
+     * @author Xiao W
      */
     void deleteWordNatureById(String id);
 }

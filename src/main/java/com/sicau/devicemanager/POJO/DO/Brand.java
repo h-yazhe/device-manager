@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class Brand {
 
-	@NotNull(groups = {QueryDeviceGroup.class},message = "品牌id不能为空")
+    @NotNull(groups = {QueryDeviceGroup.class}, message = "品牌id不能为空")
     private String id;
 
     /**

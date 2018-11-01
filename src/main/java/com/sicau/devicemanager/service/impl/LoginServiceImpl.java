@@ -35,27 +35,27 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private UserAuthMapper userAuthMapper;
     @Autowired
-	private RedisTemplate<String,String> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
     @Autowired
-	private UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Override
     public Map<String, Object> login(String identifier, String credential, Integer identifyType) {
         UserAuth userAuth = userAuthMapper.getUserAuthByLoginInfo(identifier, credential, identifyType);
-        if (null == userAuth){
+        if (null == userAuth) {
             throw new CommonException(ResultEnum.LOGIN_FAILED);
         }
         //根据userId，密码，token过期时间生成token
-		String token = JWTUtil.sign(userAuth.getUserId(),
-				credential,
-				DateUtil.convertDay2Millisecond(tokenExpireTime));
+        String token = JWTUtil.sign(userAuth.getUserId(),
+                credential,
+                DateUtil.convertDay2Millisecond(tokenExpireTime));
         //存入redis
         redisTemplate.boundValueOps(CommonConstants.RedisKey.AUTH_TOKEN_PRIFIX + userAuth.getUserId()).
-				set(token,tokenExpireTime, TimeUnit.DAYS);
+                set(token, tokenExpireTime, TimeUnit.DAYS);
         //返回给客户端
-        Map<String,Object> res = new HashMap<>();
-        res.put(HttpParamKey.TOKEN,token);
-        res.put("userInfo",userMapper.getUserById(userAuth.getUserId()));
+        Map<String, Object> res = new HashMap<>();
+        res.put(HttpParamKey.TOKEN, token);
+        res.put("userInfo", userMapper.getUserById(userAuth.getUserId()));
         return res;
     }
 
