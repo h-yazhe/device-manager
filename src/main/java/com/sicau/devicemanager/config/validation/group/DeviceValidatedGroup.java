@@ -58,5 +58,8 @@ public class DeviceValidatedGroup {
     public interface addDeviceModel {
     }
 
+    public interface AddBrandGroup{
+	}
 
+	public interface GetBrandsGroup{}
 }

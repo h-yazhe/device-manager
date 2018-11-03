@@ -3,6 +3,8 @@ package com.sicau.devicemanager.controller;
 import com.sicau.devicemanager.POJO.DO.Brand;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddBrandGroup;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.GetBrandsGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.constants.PermissionActionConstant;
@@ -14,6 +16,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -29,14 +32,6 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
 
-    @ApiOperation("查询所有品牌")
-    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
-    @GetMapping(ResourceConstants.BRAND)
-    @RequiresPermissions(ResourceConstants.BRAND + PermissionActionConstant.GET)
-    public ResultVO listBrand() {
-        return ResultVOUtil.success(brandService.listBrand());
-    }
-
     /**
      * 分页查询品牌
      * @param queryPage
@@ -45,21 +40,23 @@ public class BrandController {
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("get-brands")
     @RequiresPermissions(ResourceConstants.BRAND + PermissionActionConstant.GET)
-    public ResultVO listBrandByPage(@RequestBody QueryPage queryPage) {
+    public ResultVO listBrandByPage(@Validated(GetBrandsGroup.class) @RequestBody QueryPage queryPage) {
         return ResultVOUtil.success(brandService.listBrandByPage(queryPage));
     }
 
     @ApiOperation("新增品牌")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping(ResourceConstants.BRAND)
-    public ResultVO insertBrand(Brand brand) {
+	@RequiresPermissions(ResourceConstants.BRAND + PermissionActionConstant.ADD)
+    public ResultVO insertBrand(@Validated(AddBrandGroup.class) @RequestBody Brand brand) {
         brandService.insertBrand(brand);
         return ResultVOUtil.success();
     }
 
     @ApiOperation("根据id删除品牌")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
-    @DeleteMapping(ResourceConstants.BRAND + "/{id}")
+    @PostMapping("delete-brand/{id}")
+	@RequiresPermissions(ResourceConstants.BRAND + PermissionActionConstant.DELETE)
     public ResultVO deleteBrandById(@PathVariable String id) {
         brandService.deleteBrandById(id);
         return ResultVOUtil.success();

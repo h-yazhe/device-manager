@@ -1,5 +1,6 @@
 package com.sicau.devicemanager.POJO.DO;
 
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddBrandGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.QueryDeviceGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,5 +24,6 @@ public class Brand {
      * 品牌名
      */
     @ApiModelProperty("品牌名")
+	@NotNull(groups = {AddBrandGroup.class},message = "品牌名称不能为空")
     private String name;
 }
