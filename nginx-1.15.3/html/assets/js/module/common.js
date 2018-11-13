@@ -62,7 +62,11 @@ var API = {
     //分页查询所有用户
     ListUser:"user/list-by-page",
     //添加用户
-    AddUser:"user/add",
+    addUser:"user/add",
+    //删除用户
+    deleteUser:"user/delete/",
+    //查询用户角色
+    getUserSelection: "role/list-by-page",
     //根据父id查询地点
     addressDevice:"list-location-by-pid",
     //根据父id插入一个子分类
@@ -92,6 +96,12 @@ var initCategory = function (category) {
     category.expanded = false;
     category.children = [];
 };
+//构造地点二级目录对象的初始参数
+// var initAddress = function (address) {
+//     address.flag = false;
+//     address.expanded = false;
+//     address.children = [];
+// }
 
 //设备搜索的参数
 var searchDeviceParams= {
@@ -321,7 +331,41 @@ var SearchDevice = {
         searchDevice: function () {
             this.$parent.listDevice();
         }
+        // addressChildren: function () {
+        //     var self = this;
+        //     if (self.parent.expanded) {
+        //         self.parent.expanded = !self.parent.expanded;
+        //         return;
+        //     }
+        //     sendPost({
+        //         url: API.getApi(API.addressDevice)+location.id,
+        //         data: JSON.stringify({
+        //             "parentId": "123",
+        //             "queryPage": {
+        //                 "pageNum": 1,
+        //                 "pageSize": 10
+        //             }
+        //         }),
+        //         success: function (res) {
+        //             if (res.code === 0){
+        //                 for (var item of res.data){
+        //                     initAddress(item);
+        //                 }
+        //                 self.parent.children = res.data;
+        //                 self.parent.expanded = !self.parent.expanded;
+        //             }
+        //         }
+        //     });
+        //     //设置设备查询参数，重新渲染表格数据
+        //     vueDeviceList.addressDevice();
+        // }
     },
+    // computed: {
+    //     indent: function () {
+    //         var level = this.parent.level;
+    //         return {transform: 'translate(' + (level > 1 ? (level - 1) : 0) * 8 + '%)'}
+    //     }
+    // },
     created: function () {
         //传递参数到父组件
         this.$parent.queryParams = this.queryParams;

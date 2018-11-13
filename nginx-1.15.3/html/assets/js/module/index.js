@@ -46,8 +46,20 @@ var vueDeviceList = new Vue({
             {
                 "id": "",
                 "name": "",
-            },
+            }
         ],
+        // addressChildList: [
+        //     {
+        //         id: "",
+        //         name: "",
+        //         parentId: "",
+        //         level:'',
+        //         children: [
+        //         ],
+        //         flag: false,//是否激活
+        //         expanded: false,//是否展开
+        //     }
+        // ],
         userList: [
             {
                 "id": "",
@@ -56,7 +68,10 @@ var vueDeviceList = new Vue({
                 "email": "",
                 "phone": "",
                 "lastTime": "",
-            },
+                roleList:[{
+                    "name":""
+                }]
+            }
         ],
         queryParams: $.extend(true,{},searchDeviceParams),
         pages: 1,//总页数
@@ -66,6 +81,7 @@ var vueDeviceList = new Vue({
         //搜索的选项卡数据,
         searchSelection: $.extend(true,{},deviceSearchSelection)
     },
+
     methods: {
         /**
          * 渲染表格
@@ -169,6 +185,25 @@ var vueDeviceList = new Vue({
                 }
             });
         },
+        //打印用户角色名
+        listRole:function(roleList)
+        {
+            var res = "";
+            for (var i=0;i<roleList.length;i++){
+                if (i === 0){
+                    res = roleList[0].name;
+                } else {
+                    res = res + "/" + roleList[i].name;
+                }
+            }
+            return res;
+        },
+        //删除用户传值
+        showDeleteUserModal:function(userId)
+        {
+            $("#delete-user").modal('toggle');
+            deleteUserVm.user.id = userId;
+        },
         /*获取地点列表*/
         addressDevice:function(){
             sendPost({
@@ -224,6 +259,10 @@ var vueDeviceList = new Vue({
         formatTime: function (timestamp,deviceStatusId) {
             return deviceStatusId===1 ? '' : formatTime(timestamp);
         },
+        //用户格式化时间
+        userFormatTime: function (timestamp) {
+            return formatTime(timestamp);
+        },
         /**
          * 解析设备状态
          * @param status 状态吗
@@ -255,6 +294,9 @@ var vueDeviceList = new Vue({
     created: function () {
         this.listDevice(this);
     }
+    // template: ' <div id="device-list" class="panel-body">\n' +
+    //     '                            <SearchDevice v-for="(item,i) in addressChildList" :index="i" :parent="item" :key="item.id"></SearchDevice>\n' +
+    //     '                        </div>'
 });
 //渲染分发设备模态框，报废设备模态框
 var deviceModalVm = new Vue({
@@ -297,9 +339,10 @@ var categoryVm = new Vue({
                 expanded: false,//是否展开
             }
         ],
-        ctree:true
+        ctree:true,
+        tree:true
     },
-    template: ' <div id="category-tree" class="panel-body" v-if="ctree">\n' +
+    template: ' <div id="category-tree" v-if="tree" class="panel-body" v-if="ctree">\n' +
         '                            <CategoryTree v-for="(item,i) in categoryList" :index="i" :parent="item" :key="item.id"></CategoryTree>\n' +
         '                        </div>'
 });
@@ -327,6 +370,7 @@ var addresstreeVm = new Vue({
         '                            <AddressTree v-for="(item,i) in addressList" :index="i" :parent="item" :key="item.id"></AddressTree>\n' +
         '                        </div>'
 });
+
 //添加分类
 var addCategory=new Vue({
     el:"#add-category",
@@ -395,6 +439,7 @@ var addressVm = new Vue({
         },
     }
 });
+
 //删除地点
 var deleteaddressVm = new Vue({
     el: "#delete-address",
@@ -424,6 +469,97 @@ var deleteaddressVm = new Vue({
         },
     }
 });
+
+
+//添加用户
+var addUserVm = new Vue({
+    el: "#add-user",
+    data: {
+        user: {
+            "username":"",
+            "password": "",
+            "realName":"",
+            "roleId":"",
+            "email": "",
+            "phone":"",
+            "address":""
+        },
+        //选项卡数据
+        roleIds:[
+            {
+                id: "",
+                name: ""
+            }
+        ],
+        pageParam: new defaultQueryPage()
+    },
+    methods: {
+        //添加用户
+        addUser: function () {
+            var data = this.user;
+            sendPost({
+                url: API.getApi(API.addUser),
+                data: JSON.stringify(data),
+                success: function (res) {
+                    if (res.code == 0) {
+                        alert("添加成功！");
+                        $("#add-user").modal('toggle');
+                        //刷新用户列表
+                        vueDeviceList.ListUser();
+                    } else {
+                        alert(res.msg);
+                    }
+                }
+            });
+        },
+        //获取添加用户选项卡数据
+        getUserSelection: function () {
+            var self = this;
+            sendPost({
+                url:API.getApi(API.getUserSelection),
+                data: JSON.stringify(self.pageParam),
+                success: function (res) {
+                    if (res.code === 0){
+                        self.roleIds=res.data.list;
+                    }else {
+                        console.error(res.msg);
+                    }
+                }
+            });
+        }
+    },
+    created: function () {
+        this.getUserSelection();
+    }
+});
+
+//删除用户
+var deleteUserVm = new Vue({
+    el: "#delete-user",
+    data: {
+        user:
+            {"id": ""}
+    },
+    methods: {
+        deleteUser: function () {
+            var data = this.user;
+            sendPost({
+                url: API.getApi(API.deleteUser)+data.id,
+                success: function (res) {
+                    if (res.code == 0) {
+                        alert("删除成功！");
+                        $("#delete-user").modal('toggle');
+                        //刷新设备列表
+                        vueDeviceList.ListUser();
+                    } else {
+                        alert("删除失败！");
+                    }
+                }
+            });
+        },
+    }
+});
+
 //添加设备
 var addDeviceVm = new Vue({
     el: "#add-device",
@@ -514,6 +650,7 @@ var sideBarVm = new Vue({
             vueDeviceList.address=false;
             vueDeviceList.user=false;
             addresstreeVm.atree=false;
+            categoryVm.tree=true;
             categoryVm.ctree=true
             vueDeviceList.queryParams.statusId = statusId;
             vueDeviceList.listDevice();
@@ -525,7 +662,8 @@ var sideBarVm = new Vue({
             vueDeviceList.address=false;
             vueDeviceList.user=false;
             addresstreeVm.atree=false;
-            categoryVm.ctree=true
+            categoryVm.tree=true;
+            categoryVm.ctree=true;
         },
         addressDevice:function(statusId){
             vueDeviceList.queryParams.statusId = statusId;
@@ -535,7 +673,8 @@ var sideBarVm = new Vue({
             vueDeviceList.category=false;
             vueDeviceList.user=false;
             addresstreeVm.atree=true;
-            categoryVm.ctree=false
+            categoryVm.ctree=false;
+            categoryVm.tree=true;
         },
         ListUser:function () {
             vueDeviceList.ListUser();
@@ -544,7 +683,8 @@ var sideBarVm = new Vue({
             vueDeviceList.address=false;
             vueDeviceList.category=false;
             addresstreeVm.atree=false;
-            categoryVm.ctree=true
+            categoryVm.ctree=false;
+            categoryVm.tree=false;
         }
     }
 });
