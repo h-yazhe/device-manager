@@ -128,12 +128,9 @@
                         <li><a href="javascript:;" @click="ListUser()">用户管理</a></li>
                         <li><a href="">菜单管理</a>
                             <ul class="sub">
-                                <li><a href="javascript:;" @click="sortList()">分类</a></li>
+                                <li><a href="javascript:;" @click="sortList(-1)">分类</a></li>
                                 <li><a href="javascript:;" @click="addressDevice()">地点</a></li>
-                                <li><a href="">设备品牌</a></li>
-                                <li><a href="">设备型号</a></li>
-                                <li><a href="">工作性质</a></li>
-                                <li><a href="">计量单位</a></li>
+                                <li><a href="eqmanager.html">其他</a></li>
                             </ul>
                     </ul>
                 </li>
@@ -216,7 +213,7 @@
                                 <td class="noExl">
                                     <button @click="showDistributeModal(device.id)" v-if="device.statusId==1" class="btn btn-success btn-xs"><i class="fa fa-check"></i>分发</button>
                                     <button @click="showDiscardModal(device.id)" v-if="device.statusId==2" class="btn btn-danger btn-xs"><i class="fa fa-dropbox"></i>报废</button>
-                                    <button  type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#device-detail">详情</button>
+                                    <button  type="button" class="btn btn-primary btn-xs" data-toggle="modal" @click="showDetailsModal(device)">详情</button>
                                 </td>
                             </tr>
 
@@ -276,6 +273,9 @@
                         <h4 style="float: left"><i class="fa fa-angle-right"></i>
                             分类详情
                         </h4>
+                        <div class="turn-page-right">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-category"  v-if="showButton">添加分类</button>
+                        </div>
                         <div class="clear"></div>
                         <hr>
                         <table class="table table-striped table-advance table-hover table-condensed cf">
@@ -290,14 +290,14 @@
                             <tr v-for="item in sortList">
                                 <td>{{item.id}}</td>
                                 <td>{{item.name}}</td>
-                                <td>  <button @click="deleteCategory(item.id)"  class="btn btn-danger btn-xs">删除</button>
-                                    <button  class="btn btn-success btn-xs" data-toggle="modal" data-target="#add-category" @click="getValue(item.id,item.name)">增加</button>
+                                <td>  <button @click="deleteCategory(item.id)"  class="btn btn-danger btn-xs" v-if="showButton">删除</button>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                         <div class="clear"></div>
                     </div>
+
                     <!-- 地点详情页-->
                     <div class="content-panel table-responsive" v-if="address">
                         <h4 style="float: left"><i class="fa fa-angle-right"></i>
@@ -426,7 +426,7 @@
             <div class="modal-body">
                 <li style="margin-bottom: 10px;font-weight: bold;color: #64986e">设备信息</li>
                 <div class="table-responsive" style="overflow:scroll;">
-                    <table class="table table-hover table-bordered" id="device-detials">
+                    <table class="table table-hover table-bordered">
                         <thead>
                         <tr>
                             <th>id</th>
@@ -444,56 +444,41 @@
                             <th>单价（元）</th>
                             <th>状态</th>
                         </thead>
-                        <tbody>
+                        <tbody id="table-device-detail">
                         <tr>
-                            <td><input type="text" value="25"></td>
-                            <td><input type="text" value="打印机"></td>
+                            <td><input type="text" v-bind:value="id"></td>
+                            <td><input type="text" v-bind:value="name"></td>
                             <td>
-                                <select>
-                                    <option value ="volvo">上单</option>
-                                    <option value ="saab">打野</option>
-                                    <option value="opel">辅助</option>
-                                    <option value="audi">中单法师</option>
+                                <select v-model="categoryStr">
+                                    <option v-for="category in selection.categoryList" v-bind:value="category.name">{{category.name}}</option>
                                 </select>
                             </td>
-                            <td><input type="text" value="财务部"></td>
-                            <td><select>
-                                <option value ="volvo">clearlove</option>
-                                <option value ="saab">uzi</option>
-                                <option value="opel">scout</option>
-                                <option value="audi">faker</option>
-                            </select></td>
-                            <td><select>
-                                <option value ="volvo">管理1</option>
-                                <option value ="saab">管理2</option>
-                                <option value="opel">管理3</option>
-                                <option value="audi">管理4</option>
-                            </select></td>
-                            <td><input type="text" value="88888"></td>
-                            <td><input type="text" value="12345"></td>
+                            <td><input type="text" v-bind:value="department"></td>
                             <td>
-                                <select>
-                                    <option value ="volvo">管理1</option>
-                                    <option value ="saab">管理2</option>
-                                    <option value="opel">管理3</option>
-                                    <option value="audi">管理4</option>
+                                <select v-model="brand.id">
+                                    <option v-for="brand in selection.brandList" v-bind:value="brand.id">{{brand.name}}</option>
                                 </select>
                             </td>
-                            <td><input type="text" value="2018.9.3"></td>
-                            <td><select>
-                                <option value ="volvo">管理1</option>
-                                <option value ="saab">管理2</option>
-                                <option value="opel">管理3</option>
-                                <option value="audi">管理4</option>
-                            </select></td>
-                            <td><select>
-                                <option value ="volvo">管理1</option>
-                                <option value ="saab">管理2</option>
-                                <option value="opel">管理3</option>
-                                <option value="audi">管理4</option>
-                            </select></td>
-                            <td><input type="text" value="2500"></td>
-                            <td><input type="text" value="入库"></td>
+                            <td>
+                                <select v-model="deviceModel">
+                                    <option v-for="deviceModel in selection.deviceModelList" v-bind:value="deviceModel.name">{{deviceModel.name}}</option>
+                                </select>
+                            </td>
+                            <td><input type="text" v-bind:value="nationalId"></td>
+                            <td><input type="text" v-bind:value=serialNumber></td>
+                            <td>
+                                <select v-model="location">
+                                    <option v-for="location in selection.locationList" v-bind:value="location.name">{{location.name}}</option>
+                                </select>
+                            </td>
+                            <td><input type="text" v-bind:value="time"></td>
+                            <td>
+                                <select v-model="workNature">
+                                    <option v-for="workNature in selection.workNatureList" v-bind:value="workNature.name">{{workNature.name}}</option>
+                                </select></td>
+                            <td><input type="text" v-bind:value="custodian"></td>
+                            <td><input type="text" v-bind:value="unitPrice"></td>
+                            <td><input type="text" v-bind:value="status"></td>
                         </tbody>
                     </table>
                 </div>
@@ -505,7 +490,7 @@
                 </div>
                 <li style="margin-bottom: 10px;margin-top:10px;font-weight: bold;color: #64986e">状态变更记录</li>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover" id="device-change">
+                    <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
                             <th>序号</th>
@@ -515,14 +500,15 @@
                             <th>当前地点</th>
                             <th>变更时间</th>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>25</td>
-                            <td>入库</td>
-                            <td>报废</td>
-                            <td>十教A-204</td>
-                            <td>一教305</td>
-                            <td>2018.9.4</td>
+                        <tbody id="device-change">
+                        <tr v-for="list in List">
+                            <td>{{list.id}}</td>
+                            <td>{{parseStatus(list.fromStatus)}}</td>
+                            <td>{{parseStatus(list.toStatus)}}</td>
+                            <td>{{list.fromLocation}}</td>
+                            <td>{{list.toLocation}}</td>
+                            <td>{{formatTime(list.operateTime)}}</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -551,7 +537,6 @@
                     <label for="input-device-name">添加分类名称</label>
                     <input v-model="category.name" type="text" class="form-control" placeholder="分类名称">
                 </div>
-
             </form>
         </div>
         <div class="modal-footer">

@@ -58,7 +58,11 @@ var API = {
     //报废设备
     discardDevice: "device/discard",
     //查询品牌列表
-    listBrand: "brand",
+    listDeviceBrand:"get-brands",
+    //添加品牌
+    addDeviceBrand:"brand",
+    //删除品牌
+    deleteBrand:"delete-brand/",
     //根据父id查询子分类
     listCategoryByPId: 'list-category-by-pId',
     //分页查询所有用户
@@ -79,6 +83,18 @@ var API = {
     //删除该节点为根的地点树
     DeleteAddress:"delete-location-tree-by-Id",
     DeviceRecord:"device/get-status-record-by-deviceId",
+    //查询设备型号
+    listDeviceModel:"device-model-listAll",
+    //添加设备型号
+    addDeviceModel:"/device-model-submit",
+    //删除设备型号
+    deleteDeviceModel:"/device-model-delete/",
+    //查询工作性质
+    listWorkNature:"work_nature/listAll",
+    //添加工作性质
+    addWorkNature:"work_nature/add",
+    //删除工作性质
+    deleteWorkNature:"work_nature/delete/",
     getApi: function (name) {
         return this.prefix + name;
     }
@@ -180,7 +196,6 @@ function formatTime(timestamp) {
     var date = new Date(timestamp);
     return date.getFullYear() + "." + date.getMonth() + "." + date.getDay();
 }
-
 //设备分类树组件
 var CategoryTree = {
     name: 'CategoryTree',
@@ -199,8 +214,10 @@ var CategoryTree = {
     methods: {
         listChildren: function () {
             var self = this;
-            sideBarVm.sortList(self.parent.id);
-            vueDeviceList.getValue(self.parent.id,self.parent.name);
+            if(vueDeviceList.isSort==true){
+                sideBarVm.sortList(self.parent.id);
+                vueDeviceList.getValue(self.parent.id,self.parent.name)
+            }
             if (self.parent.expanded) {
                 self.parent.expanded = !self.parent.expanded;
                 return;

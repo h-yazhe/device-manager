@@ -42,6 +42,13 @@ var vueDeviceList = new Vue({
                 ]
             }
         ],
+        dataList:{
+            parentId: "",
+            queryPage: {
+                pageNum: 1,
+                pageSize: 10
+            }
+        },
         addressList: [
             {
                 "id": "",
@@ -59,11 +66,13 @@ var vueDeviceList = new Vue({
                 roleList:[{
                     "name":""
                 }]
-            },
+            }
         ],
         queryParams: $.extend(true,{},searchDeviceParams),
         pages: 1,//总页数
         total: 0,//总条数
+        showButton:false,
+        isSort:false,
         disableLastPage: true,
         disableNextPage: true,
         //搜索的选项卡数据,
@@ -82,7 +91,7 @@ var vueDeviceList = new Vue({
         sort:function(){
             sendPost({
                 url:API.getApi(API.listCategoryByPId),
-                data: JSON.stringify(data),
+                data: JSON.stringify(vueDeviceList.dataList),
                 type:'post',
                 dataType:"json",
                 contentType:"application/json",
@@ -278,23 +287,29 @@ var vueDeviceList = new Vue({
             $('#discard-device-modal').modal('toggle');
         },
         showDetailsModal:function (device) {
-            $("#detail-id").val(device.id);
-            deviceDetails.id=device.id;
-            deviceChange.id=device.id;
-            $("#detail-name").val(device.name);
-            $("#detail-locationStr").val(device.locationStr);
-            $("#detail-nationlId").val(device.nationalId);
-            $("#detail-serialNumber").val(device.serialNumber);
-            $("#detail-unitPrice").val(device.unitPrice);
-            $("#detail-workNature").val(device.workNature);
-            $("#detail-custodian").val(device.custodian);
-            $("#detail-time").val(vueDeviceList.formatTime(device.useTime,device.statusId))
-            $("#detail-status").val(vueDeviceList.parseStatus(device.statusId));
-            $('#device-detail').modal('toggle');
+            console.log(device)
+            deviceDtail.id=device.id;
+            deviceDtail.brand=device.brand;
+            deviceDtail.deviceModel=device.deviceModel;
+            deviceDtail.location=device.locationStr;
+            deviceDtail.name=device.name;
+            deviceDtail.department=vueDeviceList.getDepartment(device.locationStr);
+            deviceDtail.status=vueDeviceList.parseStatus(device.statusId);
+            deviceDtail.unitPrice=device.unitPrice;
+            deviceDtail.categoryStr=device.categoryStr;
+            deviceDtail.custodian=device.custodian;
+            deviceDtail.nationalId=device.nationalId;
+            deviceDtail.serialNumber=device.serialNumber;
+            deviceDtail.statusId=vueDeviceList.parseStatus(device.statusId);
+            deviceDtail.workNature=device.workNature;
+            deviceDtail.time=vueDeviceList.formatTime(device.useTime,device.statusId);
             $("#device-description").val(device.desciption);
-            deviceDetails.getCategory();
-            deviceDetails.getLocation();
+            deviceChange.id=device.id;
             deviceChange.getData();
+            $('#device-detail').modal('toggle');
+
+            // deviceDetails.getCategory();
+            // deviceDetails.getLocation();
 
         }
     },
@@ -303,89 +318,78 @@ var vueDeviceList = new Vue({
     }
 });
 //详情模态框
-var deviceDetails=new Vue({
-    el:'#device-details',
+var deviceDtail=new Vue({
+    el:'#table-device-detail',
     data:{
-        categoryList: [
-            {
-                id: '0',
-                name: '',
-                level: '',
-                children: [
-                ]
-            }
-        ],
-        locationList: [
-            {
-                "id": "",
-                "name": "",
-            },
-        ],
-        id:'',
+        id:"",
+        name:'',
+        categoryStr:'',
+        department:'',
+        brand:'',
+        deviceModel:'',
+        nationalId:'',
+        serialNumber:'',
+        location:"",
+        workNature:'',
+        custodian:'',
+        unitPrice:'',
+        statusId:'',
+        time:'',
+        status:'',
+        category:'',
+        selection: $.extend(true,{},deviceSearchSelection),
     },
+
     methods:{
-        getLocation:function(){
-            console.log(vueDeviceList.sortList);
+        //添加设备
+        addDevice: function () {
+            var data = this.device;
             sendPost({
-                url:API.getApi(API.addressDevice),
-                data: JSON.stringify(
-                    {
-                        "parentId":"",
-                        "queryPage": {
-                            "pageNum": 1,
-                            "pageSize": 10
-                        }
-                    }
-                ),
+                url: API.getApi(API.addDevice),
+                data: JSON.stringify(data),
                 success: function (res) {
-                    var data = res.data;
-                    if (res.code == 0) {
-                        deviceDetails.locationList= data;
-                    } else {
+                    if (res.code == 0){
+                        alert("添加成功！");
+                        $("#add-device").modal('toggle');
+                        //刷新设备列表
+                        vueDeviceList.listDevice();
+                    }else {
                         alert(res.msg);
-                    }
-                },
-                error: function (res) {
-                    var json = res.responseJSON;
-                    if (json != null && json.code == 3) {
-                        alert("登录异常！");
-                    } else {
-                        alert("网络连接异常！");
                     }
                 }
             });
         },
-        getCategory:function(){
+        //获取添加设备选项卡数据
+        getDeviceSelection: function () {
+            var self = this;
             sendPost({
-                url:API.getApi(API.listCategoryByPId),
-                data: JSON.stringify(
-                    {
-                        "parentId":"",
-                        "queryPage": {
-                            "pageNum": 1,
-                            "pageSize": 10
-                        }
-                    }
-                ),
+                url:API.getApi(API.getDeviceSelection) + "/20",
                 success: function (res) {
-                    var data = res.data;
-                    if (res.code == 0) {
-                        deviceDetails.categoryList= data;
-                    } else {
-                        alert(res.msg);
-                    }
-                },
-                error: function (res) {
-                    var json = res.responseJSON;
-                    if (json != null && json.code == 3) {
-                        alert("登录异常！");
-                    } else {
-                        alert("网络连接异常！");
+                    console.log(res)
+                    if (res.code === 0){
+                        //渲染选项卡数据
+                        self.selection.categoryList = res.data.categoryList;
+                        self.selection.brandList = res.data.brandList;
+                        self.selection.deviceModelList = res.data.deviceModelList;
+                        self.selection.locationList = res.data.locationList;
+                        self.selection.workNatureList = res.data.workNatureList;
+                        self.selection.custodianList = res.data.custodianList;
+                        //选项数据同样给到搜索设备组件中
+                        vueDeviceList.searchSelection = $.extend(true,{},res.data);
+                        //选项数据复制给分发设备组件
+                        deviceModalVm.distributeSelection = $.extend(true,{},res.data);
+                    }else {
+                        console.error(res.msg);
                     }
                 }
             });
-        },
+        }
+    },
+    created: function () {
+
+        this.getDeviceSelection();
     }
+
 })
 var deviceChange=new Vue({
     el:'#device-change',
@@ -419,6 +423,7 @@ var deviceChange=new Vue({
                 success: function (res) {
                     var data = res.data.list;
                     if (res.code == 0) {
+                        console.log(data)
                         deviceChange.List= data;
                     } else {
                         alert(res.msg);
@@ -434,9 +439,6 @@ var deviceChange=new Vue({
                 }
             });
         },
-        formatTime: function (timestamp,deviceStatusId) {
-            return deviceStatusId===1 ? '' : formatTime(timestamp);
-        },
         parseStatus: function (status) {
             switch (status) {
                 case 1:
@@ -447,6 +449,10 @@ var deviceChange=new Vue({
                     return '报废';
             }
         },
+        formatTime:function(timestamp) {
+        var date = new Date(timestamp);
+        return date.getFullYear() + "." + date.getMonth() + "." + date.getDay();
+}
     }
 })
 //渲染分发设备模态框，报废设备模态框
@@ -487,7 +493,7 @@ var categoryVm = new Vue({
                 level:'',
                 children: [
                 ],
-                active: false,//是否激活
+                active:true,//是否激活
                 expanded: false//是否展开
             }
         ],
@@ -589,7 +595,6 @@ var addressVm = new Vue({
         },
     }
 });
-
 //添加用户
 var addUserVm = new Vue({
     el: "#add-user",
@@ -787,7 +792,7 @@ var deleteUserVm = new Vue({
 var sideBarVm = new Vue({
     el: "#sidebar",
     data: {
-        username: getLocalStorage(STORAGE_KEY.userInfo).username
+        username: getLocalStorage(STORAGE_KEY.userInfo).username,
     },
     methods: {
         listDevice: function (statusId) {
@@ -795,6 +800,7 @@ var sideBarVm = new Vue({
             vueDeviceList.category=false;
             vueDeviceList.address=false;
             vueDeviceList.user=false;
+            vueDeviceList.isSort=false;
             addresstreeVm.atree=false;
             vueDeviceList.queryParams.statusId = statusId;
             vueDeviceList.listDevice();
@@ -802,11 +808,15 @@ var sideBarVm = new Vue({
         },
         sortList:function (id) {
             if(id==-1){
-                data.parentId="";
+                vueDeviceList.showButton=false,
+                    vueDeviceList.dataList.parentId="";
+
             }else {
-                data.parentId=id;
+                vueDeviceList.showButton=true,
+                    vueDeviceList.dataList.parentId=id;
             }
             vueDeviceList.sort();
+            vueDeviceList.isSort=true;
             vueDeviceList.device=false;
             vueDeviceList.category=true;
             vueDeviceList.address=false;
@@ -845,11 +855,3 @@ var logoutVm = new Vue({
         }
     }
 });
-var data={
-    "parentId": "",
-    "queryPage": {
-        "pageNum": 1,
-        "pageSize": 10
-    }
-};
-

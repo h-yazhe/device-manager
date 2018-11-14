@@ -13,7 +13,6 @@
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <!--external css-->
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-	<link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
 
     <!-- Custom styles for this template -->
     <link href="assets/css/style.css" rel="stylesheet">
@@ -27,7 +26,6 @@
     <![endif]-->
       <style type="text/css">
           h5{
-              font-family: "微软雅黑";
               font-weight:600;
               color:black;
               float: left;
@@ -63,57 +61,6 @@
              cursor: pointer;
              background-color: #fafafa;
          }
-         .btnAdd1,.btnAdd2,.btnAdd3,.btnAdd4{
-             width:50px;
-             height: 22px;
-             font-size: 14px;
-             font-weight: 500;
-             float:right;
-             margin:1.5% 5% 0 0;
-             color:white;
-             background-color:#424a5d;
-             border-radius: 6px;
-         }
-          .btnAdd1:hover{
-              color:grey;
-              background-color:#ffd777 ;
-              border: 1px solid grey;
-          }
-          .btnAdd2:hover{
-               color:grey;
-               background-color:#ffd777 ;
-               border: 1px solid grey;
-           }
-          .btnAdd3:hover{
-                color:grey;
-                background-color:#ffd777 ;
-                border: 1px solid grey;
-            }
-        .btnAdd4:hover{
-             color:grey;
-              background-color:#ffd777 ;
-              border: 1px solid grey;
-          }
-         .form-item {
-             height: 100%;
-             position: relative;
-             padding-left: 100px;
-             padding-right: 20px;
-             margin-bottom: 34px;
-             line-height: 36px;
-         }
-         .form-item > .lb {
-             position: absolute;
-             left: 0;
-             top: 0;
-             display: block;
-             width: 100px;
-             text-align: right;
-         }
-         .form-item > .txt {
-             width: 300px;
-             height: 32px;
-         }
          .mask {
              position: absolute;
              top: 0px;
@@ -124,54 +71,11 @@
              opacity: 0.15;
              display: none;
          }
-         .form-add1,.form-add2,.form-add3,.form-add4{
-             position: fixed;
-             top: 30%;
-             left: 50%;
-             margin-left: -197px;
-             padding-bottom: 20px;
-             background:  #fff;
-             display: none;
-             z-index:100;
-         }
-         .form-add-title {
-             background-color:  #68dff0;
-             border-width: 1px 1px 0 1px;
-             border-bottom: 0;
-             margin-bottom: 10%;
-             position: relative;
-         }
-         .form-add-title span {
-             width: auto;
-             height: 36px;
-             font-size: 16px;
-             font-family: 宋体;
-             font-weight: bold;
-             color: white;
-             text-indent: 12px;
-             padding: 8px 0px 10px;
-             margin-right: 10px;
-             display: block;
-             overflow: hidden;
-             text-align: left;
-         }
-         .form-add-title div {
-             width: 16px;
-             height: 20px;
-             position: absolute;
-             right: 10px;
-             top: 6px;
-             font-size: 30px;
-             line-height: 16px;
-             cursor: pointer;
-         }
-         .form-submit {
-             text-align: center;
-         }
-         .form-submit input {
-             width: 170px;
-             height: 32px;
-
+         .btn{
+             float:right;
+             padding:1%;
+             font-size:12px;
+             margin:1%;
          }
           .col-lg-6 {
               margin-bottom: 25px;
@@ -180,6 +84,9 @@
              height:250px;
              padding:0px;
          }
+          .modal-body,.modal-footer{
+              background-color: white;
+          }
       </style>
 
   </head>
@@ -212,122 +119,95 @@
       *********************************************************************************************************************************************************** -->
       <!--sidebar start-->
       <aside>
-          <div id="sidebar"  class="nav-collapse ">
+          <div id="sidebar" class="nav-collapse ">
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
 
-                  <p class="centered"><a href="用户中心链接"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
-                  <li class="mt">
-                      <a href="index.html">
+                  <p class="centered"><a href="#"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+                  <h5 style="width:210px;text-align: center;">{{username}}</h5>
+
+                  <li class="mt" style="margin-top: 45px">
+                      <a class="active" href="javascript:;" @click="listDevice(null)">
                           <i class="fa fa-desktop"></i>
                           <span>所有设备</span>
                       </a>
                   </li>
 
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="javascript:;" @click="listDevice(1)">
                           <i class="glyphicon glyphicon-home"></i>
                           <span>库存设备</span>
                       </a>
-                      <!--<ul class="sub">-->
-                      <!--<li><a  href="general.html">General</a></li>-->
-                      <!--<li><a  href="buttons.html">Buttons</a></li>-->
-                      <!--<li><a  href="panels.html">Panels</a></li>-->
-                      <!--</ul>-->
                   </li>
 
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="javascript:;" @click="listDevice(2)">
                           <i class="glyphicon glyphicon-play"></i>
                           <span>使用中设备</span>
                       </a>
-                      <!--<ul class="sub">-->
-                      <!--<li><a  href="calendar.html">Calendar</a></li>-->
-                      <!--<li><a  href="gallery.html">Gallery</a></li>-->
-                      <!--<li><a  href="todo_list.html">Todo List</a></li>-->
-                      <!--</ul>-->
                   </li>
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="javascript:;" @click="listDevice(3)">
                           <i class="glyphicon glyphicon-trash"></i>
-                          <span>废弃设备</span>
+                          <span>报废设备</span>
                       </a>
-                      <!--<ul class="sub">-->
-                      <!--<li><a  href="placetree.html">Blank Page</a></li>-->
-                      <!--<li><a  href="login.html">Login</a></li>-->
-                      <!--<li><a  href="lock_screen.html">Lock Screen</a></li>-->
-                      <!--</ul>-->
                   </li>
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="javascript:;">
                           <i class="fa fa-cogs"></i>
-                          <span>系统管理</span>
+                          <span>系统设置</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="">用户管理</a></li>
-                          <li><a  href="">菜单管理</a>
+                          <li><a href="javascript:;" @click="ListUser()">用户管理</a></li>
+                          <li><a href="">菜单管理</a>
                               <ul class="sub">
-                                  <li><a  href="classtree.html">分类</a></li>
-                                  <li><a  href="placetree.html">地点</a></li>
-                                  <li><a  href="eqmanager.html">设备管理</a></li>
+                                  <li><a href="javascript:;" @click="sortList()">分类</a></li>
+                                  <li><a href="javascript:;" @click="addressDevice()">地点</a></li>
+                                  <li><a href="javascript:;" >其他</a></li>
                               </ul>
                       </ul>
                   </li>
+
               </ul>
+
               <!-- sidebar menu end-->
           </div>
 
       </aside>
-
-
       <!-- **********************************************************************************************************************************************************
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->
       <!--main content start-->
-      <section id="main-content" >
+      <section id="main-content">
           <section class="wrapper site-min-height">
               <!-- page start-->
               <div id="morris">
                   <div class="row mt">
                       <div class="col-lg-6">
-                          <div class="content-panel">
+                          <div class="content-panel" >
                               <h5>设备品牌</h5>
-                              <div>
-                                  <input type="button" value="添加" id="j_btnAddData1" class="btnAdd1"/>
-                              </div>
-                              <div class="panel-body">
+                              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add-devicebrand">添加</button>
+                              <div class="panel-body" id="devicebrand-list">
                                   <div id="hero-graph" class="graph">
                                       <div style="overflow-y: auto;width:100%;height: 200px;">
-                                       <table class="table table-striped table-advance table-hover table-condensed cf" id="brand">
+                                       <table class="table table-striped table-advance table-hover table-condensed cf">
                                                <thead>
                                                <tr>
-                                                   <!-- <th><input type="checkbox" id="j_cbAll" /></th> -->
+                                                   <th>ID</th>
                                                    <th>设备品牌</th>
                                                    <th>修改</th>
                                                </tr>
                                                </thead>
-                                               <tbody id="j_tb1">
-                                               <tr v-for="item in data">
-                                                   <td>{{item.name}}</td>
-                                                   <td><a href="javascrip:;" rel="external nofollow" class="get"><i class="glyphicon glyphicon-trash"></i></a></td>
+                                               <tbody>
+                                               <tr v-for="brand in brandList">
+                                                   <td>{{brand.id}}</td>
+                                                   <td>{{brand.name}}</td>
+                                                   <td><button type="button" class="btn btn-danger" @click="deleteBrand(brand.id)">删除</button></td>
                                                </tr>
                                                </tbody>
                                       </table>
                                       </div>
                                       <div id="j_mask1" class="mask"></div>
-                                      <div id="j_formAdd1" class="form-add1">
-                                          <div class="form-add-title">
-                                              <span>添加数据</span>
-                                              <div id="j_hideFormAdd1">x</div>
-                                          </div>
-                                          <div class="form-item">
-                                              <label class="lb" for="j_txtLesson1">设备品牌：</label>
-                                              <input class="txt" type="text" id="j_txtLesson1" placeholder="请输入设备品牌">
-                                          </div>
-                                          <div class="form-submit">
-                                              <input type="button" value="添加" id="j_btnAdd1">
-                                          </div>
-                                      </div>
                                   </div>
                               </div>
                           </div>
@@ -335,43 +215,28 @@
                       <div class="col-lg-6">
                           <div class="content-panel">
                               <h5>设备型号</h5>
-                              <div>
-                                  <input type="button" value="添加" id="j_btnAddData2" class="btnAdd2"/>
-                              </div>
-                              <div class="panel-body">
+                              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add-devicemodel">添加</button>
+                              <div class="panel-body"  id="devicemodel-list">
                                   <div id="hero-bar" class="graph">
                                       <div style="overflow-y: auto;width:100%;height: 200px;">
-                                      <table class="table table-striped table-advance table-hover table-condensed cf" id="xinghao">
+                                      <table class="table table-striped table-advance table-hover table-condensed cf">
                                           <thead>
                                           <tr>
-                                              <!-- <th><input type="checkbox" id="j_cbAll" /></th> -->
+                                              <th>ID</th>
                                               <th>设备型号</th>
                                               <th>修改</th>
                                           </tr>
                                           </thead>
-                                          <tbody id="j_tb2">
-                                          <tr>
-                                              <!-- <td><input type="checkbox"/></td> -->
-                                              <td></td>
-                                              <td><a href="javascrip:;" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" class="get"><i class="glyphicon glyphicon-trash"></i></a></td>
+                                          <tbody>
+                                          <tr v-for="deviceModel in deviceModelList">
+                                              <td>{{deviceModel.id}}</td>
+                                              <td>{{deviceModel.name}}</td>
+                                              <td><button class="btn btn-danger" type="button" @click="deleteDeviceModel(deviceModel.id)">删除</button></td>
                                           </tr>
                                           </tbody>
                                       </table>
                                       </div>
                                       <div id="j_mask2" class="mask"></div>
-                                      <div id="j_formAdd2" class="form-add2">
-                                          <div class="form-add-title">
-                                              <span>添加数据</span>
-                                              <div id="j_hideFormAdd2">x</div>
-                                          </div>
-                                          <div class="form-item">
-                                              <label class="lb" for="j_txtLesson2">设备型号：</label>
-                                              <input class="txt" type="text" id="j_txtLesson2" placeholder="请输入型号名称">
-                                          </div>
-                                          <div class="form-submit">
-                                              <input type="button" value="添加" id="j_btnAdd2">
-                                          </div>
-                                      </div>
                                   </div>
                               </div>
                           </div>
@@ -381,97 +246,28 @@
                       <div class="col-lg-6">
                           <div class="content-panel">
                               <h5>工作性质</h5>
-                              <div>
-                                  <input type="button" value="添加" id="j_btnAddData3" class="btnAdd3"/>
-                              </div>
-                              <div class="panel-body">
+                              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add-worknature">添加</button>
+                              <div class="panel-body" id="worknature-list">
                                   <div id="hero-area" class="graph">
                                       <div style="overflow-y: auto;width:100%;height: 200px;">
-                                      <table class="table table-striped table-advance table-hover table-condensed cf" id="xingzhi">
+                                      <table class="table table-striped table-advance table-hover table-condensed cf">
                                           <thead>
                                           <tr>
-                                              <!-- <th><input type="checkbox" id="j_cbAll" /></th> -->
+                                              <th>ID</th>
                                               <th>工作性质</th>
                                               <th>修改</th>
                                           </tr>
                                           </thead>
-                                          <tbody id="j_tb3">
-                                          <tr>
-                                              <!-- <td><input type="checkbox"/></td> -->
-                                              <td>串行</td>
-                                              <td><a href="javascrip:;" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" class="get"><i class="glyphicon glyphicon-trash"></i></a></td>
-                                          </tr>
-                                          <tr>
-                                              <!-- <td><input type="checkbox"/></td> -->
-                                              <td>并行</td>
-                                              <td><a href="javascrip:;" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" class="get"><i class="glyphicon glyphicon-trash"></i></a></td>
+                                          <tbody>
+                                          <tr v-for="workNature in workNatureList">
+                                              <td>{{workNature.id}}</td>
+                                              <td>{{workNature.name}}</td>
+                                              <td><button class="btn btn-danger" type="button" @click="deleteWorkNature(workNature.id)"></button></td>
                                           </tr>
                                           </tbody>
                                       </table>
                                       </div>
                                       <div id="j_mask3" class="mask"></div>
-                                      <div id="j_formAdd3" class="form-add3">
-                                          <div class="form-add-title">
-                                              <span>添加数据</span>
-                                              <div id="j_hideFormAdd3">x</div>
-                                          </div>
-                                          <div class="form-item">
-                                              <label class="lb" for="j_txtLesson4">工作性质：</label>
-                                              <input class="txt" type="text" id="j_txtLesson3" placeholder="请输入工作性质">
-                                          </div>
-                                          <div class="form-submit">
-                                              <input type="button" value="添加" id="j_btnAdd3">
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-6">
-                          <div class="content-panel">
-                             <h5>计量单位</h5>
-                              <div>
-                                  <input type="button" value="添加" id="j_btnAddData4" class="btnAdd4"/>
-                              </div>
-                              <div class="panel-body">
-                                  <div id="hero-donut" class="graph">
-                                      <div style="overflow-y: auto;width:100%;height: 200px;">
-                                      <table class="table table-striped table-advance table-hover table-condensed cf" id="danwei">
-                                          <thead>
-                                          <tr>
-                                              <!-- <th><input type="checkbox" id="j_cbAll" /></th> -->
-                                              <th>计量单位</th>
-                                              <th>修改</th>
-                                          </tr>
-                                          </thead>
-                                          <tbody id="j_tb4">
-                                          <tr>
-                                              <!-- <td><input type="checkbox"/></td> -->
-                                              <td>台</td>
-                                              <td><a href="javascrip:;" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" class="get"><i class="glyphicon glyphicon-trash"></i></a></td>
-                                          </tr>
-                                          <tr>
-                                              <!-- <td><input type="checkbox"/></td> -->
-                                              <td>箱</td>
-                                              <td><a href="javascrip:;" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" class="get"><i class="glyphicon glyphicon-trash"></i></a></td>
-                                          </tr>
-                                          </tbody>
-                                      </table>
-                                      </div>
-                                      <div id="j_mask4" class="mask"></div>
-                                      <div id="j_formAdd4" class="form-add4">
-                                          <div class="form-add-title">
-                                              <span>添加数据</span>
-                                              <div id="j_hideFormAdd4">x</div>
-                                          </div>
-                                          <div class="form-item">
-                                              <label class="lb" for="j_txtLesson4">计量单位：</label>
-                                              <input class="txt" type="text" id="j_txtLesson4" placeholder="请输入计量单位">
-                                          </div>
-                                          <div class="form-submit">
-                                              <input type="button" value="添加" id="j_btnAdd4">
-                                          </div>
-                                      </div>
                                   </div>
                               </div>
                           </div>
@@ -482,180 +278,71 @@
           </section>
       </section><!-- /MAIN CONTENT -->
   </section>
+<!--添加设备品牌模态框-->
+  <div id="add-devicebrand" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="add-devicebrand">
+      <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">添加设备品牌</h4>
+          </div>
+          <div class="modal-body" style="background-color: white;">
+              <form>
+                  <div class="form-group">
+                      <label for="input-brand-name">设备品牌</label>
+                      <input id="input-brand-name" v-model="brand.name" type="text" class="form-control" placeholder="请输入设备品牌">
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer" style="background-color: white;">
+              <button @click="addDeviceBrand" type="button" class="btn btn-success">添加</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          </div>
+      </div>
+  </div>
+  <!--添加设备型号模态框-->
+  <div id="add-devicemodel" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="add-devicemodel">
+      <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">添加设备型号</h4>
+          </div>
+          <div class="modal-body" style="background-color: white;">
+              <form>
+                  <div class="form-group">
+                      <label for="input-device-model">设备型号</label>
+                      <input id="input-device-model" v-model="deviceModel.name" type="text" class="form-control" placeholder="请输入设备型号">
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer" style="background-color: white;">
+              <button @click="addDeviceModel" type="button" class="btn btn-success">添加</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          </div>
+      </div>
+  </div>
+  <!--添加工作性质模态框-->
+  <div id="add-worknature" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="add-worknature">
+      <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">添加工作性质</h4>
+          </div>
+          <div class="modal-body" style="background-color: white;">
+              <form>
+                  <div class="form-group">
+                      <label for="input-work-nature">工作性质</label>
+                      <input id="input-work-nature" v-model="workNature.name" type="text" class="form-control" placeholder="请输入工作性质">
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer" style="background-color: white;">
+              <button @click="addWorkNature" type="button" class="btn btn-success">添加</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          </div>
+      </div>
+  </div>
 
-  <script>
-      //custom select box
-
-      $(function(){
-          $('select.styled').customSelect();
-      });
-
-  </script>
-  <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-  <script>
-      $(document).ready(function () {
-          $("#j_btnAddData1").click(function () {
-              $("#j_mask1").show();
-              $("#j_formAdd1").show();
-              $("#j_txtLesson1").val("");
-          });
-          $("#j_hideFormAdd1").click(function () {
-              $("#j_mask1").hide();
-              $("#j_formAdd1").hide();
-          });
-          $("#j_btnAdd1").click(function () {
-              var txtLesson = $("#j_txtLesson1").val();
-              if (txtLesson == "" ) {
-                  alert("设备品牌不能为空");
-                  return;
-              }
-              var str = '<tr>'
-                  + '<td>' + txtLesson + '</td>'
-                  + '<td><a href="javascrip:;" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" class="get"><i class="glyphicon glyphicon-trash"></i></a></td>'
-                  + '</tr>';
-              $("#j_tb1").append(str);
-              $("#j_mask1").hide();
-              $("#j_formAdd1").hide();
-          });
-          $("#j_tb1").on("click",".get",function(){
-              $(this).parent().parent().remove();
-          });
-      });
-  </script>
-  <script>
-      $(document).ready(function () {
-          $("#j_btnAddData2").click(function () {
-              $("#j_mask2").show();
-              $("#j_formAdd2").show();
-              $("#j_txtLesson2").val("");
-          });
-          $("#j_hideFormAdd2").click(function () {
-              $("#j_mask2").hide();
-              $("#j_formAdd2").hide();
-          });
-          $("#j_btnAdd2").click(function () {
-              var txtLesson = $("#j_txtLesson2").val();
-              if (txtLesson == "" ) {
-                  alert("设备型号不能为空");
-                  return;
-              }
-              var str = '<tr>'
-                  + '<td>' + txtLesson + '</td>'
-                  + '<td><a href="javascrip:;" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" class="get"><i class="glyphicon glyphicon-trash"></i></a></td>'
-                  + '</tr>';
-              $("#j_tb2").append(str);
-              $("#j_mask2").hide();
-              $("#j_formAdd2").hide();
-          });
-          $("#j_tb2").on("click",".get",function(){
-              $(this).parent().parent().remove();
-          });
-      });
-  </script>
-  <script>
-      $(document).ready(function () {
-          $("#j_btnAddData3").click(function () {
-              $("#j_mask3").show();
-              $("#j_formAdd3").show();
-              $("#j_txtLesson3").val("");
-          });
-          $("#j_hideFormAdd3").click(function () {
-              $("#j_mask3").hide();
-              $("#j_formAdd3").hide();
-          });
-          $("#j_btnAdd3").click(function () {
-              var txtLesson = $("#j_txtLesson3").val();
-              if (txtLesson == "" ) {
-                  alert("工作性质不能为空");
-                  return;
-              }
-              var str = '<tr>'
-                  + '<td>' + txtLesson + '</td>'
-                  + '<td><a href="javascrip:;" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" class="get"><i class="glyphicon glyphicon-trash"></i></a></td>'
-                  + '</tr>';
-              $("#j_tb3").append(str);
-              $("#j_mask3").hide();
-              $("#j_formAdd3").hide();
-          });
-          $("#j_tb3").on("click",".get",function(){
-              $(this).parent().parent().remove();
-          });
-      });
-  </script>
-  <script>
-      $(document).ready(function () {
-          $("#j_btnAddData4").click(function () {
-              $("#j_mask4").show();
-              $("#j_formAdd4").show();
-              $("#j_txtLesson4").val("");
-          });
-          $("#j_hideFormAdd4").click(function () {
-              $("#j_mask4").hide();
-              $("#j_formAdd4").hide();
-          });
-          $("#j_btnAdd4").click(function () {
-              var txtLesson = $("#j_txtLesson4").val();
-              if (txtLesson == "" ) {
-                  alert("计量单位不能为空");
-                  return;
-              }
-              var str = '<tr>'
-                  + '<td>' + txtLesson + '</td>'
-                  + '<td><a href="javascrip:;" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" rel="external nofollow" class="get"><i class="glyphicon glyphicon-trash"></i></a></td>'
-                  + '</tr>';
-              $("#j_tb4").append(str);
-              $("#j_mask4").hide();
-              $("#j_formAdd4").hide();
-          });
-          $("#j_tb4").on("click",".get",function(){
-              $(this).parent().parent().remove();
-          });
-      });
-  </script>
-  <!--<script>-->
-      <!--!function showdata() {-->
-          <!--$.ajax({-->
-              <!--type: "GET",-->
-              <!--headers:{-->
-              <!--'token' :"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE1Mjc3NDU1NDIsImV4cCI6MTUzMDMzNzU0MiwiaWF0IjoxNTI3NzQ1NTQyLCJ1c2VySWQiOiIxNTI2NDY3MzYzMzYyMTcxODQ0In0.DOWFuwDVXU4C1gqgFYVPb8UFYUX_n40iICNNYOxON8Y",
-             <!--},-->
-              <!--url: "http://39.108.97.103:8080/dev-manager/api_v1/brand",-->
-              <!--data: {},-->
-             <!--success: function (brands) {-->
-                 <!--for(var i=0;i < brands.data.length;i++){-->
-                     <!--$("#brand tbody").append('<tr>'+'<td>'+brands.data[i].name+'</td>'+'</tr>');-->
-                  <!--}-->
-              <!--}-->
-         <!--})-->
-      <!--}();-->
-  <!--</script>-->
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  <script>
-      var host = "http://39.108.97.103:8080";
-      var brandsname = {data:[]};
-      var brands=new Vue({
-          el: '#brand',
-          data:brandsname
-      })
-     function loadData() {
-          //为了在内部函数能使用外部函数的this对象，要给它赋值了一个名叫self的变量。
-          var self = this;
-          $.ajax({
-              type: 'get',
-              headers: {
-                  'token': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE1Mjc3NDU1NDIsImV4cCI6MTUzMDMzNzU0MiwiaWF0IjoxNTI3NzQ1NTQyLCJ1c2VySWQiOiIxNTI2NDY3MzYzMzYyMTcxODQ0In0.DOWFuwDVXU4C1gqgFYVPb8UFYUX_n40iICNNYOxON8Y",
-              },
-              url: host+"/dev-manager/api_v1/brand",
-              success:function(result){
-                  brandsname.data=result.data
-              },
-              error:function () {
-                  alert('服务器繁忙，请稍后...')
-              }
-          });
-      }
-      loadData();
-  </script>
   <!-- js placed at the end of the document so the pages load faster -->
   <script src="assets/js/jquery.js"></script>
   <script src="assets/js/bootstrap.min.js"></script>
@@ -665,12 +352,14 @@
 
 
   <!--common script for all pages-->
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-  <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
   <script src="assets/js/common-scripts.js"></script>
 
   <!--script for this page-->
   <script src="assets/js/morris-conf.js"></script>
+  <script src="assets/js/vue.js"></script>
+  <script src="assets/js/module/common.js"></script>
+  <script src="assets/js/module/index.js"></script>
+  <script src="assets/js/module/eqmanage.js"></script>
 
   </body>
 </html>
