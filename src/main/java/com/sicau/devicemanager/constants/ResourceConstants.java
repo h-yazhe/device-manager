@@ -41,4 +41,9 @@ public interface ResourceConstants {
      * 型号
      */
     String MODEl = "model";
+
+    /**
+     * 工作性质
+     */
+    String NATURE="nature";
 }

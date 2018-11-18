@@ -4,8 +4,11 @@ import com.sicau.devicemanager.POJO.DO.WorkNature;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
+import com.sicau.devicemanager.constants.PermissionActionConstant;
+import com.sicau.devicemanager.constants.ResourceConstants;
 import com.sicau.devicemanager.service.WorkNatureService;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +28,7 @@ public class WorkNatureController {
      * @return
      */
     @PostMapping("/add")
+    @RequiresPermissions(ResourceConstants.NATURE+PermissionActionConstant.ADD)
     public ResultVO addWorkNature(@Validated({DeviceValidatedGroup.addWorkNature.class})
                                   @RequestBody WorkNature workNature) {
         workNatureService.addWorkNature(workNature);
@@ -36,6 +40,7 @@ public class WorkNatureController {
      * @return
      */
     @PostMapping("/listAll")
+    @RequiresPermissions(ResourceConstants.NATURE+PermissionActionConstant.GET)
     public ResultVO listAllWorkNature() {
         return ResultVOUtil.success(workNatureService.findAllWorkNature());
     }
@@ -46,6 +51,7 @@ public class WorkNatureController {
      * @author Xiao W
      */
     @PostMapping("/delete/{id}")
+    @RequiresPermissions(ResourceConstants.NATURE+PermissionActionConstant.DELETE)
     public ResultVO deleteById(@PathVariable String id) {
         workNatureService.deleteWordNatureById(id);
         return ResultVOUtil.success();
