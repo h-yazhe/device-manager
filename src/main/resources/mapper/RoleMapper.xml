@@ -19,46 +19,36 @@
     </resultMap>
 
     <sql id="listRole">
-        SELECT role.*,
-            p.id p_id, p.resource, p.resource_name,
-            p.permission_code, p.permission_name,
-            p.required
+        SELECT role.*, p.id p_id, p.resource, p.resource_name, p.permission_code, p.permission_name, p.required
         FROM role
-            JOIN role_permission
-                ON role.id = role_permission.role_id
-            JOIN permission p
-                ON role_permission.permission_id = p.id
+                 JOIN role_permission ON role.id = role_permission.role_id
+                 JOIN permission p ON role_permission.permission_id = p.id
     </sql>
 
     <insert id="insertRole">
-        INSERT INTO `role`
-        (`id`,
-         `name`)
-        VALUES (#{id},
-                #{name});
+        INSERT INTO `role` (`id`, `name`)
+        VALUES (#{id}, #{name});
     </insert>
 
     <insert id="insertRolePermission">
-        INSERT INTO `role_permission`
-        (`id`,
-         `role_id`,
-         `permission_id`)
-        VALUES (#{id},
-                #{roleId},
-                #{permissionId});
+        INSERT INTO `role_permission` (`id`, `role_id`, `permission_id`)
+        VALUES (#{id}, #{roleId}, #{permissionId});
     </insert>
 
     <delete id="deleteRoleById">
-        DELETE FROM role
+        DELETE
+        FROM role
         WHERE id = #{roleId}
     </delete>
 
     <delete id="deleteRolePermissionByRoleId">
-        DELETE FROM role_permission
+        DELETE
+        FROM role_permission
         WHERE role_id = #{roleId}
     </delete>
 
     <select id="listRole" resultMap="RoleDTO">
         <include refid="listRole"/>
     </select>
+
 </mapper>

@@ -10,26 +10,26 @@ import org.apache.shiro.authc.AuthenticationToken;
  */
 public class SimpleToken implements AuthenticationToken {
 
-	/**
-	 * token令牌
-	 */
-	private String token;
+    /**
+     * token令牌
+     */
+    private String token;
 
-	/**
-	 * 获得userId
-	 * @return
-	 */
-	@Override
-	public Object getPrincipal() {
-		return JWTUtil.getUserId(token);
-	}
+    /**
+     * 获得userId
+     * @return
+     */
+    @Override
+    public Object getPrincipal() {
+        return JWTUtil.getUserId(token);
+    }
 
-	@Override
-	public Object getCredentials() {
-		return token;
-	}
+    @Override
+    public Object getCredentials() {
+        return token;
+    }
 
-	public SimpleToken(String token) {
-		this.token = token;
-	}
+    public SimpleToken(String token) {
+        this.token = token;
+    }
 }

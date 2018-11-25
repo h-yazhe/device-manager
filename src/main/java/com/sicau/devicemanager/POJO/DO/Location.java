@@ -21,49 +21,49 @@ import javax.validation.constraints.NotNull;
 @JsonInclude(Include.NON_NULL)
 public class Location {
 
-	@NotNull(message = "id不能为空",groups = {InsertTree.class})
-	private String id;
+    @NotNull(message = "id不能为空", groups = {InsertTree.class})
+    private String id;
 
-	/**
-	 * 父级地点id
-	 */
-	@ApiModelProperty("父级地点id")
-	@NotNull(message = "父级地点id不能为空",groups = {InsertTree.class, ListTreeByPId.class, InsertTreeByPId.class})
-	private String parentId;
+    /**
+     * 父级地点id
+     */
+    @ApiModelProperty("父级地点id")
+    @NotNull(message = "父级地点id不能为空", groups = {InsertTree.class, ListTreeByPId.class, InsertTreeByPId.class})
+    private String parentId;
 
-	/**
-	 * 地名
-	 */
-	@ApiModelProperty("地名")
-	@NotNull(message = "地名不能为空",groups = {InsertTree.class, InsertTreeByPId.class})
-	private String name;
+    /**
+     * 地名
+     */
+    @ApiModelProperty("地名")
+    @NotNull(message = "地名不能为空", groups = {InsertTree.class, InsertTreeByPId.class})
+    private String name;
 
-	/**
-	 * 层级
-	 */
-	@ApiModelProperty("层级")
-	private Integer level;
+    /**
+     * 层级
+     */
+    @ApiModelProperty("层级")
+    private Integer level;
 
-	/**
-	 * 路径
-	 */
-	@ApiModelProperty("路径")
-	private String path;
+    /**
+     * 路径
+     */
+    @ApiModelProperty("路径")
+    private String path;
 
-	public Location() {
-	}
+    public Location() {
+    }
 
-	public Location(String id, String parentId, String name, Integer level, String path) {
-		this.id = id;
-		this.parentId = parentId;
-		this.name = name;
-		this.level = level;
-		this.path = path;
-	}
+    public Location(String id, String parentId, String name, Integer level, String path) {
+        this.id = id;
+        this.parentId = parentId;
+        this.name = name;
+        this.level = level;
+        this.path = path;
+    }
 
-	public Location(String id, String parentId, String name) {
-		this.id = id;
-		this.parentId = parentId;
-		this.name = name;
-	}
+    public Location(String id, String parentId, String name) {
+        this.id = id;
+        this.parentId = parentId;
+        this.name = name;
+    }
 }

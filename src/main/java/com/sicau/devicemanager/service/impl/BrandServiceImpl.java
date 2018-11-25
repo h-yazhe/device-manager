@@ -27,13 +27,13 @@ public class BrandServiceImpl implements BrandService {
         return brandMapper.listBrand();
     }
 
-	@Override
-	public PageInfo<Brand> listBrandByPage(QueryPage queryPage) {
-		PageHelper.startPage(queryPage.getPageNum(),queryPage.getPageSize());
-		return new PageInfo<>(brandMapper.listBrand());
-	}
+    @Override
+    public PageInfo<Brand> listBrandByPage(QueryPage queryPage) {
+        PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize());
+        return new PageInfo<>(brandMapper.listBrand());
+    }
 
-	@Override
+    @Override
     public void insertBrand(Brand brand) {
         brand.setId(KeyUtil.genUniqueKey());
         brandMapper.insertBrand(brand);

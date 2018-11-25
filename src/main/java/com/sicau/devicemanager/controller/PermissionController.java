@@ -1,6 +1,5 @@
 package com.sicau.devicemanager.controller;
 
-import com.sicau.devicemanager.POJO.DO.Permission;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
@@ -34,11 +33,11 @@ public class PermissionController {
      * @return
      */
     @ApiImplicitParams(
-            @ApiImplicitParam(name = HttpParamKey.TOKEN,paramType = "header",required = true)
+            @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header", required = true)
     )
     @GetMapping(ResourceConstants.PERMISSION)
     @RequiresPermissions(ResourceConstants.PERMISSION + PermissionActionConstant.GET)
-    public ResultVO listPermission(){
+    public ResultVO listPermission() {
         return ResultVOUtil.success(permissionService.listPermission());
     }
 }

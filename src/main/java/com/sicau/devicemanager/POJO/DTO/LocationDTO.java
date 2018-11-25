@@ -12,25 +12,25 @@ import java.util.List;
 @Data
 public class LocationDTO {
 
-	private String id;
+    private String id;
 
-	/**
-	 * 子节点
-	 */
-	private List<LocationDTO> children;
+    /**
+     * 子节点
+     */
+    private List<LocationDTO> children;
 
-	/**
-	 * 地名
-	 */
-	private String name;
+    /**
+     * 地名
+     */
+    private String name;
 
-	/**
-	 * 层级
-	 */
-	private Integer level;
+    /**
+     * 层级
+     */
+    private Integer level;
 
-	/**
-	 * 路径
-	 */
-	private String path;
+    /**
+     * 路径
+     */
+    private String path;
 }

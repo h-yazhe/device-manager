@@ -27,7 +27,7 @@ public interface RoleService {
 
     /**
      * 更新角色的权限
-     * @param roleId 角色id
+     * @param roleId           角色id
      * @param permissionIdList 权限id列表
      */
     void updateRolePermission(String roleId, List<String> permissionIdList);

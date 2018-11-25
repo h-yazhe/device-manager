@@ -1,5 +1,6 @@
 package com.sicau.devicemanager.POJO.DTO;
 
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.GetBrandsGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.ListTreeByPId;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.QueryDeviceGroup;
 
@@ -16,50 +17,50 @@ public class QueryPage {
     /**
      * 页码
      */
-    @Min(value = 1,message = "最小页数为1",groups = {QueryDeviceGroup.class, ListTreeByPId.class})
+    @Min(value = 1, message = "最小页数为1", groups = {QueryDeviceGroup.class, ListTreeByPId.class, GetBrandsGroup.class})
     private Integer pageNum = 1;
 
     /**
      * 每页记录数量
      */
-	@Min(value = 1,message = "每页最小个数为1",groups = {QueryDeviceGroup.class, ListTreeByPId.class})
+    @Min(value = 1, message = "每页最小个数为1", groups = {QueryDeviceGroup.class, ListTreeByPId.class, GetBrandsGroup.class})
     private Integer pageSize = 10;
 
-	@Pattern(regexp = "^[A-Za-z0-9_]+$",message = "排序字段名只能是字母、数字、下划线的组合",groups = {QueryDeviceGroup.class, ListTreeByPId.class})
-	private String orderBy;
+    @Pattern(regexp = "^[A-Za-z0-9_]+$", message = "排序字段名只能是字母、数字、下划线的组合", groups = {QueryDeviceGroup.class, ListTreeByPId.class, GetBrandsGroup.class})
+    private String orderBy;
 
-	@Pattern(regexp = "asc|desc",message = "排序方向只能是asc,desc两种方向",groups = {QueryDeviceGroup.class, ListTreeByPId.class})
-	private String orderDirection;
+    @Pattern(regexp = "asc|desc", message = "排序方向只能是asc,desc两种方向", groups = {QueryDeviceGroup.class, ListTreeByPId.class, GetBrandsGroup.class})
+    private String orderDirection;
 
-	public Integer getPageNum() {
-		return pageNum;
-	}
+    public Integer getPageNum() {
+        return pageNum;
+    }
 
-	public void setPageNum(Integer pageNum) {
-		this.pageNum = pageNum;
-	}
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
+    }
 
-	public Integer getPageSize() {
-		return pageSize;
-	}
+    public Integer getPageSize() {
+        return pageSize;
+    }
 
-	public void setPageSize(Integer pageSize) {
-		this.pageSize = pageSize;
-	}
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
 
-	public String getOrderBy() {
-		return orderBy;
-	}
+    public String getOrderBy() {
+        return orderBy;
+    }
 
-	public void setOrderBy(String orderBy) {
-		this.orderBy = orderBy;
-	}
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
 
-	public String getOrderDirection() {
-		return orderDirection;
-	}
+    public String getOrderDirection() {
+        return orderDirection;
+    }
 
-	public void setOrderDirection(String orderDirection) {
-		this.orderDirection = orderDirection;
-	}
+    public void setOrderDirection(String orderDirection) {
+        this.orderDirection = orderDirection;
+    }
 }

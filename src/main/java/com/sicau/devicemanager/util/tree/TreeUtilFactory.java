@@ -6,8 +6,8 @@ package com.sicau.devicemanager.util.tree;
  */
 public class TreeUtilFactory {
 
-	public static TreeUtil getTreeUtil(TreeDao treeDao, Class<BasicTreeNodeDTO> nodeDTOClass){
-		TreeUtil treeUtil = new TreeUtil(treeDao);
-		return treeUtil;
-	}
+    public static TreeUtil getTreeUtil(TreeDao treeDao, Class<BasicTreeNodeDTO> nodeDTOClass) {
+        TreeUtil treeUtil = new TreeUtil(treeDao);
+        return treeUtil;
+    }
 }

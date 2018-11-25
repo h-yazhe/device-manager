@@ -11,13 +11,19 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResultVO {
-    /** 错误码. */
+    /**
+     * 错误码.
+     */
     private Integer code;
 
-    /** 提示信息. */
+    /**
+     * 提示信息.
+     */
     private String msg;
 
-    /** 具体内容. */
+    /**
+     * 具体内容.
+     */
     private Object data;
 
     public void setData(Object data) {

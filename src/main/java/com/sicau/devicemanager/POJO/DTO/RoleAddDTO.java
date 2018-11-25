@@ -24,8 +24,8 @@ public class RoleAddDTO {
      */
     private List<String> permissionIdList;
 
-	/**
-	 * 角色管理的地点列表
-	 */
-	private List<String> locationIds;
+    /**
+     * 角色管理的地点列表
+     */
+    private List<String> locationIds;
 }

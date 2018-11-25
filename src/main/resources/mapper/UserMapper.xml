@@ -31,78 +31,70 @@
     </resultMap>
 
     <sql id="listUser">
-        SELECT
-            `user`.*,
-            role.id          role_id,
-            role.name        role_name,
-            role.locked      role_locked,
-            role.create_time role_create_time,
-            role.update_time role_update_time,
-            permission.id    permission_id,
-            resource,
-            resource_name,
-            permission_code,
-            permission_name,
-            required
+        SELECT `user`.*,
+               role.id          role_id,
+               role.name        role_name,
+               role.locked      role_locked,
+               role.create_time role_create_time,
+               role.update_time role_update_time,
+               permission.id    permission_id,
+               resource,
+               resource_name,
+               permission_code,
+               permission_name,
+               required
         FROM `user`
-            JOIN `user_role` ON user.id = user_role.user_id
-            JOIN role ON user_role.role_id = role.id
-            JOIN role_permission ON role.id = role_permission.role_id
-            JOIN permission ON role_permission.permission_id = permission.id
+                 JOIN `user_role` ON user.id = user_role.user_id
+                 JOIN role ON user_role.role_id = role.id
+                 JOIN role_permission ON role.id = role_permission.role_id
+                 JOIN permission ON role_permission.permission_id = permission.id
     </sql>
 
     <insert id="insertUser">
         INSERT INTO `user`
         (`id`,
-         `username`,
-         `real_name`
-		<if test="phone != null">
-			, `email`
-		</if>
-		<if test="phone != null">
-			, `phone`
-		</if>
-		 <if test="address != null">
-			 ,`address`
-		 </if>
-			)
+        `username`,
+        `real_name`
+        <if test="phone != null">
+            , `email`
+        </if>
+        <if test="phone != null">
+            , `phone`
+        </if>
+        <if test="address != null">
+            ,`address`
+        </if>
+        )
         VALUES (#{id},
-                #{username},
-                #{realName}
-		<if test="address != null">
-			, #{email}
-		</if>
-		<if test="address != null">
-			, #{phone}
-		</if>
-				<if test="address != null">
-					, #{address}
-				</if>
-		)
+        #{username},
+        #{realName}
+        <if test="address != null">
+            , #{email}
+        </if>
+        <if test="address != null">
+            , #{phone}
+        </if>
+        <if test="address != null">
+            , #{address}
+        </if>
+        )
     </insert>
 
     <insert id="insertUserAuth">
-        INSERT INTO `user_auth`
-        (`id`,
-         `user_id`,
-         `identify_type`,
-         `identifier`,
-         `credential`)
-        VALUES (#{id},
-                #{userId},
-                #{identifyType},
-                #{identifier},
-                #{credential});
+        INSERT INTO `user_auth` (`id`, `user_id`, `identify_type`, `identifier`, `credential`)
+        VALUES (#{id}, #{userId}, #{identifyType}, #{identifier}, #{credential});
     </insert>
 
 
     <delete id="deleteUserById">
-        DELETE FROM `user`
+        DELETE
+        FROM `user`
         WHERE id = #{userId}
     </delete>
 
     <delete id="deleteUserAuthByUserId">
-        DELETE FROM user_auth
+        DELETE
+        FROM user_auth
         WHERE user_id = #{userId}
     </delete>
 
@@ -115,4 +107,5 @@
     <select id="listUser" resultMap="userDTOMap">
         <include refid="listUser"/>
     </select>
+
 </mapper>

@@ -21,7 +21,6 @@ public class SpringUtil implements ApplicationContextAware {
 
     /**
      * 获取applicationContext
-     *
      * @return
      */
     private static ApplicationContext getApplicationContext() {
@@ -30,7 +29,6 @@ public class SpringUtil implements ApplicationContextAware {
 
     /**
      * 通过name获取 Bean.
-     *
      * @param name
      * @return
      */
@@ -41,7 +39,6 @@ public class SpringUtil implements ApplicationContextAware {
 
     /**
      * 通过class获取Bean.
-     *
      * @param clazz
      * @param <T>
      * @return
@@ -53,7 +50,6 @@ public class SpringUtil implements ApplicationContextAware {
 
     /**
      * 通过name,以及Clazz返回指定的Bean
-     *
      * @param name
      * @param clazz
      * @param <T>

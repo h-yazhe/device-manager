@@ -53,13 +53,13 @@ public class RoleLocation {
         this.operateUserId = operateUserId == null ? null : operateUserId.trim();
     }
 
-	public RoleLocation() {
-	}
+    public RoleLocation() {
+    }
 
-	public RoleLocation(String id, String roleId, String locationId, String operateUserId) {
-		this.id = id;
-		this.roleId = roleId;
-		this.locationId = locationId;
-		this.operateUserId = operateUserId;
-	}
+    public RoleLocation(String id, String roleId, String locationId, String operateUserId) {
+        this.id = id;
+        this.roleId = roleId;
+        this.locationId = locationId;
+        this.operateUserId = operateUserId;
+    }
 }

@@ -5,4 +5,4 @@ spring:
     password: ENC(KV+OuaEiZx5AG3/24nzcoA==)
   redis:
     host: 39.108.97.103
-    port: 6379
+  port: 6379

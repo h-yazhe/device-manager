@@ -30,8 +30,8 @@ import java.util.List;
 @Api(tags = "地点")
 public class LocationController {
 
-	@Autowired
-	private LocationService locationService;
+    @Autowired
+    private LocationService locationService;
 
 //	@ApiOperation("查询所有地点")
 //	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
@@ -41,31 +41,31 @@ public class LocationController {
 //		return ResultVOUtil.success(locationService.listLocationTree());
 //	}
 
-	@ApiOperation("根据父id查询所有地点")
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PostMapping("list-location-by-pid")
-	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
-	public ResultVO listLocationByPId(@Validated({ListTreeByPId.class}) @RequestBody LocationVO locationVO){
-		return ResultVOUtil.success(locationService.listLocationByPId(locationVO));
-	}
+    @ApiOperation("根据父id查询所有地点")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
+    @PostMapping("list-location-by-pid")
+    @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
+    public ResultVO listLocationByPId(@Validated({ListTreeByPId.class}) @RequestBody LocationVO locationVO) {
+        return ResultVOUtil.success(locationService.listLocationByPId(locationVO));
+    }
 
-	@ApiOperation("删除该节点为根的树")
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PostMapping("delete-location-tree-by-Id/{rootId}")
-	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.DELETE)
-	public ResultVO deleteLocationTree(@PathVariable("rootId") String rootId){
-		locationService.deleteLocationTree(rootId);
-		return ResultVOUtil.success();
-	}
+    @ApiOperation("删除该节点为根的树")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
+    @PostMapping("delete-location-tree-by-Id/{rootId}")
+    @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.DELETE)
+    public ResultVO deleteLocationTree(@PathVariable("rootId") String rootId) {
+        locationService.deleteLocationTree(rootId);
+        return ResultVOUtil.success();
+    }
 
-	@ApiOperation("更新地点树")
-	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
-	@PutMapping("location/{rootId}")
-	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.UPDATE)
-	public ResultVO updateLocationTree(@PathVariable String rootId,@RequestBody List<Location> locationList){
-		locationService.updateLocationTree(rootId, locationList);
-		return ResultVOUtil.success();
-	}
+    @ApiOperation("更新地点树")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
+    @PutMapping("location/{rootId}")
+    @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.UPDATE)
+    public ResultVO updateLocationTree(@PathVariable String rootId, @RequestBody List<Location> locationList) {
+        locationService.updateLocationTree(rootId, locationList);
+        return ResultVOUtil.success();
+    }
 
 //	@ApiOperation("插入一个地点树")
 //	@ApiImplicitParam(name = HttpParamKey.TOKEN,required = true, paramType = "header")
@@ -76,15 +76,15 @@ public class LocationController {
 //		return ResultVOUtil.success();
 //	}
 
-	/**
-	 * 根据父id插入一个子地点
-	 * @param location
-	 * @return
-	 */
-	@PostMapping("insert-location-by-pid")
-	@RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.ADD)
-	public ResultVO insertLocationByPId(@RequestBody Location location){
-		locationService.insertLocationByPId(location);
-		return ResultVOUtil.success();
-	}
+    /**
+     * 根据父id插入一个子地点
+     * @param location
+     * @return
+     */
+    @PostMapping("insert-location-by-pid")
+    @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.ADD)
+    public ResultVO insertLocationByPId(@RequestBody Location location) {
+        locationService.insertLocationByPId(location);
+        return ResultVOUtil.success();
+    }
 }

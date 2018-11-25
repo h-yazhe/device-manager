@@ -1,7 +1,6 @@
 package com.sicau.devicemanager.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.DO.User;
 import com.sicau.devicemanager.POJO.DO.UserAuth;
 import com.sicau.devicemanager.POJO.DO.UserRole;
@@ -43,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserById(String userId) {
         UserDTO userDTO = userMapper.getUserById(userId);
-        if (userDTO == null){
+        if (userDTO == null) {
             throw new ResourceException(ResourceExceptionEnum.RESOURCE_NOT_FOUND, ResourceConstants.USER);
         }
         return userDTO;
@@ -64,10 +63,10 @@ public class UserServiceImpl implements UserService {
     public void addUser(UserRegisterDTO userRegisterDTO) {
         //用户信息写入
         User user = new User();
-        BeanUtils.copyProperties(userRegisterDTO,user);
+        BeanUtils.copyProperties(userRegisterDTO, user);
         String userId = KeyUtil.genUniqueKey();
         user.setId(userId);
-        if (1 != userMapper.insertUser(user)){
+        if (1 != userMapper.insertUser(user)) {
             throw new CommonException(ResultEnum.UNKNOWN_ERROR);
         }
         //用户身份认证信息写入
@@ -77,7 +76,7 @@ public class UserServiceImpl implements UserService {
         userAuth.setIdentifyType(0);
         userAuth.setIdentifier(userRegisterDTO.getUsername());
         userAuth.setCredential(userRegisterDTO.getPassword());
-        if (1 != userMapper.insertUserAuth(userAuth)){
+        if (1 != userMapper.insertUserAuth(userAuth)) {
             throw new CommonException(ResultEnum.UNKNOWN_ERROR);
         }
         //写入用户角色
@@ -85,7 +84,7 @@ public class UserServiceImpl implements UserService {
         userRole.setId(KeyUtil.genUniqueKey());
         userRole.setUserId(userId);
         userRole.setRoleId(userRegisterDTO.getRoleId());
-        if (1 != userRoleMapper.insertUserRole(userRole)){
+        if (1 != userRoleMapper.insertUserRole(userRole)) {
             throw new CommonException(ResultEnum.UNKNOWN_ERROR);
         }
     }
@@ -96,7 +95,7 @@ public class UserServiceImpl implements UserService {
         userRoleMapper.deleteUserRoleByUserId(userId);
         //添加要更新的角色
         UserRole userRole = new UserRole();
-        for (String roleId : roleIdList){
+        for (String roleId : roleIdList) {
             userRole.setId(KeyUtil.genUniqueKey());
             userRole.setUserId(userId);
             userRole.setRoleId(roleId);
@@ -106,8 +105,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(String userId) {
-		userMapper.deleteUserAuthByUserId(userId);
-		userRoleMapper.deleteUserRoleByUserId(userId);
+        userMapper.deleteUserAuthByUserId(userId);
+        userRoleMapper.deleteUserRoleByUserId(userId);
         userMapper.deleteUserById(userId);
     }
 }

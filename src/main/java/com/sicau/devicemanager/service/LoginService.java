@@ -16,6 +16,6 @@ public interface LoginService {
      * @param identifyType
      * @return 用户通行token
      */
-    Map<String,Object> login(String identifier, String credential, Integer identifyType);
+    Map<String, Object> login(String identifier, String credential, Integer identifyType);
 
 }

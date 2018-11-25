@@ -6,4 +6,5 @@
         SELECT *
         FROM permission
     </select>
+
 </mapper>

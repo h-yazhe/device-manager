@@ -7,7 +7,10 @@ import com.sicau.devicemanager.config.shiro.token.SimpleToken;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -24,7 +27,7 @@ public class MyRealm extends AuthorizingRealm {
     @Autowired
     private UserService userService;
     @Autowired
-	private RedisTemplate<String,String> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     /**
      * 大坑！，必须重写此方法，不然Shiro会报错
@@ -42,10 +45,10 @@ public class MyRealm extends AuthorizingRealm {
         String userId = principals.toString();
         UserDTO user = userService.getUserById(userId);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        for (Role role : user.getRoleList()){
+        for (Role role : user.getRoleList()) {
             simpleAuthorizationInfo.addRole(role.getName());
         }
-        for (Permission permission : user.getPermissionList()){
+        for (Permission permission : user.getPermissionList()) {
             simpleAuthorizationInfo.addStringPermission(permission.getPermissionCode());
         }
         return simpleAuthorizationInfo;

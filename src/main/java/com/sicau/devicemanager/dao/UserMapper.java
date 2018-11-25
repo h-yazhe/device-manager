@@ -2,7 +2,6 @@ package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.User;
 import com.sicau.devicemanager.POJO.DO.UserAuth;
-import com.sicau.devicemanager.POJO.DO.UserRole;
 import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import org.apache.ibatis.annotations.Param;
 

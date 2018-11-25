@@ -18,4 +18,6 @@ public interface DeviceModelMapper {
     int updateByPrimaryKey(DeviceModel record);
 
     List<DeviceModel> listAll();
+
+    List<String> selectAllDeviceModelName();
 }

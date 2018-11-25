@@ -14,64 +14,64 @@ import javax.validation.constraints.NotNull;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DeviceStatusRecordDTO extends DeviceStatusRecord {
 
-	/**
-	 * 变更前的地点
-	 */
-	private String fromLocation;
+    /**
+     * 变更前的地点
+     */
+    private String fromLocation;
 
-	/**
-	 * 变更后的地点
-	 */
-	private String toLocation;
+    /**
+     * 变更后的地点
+     */
+    private String toLocation;
 
-	/**
-	 * 操作用户的真实姓名
-	 */
-	private String operateUserRealName;
+    /**
+     * 操作用户的真实姓名
+     */
+    private String operateUserRealName;
 
-	@NotNull(groups = {GetDeviceStatusRecordByDeviceId.class})
-	@Valid
-	private QueryPage queryPage;
+    @NotNull(groups = {GetDeviceStatusRecordByDeviceId.class})
+    @Valid
+    private QueryPage queryPage;
 
-	public String getFromLocation() {
-		return fromLocation;
-	}
+    public String getFromLocation() {
+        return fromLocation;
+    }
 
-	public void setFromLocation(String fromLocation) {
-		this.fromLocation = fromLocation;
-	}
+    public void setFromLocation(String fromLocation) {
+        this.fromLocation = fromLocation;
+    }
 
-	public String getToLocation() {
-		return toLocation;
-	}
+    public String getToLocation() {
+        return toLocation;
+    }
 
-	public void setToLocation(String toLocation) {
-		this.toLocation = toLocation;
-	}
+    public void setToLocation(String toLocation) {
+        this.toLocation = toLocation;
+    }
 
-	public String getOperateUserRealName() {
-		return operateUserRealName;
-	}
+    public String getOperateUserRealName() {
+        return operateUserRealName;
+    }
 
-	public void setOperateUserRealName(String operateUserRealName) {
-		this.operateUserRealName = operateUserRealName;
-	}
+    public void setOperateUserRealName(String operateUserRealName) {
+        this.operateUserRealName = operateUserRealName;
+    }
 
-	public QueryPage getQueryPage() {
-		return queryPage;
-	}
+    public QueryPage getQueryPage() {
+        return queryPage;
+    }
 
-	public void setQueryPage(QueryPage queryPage) {
-		this.queryPage = queryPage;
-	}
+    public void setQueryPage(QueryPage queryPage) {
+        this.queryPage = queryPage;
+    }
 
-	@Override
-	public String toString() {
-		return "DeviceStatusRecordDTO{" +
-				"fromLocation='" + fromLocation + '\'' +
-				", toLocation='" + toLocation + '\'' +
-				", operateUserRealName='" + operateUserRealName + '\'' +
-				", queryPage=" + queryPage +
-				"} " + super.toString();
-	}
+    @Override
+    public String toString() {
+        return "DeviceStatusRecordDTO{" +
+                "fromLocation='" + fromLocation + '\'' +
+                ", toLocation='" + toLocation + '\'' +
+                ", operateUserRealName='" + operateUserRealName + '\'' +
+                ", queryPage=" + queryPage +
+                "} " + super.toString();
+    }
 }

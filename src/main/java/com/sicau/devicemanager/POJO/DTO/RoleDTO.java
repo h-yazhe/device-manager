@@ -3,7 +3,6 @@ package com.sicau.devicemanager.POJO.DTO;
 import com.sicau.devicemanager.POJO.DO.Permission;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 

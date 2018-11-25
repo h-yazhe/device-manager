@@ -26,14 +26,14 @@ import java.util.List;
  * Created at 19:08 2018/5/14
  */
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleMapper roleMapper;
     @Autowired
     private UserRoleMapper userRoleMapper;
     @Autowired
-	private RoleLocationMapper roleLocationMapper;
+    private RoleLocationMapper roleLocationMapper;
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
@@ -41,25 +41,25 @@ public class RoleServiceImpl implements RoleService{
         //角色表写入
         Role role = new Role();
         String roleId = KeyUtil.genUniqueKey();
-        BeanUtils.copyProperties(roleAddDTO,role);
+        BeanUtils.copyProperties(roleAddDTO, role);
         role.setId(roleId);
         roleMapper.insertRole(role);
         //角色权限写入
         RolePermission rolePermission = new RolePermission();
-        for (String permissionId : roleAddDTO.getPermissionIdList()){
+        for (String permissionId : roleAddDTO.getPermissionIdList()) {
             rolePermission.setId(KeyUtil.genUniqueKey());
             rolePermission.setRoleId(roleId);
             rolePermission.setPermissionId(permissionId);
             roleMapper.insertRolePermission(rolePermission);
         }
         //角色管理的地点写入
-		for (String locationId : roleAddDTO.getLocationIds()){
-			roleLocationMapper.insert(
-					new RoleLocation(
-						KeyUtil.genUniqueKey(),roleId,locationId, RequestUtil.getCurrentUserId()
-					)
-			);
-		}
+        for (String locationId : roleAddDTO.getLocationIds()) {
+            roleLocationMapper.insert(
+                    new RoleLocation(
+                            KeyUtil.genUniqueKey(), roleId, locationId, RequestUtil.getCurrentUserId()
+                    )
+            );
+        }
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -80,7 +80,7 @@ public class RoleServiceImpl implements RoleService{
         roleMapper.deleteRolePermissionByRoleId(roleId);
         //循环添加要更新权限
         RolePermission rolePermission = new RolePermission();
-        for (String permissionId : permissionIdList){
+        for (String permissionId : permissionIdList) {
             rolePermission.setId(KeyUtil.genUniqueKey());
             rolePermission.setRoleId(roleId);
             rolePermission.setPermissionId(permissionId);
@@ -90,7 +90,7 @@ public class RoleServiceImpl implements RoleService{
 
     @Override
     public PageInfo<RoleDTO> listRole(QueryPage queryPage) {
-        PageHelper.startPage(queryPage.getPageNum(),queryPage.getPageSize(),"create_time");
+        PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(), "create_time");
         return new PageInfo<>(roleMapper.listRole());
     }
 }

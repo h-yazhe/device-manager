@@ -8,7 +8,10 @@ import com.sicau.devicemanager.service.LoginService;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author BeFondOfTaro
@@ -21,8 +24,10 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @PostMapping("login")
-    public ResultVO login(@Validated({Login.class}) @RequestBody UserAuth userAuth){
-        return ResultVOUtil.success(loginService.login(userAuth.getIdentifier(), userAuth.getCredential(), userAuth.getIdentifyType()));
+    @PostMapping("/login")
+    public ResultVO login(@Validated({Login.class}) @RequestBody UserAuth userAuth) {
+        return ResultVOUtil.success(
+                loginService.login(userAuth.getIdentifier()
+                        , userAuth.getCredential(), userAuth.getIdentifyType()));
     }
 }

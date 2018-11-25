@@ -10,8 +10,7 @@ import lombok.Getter;
 @Getter
 public enum ResourceExceptionEnum {
 
-    RESOURCE_NOT_FOUND(10,"资源不存在")
-    ;
+    RESOURCE_NOT_FOUND(10, "资源不存在");
 
     /**
      * 状态码
@@ -23,7 +22,7 @@ public enum ResourceExceptionEnum {
      */
     private String exception;
 
-    ResourceExceptionEnum(Integer code, String exception){
+    ResourceExceptionEnum(Integer code, String exception) {
         this.code = code;
         this.exception = exception;
     }

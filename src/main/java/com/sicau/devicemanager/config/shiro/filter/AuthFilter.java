@@ -1,11 +1,8 @@
 package com.sicau.devicemanager.config.shiro.filter;
 
-import com.sicau.devicemanager.config.shiro.token.JWTToken;
 import com.sicau.devicemanager.config.shiro.token.SimpleToken;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.constants.ResultEnum;
-import com.sicau.devicemanager.util.DateUtil;
-import com.sicau.devicemanager.util.web.CookieUtil;
 import com.sicau.devicemanager.util.web.ResponseUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +39,7 @@ public class AuthFilter extends AccessControlFilter {
         try {
             String authorization = request.getHeader(HttpParamKey.TOKEN);
             //检测是否请求中包含token
-            if (authorization == null){
+            if (authorization == null) {
                 throw new Exception("token为空!");
             }
             //登录
@@ -52,7 +49,7 @@ public class AuthFilter extends AccessControlFilter {
             // 如果没有抛出异常则代表登入成功，返回true
             return true;
         } catch (Exception e) {
-        	e.printStackTrace();
+            e.printStackTrace();
             log.error(e.getMessage());
             onLoginFail(response);
             return false;
@@ -79,7 +76,7 @@ public class AuthFilter extends AccessControlFilter {
         ResponseUtil.toJson(
                 httpServletResponse,
                 ResultVOUtil.error(ResultEnum.LOGIN_EXCEPTION)
-                );
+        );
     }
 
 }
