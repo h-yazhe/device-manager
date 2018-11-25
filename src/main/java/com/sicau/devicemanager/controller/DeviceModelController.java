@@ -46,7 +46,7 @@ public class DeviceModelController {
      */
     @PostMapping("/device-model-listAll")
     @RequiresPermissions(ResourceConstants.MODEl + PermissionActionConstant.GET)
-    public ResultVO findDeviceModel(QueryPage queryPage) {
+    public ResultVO findDeviceModel(@RequestBody QueryPage queryPage) {
         return ResultVOUtil.success(deviceModelService.listAllDeviceModel(queryPage));
     }
 
