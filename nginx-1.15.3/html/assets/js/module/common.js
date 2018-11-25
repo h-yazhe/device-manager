@@ -117,6 +117,11 @@ var initCategory = function (category) {
     category.expanded = false;
     category.children = [];
 };
+var initAddress=function (address) {
+    address.active = false;
+    address.expanded = false;
+    address.children = [];
+};
 
 //设备搜索的参数
 var searchDeviceParams= {
@@ -204,11 +209,11 @@ var CategoryTree = {
         }
     },
     template: '<div>\n' +
-        '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item" >\n' +
-        '                                    <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
-        '                                </a>\n' +
-        '                                <CategoryTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></CategoryTree>\n' +
-        '                            </div>',
+    '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item" >\n' +
+    '                                    <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
+    '                                </a>\n' +
+    '                                <CategoryTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></CategoryTree>\n' +
+    '                            </div>',
     methods: {
         listChildren: function () {
             var self = this;
@@ -236,7 +241,6 @@ var CategoryTree = {
                     }
                 }
             });
-            //设置设备查询参数，重新渲染表格数据
             vueDeviceList.queryParams.categoryId = self.parent.id;
             vueDeviceList.listDevice();
         }
@@ -248,9 +252,9 @@ var CategoryTree = {
         }
     }
 };
-//地点分类树组件
-var AddressTree = {
-    name: 'AddressTree',
+//搜索地点组件
+var SelectTree = {
+    name: 'SelectTree',
     props: ['parent','index'],
     data: function () {
         return {
@@ -258,11 +262,10 @@ var AddressTree = {
         }
     },
     template: '<div>\n' +
-        '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item">\n' +
-        '                                    <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
-        '                                </a>\n' +
-        '                                <AddressTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></AddressTree>\n' +
-        '                            </div>',
+    '                                <li :class="{active: parent.active}"   :style="indent"  @mouseover="listChildren()"   @click="cValue(parent.id,parent.name)"><span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n'+
+    '                                </li>\n' +
+    '                                <SelectTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></SelectTree>'+
+    '</div>',
     methods: {
         listChildren: function () {
             var self = this;
@@ -273,24 +276,88 @@ var AddressTree = {
             sendPost({
                 url: API.getApi(API.addressDevice),
                 data: JSON.stringify({
-                    "parentId": "",
-                    "queryPage": {
-                        "pageNum": 1,
-                        "pageSize": 10
-                    }
+                    queryPage: self.queryPage,
+                    parentId: self.parent.id
                 }),
                 success: function (res) {
                     if (res.code === 0){
                         for (var item of res.data){
-                            initCategory(item);
+                            initAddress(item);
                         }
                         self.parent.children = res.data;
                         self.parent.expanded = !self.parent.expanded;
                     }
                 }
             });
-            //设置设备查询参数，重新渲染表格数据
-            vueDeviceList.addressDevice();
+        },
+        closeChildren:function(){
+            var self = this;
+            if (self.parent.expanded) {
+                self.parent.expanded = !self.parent.expanded;
+                return;
+            }
+        },
+        cValue:function (id,name) {
+            selectVm.id=id;
+            selectVm.name=name;
+            selectVm.Show=false;
+            vueDeviceList.queryParams.locationId=id;
+        }
+    },
+
+    computed: {
+        indent: function () {
+            var level = this.parent.level;
+            return {transform: 'translate(' + (level > 1 ? (level - 1) : 0) *4 + '%',width:(level > 1 ? 100-(level - 1)*4 : 100) + '%'}
+        }
+    }
+
+
+};
+//地点分类树组件
+var AddressTree = {
+    name: 'AddressTree',
+    props: ['parent','index'],
+    data: function () {
+        return {
+            queryPage: new defaultQueryPage()
+        }
+    },
+    template:
+    '<div>'+
+    '<a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item">\n' +
+    '                                <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
+    '                                </a>\n' +
+    '                                <AddressTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></AddressTree>\n</div>' ,
+    methods: {
+        listChildren: function () {
+            var self = this;
+            addressVm.address.parentId=self.parent.id;
+            sideBarVm.addressDevice(self.parent.id);
+            if (self.parent.expanded) {
+                self.parent.expanded = !self.parent.expanded;
+                addressVm.address.parentId=self.parent.parentId;
+                sideBarVm.addressDevice(self.parent.parentId);
+                return;
+            }
+            sendPost({
+                url: API.getApi(API.addressDevice),
+                data: JSON.stringify({
+                    queryPage: self.queryPage,
+                    parentId: self.parent.id
+                }),
+                success: function (res) {
+                    if (res.code === 0){
+                        for (var item of res.data){
+                            initAddress(item);
+                        }
+                        self.parent.children = res.data;
+                        self.parent.expanded = !self.parent.expanded;
+                    }
+                }
+            });
+            vueDeviceList.queryParams.locationId = self.parent.id;
+            vueDeviceList.listDevice();
         }
     },
     computed: {
@@ -298,9 +365,9 @@ var AddressTree = {
             var level = this.parent.level;
             return {transform: 'translate(' + (level > 1 ? (level - 1) : 0) * 8 + '%)'}
         }
-    }
-};
+    },
 
+};
 //搜索设备组件
 var SearchDevice = {
     name: 'SearchDevice',
@@ -311,44 +378,41 @@ var SearchDevice = {
         }
     },
     template: "<div class=\"row form-group\" style=\"margin-bottom: 0\" id=\"form-group\">\n" +
-        "                        <div class=\"col-md-2\">\n" +
-        "<select v-model=\"queryParams.locationId\" id=\"input-partition\" class=\"form-control\">\n" +
-        "<option :value=\"null\">全部地点</option>" +
-        "                        <option v-for=\"location in selection.locationList\" v-bind:value=\"location.id\">{{location.name}}</option>\n" +
-        "                    </select>"+
-        "                        </div>\n" +
-        "                        <div class=\"col-md-2\">\n" +
-        "<select v-model=\"queryParams.brandId\" id=\"input-brand\" class=\"form-control\">\n" +
-        "                        <option :value=\"null\">全部品牌</option>\n" +
-        "                        <option v-for=\"brand in selection.brandList\" v-bind:value=\"brand.id\">{{brand.name}}</option>\n" +
-        "                    </select>" +
-        "                        </div>\n" +
-        "                        <div class=\"col-md-2\">\n" +
-        "                           <select v-model=\"queryParams.deviceModelId\" class=\"form-control\">\n" +
-        "                        <option :value=\"null\">全部型号</option>\n" +
-        "                        <option v-for=\"deviceModel in selection.deviceModelList\" v-bind:value=\"deviceModel.id\">{{deviceModel.name}}</option>\n" +
-        "                    </select>"+
-        "                        </div>\n" +
-        "                        <div class=\"col-md-2\">\n" +
-        "                            <select v-model=\"queryParams.workNatureId\" class=\"form-control\">\n" +
-        "                        <option :value=\"null\">全部工作性质</option>\n" +
-        "                        <option v-for=\"workNature in selection.workNatureList\" v-bind:value=\"workNature.id\">{{workNature.name}}</option>\n" +
-        "                    </select>"+
-        "                        </div>\n" +
-        "                        <div class=\"col-md-5\">\n" +
-        "                            检索关键词：<input v-model=\"queryParams.queryKey\" type=\"text\" style=\"width: 40%\" placeholder=\"从设备id，序列号，名称中检索\"/>\n" +
-        "                            <button @click=\"searchDevice\" type=\"button\" class=\"btn btn-success\">\n" +
-        "                                查询\n" +
-        "                            </button>\n" +
-        "                            <button class=\"btn btn-warning\">\n" +
-        "                                清除查询条件\n" +
-        "                            </button>\n" +
-        "                        </div>\n" +
-        "                    </div>",
+    "                        <div class=\"col-md-2\">\n"+
+    "<div id=\"select-tree\"></div>\n" +
+    "                        </div>\n" +
+    "                        <div class=\"col-md-2\">\n" +
+    "<select v-model=\"queryParams.brandId\" id=\"input-brand\" class=\"form-control\">\n" +
+    "                        <option :value=\"null\">全部品牌</option>\n" +
+    "                        <option v-for=\"brand in selection.brandList\" v-bind:value=\"brand.id\">{{brand.name}}</option>\n" +
+    "                    </select>" +
+    "                        </div>\n" +
+    "                        <div class=\"col-md-2\">\n" +
+    "                           <select v-model=\"queryParams.deviceModelId\" class=\"form-control\">\n" +
+    "                        <option :value=\"null\">全部型号</option>\n" +
+    "                        <option v-for=\"deviceModel in selection.deviceModelList\" v-bind:value=\"deviceModel.id\">{{deviceModel.name}}</option>\n" +
+    "                    </select>"+
+    "                        </div>\n" +
+    "                        <div class=\"col-md-2\">\n" +
+    "                            <select v-model=\"queryParams.workNatureId\" class=\"form-control\">\n" +
+    "                        <option :value=\"null\">全部工作性质</option>\n" +
+    "                        <option v-for=\"workNature in selection.workNatureList\" v-bind:value=\"workNature.id\">{{workNature.name}}</option>\n" +
+    "                    </select>"+
+    "                        </div>\n" +
+    "                        <div class=\"col-md-5\">\n" +
+    "                            检索关键词：<input v-model=\"queryParams.queryKey\" type=\"text\" style=\"width: 40%\" placeholder=\"从设备id，序列号，名称中检索\"/>\n" +
+    "                            <button @click=\"searchDevice\" type=\"button\" class=\"btn btn-success\">\n" +
+    "                                查询\n" +
+    "                            </button>\n" +
+    "                            <button class=\"btn btn-warning\">\n" +
+    "                                清除查询条件\n" +
+    "                            </button>\n" +
+    "                        </div>\n" +
+    "                    </div>",
     methods: {
         searchDevice: function () {
             this.$parent.listDevice();
-        }
+        },
     },
     created: function () {
         //传递参数到父组件

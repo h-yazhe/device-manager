@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
@@ -28,7 +27,6 @@
           h5{
               font-weight:600;
               color:black;
-              float: left;
               margin:2%;
           }
          table {
@@ -60,6 +58,10 @@
          tbody tr:hover {
              cursor: pointer;
              background-color: #fafafa;
+         }
+         .left{
+             padding:1%;
+             float:left;
          }
          .mask {
              position: absolute;
@@ -124,10 +126,10 @@
               <ul class="sidebar-menu" id="nav-accordion">
 
                   <p class="centered"><a href="#"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
-                  <h5 style="width:210px;text-align: center;">{{username}}</h5>
+                  <h5 class="centered">{{username}}</h5>
 
-                  <li class="mt" style="margin-top: 45px">
-                      <a class="active" href="javascript:;" @click="listDevice(null)">
+                  <li class="mt">
+                      <a href="javascript;" @click="listDevice(0)">
                           <i class="fa fa-desktop"></i>
                           <span>所有设备</span>
                       </a>
@@ -161,9 +163,9 @@
                           <li><a href="javascript:;" @click="ListUser()">用户管理</a></li>
                           <li><a href="">菜单管理</a>
                               <ul class="sub">
-                                  <li><a href="javascript:;" @click="sortList()">分类</a></li>
+                                  <li><a href="javascript:;" @click="sortList(-1)">分类</a></li>
                                   <li><a href="javascript:;" @click="addressDevice()">地点</a></li>
-                                  <li><a href="javascript:;" >其他</a></li>
+                                  <li><a class="active" href="eqmanager.html">其他</a></li>
                               </ul>
                       </ul>
                   </li>
@@ -178,105 +180,6 @@
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->
       <!--main content start-->
-      <section id="main-content">
-          <section class="wrapper site-min-height">
-              <!-- page start-->
-              <div id="morris">
-                  <div class="row mt">
-                      <div class="col-lg-6">
-                          <div class="content-panel" >
-                              <h5>设备品牌</h5>
-                              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add-devicebrand">添加</button>
-                              <div class="panel-body" id="devicebrand-list">
-                                  <div id="hero-graph" class="graph">
-                                      <div style="overflow-y: auto;width:100%;height: 200px;">
-                                       <table class="table table-striped table-advance table-hover table-condensed cf">
-                                               <thead>
-                                               <tr>
-                                                   <th>ID</th>
-                                                   <th>设备品牌</th>
-                                                   <th>修改</th>
-                                               </tr>
-                                               </thead>
-                                               <tbody>
-                                               <tr v-for="brand in brandList">
-                                                   <td>{{brand.id}}</td>
-                                                   <td>{{brand.name}}</td>
-                                                   <td><button type="button" class="btn btn-danger" @click="deleteBrand(brand.id)">删除</button></td>
-                                               </tr>
-                                               </tbody>
-                                      </table>
-                                      </div>
-                                      <div id="j_mask1" class="mask"></div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-6">
-                          <div class="content-panel">
-                              <h5>设备型号</h5>
-                              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add-devicemodel">添加</button>
-                              <div class="panel-body"  id="devicemodel-list">
-                                  <div id="hero-bar" class="graph">
-                                      <div style="overflow-y: auto;width:100%;height: 200px;">
-                                      <table class="table table-striped table-advance table-hover table-condensed cf">
-                                          <thead>
-                                          <tr>
-                                              <th>ID</th>
-                                              <th>设备型号</th>
-                                              <th>修改</th>
-                                          </tr>
-                                          </thead>
-                                          <tbody>
-                                          <tr v-for="deviceModel in deviceModelList">
-                                              <td>{{deviceModel.id}}</td>
-                                              <td>{{deviceModel.name}}</td>
-                                              <td><button class="btn btn-danger" type="button" @click="deleteDeviceModel(deviceModel.id)">删除</button></td>
-                                          </tr>
-                                          </tbody>
-                                      </table>
-                                      </div>
-                                      <div id="j_mask2" class="mask"></div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="row mt">
-                      <div class="col-lg-6">
-                          <div class="content-panel">
-                              <h5>工作性质</h5>
-                              <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add-worknature">添加</button>
-                              <div class="panel-body" id="worknature-list">
-                                  <div id="hero-area" class="graph">
-                                      <div style="overflow-y: auto;width:100%;height: 200px;">
-                                      <table class="table table-striped table-advance table-hover table-condensed cf">
-                                          <thead>
-                                          <tr>
-                                              <th>ID</th>
-                                              <th>工作性质</th>
-                                              <th>修改</th>
-                                          </tr>
-                                          </thead>
-                                          <tbody>
-                                          <tr v-for="workNature in workNatureList">
-                                              <td>{{workNature.id}}</td>
-                                              <td>{{workNature.name}}</td>
-                                              <td><button class="btn btn-danger" type="button" @click="deleteWorkNature(workNature.id)"></button></td>
-                                          </tr>
-                                          </tbody>
-                                      </table>
-                                      </div>
-                                      <div id="j_mask3" class="mask"></div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <!-- page end-->
-          </section>
-      </section><!-- /MAIN CONTENT -->
   </section>
 <!--添加设备品牌模态框-->
   <div id="add-devicebrand" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="add-devicebrand">

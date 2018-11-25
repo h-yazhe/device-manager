@@ -105,7 +105,6 @@ var vueDeviceList = new Vue({
         pages: 1,//总页数
         pagesdb:1,
         pagesdm:1,
-        pageswn:1,
         total: 0,//总条数
         totaldb:0,
         totaldm:0,
@@ -328,8 +327,8 @@ var vueDeviceList = new Vue({
                         vueDeviceList.workNatureList =data.data.list;
                         vueDeviceList.totalwn = data.data.total;
                         vueDeviceList.pageswn = data.data.pages;
-                        vueDeviceList.disableNextPagewn = vueDeviceList.workNaturePage.pageNum === data.data.pages;
-                        vueDeviceList.disableLastPagewn = vueDeviceList.workNaturePage.pageNum <= 1;
+                        vueDeviceList.disableNextPagewn = vueDeviceList.deviceModelPage.pageNum === data.data.pages;
+                        vueDeviceList.disableLastPagewn = vueDeviceList.deviceModelPage.pageNum <= 1;
                     } else {
                         alert(data.msg);
                     }
