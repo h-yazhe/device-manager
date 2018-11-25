@@ -111,7 +111,6 @@ var defaultQueryPage = function () {
     this.pageNum = 1;
     this.pageSize = 20;
 };
-
 //构造category对象的初始参数
 var initCategory = function (category) {
     category.active = false;
@@ -127,7 +126,6 @@ var searchDeviceParams= {
     brandId: null,//品牌id
     deviceModelId: null//设备型号id
 };
-
 //设备搜索，添加设备的选项卡数据
 var deviceSearchSelection = {
     categoryList: {
@@ -302,6 +300,7 @@ var AddressTree = {
         }
     }
 };
+
 //搜索设备组件
 var SearchDevice = {
     name: 'SearchDevice',

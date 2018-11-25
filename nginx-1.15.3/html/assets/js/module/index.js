@@ -9,6 +9,9 @@ var vueDeviceList = new Vue({
         category:"",
         address:"",
         user:"",
+        brand:"",
+        deviceModel:"",
+        workNature:"",
         deviceList: [
             {
                 "id": "0",
@@ -68,13 +71,55 @@ var vueDeviceList = new Vue({
                 }]
             }
         ],
+        brandList: [
+            {
+                "id": "0",
+                "name": ""
+            }
+        ],
+        brandPage: {
+            pageNum: 1,
+            pageSize: 10
+        },
+        deviceModelList: [
+            {
+                "id": "0",
+                "name": ""
+            }
+        ],
+        deviceModelPage: {
+            pageNum: 1,
+            pageSize: 10
+        },
+        workNatureList: [
+            {
+                "id": "0",
+                "name": ""
+            }
+        ],
+        workNaturePage: {
+            pageNum: 1,
+            pageSize: 10
+        },
         queryParams: $.extend(true,{},searchDeviceParams),
         pages: 1,//总页数
+        pagesdb:1,
+        pagesdm:1,
+        pageswn:1,
         total: 0,//总条数
+        totaldb:0,
+        totaldm:0,
+        totalwn:0,
         showButton:false,
         isSort:false,
         disableLastPage: true,
         disableNextPage: true,
+        disableLastPagedb: true,
+        disableNextPagedb: true,
+        disableLastPagedm: true,
+        disableNextPagedm: true,
+        disableLastPagewn: true,
+        disableNextPagewn: true,
         //搜索的选项卡数据,
         searchSelection: $.extend(true,{},deviceSearchSelection)
     },
@@ -83,10 +128,11 @@ var vueDeviceList = new Vue({
          * 渲染表格
          */
         //模态框传参
-        getValue:function (a,b) {
-        addCategory.category.parentId=a;
-        addCategory.parentName=b;
-},
+        getValue:function (a, b) {
+            addCategory.category.parentId = a;
+            addCategory.parentName = b;
+        }
+    ,
         //分类
         sort:function(){
             sendPost({
@@ -159,7 +205,7 @@ var vueDeviceList = new Vue({
                 data: JSON.stringify(
                     {
                         "pageNum": 1,
-                        "pageSize": 20,
+                        "pageSize": 20
                     }
                 ),
                 success: function (res) {
@@ -180,6 +226,139 @@ var vueDeviceList = new Vue({
                     }
                 }
             });
+        },
+        //渲染设备品牌表格
+        listDeviceBrand: function () {
+            var vue=this;
+            sendPost({
+                url: API.getApi(API.listDeviceBrand),
+                data: JSON.stringify(vue.brandPage),
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 0) {
+                        vueDeviceList.brandList =data.data.list;
+                        vueDeviceList.totaldb = data.data.total;
+                        vueDeviceList.pagesdb = data.data.pages;
+                        vueDeviceList.disableNextPagedb = vueDeviceList.brandPage.pageNum === data.data.pages;
+                        vueDeviceList.disableLastPagedb = vueDeviceList.brandPage.pageNum <= 1;
+                    }
+                    else {
+                        alert(data.msg);
+                    }
+                },
+                error: function (res) {
+                    var json = res.responseJSON;
+                    if (json != null && json.code == 3) {
+                        alert("登录异常！");
+                    } else {
+                        alert("网络连接异常！");
+                    }
+                }
+            });
+        },
+        //删除设备品牌
+        deleteBrand: function (brandId) {
+            sendPost({
+                url: API.getApi(API.deleteBrand) + brandId,
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 0) {
+                        alert(data.msg);
+                        vueDeviceList.listDeviceBrand();
+                    } else {
+                        alert("删除失败！");
+                    }
+                }
+            })
+        },
+        //渲染设备型号表格
+        listDeviceModel: function () {
+            var vue=this;
+            sendPost({
+                url: API.getApi(API.listDeviceModel),
+                data: JSON.stringify(vue.deviceModelPage),
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 0) {
+                        vueDeviceList.deviceModelList =data.data.list;
+                        vueDeviceList.totaldm = data.data.total;
+                        vueDeviceList.pagesdm = data.data.pages;
+                        vueDeviceList.disableNextPagedm = vueDeviceList.deviceModelPage.pageNum === data.data.pages;
+                        vueDeviceList.disableLastPagedm = vueDeviceList.deviceModelPage.pageNum <= 1;
+                    }
+                    else {
+                        alert(data. msg);
+                    }
+                },
+                error: function (res) {
+                    var json = res.responseJSON;
+                    if (json != null && json.code == 3) {
+                        alert("登录异常！");
+                    } else {
+                        alert("网络连接异常！");
+                    }
+                }
+            });
+        },
+        //删除设备型号
+        deleteDeviceModel:function (deviceModelId) {
+            sendPost({
+                url:API.getApi(API.deleteDeviceModel)+deviceModelId,
+                success:function(data){
+                    console.log(data);
+                    if(data.code==0)
+                    {
+                        alert(data.msg);
+                        vueDeviceList.listDeviceModel();
+                    }
+                    else
+                        alert("删除失败！");
+                }
+            })
+        },
+        //渲染工作性质表格
+        listWorkNature: function () {
+             var vue=this;
+            sendPost({
+                url: API.getApi(API.listWorkNature),
+                data: JSON.stringify(vue.workNaturePage),
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 0) {
+                        vueDeviceList.workNatureList =data.data.list;
+                        vueDeviceList.totalwn = data.data.total;
+                        vueDeviceList.pageswn = data.data.pages;
+                        vueDeviceList.disableNextPagewn = vueDeviceList.workNaturePage.pageNum === data.data.pages;
+                        vueDeviceList.disableLastPagewn = vueDeviceList.workNaturePage.pageNum <= 1;
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error: function (res) {
+                    var json = res.responseJSON;
+                    if (json != null && json.code == 3) {
+                        alert("登录异常！");
+                    } else {
+                        alert("网络连接异常！");
+                    }
+                }
+            });
+        },
+        //删除设备工作性质
+        deleteWorkNature:function (workNatureId) {
+            sendPost({
+                url:API.getApi(API.deleteWorkNature)+workNatureId,
+                success:function (data) {
+                    console.log(data);
+                    if(data.code==0)
+                    {
+                        alert(data.msg);
+                        vueDeviceList.listWorkNature();
+                    }
+                    else
+                        alert("删除失败！");
+                }
+            })
         },
         //打印用户角色名
         listRole:function(roleList)
@@ -249,6 +428,48 @@ var vueDeviceList = new Vue({
             if (this.pages > this.queryParams.queryPage.pageNum) {
                 this.queryParams.queryPage.pageNum++;
                 this.listDevice();
+            }
+        },
+        //设备品牌翻到上一页
+        lastPagedb: function () {
+            if (this.brandPage.pageNum > 1) {
+                this.brandPage.pageNum--;
+                this.listDeviceBrand();
+            }
+        },
+        //设备品牌翻到下一页
+        nextPagedb: function () {
+            if (this.pagesdb > this.brandPage.pageNum) {
+                this.brandPage.pageNum++;
+                this.listDeviceBrand();
+            }
+        },
+        //设备型号翻到上一页
+        lastPagedm: function () {
+            if (this.deviceModelPage.pageNum > 1) {
+                this.deviceModelPage.pageNum--;
+                this.listDeviceModel();
+            }
+        },
+        //设备型号翻到下一页
+        nextPagedm: function () {
+            if (this.pagesdm > this.deviceModelPage.pageNum) {
+                this.deviceModelPage.pageNum++;
+                this.listDeviceModel();
+            }
+        },
+        //工作性质翻到上一页
+        lastPagewn: function () {
+            if (this.workNaturePage.pageNum > 1) {
+                this.workNaturePage.pageNum--;
+                this.listWorkNature();
+            }
+        },
+        //工作性质翻到下一页
+        nextPagewn: function () {
+            if (this.pageswn > this.workNaturePage.pageNum) {
+                this.workNaturePage.pageNum++;
+                this.listWorkNature();
             }
         },
         //设备格式化时间
@@ -797,6 +1018,9 @@ var sideBarVm = new Vue({
     methods: {
         listDevice: function (statusId) {
             vueDeviceList.device=true;
+            vueDeviceList.brand=false;
+            vueDeviceList.deviceModel=false;
+            vueDeviceList.workNature=false;
             vueDeviceList.category=false;
             vueDeviceList.address=false;
             vueDeviceList.user=false;
@@ -805,6 +1029,21 @@ var sideBarVm = new Vue({
             vueDeviceList.queryParams.statusId = statusId;
             vueDeviceList.listDevice();
             categoryVm.tree=true;
+        },
+        listOther:function () {
+            vueDeviceList.listDeviceBrand();
+            vueDeviceList.listDeviceModel();
+            vueDeviceList.listWorkNature();
+            vueDeviceList.brand=true;
+            vueDeviceList.deviceModel=true;
+            vueDeviceList.workNature=true;
+            vueDeviceList.isSort=false;
+            vueDeviceList.device=false;
+            vueDeviceList.category=false;
+            vueDeviceList.address=false;
+            vueDeviceList.user=false;
+            categoryVm.tree=true;
+            addresstreeVm.atree=false;
         },
         sortList:function (id) {
             if(id==-1){
@@ -816,6 +1055,9 @@ var sideBarVm = new Vue({
                     vueDeviceList.dataList.parentId=id;
             }
             vueDeviceList.sort();
+            vueDeviceList.brand=false;
+            vueDeviceList.deviceModel=false;
+            vueDeviceList.workNature=false;
             vueDeviceList.isSort=true;
             vueDeviceList.device=false;
             vueDeviceList.category=true;
@@ -829,6 +1071,9 @@ var sideBarVm = new Vue({
             vueDeviceList.addressDevice();
             vueDeviceList.device=false;
             vueDeviceList.address=true;
+            vueDeviceList.brand=false;
+            vueDeviceList.deviceModel=false;
+            vueDeviceList.workNature=false;
             vueDeviceList.category=false;
             vueDeviceList.user=false;
             categoryVm.tree=false;
@@ -838,6 +1083,9 @@ var sideBarVm = new Vue({
             vueDeviceList.ListUser();
             vueDeviceList.user=true;
             vueDeviceList.device=false;
+            vueDeviceList.brand=false;
+            vueDeviceList.deviceModel=false;
+            vueDeviceList.workNature=false;
             vueDeviceList.address=false;
             vueDeviceList.category=false;
             categoryVm.tree=false;
