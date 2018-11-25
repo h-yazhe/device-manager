@@ -40,9 +40,8 @@ public class WorkNatureServiceImpl implements WorkNatureService {
      * @return
      */
     @Override
-    public PageInfo<WorkNature> findAllWorkNature() {
+    public PageInfo<WorkNature> findAllWorkNature(QueryPage queryPage) {
         //分页查询
-        QueryPage queryPage = new QueryPage();
         PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(), "id");
         return new PageInfo<>(workNatureMapper.listAll());
     }
