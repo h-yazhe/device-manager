@@ -42,7 +42,7 @@ public class WorkNatureController {
      */
     @PostMapping("/listAll")
     @RequiresPermissions(ResourceConstants.NATURE+PermissionActionConstant.GET)
-    public ResultVO listAllWorkNature(QueryPage queryPage) {
+    public ResultVO listAllWorkNature(@RequestBody QueryPage queryPage) {
         return ResultVOUtil.success(workNatureService.findAllWorkNature(queryPage));
     }
 
