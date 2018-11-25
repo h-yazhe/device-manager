@@ -37,6 +37,14 @@
         .device_category button {
             padding: 2px 6px;
         }
+        .left{
+            padding:1%;
+            float:left;
+            color: black;
+        }
+        .content-panel{
+            padding:0;
+        }
     </style>
 </head>
 
@@ -90,11 +98,6 @@
                         <i class="glyphicon glyphicon-home"></i>
                         <span>库存设备</span>
                     </a>
-                    <!--<ul class="sub">-->
-                    <!--<li><a  href="general.html">General</a></li>-->
-                    <!--<li><a  href="buttons.html">Buttons</a></li>-->
-                    <!--<li><a  href="panels.html">Panels</a></li>-->
-                    <!--</ul>-->
                 </li>
 
                 <li class="sub-menu">
@@ -102,11 +105,6 @@
                         <i class="glyphicon glyphicon-play"></i>
                         <span>使用中设备</span>
                     </a>
-                    <!--<ul class="sub">-->
-                    <!--<li><a  href="calendar.html">Calendar</a></li>-->
-                    <!--<li><a  href="gallery.html">Gallery</a></li>-->
-                    <!--<li><a  href="todo_list.html">Todo List</a></li>-->
-                    <!--</ul>-->
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;" @click="listDevice(3)">
@@ -130,7 +128,7 @@
                             <ul class="sub">
                                 <li><a href="javascript:;" @click="sortList(-1)">分类</a></li>
                                 <li><a href="javascript:;" @click="addressDevice()">地点</a></li>
-                                <li><a href="eqmanager.html">其他</a></li>
+                                <li><a href="javascript:;" @click="listOther()">其他</a></li>
                             </ul>
                     </ul>
                 </li>
@@ -262,9 +260,8 @@
                                 <td>{{user.email}}</td>
                                 <td>{{user.phone}}</td>
                                 <td>{{user.lastTime}}</td>
-                                <td><button  class="btn btn-danger btn-xs">删除</button></td>
+                                <td><button class="btn btn-danger btn-xs">删除</button></td>
                             </tr>
-
                             </tbody>
                         </table>
                     </div>
@@ -322,19 +319,206 @@
                                 <td>{{address.name}}</td>
                                 <td><button  class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete-address" @click="getaddress(address)">删除</button></td>
                             </tr>
-
                             </tbody>
                         </table>
                     </div>
+
+                    <!--其他属性详情页-->
+                    <div class="wrapper site-min-height" style="margin-top: 0px;">
+                        <!-- page start-->
+                        <div id="morris">
+                            <div class="row mt">
+                                <div class="col-lg-6" v-if="brand">
+                                    <div class="content-panel" >
+                                        <h5 class="left">设备品牌</h5>
+                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add-devicebrand" style="float: right;padding:1%;margin:1%;">添加</button>
+                                        <div class="panel-body" id="devicebrand-list">
+                                            <div id="hero-graph" class="graph">
+                                                <table class="table table-striped table-advance table-hover table-condensed cf">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>设备品牌</th>
+                                                        <th>修改</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr v-for="brand in brandList">
+                                                        <td>{{brand.id}}</td>
+                                                        <td>{{brand.name}}</td>
+                                                        <td><button type="button" class="btn btn-danger" @click="deleteBrand(brand.id)">删除</button></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="page-info-left">
+                                                    当前页码：{{brandPage.pageNum}}，共{{pagesdb}}页，总计{{totaldb}}条
+                                                </div>
+                                                <div class="turn-page-right">
+                                                    <button @click="lastPagedb" v-bind:disabled="disableLastPagedb" type="button"
+                                                            class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span>
+                                                    </button>
+                                                    <button @click="nextPagedb" v-bind:disabled="disableNextPagedb" type="button"
+                                                            class="btn btn-default"><span class="glyphicon glyphicon-arrow-right"></span>
+                                                    </button>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6" v-if="deviceModel">
+                                    <div class="content-panel">
+                                        <h5 class="left">设备型号</h5>
+                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add-devicemodel" style="float:right;padding:1%;margin:1%;">添加</button>
+                                        <div class="panel-body"  id="devicemodel-list">
+                                            <div id="hero-bar" class="graph">
+                                                <table class="table table-striped table-advance table-hover table-condensed cf">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>设备型号</th>
+                                                        <th>修改</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr v-for="deviceModel in deviceModelList">
+                                                        <td>{{deviceModel.id}}</td>
+                                                        <td>{{deviceModel.name}}</td>
+                                                        <td><button class="btn btn-danger" type="button" @click="deleteDeviceModel(deviceModel.id)">删除</button></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="page-info-left">
+                                                    当前页码：{{deviceModelPage.pageNum}}，共{{pagesdm}}页，总计{{totaldm}}条
+                                                </div>
+                                                <div class="turn-page-right">
+                                                    <button @click="lastPagedm" v-bind:disabled="disableLastPagedm" type="button"
+                                                            class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span>
+                                                    </button>
+                                                    <button @click="nextPagedm" v-bind:disabled="disableNextPagedm" type="button"
+                                                            class="btn btn-default"><span class="glyphicon glyphicon-arrow-right"></span>
+                                                    </button>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt" v-if="workNature">
+                                <div class="col-lg-6" >
+                                    <div class="content-panel">
+                                        <h5 class="left">工作性质</h5>
+                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#add-worknature" style="float:right;padding:1%;margin:1%;">添加</button>
+                                        <div class="panel-body" id="worknature-list">
+                                            <div id="hero-area" class="graph">
+                                                <table class="table table-striped table-advance table-hover table-condensed cf">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>工作性质</th>
+                                                        <th>修改</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr v-for="workNature in workNatureList">
+                                                        <td>{{workNature.id}}</td>
+                                                        <td>{{workNature.name}}</td>
+                                                        <td><button class="btn btn-danger" type="button" @click="deleteWorkNature(workNature.id)">删除</button></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="page-info-left">
+                                                    当前页码：{{workNaturePage.pageNum}}，共{{pageswn}}页，总计{{totalwn}}条
+                                                </div>
+                                                <div class="turn-page-right">
+                                                    <button @click="lastPagewn" v-bind:disabled="disableLastPagewn" type="button"
+                                                            class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span>
+                                                    </button>
+                                                    <button @click="nextPagewn" v-bind:disabled="disableNextPagewn" type="button"
+                                                            class="btn btn-default"><span class="glyphicon glyphicon-arrow-right"></span>
+                                                    </button>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--&lt;!&ndash; page end&ndash;&gt;-->
+                    <!--</div>-->
                 </div><!-- /col-lg-9 END SECTION MIDDLE -->
-
-
             </div>
             <! --/row -->
         </section>
     </section>
+
     <!--main content end-->
 </section>
+<!--添加设备品牌模态框-->
+<div id="add-devicebrand" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="add-devicebrand">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">添加设备品牌</h4>
+        </div>
+        <div class="modal-body" style="background-color: white;">
+            <form>
+                <div class="form-group">
+                    <label for="input-brand-name">设备品牌</label>
+                    <input id="input-brand-name" v-model="brand.name" type="text" class="form-control" placeholder="请输入设备品牌">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer" style="background-color: white;">
+            <button @click="addDeviceBrand" type="button" class="btn btn-success">添加</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+    </div>
+</div>
+<!--添加设备型号模态框-->
+<div id="add-devicemodel" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="add-devicemodel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">添加设备型号</h4>
+        </div>
+        <div class="modal-body" style="background-color: white;">
+            <form>
+                <div class="form-group">
+                    <label for="input-device-model">设备型号</label>
+                    <input id="input-device-model" v-model="deviceModel.name" type="text" class="form-control" placeholder="请输入设备型号">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer" style="background-color: white;">
+            <button @click="addDeviceModel" type="button" class="btn btn-success">添加</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+    </div>
+</div>
+<!--添加工作性质模态框-->
+<div id="add-worknature" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="add-worknature">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">添加工作性质</h4>
+        </div>
+        <div class="modal-body" style="background-color: white;">
+            <form>
+                <div class="form-group">
+                    <label for="input-work-nature">工作性质</label>
+                    <input id="input-work-nature" v-model="workNature.name" type="text" class="form-control" placeholder="请输入工作性质">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer" style="background-color: white;">
+            <button @click="addWorkNature" type="button" class="btn btn-success">添加</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+    </div>
+</div>
 
 <!--添加设备模态框-->
 <div id="add-device" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="add-device">
@@ -648,5 +832,6 @@
 <script src="assets/js/module/common.js"></script>
 <script src="assets/js/module/index.js"></script>
 <script src="assets/js/jquery.table2excel.js"></script>
+<script src="assets/js/module/eqmanage.js"></script>
 </body>
 </html>
