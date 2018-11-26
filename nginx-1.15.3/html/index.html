@@ -48,6 +48,39 @@
         .btn-danger{
             padding: 4px;
         }
+        .select{
+            padding:0;
+            font-size: 13px;
+            color: #222;
+            vertical-align: middle;
+            background-color: #fff;
+            cursor: default;
+
+        }
+        .content{
+            margin-top: 0;
+            border: 1px #428bca solid;
+            position: absolute;
+            top: 100%;
+            width:85%;
+            z-index: 1000;
+        }
+        #select-tree button{
+            cursor: default;
+            text-align: start;
+        }
+        #select-tree li{
+            padding-left:10px;
+            list-style-type: none;
+        }
+        .select :hover{
+            color: white;
+            background-color:#46b7e5;
+
+        }
+        #select-tree button div{
+            float: right;
+        }
     </style>
 </head>
 
@@ -130,7 +163,7 @@
                         <li><a href="">菜单管理</a>
                             <ul class="sub">
                                 <li><a href="javascript:;" @click="sortList(-1)">分类</a></li>
-                                <li><a href="javascript:;" @click="addressDevice()">地点</a></li>
+                                <li><a href="javascript:;" @click="addressDevice(-1)">地点</a></li>
                                 <li><a href="javascript:;" @click="listOther()">其他</a></li>
                             </ul>
                     </ul>
@@ -274,7 +307,7 @@
                             分类详情
                         </h4>
                         <div class="turn-page-right">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-category"  v-if="showButton">添加分类</button>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-category">添加分类</button>
                         </div>
                         <div class="clear"></div>
                         <hr>
@@ -320,12 +353,12 @@
                             <tr v-for="address in addressList">
                                 <td>{{address.id}}</td>
                                 <td>{{address.name}}</td>
-                                <td><button  class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete-address" @click="getaddress(address)">删除</button></td>
+                                <td><button  class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete-address" @click="deleteAddressValue(address)">删除</button></td>
                             </tr>
+
                             </tbody>
                         </table>
                     </div>
-
                     <!--其他属性详情页-->
                     <div class="wrapper site-min-height" style="margin-top: 0px;">
                         <!-- page start-->
@@ -724,6 +757,7 @@
                     <label for="input-device-name">添加分类名称</label>
                     <input v-model="category.name" type="text" class="form-control" placeholder="分类名称">
                 </div>
+
             </form>
         </div>
         <div class="modal-footer">
@@ -742,12 +776,8 @@
         <div class="modal-body">
             <form>
                 <div class="form-group">
-                    <label for="input-category">序号</label>
-                    <input v-model="address.parentId" type="text" class="form-control"  placeholder="序号">
-                </div>
-                <div class="form-group">
                     <label for="input-device-name">地点</label>
-                    <input v-model="address.name" type="text" class="form-control"  placeholder="地点">
+                    <input  type="text" class="form-control"  placeholder="地点" v-model="address.name">
                 </div>
             </form>
         </div>
@@ -758,8 +788,8 @@
     </div>
 </div>
 <!--删除地点模态框-->
-<div id="delete-address" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="delete-address">
-    <div class="modal-dialog modal-lg" role="document">
+<div id="delete-address" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="delete-address">
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">删除地点</h4>
@@ -767,12 +797,12 @@
         <div class="modal-body">
             <form>
                 <div class="form-group">
-                    <h2>确定删除id为的地点吗？</h2>
+                    <h2>您确定要删除{{name}}</h2>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
-            <button @click="DeleteAddress" type="button" class="btn btn-success">删除</button>
+            <button @click="DeleteAddress" type="button" class="btn btn-success">确定</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         </div>
     </div>

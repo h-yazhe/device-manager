@@ -71,6 +71,13 @@ var vueDeviceList = new Vue({
                 }]
             }
         ],
+        locationList:{
+            parentId: "",
+            queryPage: {
+                pageNum: 1,
+                pageSize: 10
+            }
+        },
         brandList: [
             {
                 "id": "0",
@@ -383,19 +390,12 @@ var vueDeviceList = new Vue({
             sendPost({
                 url:API.getApi(API.addressDevice),
                 data: JSON.stringify(
-                    {
-                        "parentId": "",
-                        "queryPage": {
-                            "pageNum": 1,
-                            "pageSize": 10
-                        }
-                    }
-                ),
+                    vueDeviceList.locationList),
                 success: function (res) {
                     var data = res.data;
                     if (res.code == 0) {
                         vueDeviceList.addressList = data;
-                        console.log(data);
+
                     } else {
                         alert(res.msg);
                     }
@@ -411,9 +411,9 @@ var vueDeviceList = new Vue({
             });
         },
         /*获取点击的地点*/
-        getaddress:function(address){
-            id = address.id;
-            console.log(id)
+        deleteAddressValue:function(address){
+            deleteAddress.id = address.id;
+            deleteAddress.name=address.name;
         },
         //翻到上一页
         lastPage: function () {
@@ -585,7 +585,6 @@ var deviceDtail=new Vue({
             sendPost({
                 url:API.getApi(API.getDeviceSelection) + "/20",
                 success: function (res) {
-                    console.log(res)
                     if (res.code === 0){
                         //渲染选项卡数据
                         self.selection.categoryList = res.data.categoryList;
@@ -723,8 +722,38 @@ var categoryVm = new Vue({
         '                            <CategoryTree v-for="(item,i) in categoryList" :index="i" :parent="item" :key="item.id"></CategoryTree>\n' +
         '                        </div>'
 });
+var selectVm=new Vue({
+    el:"#select-tree",
+    components:{
+        'SelectTree':SelectTree
+    },
+    data:{
+        id:'',
+        name:'全部地点',
+        Show:false,
+        selectList: [
+            {
+                id: "0",
+                name:'',
+                level:'',
+                children: [
+                ],
+                active: true,//是否激活
+                expanded: false,//是否展开
+            }
+        ],
+    },
+    methods:{
+        shiftStatus:function () {
+            this.Show=!this.Show;
+        }
+    },
+    template:' <div id="select-tree">\n'+"<button class=\"form-control\" @click=\"shiftStatus\" v-bind:value=\"id\">{{name}}<div><span class=\"caret\" ></span></div></button>\n"+
+        '      <div class="content" v-show="Show"> <SelectTree v-for="(item,i) in selectList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select" ></SelectTree></div>\n' +
+        '                        </div>'
+})
 //生成地点分类树，依赖于addressVm
-var addresstreeVm = new Vue({
+var addressSortVm = new Vue({
     el: '#address-tree',
     components: {
         'AddressTree': AddressTree
@@ -732,7 +761,8 @@ var addresstreeVm = new Vue({
     data: {
         addressList: [
             {
-                parentId: "",
+                id: "0",
+                name:'',
                 level:'',
                 children: [
                 ],
@@ -741,9 +771,9 @@ var addresstreeVm = new Vue({
 
             }
         ],
-        atree:false
+        tree:false
     },
-    template: ' <div id="address-tree" class="panel-body" v-if="atree">\n' +
+    template: ' <div id="address-tree" class="panel-body" v-if="tree">\n' +
         '                            <AddressTree v-for="(item,i) in addressList" :index="i" :parent="item" :key="item.id"></AddressTree>\n' +
         '                        </div>'
 });
@@ -753,19 +783,17 @@ var addCategory=new Vue({
     data:{
         parentName:'',
         category: {
-            "parentId":"",
+            "parentId":" ",
             "name":"",
         }
     },
     methods: {
         addCategory: function () {
             var data =this.category;
+            console.log(data.parentId);
             sendPost({
                 url: API.getApi(API.insertCategory),
                 data: JSON.stringify(data),
-                headers: {
-                    token: localStorage.getItem(STORAGE_KEY.token)
-                },
                 success: function (res) {
                     if (res.code == 0) {
                         alert("添加成功！");
@@ -776,6 +804,9 @@ var addCategory=new Vue({
                         console.log(res)
                         alert(res.msg);
                     }
+                },
+                error:function (res) {
+                    alert(res)
                 }
             });
         }
@@ -788,11 +819,8 @@ var addressVm = new Vue({
     data: {
         address: {
             "parentId":"",
-            "name": "",
+            "name":"",
         },
-        //选项卡数据
-        selection: $.extend(true,{},deviceSearchSelection)
-
     },
     methods: {
         //添加地点
@@ -926,10 +954,16 @@ var addDeviceVm = new Vue({
                 success: function (res) {
                     if (res.code === 0){
                         var categoryList = $.extend(true,[],res.data.categoryList);
+                        var locationList=$.extend(true,[],res.data.locationList);
                         for (var category of categoryList){
                             initCategory(category);
                         }
+                        for(var address of locationList){
+                            initAddress(address);
+                        }
                         categoryVm.categoryList = categoryList;
+                        addressSortVm.addressList=locationList;
+                        selectVm.selectList=locationList;
                         //渲染选项卡数据
                         self.selection.categoryList = res.data.categoryList;
                         self.selection.brandList = res.data.brandList;
@@ -953,25 +987,21 @@ var addDeviceVm = new Vue({
     }
 });
 //删除地点
-var deleteaddressVm = new Vue({
+var deleteAddress = new Vue({
     el: "#delete-address",
     data: {
-
+        id:"",
+        name:"",
     },
     methods: {
         //删除地点
         DeleteAddress: function () {
-            var self = this;
             sendPost({
-                url: API.getApi(API.DeleteAddress+"/1540262828641833573"),
-                data:{
-
-                },
-                success: function (res) {
-                    if (res.code == 0) {
-                        alert("删除成功！");
-                        $("#delete-address").modal('toggle');
-                        //刷新设备列表
+                url: API.getApi(API.DeleteAddress)+this.id,
+                success: function (data) {
+                    if (data.code == 0) {
+                        $('#delete-address').modal('toggle');
+                        alert(data.msg);
                         vueDeviceList.addressDevice();
                     } else {
                         alert("删除失败！");
@@ -1024,7 +1054,7 @@ var sideBarVm = new Vue({
             vueDeviceList.address=false;
             vueDeviceList.user=false;
             vueDeviceList.isSort=false;
-            addresstreeVm.atree=false;
+            addressSortVm.tree=false;
             vueDeviceList.queryParams.statusId = statusId;
             vueDeviceList.listDevice();
             categoryVm.tree=true;
@@ -1048,7 +1078,7 @@ var sideBarVm = new Vue({
             if(id==-1){
                 vueDeviceList.showButton=false,
                     vueDeviceList.dataList.parentId="";
-
+                addDeviceVm.getDeviceSelection();
             }else {
                 vueDeviceList.showButton=true,
                     vueDeviceList.dataList.parentId=id;
@@ -1063,10 +1093,18 @@ var sideBarVm = new Vue({
             vueDeviceList.address=false;
             vueDeviceList.user=false;
             categoryVm.tree=true;
-            addresstreeVm.atree=false;
+            addressSortVm.tree=false;
         },
-        addressDevice:function(statusId){
-            vueDeviceList.queryParams.statusId = statusId;
+        addressDevice:function(id){
+            if(id==-1){
+                addDeviceVm.getDeviceSelection();
+                vueDeviceList.showButton=false,
+                    vueDeviceList.locationList.parentId="";
+
+            }else {
+                vueDeviceList.showButton=true,
+                    vueDeviceList.locationList.parentId=id;
+            }
             vueDeviceList.addressDevice();
             vueDeviceList.device=false;
             vueDeviceList.address=true;
@@ -1076,7 +1114,7 @@ var sideBarVm = new Vue({
             vueDeviceList.category=false;
             vueDeviceList.user=false;
             categoryVm.tree=false;
-            addresstreeVm.atree=true;
+            addressSortVm.tree=true;
         },
         ListUser:function () {
             vueDeviceList.ListUser();
@@ -1088,7 +1126,7 @@ var sideBarVm = new Vue({
             vueDeviceList.address=false;
             vueDeviceList.category=false;
             categoryVm.tree=false;
-            addresstreeVm.atree=false;
+            addressSortVm.tree=false;
         }
     }
 });

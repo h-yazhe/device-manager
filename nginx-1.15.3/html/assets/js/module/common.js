@@ -81,7 +81,7 @@ var API = {
     insertCategory:"insert-category-by-pid",
     AddAddress:"insert-location-by-pid",
     //删除该节点为根的地点树
-    DeleteAddress:"delete-location-tree-by-Id",
+    DeleteAddress:"delete-location-tree-by-Id/",
     DeviceRecord:"device/get-status-record-by-deviceId",
     //查询设备型号
     listDeviceModel:"device-model-listAll",
@@ -209,17 +209,20 @@ var CategoryTree = {
         }
     },
     template: '<div>\n' +
-    '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item" >\n' +
-    '                                    <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
-    '                                </a>\n' +
-    '                                <CategoryTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></CategoryTree>\n' +
-    '                            </div>',
+        '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item" >\n' +
+        '                                    <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
+        '                                </a>\n' +
+        '                                <CategoryTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></CategoryTree>\n' +
+        '                            </div>',
     methods: {
         listChildren: function () {
             var self = this;
             if(vueDeviceList.isSort==true){
                 sideBarVm.sortList(self.parent.id);
                 vueDeviceList.getValue(self.parent.id,self.parent.name)
+                if (self.parent.expanded){
+                    sideBarVm.sortList(self.parent.parentId);
+                }
             }
             if (self.parent.expanded) {
                 self.parent.expanded = !self.parent.expanded;
@@ -262,10 +265,10 @@ var SelectTree = {
         }
     },
     template: '<div>\n' +
-    '                                <li :class="{active: parent.active}"   :style="indent"  @mouseover="listChildren()"   @click="cValue(parent.id,parent.name)"><span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n'+
-    '                                </li>\n' +
-    '                                <SelectTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></SelectTree>'+
-    '</div>',
+        '                                <li :class="{active: parent.active}"   :style="indent"  @mouseover="listChildren()"   @click="cValue(parent.id,parent.name)"><span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n'+
+        '                                </li>\n' +
+        '                                <SelectTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></SelectTree>'+
+        '</div>',
     methods: {
         listChildren: function () {
             var self = this;
@@ -324,11 +327,11 @@ var AddressTree = {
         }
     },
     template:
-    '<div>'+
-    '<a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item">\n' +
-    '                                <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
-    '                                </a>\n' +
-    '                                <AddressTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></AddressTree>\n</div>' ,
+        '<div>'+
+        '<a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item">\n' +
+        '                                <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
+        '                                </a>\n' +
+        '                                <AddressTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></AddressTree>\n</div>' ,
     methods: {
         listChildren: function () {
             var self = this;
@@ -356,8 +359,6 @@ var AddressTree = {
                     }
                 }
             });
-            vueDeviceList.queryParams.locationId = self.parent.id;
-            vueDeviceList.listDevice();
         }
     },
     computed: {
@@ -378,37 +379,37 @@ var SearchDevice = {
         }
     },
     template: "<div class=\"row form-group\" style=\"margin-bottom: 0\" id=\"form-group\">\n" +
-    "                        <div class=\"col-md-2\">\n"+
-    "<div id=\"select-tree\"></div>\n" +
-    "                        </div>\n" +
-    "                        <div class=\"col-md-2\">\n" +
-    "<select v-model=\"queryParams.brandId\" id=\"input-brand\" class=\"form-control\">\n" +
-    "                        <option :value=\"null\">全部品牌</option>\n" +
-    "                        <option v-for=\"brand in selection.brandList\" v-bind:value=\"brand.id\">{{brand.name}}</option>\n" +
-    "                    </select>" +
-    "                        </div>\n" +
-    "                        <div class=\"col-md-2\">\n" +
-    "                           <select v-model=\"queryParams.deviceModelId\" class=\"form-control\">\n" +
-    "                        <option :value=\"null\">全部型号</option>\n" +
-    "                        <option v-for=\"deviceModel in selection.deviceModelList\" v-bind:value=\"deviceModel.id\">{{deviceModel.name}}</option>\n" +
-    "                    </select>"+
-    "                        </div>\n" +
-    "                        <div class=\"col-md-2\">\n" +
-    "                            <select v-model=\"queryParams.workNatureId\" class=\"form-control\">\n" +
-    "                        <option :value=\"null\">全部工作性质</option>\n" +
-    "                        <option v-for=\"workNature in selection.workNatureList\" v-bind:value=\"workNature.id\">{{workNature.name}}</option>\n" +
-    "                    </select>"+
-    "                        </div>\n" +
-    "                        <div class=\"col-md-5\">\n" +
-    "                            检索关键词：<input v-model=\"queryParams.queryKey\" type=\"text\" style=\"width: 40%\" placeholder=\"从设备id，序列号，名称中检索\"/>\n" +
-    "                            <button @click=\"searchDevice\" type=\"button\" class=\"btn btn-success\">\n" +
-    "                                查询\n" +
-    "                            </button>\n" +
-    "                            <button class=\"btn btn-warning\">\n" +
-    "                                清除查询条件\n" +
-    "                            </button>\n" +
-    "                        </div>\n" +
-    "                    </div>",
+        "                        <div class=\"col-md-2\">\n"+
+        "<div id=\"select-tree\"></div>\n" +
+        "                        </div>\n" +
+        "                        <div class=\"col-md-2\">\n" +
+        "<select v-model=\"queryParams.brandId\" id=\"input-brand\" class=\"form-control\">\n" +
+        "                        <option :value=\"null\">全部品牌</option>\n" +
+        "                        <option v-for=\"brand in selection.brandList\" v-bind:value=\"brand.id\">{{brand.name}}</option>\n" +
+        "                    </select>" +
+        "                        </div>\n" +
+        "                        <div class=\"col-md-2\">\n" +
+        "                           <select v-model=\"queryParams.deviceModelId\" class=\"form-control\">\n" +
+        "                        <option :value=\"null\">全部型号</option>\n" +
+        "                        <option v-for=\"deviceModel in selection.deviceModelList\" v-bind:value=\"deviceModel.id\">{{deviceModel.name}}</option>\n" +
+        "                    </select>"+
+        "                        </div>\n" +
+        "                        <div class=\"col-md-2\">\n" +
+        "                            <select v-model=\"queryParams.workNatureId\" class=\"form-control\">\n" +
+        "                        <option :value=\"null\">全部工作性质</option>\n" +
+        "                        <option v-for=\"workNature in selection.workNatureList\" v-bind:value=\"workNature.id\">{{workNature.name}}</option>\n" +
+        "                    </select>"+
+        "                        </div>\n" +
+        "                        <div class=\"col-md-5\">\n" +
+        "                            检索关键词：<input v-model=\"queryParams.queryKey\" type=\"text\" style=\"width: 40%\" placeholder=\"从设备id，序列号，名称中检索\"/>\n" +
+        "                            <button @click=\"searchDevice\" type=\"button\" class=\"btn btn-success\">\n" +
+        "                                查询\n" +
+        "                            </button>\n" +
+        "                            <button class=\"btn btn-warning\">\n" +
+        "                                清除查询条件\n" +
+        "                            </button>\n" +
+        "                        </div>\n" +
+        "                    </div>",
     methods: {
         searchDevice: function () {
             this.$parent.listDevice();
