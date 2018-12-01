@@ -80,6 +80,27 @@
         )
     </insert>
 
+    <update id="updateUser">
+        update `user`
+          set
+        <if test="realName != null">
+            real_name = #{realName}
+        </if>
+        <if test="realName != null and phone != null">
+            ,
+        </if>
+        <if test="phone != null">
+             phone = #{phone}
+        </if>
+        <if test="email != null">
+             ,email = #{email}
+        </if>
+        <if test="address != null">
+             ,address = #{address}
+        </if>
+        where id=#{id}
+    </update>
+
     <insert id="insertUserAuth">
         INSERT INTO `user_auth` (`id`, `user_id`, `identify_type`, `identifier`, `credential`)
         VALUES (#{id}, #{userId}, #{identifyType}, #{identifier}, #{credential});

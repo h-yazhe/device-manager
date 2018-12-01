@@ -62,4 +62,10 @@ public class DeviceValidatedGroup {
 	}
 
 	public interface GetBrandsGroup{}
+
+	//添加用户
+	public interface addUser{}
+
+	//修改用户
+    public interface modifyUser{}
 }

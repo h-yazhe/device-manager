@@ -40,6 +40,12 @@ public interface UserService {
     void addUser(UserRegisterDTO userRegisterDTO);
 
     /**
+     * 修改用户
+     * @param userRegisterDTO 用户信息
+     */
+    void modifyUser(UserRegisterDTO userRegisterDTO);
+
+    /**
      * 为用户批量更新角色
      * @param userId     用户id
      * @param roleIdList 角色id列表

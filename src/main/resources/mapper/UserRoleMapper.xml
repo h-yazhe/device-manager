@@ -19,4 +19,10 @@
         VALUES (#{id}, #{userId}, #{roleId})
     </insert>
 
+    <update id="updateUserRole">
+        update `user_role`
+        set role_id = #{roleId}
+        where user_id=#{userId}
+    </update>
+
 </mapper>

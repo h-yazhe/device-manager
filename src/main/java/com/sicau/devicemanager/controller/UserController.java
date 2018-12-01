@@ -3,6 +3,7 @@ package com.sicau.devicemanager.controller;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.UserRegisterDTO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.constants.PermissionActionConstant;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -61,6 +63,20 @@ public class UserController {
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.GET)
     public ResultVO listUser(@Valid QueryPage queryPage) {
         return ResultVOUtil.success(userService.listUser(queryPage));
+    }
+
+    /**
+     * 修改用户
+     * @param userRegisterDTO 用户信息
+     */
+    @ApiOperation("修改用户")
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header")
+    )
+    @PostMapping("modify")
+    public ResultVO modifyUser(@Validated(DeviceValidatedGroup.modifyUser.class) @RequestBody UserRegisterDTO userRegisterDTO) {
+        userService.modifyUser(userRegisterDTO);
+        return ResultVOUtil.success();
     }
 
     /**

@@ -90,6 +90,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void modifyUser(UserRegisterDTO userRegisterDTO) {
+        //用户信息写入
+        User user = new User();
+        BeanUtils.copyProperties(userRegisterDTO, user);
+        user.setId(userRegisterDTO.getUserId());
+        UserDTO savedUser = userMapper.getUserById(user.getId());
+        if (null == savedUser) {
+            throw new CommonException(ResultEnum.USER_NOT_FOUND);
+        }
+        if (1 != userMapper.updateUser(user)) {
+            throw new CommonException(ResultEnum.UNKNOWN_ERROR);
+        }
+
+        UserRole userRole = new UserRole();
+        BeanUtils.copyProperties(userRegisterDTO,userRole);
+        if (null!=userRole.getRoleId()){
+            if (1 != userRoleMapper.updateUserRole(userRole)) {
+                throw new CommonException(ResultEnum.UNKNOWN_ERROR);
+            }
+        }
+    }
+
+    @Override
     public void updateUserRole(String userId, List<String> roleIdList) {
         //删除原来的角色
         userRoleMapper.deleteUserRoleByUserId(userId);
