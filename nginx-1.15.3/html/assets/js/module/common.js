@@ -11,6 +11,8 @@ function getLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
 }
 
+//格式化时间
+
 /**
  * 发送api请求
  * 重载$.ajax()方法，method默认为post，请求数据类型为json，header中添加了token
@@ -56,7 +58,11 @@ var API = {
     //报废设备
     discardDevice: "device/discard",
     //查询品牌列表
-    listBrand: "brand",
+    listDeviceBrand:"get-brands",
+    //添加品牌
+    addDeviceBrand:"brand",
+    //删除品牌
+    deleteBrand:"delete-brand/",
     //根据父id查询子分类
     listCategoryByPId: 'list-category-by-pId',
     //分页查询所有用户
@@ -69,10 +75,26 @@ var API = {
     getUserSelection: "role/list-by-page",
     //根据父id查询地点
     addressDevice:"list-location-by-pid",
+    //删除分类
+    deleteCategory:"delete-category-by-id/",
     //根据父id插入一个子分类
+    insertCategory:"insert-category-by-pid",
     AddAddress:"insert-location-by-pid",
     //删除该节点为根的地点树
-    DeleteAddress:"delete-location-tree-by-Id",
+    DeleteAddress:"delete-location-tree-by-Id/",
+    DeviceRecord:"device/get-status-record-by-deviceId",
+    //查询设备型号
+    listDeviceModel:"device-model-listAll",
+    //添加设备型号
+    addDeviceModel:"/device-model-submit",
+    //删除设备型号
+    deleteDeviceModel:"/device-model-delete/",
+    //查询工作性质
+    listWorkNature:"work_nature/listAll",
+    //添加工作性质
+    addWorkNature:"work_nature/add",
+    //删除工作性质
+    deleteWorkNature:"work_nature/delete/",
     getApi: function (name) {
         return this.prefix + name;
     }
@@ -89,19 +111,17 @@ var defaultQueryPage = function () {
     this.pageNum = 1;
     this.pageSize = 20;
 };
-
 //构造category对象的初始参数
 var initCategory = function (category) {
     category.active = false;
     category.expanded = false;
     category.children = [];
 };
-//构造地点二级目录对象的初始参数
-// var initAddress = function (address) {
-//     address.flag = false;
-//     address.expanded = false;
-//     address.children = [];
-// }
+var initAddress=function (address) {
+    address.active = false;
+    address.expanded = false;
+    address.children = [];
+};
 
 //设备搜索的参数
 var searchDeviceParams= {
@@ -111,7 +131,6 @@ var searchDeviceParams= {
     brandId: null,//品牌id
     deviceModelId: null//设备型号id
 };
-
 //设备搜索，添加设备的选项卡数据
 var deviceSearchSelection = {
     categoryList: {
@@ -180,7 +199,6 @@ function formatTime(timestamp) {
     var date = new Date(timestamp);
     return date.getFullYear() + "." + date.getMonth() + "." + date.getDay();
 }
-
 //设备分类树组件
 var CategoryTree = {
     name: 'CategoryTree',
@@ -191,7 +209,7 @@ var CategoryTree = {
         }
     },
     template: '<div>\n' +
-        '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item">\n' +
+        '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item" >\n' +
         '                                    <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
         '                                </a>\n' +
         '                                <CategoryTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></CategoryTree>\n' +
@@ -199,6 +217,13 @@ var CategoryTree = {
     methods: {
         listChildren: function () {
             var self = this;
+            if(vueDeviceList.isSort==true){
+                sideBarVm.sortList(self.parent.id);
+                vueDeviceList.getValue(self.parent.id,self.parent.name)
+                if (self.parent.expanded){
+                    sideBarVm.sortList(self.parent.parentId);
+                }
+            }
             if (self.parent.expanded) {
                 self.parent.expanded = !self.parent.expanded;
                 return;
@@ -219,7 +244,6 @@ var CategoryTree = {
                     }
                 }
             });
-            //设置设备查询参数，重新渲染表格数据
             vueDeviceList.queryParams.categoryId = self.parent.id;
             vueDeviceList.listDevice();
         }
@@ -231,9 +255,9 @@ var CategoryTree = {
         }
     }
 };
-//地点分类树组件
-var AddressTree = {
-    name: 'AddressTree',
+//搜索地点组件
+var SelectTree = {
+    name: 'SelectTree',
     props: ['parent','index'],
     data: function () {
         return {
@@ -241,11 +265,10 @@ var AddressTree = {
         }
     },
     template: '<div>\n' +
-        '                                <a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item">\n' +
-        '                                    <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
-        '                                </a>\n' +
-        '                                <AddressTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></AddressTree>\n' +
-        '                            </div>',
+        '                                <li :class="{active: parent.active}"   :style="indent"  @mouseover="listChildren()"   @click="cValue(parent.id,parent.name)"><span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n'+
+        '                                </li>\n' +
+        '                                <SelectTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></SelectTree>'+
+        '</div>',
     methods: {
         listChildren: function () {
             var self = this;
@@ -256,24 +279,86 @@ var AddressTree = {
             sendPost({
                 url: API.getApi(API.addressDevice),
                 data: JSON.stringify({
-                    "parentId": "",
-                    "queryPage": {
-                        "pageNum": 1,
-                        "pageSize": 10
-                    }
+                    queryPage: self.queryPage,
+                    parentId: self.parent.id
                 }),
                 success: function (res) {
                     if (res.code === 0){
                         for (var item of res.data){
-                            initCategory(item);
+                            initAddress(item);
                         }
                         self.parent.children = res.data;
                         self.parent.expanded = !self.parent.expanded;
                     }
                 }
             });
-            //设置设备查询参数，重新渲染表格数据
-            vueDeviceList.addressDevice();
+        },
+        closeChildren:function(){
+            var self = this;
+            if (self.parent.expanded) {
+                self.parent.expanded = !self.parent.expanded;
+                return;
+            }
+        },
+        cValue:function (id,name) {
+            selectVm.id=id;
+            selectVm.name=name;
+            selectVm.Show=false;
+            vueDeviceList.queryParams.locationId=id;
+        }
+    },
+
+    computed: {
+        indent: function () {
+            var level = this.parent.level;
+            return {transform: 'translate(' + (level > 1 ? (level - 1) : 0) *4 + '%',width:(level > 1 ? 100-(level - 1)*4 : 100) + '%'}
+        }
+    }
+
+
+};
+//地点分类树组件
+var AddressTree = {
+    name: 'AddressTree',
+    props: ['parent','index'],
+    data: function () {
+        return {
+            queryPage: new defaultQueryPage()
+        }
+    },
+    template:
+        '<div>'+
+        '<a :class="{active: parent.active}" :style="indent" @click="listChildren"  href="javascript:;" class="list-group-item">\n' +
+        '                                <span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n' +
+        '                                </a>\n' +
+        '                                <AddressTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></AddressTree>\n</div>' ,
+    methods: {
+        listChildren: function () {
+            var self = this;
+            addressVm.address.parentId=self.parent.id;
+            sideBarVm.addressDevice(self.parent.id);
+            if (self.parent.expanded) {
+                self.parent.expanded = !self.parent.expanded;
+                addressVm.address.parentId=self.parent.parentId;
+                sideBarVm.addressDevice(self.parent.parentId);
+                return;
+            }
+            sendPost({
+                url: API.getApi(API.addressDevice),
+                data: JSON.stringify({
+                    queryPage: self.queryPage,
+                    parentId: self.parent.id
+                }),
+                success: function (res) {
+                    if (res.code === 0){
+                        for (var item of res.data){
+                            initAddress(item);
+                        }
+                        self.parent.children = res.data;
+                        self.parent.expanded = !self.parent.expanded;
+                    }
+                }
+            });
         }
     },
     computed: {
@@ -281,7 +366,8 @@ var AddressTree = {
             var level = this.parent.level;
             return {transform: 'translate(' + (level > 1 ? (level - 1) : 0) * 8 + '%)'}
         }
-    }
+    },
+
 };
 //搜索设备组件
 var SearchDevice = {
@@ -293,11 +379,8 @@ var SearchDevice = {
         }
     },
     template: "<div class=\"row form-group\" style=\"margin-bottom: 0\" id=\"form-group\">\n" +
-        "                        <div class=\"col-md-2\">\n" +
-        "<select v-model=\"queryParams.locationId\" id=\"input-partition\" class=\"form-control\">\n" +
-        "<option :value=\"null\">全部地点</option>" +
-        "                        <option v-for=\"location in selection.locationList\" v-bind:value=\"location.id\">{{location.name}}</option>\n" +
-        "                    </select>"+
+        "                        <div class=\"col-md-2\">\n"+
+        "<div id=\"select-tree\"></div>\n" +
         "                        </div>\n" +
         "                        <div class=\"col-md-2\">\n" +
         "<select v-model=\"queryParams.brandId\" id=\"input-brand\" class=\"form-control\">\n" +
@@ -330,42 +413,8 @@ var SearchDevice = {
     methods: {
         searchDevice: function () {
             this.$parent.listDevice();
-        }
-        // addressChildren: function () {
-        //     var self = this;
-        //     if (self.parent.expanded) {
-        //         self.parent.expanded = !self.parent.expanded;
-        //         return;
-        //     }
-        //     sendPost({
-        //         url: API.getApi(API.addressDevice)+location.id,
-        //         data: JSON.stringify({
-        //             "parentId": "123",
-        //             "queryPage": {
-        //                 "pageNum": 1,
-        //                 "pageSize": 10
-        //             }
-        //         }),
-        //         success: function (res) {
-        //             if (res.code === 0){
-        //                 for (var item of res.data){
-        //                     initAddress(item);
-        //                 }
-        //                 self.parent.children = res.data;
-        //                 self.parent.expanded = !self.parent.expanded;
-        //             }
-        //         }
-        //     });
-        //     //设置设备查询参数，重新渲染表格数据
-        //     vueDeviceList.addressDevice();
-        // }
+        },
     },
-    // computed: {
-    //     indent: function () {
-    //         var level = this.parent.level;
-    //         return {transform: 'translate(' + (level > 1 ? (level - 1) : 0) * 8 + '%)'}
-    //     }
-    // },
     created: function () {
         //传递参数到父组件
         this.$parent.queryParams = this.queryParams;
@@ -422,6 +471,8 @@ var DistributeDevice = {
         '    </div>\n' +
         '</div>'
 };
+
+
 //报废设备组件
 var DiscardDevice = {
     name: 'discard-device',
@@ -459,3 +510,4 @@ var DiscardDevice = {
         '    </div>\n' +
         '</div>'
 };
+

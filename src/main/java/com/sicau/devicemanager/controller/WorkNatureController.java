@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.controller;
 
 import com.sicau.devicemanager.POJO.DO.WorkNature;
+import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
@@ -41,8 +42,8 @@ public class WorkNatureController {
      */
     @PostMapping("/listAll")
     @RequiresPermissions(ResourceConstants.NATURE+PermissionActionConstant.GET)
-    public ResultVO listAllWorkNature() {
-        return ResultVOUtil.success(workNatureService.findAllWorkNature());
+    public ResultVO listAllWorkNature(@RequestBody QueryPage queryPage) {
+        return ResultVOUtil.success(workNatureService.findAllWorkNature(queryPage));
     }
 
     /**

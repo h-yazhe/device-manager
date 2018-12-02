@@ -29,4 +29,11 @@ public interface UserRoleMapper {
      * @return
      */
     int insertUserRole(UserRole userRole);
+
+    /**
+     * 更新信息到user_role表
+     * @param userRole
+     * @return
+     */
+    int updateUserRole(UserRole userRole);
 }

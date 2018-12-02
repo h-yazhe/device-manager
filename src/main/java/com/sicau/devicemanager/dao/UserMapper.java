@@ -35,6 +35,13 @@ public interface UserMapper {
     int insertUser(User user);
 
     /**
+     * 更新呢信息到user表
+     * @param user 用户信息
+     * @return
+     */
+    int updateUser(User user);
+
+    /**
      * 插入信息到user_auth表
      * @param userAuth
      * @return

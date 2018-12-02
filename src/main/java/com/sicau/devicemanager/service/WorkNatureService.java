@@ -1,6 +1,8 @@
 package com.sicau.devicemanager.service;
 
+import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.WorkNature;
+import com.sicau.devicemanager.POJO.DTO.QueryPage;
 
 import java.util.List;
 
@@ -10,14 +12,16 @@ import java.util.List;
 public interface WorkNatureService {
     /**
      * 添加工作性质记录
+     * @author 蔡华庆
      * @param record 记录
      */
     void addWorkNature(WorkNature record);
 
     /**
+     * @author 蔡华庆
      * 查询所有工作性质的记录
      */
-    List<WorkNature> findAllWorkNature();
+    PageInfo<WorkNature> findAllWorkNature(QueryPage queryPage);
 
     /**
      * 根据id删除工作性质

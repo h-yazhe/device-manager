@@ -41,9 +41,8 @@ public class DeviceModelServiceImpl implements DeviceModelService {
     }
 
     @Override
-    public PageInfo<DeviceModel> listAllDeviceModel() {
+    public PageInfo<DeviceModel> listAllDeviceModel(QueryPage queryPage) {
         //分页查询
-        QueryPage queryPage = new QueryPage();
         PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(), "id");
         return new PageInfo<>(deviceModelMapper.listAll());
     }

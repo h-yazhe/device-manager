@@ -2,6 +2,7 @@ package com.sicau.devicemanager.service;
 
 import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.DeviceModel;
+import com.sicau.devicemanager.POJO.DTO.QueryPage;
 
 /**
  * @Author: 郭效坤
@@ -23,7 +24,7 @@ public interface DeviceModelService {
      * @description 一次查找全部设备型号
      * @return 成功返回分页对象，内含设备型号列表，失败返回null
      */
-    PageInfo<DeviceModel> listAllDeviceModel();
+    PageInfo<DeviceModel> listAllDeviceModel(QueryPage queryPage);
 
     /**
      * 根据id删除设备型号

@@ -1,5 +1,6 @@
 package com.sicau.devicemanager;
 
+import com.sicau.devicemanager.websocket.WebSocketServer;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +21,6 @@ public class Application extends SpringBootServletInitializer implements Command
 
     @Override
     public void run(String... strings) throws Exception {
-        //new WebSocketServer().start(Integer.valueOf(port));
+        new WebSocketServer().start(Integer.valueOf(port));
     }
 }

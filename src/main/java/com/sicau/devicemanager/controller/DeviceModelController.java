@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.controller;
 
 import com.sicau.devicemanager.POJO.DO.DeviceModel;
+import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
@@ -45,8 +46,8 @@ public class DeviceModelController {
      */
     @PostMapping("/device-model-listAll")
     @RequiresPermissions(ResourceConstants.MODEl + PermissionActionConstant.GET)
-    public ResultVO findDeviceModel() {
-        return ResultVOUtil.success(deviceModelService.listAllDeviceModel());
+    public ResultVO findDeviceModel(@RequestBody QueryPage queryPage) {
+        return ResultVOUtil.success(deviceModelService.listAllDeviceModel(queryPage));
     }
 
     /**
