@@ -774,7 +774,7 @@ var addCategory=new Vue({
     data:{
         parentName:'',
         category: {
-            "parentId":" ",
+            "parentId":"",
             "name":"",
         }
     },

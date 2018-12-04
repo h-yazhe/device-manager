@@ -129,8 +129,8 @@ public class CategoryServiceImpl implements CategoryService {
             Category pCategory = categoryMapper.getById(category.getParentId());
             category.setLevel(pCategory.getLevel() + 1);
             category.setPath(pCategory.getPath() + pCategory.getId() + "/");
-            categories.add(category);
         }
+		categories.add(category);
         categoryMapper.insertList(categories);
     }
 
