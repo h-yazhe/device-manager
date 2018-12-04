@@ -61,7 +61,7 @@ public class UserController {
     )
     @PostMapping("list-by-page")
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.GET)
-    public ResultVO listUser(@Valid QueryPage queryPage) {
+    public ResultVO listUser(@RequestBody @Valid QueryPage queryPage) {
         return ResultVOUtil.success(userService.listUser(queryPage));
     }
 

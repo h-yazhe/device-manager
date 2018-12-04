@@ -2,6 +2,7 @@ package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.User;
 import com.sicau.devicemanager.POJO.DO.UserAuth;
+import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,10 +23,17 @@ public interface UserMapper {
 
     /**
      * 查询所有用户信息
+	 * @param startNum 起始行数
+	 * @param endNum 结束行数
      * @return
      */
-    List<UserDTO> listUser();
+    List<UserDTO> listUser(@Param("startNum") Integer startNum, @Param("endNum") Integer endNum);
 
+	/**
+	 * 统计用户总数
+	 * @return
+	 */
+	Integer countUser();
 
     /**
      * 插入信息到user表

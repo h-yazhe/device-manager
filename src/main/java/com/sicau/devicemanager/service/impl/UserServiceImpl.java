@@ -17,12 +17,15 @@ import com.sicau.devicemanager.dao.UserMapper;
 import com.sicau.devicemanager.dao.UserRoleMapper;
 import com.sicau.devicemanager.service.UserService;
 import com.sicau.devicemanager.util.KeyUtil;
+import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author BeFondOfTaro
@@ -49,9 +52,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> listUser(QueryPage queryPage) {
-        PageHelper.startPage(queryPage);
-        return userMapper.listUser();
+    public Map<String,Object> listUser(QueryPage queryPage) {
+		Map<String,Object> resMap = new HashMap<>(2);
+		Integer startNum = (queryPage.getPageNum()-1)*queryPage.getPageSize();
+		resMap.put("list",userMapper.listUser(startNum,startNum+queryPage.getPageSize()));
+		resMap.put("total",userMapper.countUser());
+        return resMap;
     }
 
     @Override

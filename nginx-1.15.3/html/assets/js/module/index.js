@@ -55,8 +55,8 @@ var vueDeviceList = new Vue({
         addressList: [
             {
                 "id": "",
-                "name": "",
-            },
+                "name": ""
+            }
         ],
         userList: [
             {
@@ -66,7 +66,8 @@ var vueDeviceList = new Vue({
                 "email": "",
                 "phone": "",
                 "lastTime": "",
-                roleList:[{
+                roleList: [{
+                    "id": "",
                     "name":""
                 }]
             }
@@ -217,8 +218,7 @@ var vueDeviceList = new Vue({
                 success: function (res) {
                     var data = res.data;
                     if (res.code == 0) {
-                        vueDeviceList.userList = data;
-                        console.log(data);
+                        vueDeviceList.userList = data.list;
                     } else {
                         alert(res.msg);
                     }
@@ -232,6 +232,19 @@ var vueDeviceList = new Vue({
                     }
                 }
             });
+        },
+        //处理用户角色
+        parseRoleList: function(roleList){
+             var res = "";
+             for (var i = 0;i<roleList.length;i++){
+                 if (i !== roleList.length - 1) {
+                     res = res + roleList[i].name + ",";
+                 }
+                 else {
+                     res = res + roleList[i].name;
+                 }
+             }
+             return res;
         },
         //渲染设备品牌表格
         listDeviceBrand: function () {
@@ -365,19 +378,6 @@ var vueDeviceList = new Vue({
                         alert("删除失败！");
                 }
             })
-        },
-        //打印用户角色名
-        listRole:function(roleList)
-        {
-            var res = "";
-            for (var i=0;i<roleList.length;i++){
-                if (i === 0){
-                    res = roleList[0].name;
-                } else {
-                    res = res + "/" + roleList[i].name;
-                }
-            }
-            return res;
         },
         //删除用户传值
         showDeleteUserModal:function(userId)

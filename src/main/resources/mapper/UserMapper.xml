@@ -31,7 +31,7 @@
     </resultMap>
 
     <sql id="listUser">
-        SELECT `user`.*,
+        SELECT u_temp.*,
                role.id          role_id,
                role.name        role_name,
                role.locked      role_locked,
@@ -43,8 +43,8 @@
                permission_code,
                permission_name,
                required
-        FROM `user`
-                 JOIN `user_role` ON user.id = user_role.user_id
+        FROM (select u.* from `user` u limit #{startNum},#{endNum}) u_temp
+                 JOIN `user_role` ON u_temp.id = user_role.user_id
                  JOIN role ON user_role.role_id = role.id
                  JOIN role_permission ON role.id = role_permission.role_id
                  JOIN permission ON role_permission.permission_id = permission.id
@@ -120,7 +120,23 @@
     </delete>
 
     <select id="getUserById" resultMap="userDTOMap">
-        <include refid="listUser"/>
+		SELECT u_temp.*,
+			   role.id          role_id,
+			   role.name        role_name,
+			   role.locked      role_locked,
+			   role.create_time role_create_time,
+			   role.update_time role_update_time,
+			   permission.id    permission_id,
+			   resource,
+			   resource_name,
+			   permission_code,
+			   permission_name,
+			   required
+		FROM `user` u_temp
+				 JOIN `user_role` ON u_temp.id = user_role.user_id
+				 JOIN role ON user_role.role_id = role.id
+				 JOIN role_permission ON role.id = role_permission.role_id
+				 JOIN permission ON role_permission.permission_id = permission.id
         WHERE user_id = #{userId}
     </select>
 
@@ -128,5 +144,8 @@
     <select id="listUser" resultMap="userDTOMap">
         <include refid="listUser"/>
     </select>
+	<select id="countUser" resultType="java.lang.Integer">
+		select count(1) from `user`
+	</select>
 
 </mapper>

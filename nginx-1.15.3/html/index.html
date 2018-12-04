@@ -281,6 +281,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th>用户名</th>
+                                <th>角色</th>
                                 <th>真实姓名</th>
                                 <th>邮箱</th>
                                 <th>电话</th>
@@ -292,10 +293,11 @@
                             <tr v-for="user in userList">
                                 <td>{{user.id}}</td>
                                 <td>{{user.username}}</td>
+                                <td>{{parseRoleList(user.roleList)}}</td>
                                 <td>{{user.realName}}</td>
                                 <td>{{user.email}}</td>
                                 <td>{{user.phone}}</td>
-                                <td>{{user.lastTime}}</td>
+                                <td>{{userFormatTime(user.lastTime)}}</td>
                                 <td><button class="btn btn-danger btn-xs">删除</button></td>
                             </tr>
                             </tbody>

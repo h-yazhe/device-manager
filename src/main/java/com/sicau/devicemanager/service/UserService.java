@@ -5,6 +5,7 @@ import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.DTO.UserRegisterDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author BeFondOfTaro
@@ -24,7 +25,7 @@ public interface UserService {
      * @param queryPage 分页参数
      * @return
      */
-    List<UserDTO> listUser(QueryPage queryPage);
+    Map<String,Object> listUser(QueryPage queryPage);
 
     /**
      * 根据用户id查询密码(不需要暴露endpoint)
