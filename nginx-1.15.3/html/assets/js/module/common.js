@@ -511,3 +511,16 @@ var DiscardDevice = {
         '</div>'
 };
 
+//处理用户角色
+function parseRoleList(roleList){
+    var res = "";
+    for (var i = 0;i<roleList.length;i++){
+        if (i !== roleList.length - 1) {
+            res = res + roleList[i].name + ",";
+        }
+        else {
+            res = res + roleList[i].name;
+        }
+    }
+    return res;
+}

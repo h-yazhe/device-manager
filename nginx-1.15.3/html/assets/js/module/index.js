@@ -235,16 +235,7 @@ var vueDeviceList = new Vue({
         },
         //处理用户角色
         parseRoleList: function(roleList){
-             var res = "";
-             for (var i = 0;i<roleList.length;i++){
-                 if (i !== roleList.length - 1) {
-                     res = res + roleList[i].name + ",";
-                 }
-                 else {
-                     res = res + roleList[i].name;
-                 }
-             }
-             return res;
+             return parseRoleList(roleList);
         },
         //渲染设备品牌表格
         listDeviceBrand: function () {
@@ -1043,6 +1034,7 @@ var sideBarVm = new Vue({
     el: "#sidebar",
     data: {
         username: getLocalStorage(STORAGE_KEY.userInfo).username,
+        roleList: parseRoleList(getLocalStorage(STORAGE_KEY.userInfo).roleList)
     },
     methods: {
         listDevice: function (statusId) {
