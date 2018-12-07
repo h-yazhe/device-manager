@@ -234,7 +234,7 @@ public class DeviceServiceImpl implements DeviceService {
         PageHelper.startPage(1, pageSize);
         deviceSearchSelectionVO.setCategoryList(categoryMapper.getChildrenById(""));
         PageHelper.startPage(1, pageSize);
-        deviceSearchSelectionVO.setLocationList(locationMapper.getChildrenById(""));
+        deviceSearchSelectionVO.setLocationList(locationMapper.getOnesLocationByUserId(RequestUtil.getCurrentUserId()));
         PageHelper.startPage(1, pageSize);
         deviceSearchSelectionVO.setBrandList(brandMapper.listBrand());
         PageHelper.startPage(1, pageSize);

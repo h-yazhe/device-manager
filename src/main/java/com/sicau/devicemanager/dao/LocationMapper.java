@@ -69,4 +69,11 @@ public interface LocationMapper {
      * @return
      */
     List<Location> getDescendants(String rootId);
+
+    /**
+     * 根据用户id查询该用户管理的地点
+     * @param userId 用户id
+     * @return
+     */
+    List<Location> getOnesLocationByUserId(String userId);
 }

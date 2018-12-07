@@ -84,4 +84,18 @@
           AND path LIKE concat("%/", #{rootId}, "/%")
     </select>
 
+    <select id="getOnesLocationByUserId" resultType="com.sicau.devicemanager.POJO.DO.Location">
+        SELECT * FROM location
+        where location.path like concat('%',
+        (
+          SELECT user_location.location_id FROM
+          user_location join location on user_location.location_id=location.id
+          where user_location.user_id=#{userId}
+        ),'%') or location.id=
+        (
+          SELECT user_location.location_id FROM
+          user_location join location on user_location.location_id=location.id
+          where user_location.user_id=#{userId}
+        )
+    </select>
 </mapper>
