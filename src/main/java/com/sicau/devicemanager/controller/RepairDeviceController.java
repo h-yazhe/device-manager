@@ -4,6 +4,7 @@ import com.sicau.devicemanager.POJO.DO.RepairOrder;
 import com.sicau.devicemanager.POJO.DTO.RepairOrderDTO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.*;
 import com.sicau.devicemanager.service.RepairDeviceService;
@@ -60,7 +61,7 @@ public class RepairDeviceController {
      */
     @RequiresPermissions(ResourceConstants.ORDER + PermissionActionConstant.ADD)
     @PostMapping("/submit-repair-order")
-    public ResultVO repairDevice(@Validated(DeviceValidatedGroup.SubmitRepairOrder.class)
+    public ResultVO repairDevice(@Validated({DeviceValidatedGroup.SubmitRepairOrder.class, CommonValidatedGroup.LegalityGroup.class})
                                  @RequestBody RepairOrder repairOrder) {
         repairDeviceService.submitRepairDeviceOrder(repairOrder);
         return ResultVOUtil.success();
@@ -71,7 +72,7 @@ public class RepairDeviceController {
      * @author Xiao W
      */
     @PostMapping("/modify-repair-order")
-    public ResultVO modifyOrder(@Validated(DeviceValidatedGroup.ModifyRepairOrder.class)
+    public ResultVO modifyOrder(@Validated({DeviceValidatedGroup.ModifyRepairOrder.class, CommonValidatedGroup.LegalityGroup.class})
                                 @RequestBody RepairOrder repairOrder) {
         repairDeviceService.modifyOrder(repairOrder);
         return ResultVOUtil.success();
@@ -95,7 +96,7 @@ public class RepairDeviceController {
      */
     @RequiresPermissions(ResourceConstants.ORDER + PermissionActionConstant.FINISH_ADMIN)
     @PostMapping("/finish-order-admin")
-    public ResultVO finishAdmin(@Validated(DeviceValidatedGroup.AdminFinishOrder.class)
+    public ResultVO finishAdmin(@Validated({DeviceValidatedGroup.AdminFinishOrder.class})
                                 @RequestBody RepairOrder repairOrder) {
         repairDeviceService.finishOrder(repairOrder.getId(), EnumUtil.getByCode(repairOrder.getStatusCode(), OrderStatusEnum.class));
         return ResultVOUtil.success();

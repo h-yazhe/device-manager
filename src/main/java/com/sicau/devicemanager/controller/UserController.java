@@ -3,6 +3,7 @@ package com.sicau.devicemanager.controller;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.UserRegisterDTO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
@@ -74,7 +75,7 @@ public class UserController {
             @ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header")
     )
     @PostMapping("modify")
-    public ResultVO modifyUser(@Validated(DeviceValidatedGroup.modifyUser.class) @RequestBody UserRegisterDTO userRegisterDTO) {
+    public ResultVO modifyUser(@Validated({DeviceValidatedGroup.modifyUser.class, CommonValidatedGroup.LegalityGroup.class}) @RequestBody UserRegisterDTO userRegisterDTO) {
         userService.modifyUser(userRegisterDTO);
         return ResultVOUtil.success();
     }

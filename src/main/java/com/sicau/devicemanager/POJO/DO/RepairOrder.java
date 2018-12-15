@@ -1,5 +1,6 @@
 package com.sicau.devicemanager.POJO.DO;
 
+import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AdminFinishOrder;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UserFinishOrder;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.ModifyRepairOrder;
@@ -7,6 +8,8 @@ import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.Subm
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
@@ -19,6 +22,8 @@ public class RepairOrder {
      * 设备id
      */
     @NotNull(message = "设备id不能为空", groups = {SubmitRepairOrder.class})
+    @Pattern(regexp = "\\d+", message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Size(min = 19, max = 19, message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String deviceId;
 
     /**
@@ -41,6 +46,7 @@ public class RepairOrder {
      * 设备问题描述
      */
     @NotNull(message = "问题描述不能为空", groups = {SubmitRepairOrder.class})
+    @Pattern(regexp = "^[a-zA-Z\u4e00-\u9fa5_0-9]+$", groups = CommonValidatedGroup.LegalityGroup.class, message = "description只能为汉字、英文字母、数字、下划线的组合")
     private String description;
 
     /**

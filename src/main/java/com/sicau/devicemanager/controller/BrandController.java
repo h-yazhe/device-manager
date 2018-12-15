@@ -3,6 +3,7 @@ package com.sicau.devicemanager.controller;
 import com.sicau.devicemanager.POJO.DO.Brand;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddBrandGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.GetBrandsGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
@@ -48,7 +49,7 @@ public class BrandController {
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping(ResourceConstants.BRAND)
 	@RequiresPermissions(ResourceConstants.BRAND + PermissionActionConstant.ADD)
-    public ResultVO insertBrand(@Validated(AddBrandGroup.class) @RequestBody Brand brand) {
+    public ResultVO insertBrand(@Validated({AddBrandGroup.class, CommonValidatedGroup.LegalityGroup.class}) @RequestBody Brand brand) {
         brandService.insertBrand(brand);
         return ResultVOUtil.success();
     }

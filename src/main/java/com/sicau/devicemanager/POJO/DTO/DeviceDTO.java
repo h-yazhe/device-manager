@@ -7,14 +7,17 @@ import com.sicau.devicemanager.POJO.DO.Brand;
 import com.sicau.devicemanager.POJO.DO.Category;
 import com.sicau.devicemanager.POJO.DO.Device;
 import com.sicau.devicemanager.POJO.DO.Location;
+import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.QueryDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UpdateDeviceGroup;
-import io.swagger.annotations.ApiModelProperty;
+import com.sicau.devicemanager.config.validation.ListStringConstraint;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -30,60 +33,62 @@ public class DeviceDTO extends Device {
      */
     private Brand brand;
 
-    @NotNull(message = "品牌id不能为空", groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
-    @ApiModelProperty("设备品牌id")
+    @NotNull(message = "brandId不能为空",groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
+    @Pattern(regexp = "\\d+", message = "brandId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Size(min = 19, max = 19, message = "brandId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String brandId;
 
     /**
      * 分类id
      */
-    @NotNull(message = "分类不能为空", groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
-    @NotEmpty(message = "分类不能为空", groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
+    @NotNull(message = "分类不能为空",groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
+    @NotEmpty(message = "分类不能为空",groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
+    @ListStringConstraint(regexp = "\\d+,19", message = "categoryId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private List<String> categoryIds;
 
-    @ApiModelProperty("查询条件，分类id")
+    @Pattern(regexp = "\\d+", message = "categoryId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Size(min = 19, max = 19, message = "categoryId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class )
     private String categoryId;
 
-    @ApiModelProperty(value = "所处地点")
+    @Pattern(regexp = "[\\u4e00-\\u9fa5\\w-]+", message = "locationStr只能包含汉字、英文、“_”、“-”和数字 ",groups = CommonValidatedGroup.LegalityGroup.class)
     private String locationStr;
 
+    @Valid
     private Location location;
 
-    @ApiModelProperty(value = "设备分类")
+    @Pattern(regexp = "[\\u4e00-\\u9fa5\\w]+", message = "categoryStr只能是汉字和英文", groups = CommonValidatedGroup.LegalityGroup.class)
     private String categoryStr;
 
+    @Valid
     private Category category;
 
-    @ApiModelProperty("工作性质")
     private String workNature;
 
-    @ApiModelProperty("保管人")
     private String custodian;
 
-    @ApiModelProperty("计量单位")
     private String amountUnit;
 
-    @ApiModelProperty("入库的开始时间")
     @JsonFormat(pattern = "yyyy-MM-dd", locale = "zh", timezone = "GMT+8")
+    @Pattern(regexp = "\\d+", message = "startTime只能是13位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Size(min = 13, max = 13, message = "startTime只能是13位的数字",groups = CommonValidatedGroup.LegalityGroup.class )
     private Date startTime;
 
-    @ApiModelProperty("入库的结束时间")
     @JsonFormat(pattern = "yyyy-MM-dd", locale = "zh", timezone = "GMT+8")
+    @Pattern(regexp = "\\d+", message = "endTime只能是13位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Size(min = 13, max = 13, message = "endTime只能是13位的数字",groups = CommonValidatedGroup.LegalityGroup.class )
     private Date endTime;
 
     @Valid
     @NotNull(groups = {QueryDeviceGroup.class}, message = "分页参数不能为空")
     private QueryPage queryPage;
 
-    @ApiModelProperty("模糊查询的key")
+    @Pattern(regexp = "[\\u4e00-\\u9fa5]+", message = "queryKey只能是汉字", groups = CommonValidatedGroup.LegalityGroup.class)
     private String queryKey;
 
-    @ApiModelProperty("地点列表")
     private List<Location> locationList;
 
     private List<String> locationIds;
 
-    @ApiModelProperty("查询条件，用户id")
     private String userId;
 
     /**

@@ -5,6 +5,7 @@ import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.DistributeDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.GetDeviceStatusRecordByDeviceId;
@@ -39,7 +40,8 @@ public class DeviceController {
     @ApiOperation("添加设备")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("/add")
-    public ResultVO addDevice(@Validated(DeviceValidatedGroup.AddDeviceGroup.class)
+    //验证分成两部分：1.非空验证(AddDeviceGroup)，2.判断一个字段是否符合格式要求(DefaultGroup)，格式要求是一致的
+    public ResultVO addDevice(@Validated({DeviceValidatedGroup.AddDeviceGroup.class, CommonValidatedGroup.LegalityGroup.class})
                               @RequestBody DeviceDTO deviceDTO) {
         deviceService.addDevice(deviceDTO);
         return ResultVOUtil.success();
@@ -48,7 +50,7 @@ public class DeviceController {
     @ApiOperation("更新设备")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("/update")
-    public ResultVO updateDeviceById(@Validated(DeviceValidatedGroup.UpdateDeviceGroup.class)
+    public ResultVO updateDeviceById(@Validated({DeviceValidatedGroup.UpdateDeviceGroup.class, CommonValidatedGroup.LegalityGroup.class})
                                      @RequestBody DeviceDTO deviceDTO) {
         deviceService.updateDeviceById(deviceDTO);
         return ResultVOUtil.success();
@@ -57,7 +59,7 @@ public class DeviceController {
     @ApiOperation("根据条件查询设备列表")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("/list")
-    public ResultVO listDeviceByCondition(@Validated(DeviceValidatedGroup.QueryDeviceGroup.class)
+    public ResultVO listDeviceByCondition(@Validated({DeviceValidatedGroup.QueryDeviceGroup.class, CommonValidatedGroup.LegalityGroup.class})
                                           @RequestBody DeviceDTO deviceDTO, HttpServletRequest request) {
 
         deviceDTO.setUserId(JWTUtil.getUserId(request.getHeader(HttpParamKey.TOKEN)));
@@ -103,7 +105,7 @@ public class DeviceController {
      * @return
      */
     @PostMapping("get-status-record-by-deviceId")
-    public ResultVO getDeviceStatusRecordByDeviceId(@Validated({GetDeviceStatusRecordByDeviceId.class})
+    public ResultVO getDeviceStatusRecordByDeviceId(@Validated({GetDeviceStatusRecordByDeviceId.class, CommonValidatedGroup.LegalityGroup.class})
                                                     @RequestBody DeviceStatusRecordDTO deviceStatusRecordDTO) {
         return ResultVOUtil.success(deviceService.getDeviceStatusRecordByDeviceId(deviceStatusRecordDTO));
     }
@@ -114,7 +116,7 @@ public class DeviceController {
      * @return
      */
     @PostMapping("/update-repair-status-by-deviceId")
-    public ResultVO updateRepairedStatusByDeviceId(@Validated({DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class})
+    public ResultVO updateRepairedStatusByDeviceId(@Validated({DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class, CommonValidatedGroup.LegalityGroup.class})
                                                    @RequestBody Device device) {
         deviceService.updateRepairedStatusByDeviceId(device.getId(), device.getStatusId());
         return ResultVOUtil.success();

@@ -3,6 +3,7 @@ package com.sicau.devicemanager.controller;
 import com.sicau.devicemanager.POJO.DO.Category;
 import com.sicau.devicemanager.POJO.VO.CategoryVO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.ListTreeByPId;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
@@ -45,7 +46,7 @@ public class CategoryController {
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("list-category-by-pId")
     @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
-    public ResultVO listCategoryByPId(@Validated({ListTreeByPId.class}) @RequestBody CategoryVO categoryVO) {
+    public ResultVO listCategoryByPId(@Validated({ListTreeByPId.class, CommonValidatedGroup.LegalityGroup.class}) @RequestBody CategoryVO categoryVO) {
         return ResultVOUtil.success(categoryService.listCategoryByPId(categoryVO));
     }
 

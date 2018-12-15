@@ -1,8 +1,11 @@
 package com.sicau.devicemanager.POJO.DO;
 
+import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.GetDeviceStatusRecordByDeviceId;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
@@ -16,6 +19,8 @@ public class DeviceStatusRecord {
      * 设备id
      */
     @NotNull(message = "设备id不能为空", groups = {GetDeviceStatusRecordByDeviceId.class})
+    @Pattern(regexp = "\\d+", message = "deviceId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Size(min = 19, max = 19, message = "deviceId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String deviceId;
 
     /**

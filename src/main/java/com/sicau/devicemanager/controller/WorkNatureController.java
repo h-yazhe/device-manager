@@ -3,6 +3,7 @@ package com.sicau.devicemanager.controller;
 import com.sicau.devicemanager.POJO.DO.WorkNature;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.PermissionActionConstant;
@@ -30,7 +31,7 @@ public class WorkNatureController {
      */
     @PostMapping("/add")
     @RequiresPermissions(ResourceConstants.NATURE+PermissionActionConstant.ADD)
-    public ResultVO addWorkNature(@Validated({DeviceValidatedGroup.addWorkNature.class})
+    public ResultVO addWorkNature(@Validated({DeviceValidatedGroup.addWorkNature.class, CommonValidatedGroup.LegalityGroup.class})
                                   @RequestBody WorkNature workNature) {
         workNatureService.addWorkNature(workNature);
         return ResultVOUtil.success();

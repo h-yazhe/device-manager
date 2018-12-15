@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.POJO.DO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UpdateDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddDeviceGroup;
@@ -9,6 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -17,23 +19,21 @@ import java.util.Date;
 public class Device {
 
     @NotNull(groups = {UpdateDeviceGroup.class, DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class})
+    @Pattern(regexp = "\\d+", message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Size(min = 19, max = 19, message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String id;
 
-    @ApiModelProperty("设备名")
-    @Pattern(regexp = "^[a-zA-Z\u4e00-\u9fa5_0-9]+$", groups = {AddDeviceGroup.class, UpdateDeviceGroup.class}, message = "设备名只能为汉字、英文字母、数字、下划线的组合")
+    @Pattern(regexp = "^[a-zA-Z\u4e00-\u9fa5_0-9]+$", groups = CommonValidatedGroup.LegalityGroup.class, message = "设备名只能为汉字、英文字母、数字、下划线的组合")
     @NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class}, message = "设备名不能为空")
     private String name;
 
-    @ApiModelProperty("所处地点id")
     @NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
     private String locationId;
 
-    @ApiModelProperty("国资编号")
-    @Pattern(regexp = "^[0-9a-zA-Z]+$", groups = {AddDeviceGroup.class, UpdateDeviceGroup.class}, message = "国资编号只能为英文字母、数字的组合")
+    @Pattern(regexp = "^[0-9a-zA-Z]+$", groups = CommonValidatedGroup.LegalityGroup.class, message = "国资编号只能为英文字母、数字的组合")
     private String nationalId;
 
-    @ApiModelProperty("序列号")
-    @Pattern(regexp = "^[0-9a-zA-Z]+$", groups = {AddDeviceGroup.class}, message = "序列号只能为英文字母、数字的组合")
+    @Pattern(regexp = "^[0-9a-zA-Z]+$", groups = CommonValidatedGroup.LegalityGroup.class, message = "序列号只能为英文字母、数字的组合")
     @NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
     private String serialNumber;
 
@@ -43,18 +43,17 @@ public class Device {
     @NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
     private Integer deviceModelId;
 
-    @ApiModelProperty("领用时间")
     private Date useTime;
 
-    @ApiModelProperty("工作性质id")
     @NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
+    @Pattern(regexp = "\\d+", message = "workNatureId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Size(min = 19, max = 19, message = "workNatureId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String workNatureId;
 
-    @ApiModelProperty("保管人id")
     @NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
+    @Pattern(regexp = "\\d+", message = "custodianId只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String custodianId;
 
-    @ApiModelProperty("单价")
     @NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
     private BigDecimal unitPrice;
 
@@ -62,7 +61,6 @@ public class Device {
      * 计量单位id
      * 预留字段，暂不使用
      */
-    @ApiModelProperty("计量单位id")
     private String amountUnitId;
 
     /**
@@ -70,7 +68,6 @@ public class Device {
      */
     private String description;
 
-    @ApiModelProperty(value = "当前设备状态id", notes = "1为入库，2为使用，3为报废")
     @NotNull(groups = {DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class})
     private Integer statusId;
 
@@ -79,10 +76,8 @@ public class Device {
      */
     private Boolean deleted;
 
-    @ApiModelProperty("创建时间，即第一次入库的时间")
     private Date createTime;
 
-    @ApiModelProperty("更新时间")
     private Date updateTime;
 
     public Boolean getDeleted() {
