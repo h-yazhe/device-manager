@@ -497,11 +497,17 @@ var vueDeviceList = new Vue({
             deviceModalVm.discardDeviceParam.deviceId = deviceId;
             $('#discard-device-modal').modal('toggle');
         },
+        showEditUserModal:function(user){
+            userModal.user=user;
+            userModal.getUserSelection();
+            console.log(user)
+            $('#user-modal').modal('toggle');
+        },
         showDetailsModal:function (device) {
             console.log(device)
             deviceDtail.id=device.id;
             deviceDtail.brand=device.brand;
-            deviceDtail.deviceModel=device.deviceModel;
+            deviceDtail.deviceModel.name=device.deviceModel;
             deviceDtail.location=device.locationStr;
             deviceDtail.name=device.name;
             deviceDtail.department=vueDeviceList.getDepartment(device.locationStr);
@@ -521,34 +527,90 @@ var vueDeviceList = new Vue({
 
             // deviceDetails.getCategory();
             // deviceDetails.getLocation();
-
         }
     },
     created: function () {
         this.listDevice(this);
     }
 });
+//修改用户信息
+var userModal=new Vue({
+    el:"#user-detail",
+    data: {
+        user: '',
+        roleIds: '',
+        pageParam: new defaultQueryPage()
+    },
+        methods:{
+        //修改保存
+            saveEdit:function(){
+                var self = this;
+                var value={
+                    userId:self.user.id,
+                    realName:self.user.realName,
+                    roleId:self.user.roleList[0].id,
+                    email:self.user.email,
+                    phone:self.user.phone,
+                    address:self.user.address
+                };
+                console.log(value);
+                sendPost({
+                    url:API.getApi(API.updateUser),
+                    data: JSON.stringify(value),
+                    success: function (data) {
+                        if (data.code === 0){
+                            alert("修改用户信息成功！");
+                            $('#user-modal').modal('toggle');
+                            // sideBarVm.ListUser();
+                        }else {
+                            console.error(data.msg);
+                        }
+                    }
+                });
+            },
+        //角色选项卡
+            getUserSelection: function () {
+                var self = this;
+                sendPost({
+                    url:API.getApi(API.getUserSelection),
+                    data: JSON.stringify(this.pageParam),
+                    success: function (data) {
+                        if (data.code === 0){
+                            self.roleIds=data.data.list;
+                        }else {
+                            console.error(data.msg);
+                        }
+                    }
+                });
+            }
+        },
+    created:function () {
+        this.getUserSelection;
+    }
+
+})
 //详情模态框
 var deviceDtail=new Vue({
     el:'#table-device-detail',
     data:{
         id:"",
         name:'',
-        categoryStr:'',
+        categoryStr:"",
+        categoryIds:'',
         department:'',
         brand:'',
         deviceModel:'',
         nationalId:'',
         serialNumber:'',
-        location:"",
+        location:'',
         workNature:'',
         custodian:'',
         unitPrice:'',
         statusId:'',
         time:'',
         status:'',
-        category:'',
         selection: $.extend(true,{},deviceSearchSelection),
+        shows:false
     },
 
     methods:{
@@ -596,7 +658,6 @@ var deviceDtail=new Vue({
         }
     },
     created: function () {
-
         this.getDeviceSelection();
     }
 
@@ -665,6 +726,56 @@ var deviceChange=new Vue({
 }
     }
 })
+var saveChange=new Vue({
+    el:"#saveChange",
+    data:{
+        data:{
+            id:"",
+            name:"",
+            locationId:"",
+            nationalId:"",
+            serialNumber:"",
+            deviceModelId:"",
+            workNatureId:"",
+            custodianId:"",
+            unitPrice:"",
+            brandId:"",
+            categoryIds:"",
+            description:""
+        }
+    },
+    methods: {
+        changeDetail: function () {
+                this.data.id = deviceDtail.id,
+                this.data.name = deviceDtail.name,
+                this.data.locationId = deviceDtail.location,
+                this.data.nationalId = deviceDtail.nationalId,
+                this.data.serialNumber = deviceDtail.serialNumber,
+                this.data.deviceModelId = deviceDtail.deviceModel,
+                this.data.workNatureId = deviceDtail.workNature,
+                this.data.custodianId = deviceDtail.custodian,
+                this.data.unitPrice = deviceDtail.unitPrice,
+                this.data.brandId = deviceDtail.brand.id,
+                this.data.categoryIds= deviceDtail.categoryIds,
+                this.data.description = $('#device-description').val(),
+                console.log(this.data);
+            sendPost({
+                url:API.getApi(API.updateDevice),
+                data:JSON.stringify(this.data),
+                success:function (data) {
+                    if (data.code==0){
+                        alert("修改成功")
+                    } else {
+                        alert(data.msg)
+                    }
+                },
+                error:function (res) {
+                    alert(res.msg)
+                }
+            })
+        },
+    }
+})
 //渲染分发设备模态框，报废设备模态框
 var deviceModalVm = new Vue({
     el: '#device-modals',
@@ -688,7 +799,6 @@ var deviceModalVm = new Vue({
         "<discard-device :discardParams=\"discardDeviceParam\"></discard-device>"+
         '</div>'
 });
-
 //生成设备分类树，依赖于addDeviceVm
 var categoryVm = new Vue({
     el: '#category-tree',

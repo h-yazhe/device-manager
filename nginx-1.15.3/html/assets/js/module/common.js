@@ -49,6 +49,8 @@ var API = {
     login: "login",
     //查询设备列表
     listDevice: "device/list",
+    //更新设备
+    updateDevice:"device/update",
     //添加设备
     addDevice: "device/add",
     //获取添加设备的选项卡数据
@@ -69,6 +71,8 @@ var API = {
     ListUser:"user/list-by-page",
     //添加用户
     addUser:"user/add",
+    //更新用户
+    updateUser:"user/modify",
     //删除用户
     deleteUser:"user/delete/",
     //查询用户角色
