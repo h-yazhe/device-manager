@@ -69,13 +69,9 @@ public class DeviceDTO extends Device {
     private String amountUnit;
 
     @JsonFormat(pattern = "yyyy-MM-dd", locale = "zh", timezone = "GMT+8")
-    @Pattern(regexp = "\\d+", message = "startTime只能是13位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
-    @Size(min = 13, max = 13, message = "startTime只能是13位的数字",groups = CommonValidatedGroup.LegalityGroup.class )
     private Date startTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd", locale = "zh", timezone = "GMT+8")
-    @Pattern(regexp = "\\d+", message = "endTime只能是13位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
-    @Size(min = 13, max = 13, message = "endTime只能是13位的数字",groups = CommonValidatedGroup.LegalityGroup.class )
     private Date endTime;
 
     @Valid

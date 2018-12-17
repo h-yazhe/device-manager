@@ -17,14 +17,20 @@ public class ListStringValidator implements ConstraintValidator<ListStringConstr
 
     @Override
     public boolean isValid(List<?> value, ConstraintValidatorContext context) {
+
+        if (null == value) {
+            return true;
+        }
+
         boolean isValid = true;
 
         String[] pats = regexp.split(",");
         Pattern pattern = Pattern.compile(pats[0]);
 
-        for (Object e:value) {
-            String s = (String)e;
-            if (!pattern.matcher(s).find()){
+
+        for (Object e : value) {
+            String s = (String) e;
+            if (!pattern.matcher(s).find()) {
                 isValid = false;
             }
             if (pats[1] != null && !pats[1].equals(String.valueOf(s.length()))) {

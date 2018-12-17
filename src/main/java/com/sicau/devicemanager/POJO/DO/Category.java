@@ -30,7 +30,6 @@ public class Category {
     /**
      * 父级地点id
      */
-    @NotNull(message = "父级分类id不能为空", groups = {InsertTree.class, ListTreeByPId.class, InsertTreeByPId.class})
     @Pattern(regexp = "\\d+", message = "category的parentId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     @Size(min = 19, max = 19, message = "category的parentId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String parentId;
