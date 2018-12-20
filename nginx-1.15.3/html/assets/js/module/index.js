@@ -211,8 +211,8 @@ var vueDeviceList = new Vue({
                 url:API.getApi(API.ListUser),
                 data: JSON.stringify(
                     {
-                        "pageNum": 1,
-                        "pageSize": 20
+                        pageNum: 1,
+                        pageSize: 20
                     }
                 ),
                 success: function (res) {
@@ -900,7 +900,7 @@ var addCategory=new Vue({
                         alert("添加成功！");
                         $("#add-category").modal('toggle');
                         vueDeviceList.sort();
-
+                        categoryVm.categoryList = categoryList;
                     } else {
                         console.log(res)
                         alert(res.msg);
@@ -1173,16 +1173,16 @@ var sideBarVm = new Vue({
             vueDeviceList.category=false;
             vueDeviceList.address=false;
             vueDeviceList.user=false;
-            categoryVm.tree=true;
-            addresstreeVm.atree=false;
+            categoryVm.tree=false;
+            addressSortVm.tree=false;
         },
         sortList:function (id) {
             if(id==-1){
-                vueDeviceList.showButton=false,
+                vueDeviceList.showButton=false;
                     vueDeviceList.dataList.parentId="";
                 addDeviceVm.getDeviceSelection();
             }else {
-                vueDeviceList.showButton=true,
+                vueDeviceList.showButton=true;
                     vueDeviceList.dataList.parentId=id;
             }
             vueDeviceList.sort();
@@ -1200,11 +1200,11 @@ var sideBarVm = new Vue({
         addressDevice:function(id){
             if(id==-1){
                 addDeviceVm.getDeviceSelection();
-                vueDeviceList.showButton=false,
+                vueDeviceList.showButton=false;
                     vueDeviceList.locationList.parentId="";
 
             }else {
-                vueDeviceList.showButton=true,
+                vueDeviceList.showButton=true;
                     vueDeviceList.locationList.parentId=id;
             }
             vueDeviceList.addressDevice();

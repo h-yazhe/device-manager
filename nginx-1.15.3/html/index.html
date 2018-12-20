@@ -185,7 +185,7 @@
             <div class="row">
                 <div class="col-md-2" style="padding-right: 0" >
                     <div class="panel panel-default pre-scrollable">
-                       <div id="category-tree"></div>
+                        <div id="category-tree"></div>
                         <div id="address-tree" ></div>
                     </div>
                 </div>
@@ -299,7 +299,7 @@
                                 <td>{{user.phone}}</td>
                                 <td>{{userFormatTime(user.lastTime)}}</td>
                                 <td><button class="btn btn-danger btn-xs">删除</button>
-                                <button class="btn btn-primary btn-xs" @click="showEditUserModal(user)">修改</button></td>
+                                    <button class="btn btn-primary btn-xs" @click="showEditUserModal(user)">修改</button></td>
                             </tr>
                             </tbody>
                         </table>
@@ -326,7 +326,7 @@
                             <tr v-for="item in sortList">
                                 <td>{{item.id}}</td>
                                 <td>{{item.name}}</td>
-                                <td>  <button @click="deleteCategory(item.id)"  class="btn btn-danger btn-xs" v-if="showButton">删除</button>
+                                <td>  <button @click="deleteCategory(item.id)"  class="btn btn-danger btn-xs" v-if="item.id!=0">删除</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -356,7 +356,7 @@
                             <tr v-for="address in addressList">
                                 <td>{{address.id}}</td>
                                 <td>{{address.name}}</td>
-                                <td><button  class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete-address" @click="deleteAddressValue(address)">删除</button></td>
+                                <td><button  class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete-address" @click="deleteAddressValue(address)" v-if="address.level-1">删除</button></td>
                             </tr>
 
                             </tbody>
@@ -486,9 +486,9 @@
                             </div>
                         </div>
                         <!--&lt;!&ndash; page end&ndash;&gt;-->
-                    <!--</div>-->
-                </div><!-- /col-lg-9 END SECTION MIDDLE -->
-            </div>
+                        <!--</div>-->
+                    </div><!-- /col-lg-9 END SECTION MIDDLE -->
+                </div>
             </div>
             <! --/row -->
         </section>
