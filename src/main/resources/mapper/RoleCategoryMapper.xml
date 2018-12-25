@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sicau.devicemanager.dao.RoleLocationMapper">
+<mapper namespace="com.sicau.devicemanager.dao.RoleCategoryMapper">
 
-    <resultMap id="BaseResultMap" type="com.sicau.devicemanager.POJO.DO.RoleLocation">
+    <resultMap id="BaseResultMap" type="com.sicau.devicemanager.POJO.DO.RoleCategory">
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="role_id" property="roleId" jdbcType="VARCHAR"/>
-        <result column="location_id" property="locationId" jdbcType="VARCHAR"/>
+        <result column="category_id" property="categoryId" jdbcType="VARCHAR"/>
         <result column="bind_time" property="bindTime" jdbcType="TIMESTAMP"/>
         <result column="operate_user_id" property="operateUserId" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, role_id, location_id, bind_time, operate_user_id
+        id, role_id, category_id, bind_time, operate_user_id
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
-        from role_location
+        from role_category
         where id = #{id,jdbcType=VARCHAR}
     </select>
 
-    <select id="selectByRoleId" resultType="com.sicau.devicemanager.POJO.DO.RoleLocation">
+    <select id="selectByRoleId" resultType="com.sicau.devicemanager.POJO.DO.RoleCategory">
         SELECT *
-        FROM role_location
+        FROM role_category
         WHERE role_id = #{roleId}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete
-        from role_location
+        from role_category
         where id = #{id,jdbcType=VARCHAR}
     </delete>
 
-    <insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.RoleLocation">
-        insert into role_location (id, role_id, location_id, bind_time, operate_user_id)
+    <insert id="insert" parameterType="com.sicau.devicemanager.POJO.DO.RoleCategory">
+        insert into role_category (id, role_id, category_id, bind_time, operate_user_id)
         values (#{id,jdbcType=VARCHAR},
                 #{roleId,jdbcType=VARCHAR},
-                #{locationId,jdbcType=VARCHAR},
+                #{categoryId,jdbcType=VARCHAR},
                 #{bindTime,jdbcType=TIMESTAMP},
                 #{operateUserId,jdbcType=VARCHAR})
     </insert>
 
-    <insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.RoleLocation">
-        insert into role_location
+    <insert id="insertSelective" parameterType="com.sicau.devicemanager.POJO.DO.RoleCategory">
+        insert into role_category
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -51,8 +51,8 @@
             <if test="roleId != null">
                 role_id,
             </if>
-            <if test="locationId != null">
-                location_id,
+            <if test="categoryId != null">
+                category_id,
             </if>
             <if test="bindTime != null">
                 bind_time,
@@ -68,8 +68,8 @@
             <if test="roleId != null">
                 #{roleId,jdbcType=VARCHAR},
             </if>
-            <if test="locationId != null">
-                #{locationId,jdbcType=VARCHAR},
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=VARCHAR},
             </if>
             <if test="bindTime != null">
                 #{bindTime,jdbcType=TIMESTAMP},
@@ -80,14 +80,14 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.sicau.devicemanager.POJO.DO.RoleLocation">
-        update role_location
+    <update id="updateByPrimaryKeySelective" parameterType="com.sicau.devicemanager.POJO.DO.RoleCategory">
+        update role_category
         <set>
             <if test="roleId != null">
                 role_id = #{roleId,jdbcType=VARCHAR},
             </if>
-            <if test="locationId != null">
-                location_id = #{locationId,jdbcType=VARCHAR},
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=VARCHAR},
             </if>
             <if test="bindTime != null">
                 bind_time = #{bindTime,jdbcType=TIMESTAMP},
@@ -99,20 +99,20 @@
         where id = #{id,jdbcType=VARCHAR}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="com.sicau.devicemanager.POJO.DO.RoleLocation">
-        update role_location
+    <update id="updateByPrimaryKey" parameterType="com.sicau.devicemanager.POJO.DO.RoleCategory">
+        update role_category
         set role_id         = #{roleId,jdbcType=VARCHAR},
-            location_id     = #{locationId,jdbcType=VARCHAR},
+            category_id     = #{categoryId,jdbcType=VARCHAR},
             bind_time       = #{bindTime,jdbcType=TIMESTAMP},
             operate_user_id = #{operateUserId,jdbcType=VARCHAR}
         where id = #{id,jdbcType=VARCHAR}
     </update>
 
     <select id="selectByRoleIds" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select * from role_location
+        select * from role_category
         where role_id in
         <foreach collection="list" separator="," close=")" open="(" item="i">
-              #{i,jdbcType=VARCHAR}
+            #{i,jdbcType=VARCHAR}
         </foreach>
     </select>
 

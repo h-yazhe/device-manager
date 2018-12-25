@@ -76,4 +76,11 @@ public interface LocationMapper {
      * @return
      */
     List<Location> getOnesLocationByUserId(String userId);
+
+    /**
+     * 查看在id列表中所有的子地点，返回自身和子地点
+     * @param ids 地点的id
+     * @return
+     */
+    List<Location> getAllChildIdByIds(List<String> ids);
 }

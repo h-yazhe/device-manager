@@ -2,13 +2,21 @@ package com.sicau.devicemanager.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.sicau.devicemanager.POJO.DO.Location;
+import com.sicau.devicemanager.POJO.DO.Role;
+import com.sicau.devicemanager.POJO.DO.RoleLocation;
 import com.sicau.devicemanager.POJO.DTO.LocationDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
+import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.LocationMapper;
+import com.sicau.devicemanager.dao.RoleLocationMapper;
 import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.service.LocationService;
+import com.sicau.devicemanager.service.UserService;
 import com.sicau.devicemanager.util.KeyUtil;
+import com.sicau.devicemanager.util.web.RequestUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +37,10 @@ public class LocationServiceImpl implements LocationService {
     private LocationMapper locationMapper;
     @Autowired
     private DeviceService deviceService;
-
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RoleLocationMapper roleLocationMapper;
     @Override
     public void insertLocationTree(List<Location> locationList) {
         //根节点数量
@@ -129,9 +140,38 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<Location> listLocationByPId(LocationVO locationVO) {
+        int flag=0;
         QueryPage queryPage = locationVO.getQueryPage();
+        UserDTO user = userService.getUserById(RequestUtil.getCurrentUserId());
+        String pid=locationVO.getParentId();
+        List<String> roleIds=new ArrayList<>();
+        List<String> locationIds= new ArrayList<>();
+        List<Location> locationList ;
+        List<RoleLocation> roleLocations;
+
+
+
+        for (Role role : user.getRoleList()) {
+            roleIds.add(role.getId());
+        }
+
+        roleLocations=roleLocationMapper.selectByRoleIds(roleIds);
+
+        for (RoleLocation roleLocation:roleLocations){
+            locationIds.add(roleLocation.getLocationId());
+        }
+        locationList = locationMapper.getAllChildIdByIds(locationIds);
+        for (Location location:locationList){
+            if (location.getId().equals(pid)){
+                flag=1;
+                break;
+            }
+        }
+        if (flag==0){
+            throw new CommonException(ResultEnum.UNAUTHORIZED);
+        }
         PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(), "name");
-        return locationMapper.getChildrenById(locationVO.getParentId());
+        return locationMapper.getChildrenById(pid);
     }
 
     /**
