@@ -205,6 +205,21 @@ var vueDeviceList = new Vue({
             });
 
         },
+        //删除设备
+        deleteDevice:function (deviceId) {
+            sendPost({
+                url: API.getApi(API.deleteDevice) + deviceId,
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 0) {
+                        alert(data.msg);
+                        vueDeviceList.listDevice();
+                    } else {
+                        alert("删除失败！");
+                    }
+                }
+            })
+        },
         /*获取用户列表*/
          ListUser:function(){
             sendPost({
@@ -823,6 +838,41 @@ var categoryVm = new Vue({
         '                            <CategoryTree v-for="(item,i) in categoryList" :index="i" :parent="item" :key="item.id"></CategoryTree>\n' +
         '                        </div>'
 });
+var selectcatVm=new Vue({
+    el:"#select-catree",
+    components:{
+        'SelectCaTree':SelectCaTree
+    },
+    data:{
+        id:'',
+        name:'请选择',
+        Show:false,
+        selectcatList: [
+            {
+                id: "0",
+                name:'默认分类',
+                level:'',
+                children: [
+                ],
+                active: true,//是否激活
+                expanded: false,//是否展开
+            }
+        ],
+    },
+    methods:{
+        shiftStatus:function () {
+            this.Show=!this.Show;
+        }
+    },
+    template:' <div id="select-catree">\n'+"<button class=\"form-control\" @click=\"shiftStatus\" v-bind:value=\"id\" style=\"width:81px;\">{{name}}<div><span class=\"caret\"></span></div></button>\n"+
+    '      <div class="content" v-show="Show" style=" margin-top: 0;\n' +
+    '            border: 1px #428bca solid;\n' +
+    '            position: absolute;\n' +
+    '            top: 100%;\n' +
+    '            width:81px;\n' +
+    'list-style: none;"> <SelectCaTree v-for="(item,i) in selectcatList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select" style="z-index: 1000;"></SelectCaTree></div>\n' +
+    '                        </div>'
+})
 var selectVm=new Vue({
     el:"#select-tree",
     components:{
@@ -850,7 +900,7 @@ var selectVm=new Vue({
         }
     },
     template:' <div id="select-tree">\n'+"<button class=\"form-control\" @click=\"shiftStatus\" v-bind:value=\"id\">{{name}}<div><span class=\"caret\" ></span></div></button>\n"+
-        '      <div class="content" v-show="Show"> <SelectTree v-for="(item,i) in selectList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select" ></SelectTree></div>\n' +
+        '      <div class="content" v-show="Show"> <SelectTree v-for="(item,i) in selectList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select"></SelectTree></div>\n' +
         '                        </div>'
 })
 //生成地点分类树，依赖于addressVm
@@ -878,6 +928,36 @@ var addressSortVm = new Vue({
         '                            <AddressTree v-for="(item,i) in addressList" :index="i" :parent="item" :key="item.id"></AddressTree>\n' +
         '                        </div>'
 });
+var partitionVm=new Vue({
+    el:"#partition-tree",
+    components:{
+        'PartitionTree':PartitionTree
+    },
+    data:{
+        id:'',
+        name:'请选择',
+        Show:false,
+        partitionList: [
+            {
+                id: "0",
+                name:'',
+                level:'',
+                children: [
+                ],
+                active: true,//是否激活
+                expanded: false,//是否展开
+            }
+        ],
+    },
+    methods:{
+        shiftStatus:function () {
+            this.Show=!this.Show;
+        }
+    },
+    template:' <div id="partition-tree">\n'+"<button class=\"form-control\" @click=\"shiftStatus\" v-bind:value=\"id\" type=\"button\">{{name}}<div><span class=\"caret\"></span></div></button>\n"+
+    '      <div class="content" v-show="Show"><PartitionTree v-for="(item,i) in partitionList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select"></PartitionTree></div>\n' +
+    '                        </div>'
+})
 //添加分类
 var addCategory=new Vue({
     el:"#add-category",

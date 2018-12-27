@@ -53,6 +53,8 @@ var API = {
     updateDevice:"device/update",
     //添加设备
     addDevice: "device/add",
+    //删除设备
+    deleteDevice:"delete-device/",
     //获取添加设备的选项卡数据
     getDeviceSelection: "device/search-selection",
     //分发设备
@@ -203,6 +205,66 @@ function formatTime(timestamp) {
     var date = new Date(timestamp);
     return date.getFullYear() + "." + date.getMonth() + "." + date.getDay();
 }
+//设备详情中分类树形菜单组件
+var SelectCaTree = {
+    name: 'SelectCaTree',
+    props: ['parent','index'],
+    data: function () {
+        return {
+            queryPage: new defaultQueryPage()
+        }
+    },
+    template: '<div>\n' +
+    '                                <li :class="{active: parent.active}"   :style="indent"  @mouseover="listChildren()"   @click="cValue(parent.id,parent.name)"><span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n'+
+    '                                </li>\n' +
+    '                                <SelectCaTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></SelectCaTree>'+
+    '</div>',
+    methods: {
+        listChildren: function () {
+            var self = this;
+            if (self.parent.expanded) {
+                self.parent.expanded = !self.parent.expanded;
+                return;
+            }
+            sendPost({
+                url: API.getApi(API.listCategoryByPId),
+                data: JSON.stringify({
+                    queryPage: self.queryPage,
+                    parentId: self.parent.id
+                }),
+                success: function (res) {
+                    if (res.code === 0){
+                        for (var item of res.data){
+                            initCategory(item);
+                        }
+                        self.parent.children = res.data;
+                        self.parent.expanded = !self.parent.expanded;
+                    }
+                }
+            });
+        },
+        closeChildren:function(){
+            var self = this;
+            if (self.parent.expanded) {
+                self.parent.expanded = !self.parent.expanded;
+                return;
+            }
+        },
+        cValue:function (id,name) {
+            selectcatVm.id=id;
+            selectcatVm.name=name;
+            selectcatVm.Show=false;
+            vueDeviceList.queryParams.categoryId=id;
+        }
+    },
+
+    computed: {
+        indent: function () {
+            var level = this.parent.level;
+            return {transform: 'translate(' + (level > 1 ? (level - 1) : 0) *4 + '%',width:(level > 1 ? 100-(level - 1)*4 : 100) + '%'}
+        }
+    }
+};
 //设备分类树组件
 var CategoryTree = {
     name: 'CategoryTree',
@@ -223,7 +285,7 @@ var CategoryTree = {
             var self = this;
             if(vueDeviceList.isSort==true){
                 sideBarVm.sortList(self.parent.id);
-                vueDeviceList.getValue(self.parent.id,self.parent.name)
+                vueDeviceList.getValue(self.parent.id,self.parent.name);
                 if (self.parent.expanded){
                     sideBarVm.sortList(self.parent.parentId);
                 }
@@ -259,6 +321,67 @@ var CategoryTree = {
         }
     }
 };
+//添加设备中使用部门树形菜单
+var PartitionTree = {
+    name: 'PartitionTree',
+    props: ['parent','index'],
+    data: function () {
+        return {
+            queryPage: new defaultQueryPage()
+        }
+    },
+    template: '<div>\n' +
+    '                                <li :class="{active: parent.active}"   :style="indent"  @mouseover="listChildren()"   @click="sValue(parent.id,parent.name)"><span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n'+
+    '                                </li>\n' +
+    '                                <PartitionTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></PartitionTree>'+
+    '</div>',
+    methods: {
+        listChildren: function () {
+            var self = this;
+            if (self.parent.expanded) {
+                self.parent.expanded = !self.parent.expanded;
+                return;
+            }
+            sendPost({
+                url: API.getApi(API.addressDevice),
+                data: JSON.stringify({
+                    queryPage: self.queryPage,
+                    parentId: self.parent.id
+                }),
+                success: function (res) {
+                    if (res.code === 0){
+                        for (var item of res.data){
+                            initAddress(item);
+                        }
+                        self.parent.children = res.data;
+                        self.parent.expanded = !self.parent.expanded;
+                    }
+                }
+            });
+        },
+        closeChildren:function(){
+            var self = this;
+            if (self.parent.expanded) {
+                self.parent.expanded = !self.parent.expanded;
+                return;
+            }
+        },
+        sValue:function (id,name) {
+            partitionVm.id=id;
+            partitionVm.name=name;
+            partitionVm.Show=false;
+            vueDeviceList.queryParams.locationId=id;
+        }
+    },
+    computed: {
+        indent: function () {
+            var level = this.parent.level;
+            return {transform: 'translate(' + (level > 1 ? (level - 1) : 0) *4 + '%',width:(level > 1 ? 100-(level - 1)*4 : 100) + '%'}
+        }
+    }
+
+
+};
 //搜索地点组件
 var SelectTree = {
     name: 'SelectTree',
@@ -269,7 +392,7 @@ var SelectTree = {
         }
     },
     template: '<div>\n' +
-        '                                <li :class="{active: parent.active}"   :style="indent"  @mouseover="listChildren()"   @click="cValue(parent.id,parent.name)"><span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n'+
+        '                                <li :class="{active: parent.active}"   :style="indent"  @mouseover="listChildren()"   @click="aValue(parent.id,parent.name)" style="text-decoration: none;"><span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n'+
         '                                </li>\n' +
         '                                <SelectTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></SelectTree>'+
         '</div>',
@@ -304,7 +427,7 @@ var SelectTree = {
                 return;
             }
         },
-        cValue:function (id,name) {
+        aValue:function (id,name) {
             selectVm.id=id;
             selectVm.name=name;
             selectVm.Show=false;
