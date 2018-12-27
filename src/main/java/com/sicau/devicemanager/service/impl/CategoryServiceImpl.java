@@ -2,13 +2,21 @@ package com.sicau.devicemanager.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.sicau.devicemanager.POJO.DO.Category;
+import com.sicau.devicemanager.POJO.DO.Role;
+import com.sicau.devicemanager.POJO.DO.RoleCategory;
 import com.sicau.devicemanager.POJO.DTO.CategoryDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.VO.CategoryVO;
+import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.CategoryMapper;
 import com.sicau.devicemanager.dao.DeviceCategoryMapper;
+import com.sicau.devicemanager.dao.RoleCategoryMapper;
 import com.sicau.devicemanager.service.CategoryService;
+import com.sicau.devicemanager.service.UserService;
 import com.sicau.devicemanager.util.KeyUtil;
+import com.sicau.devicemanager.util.web.RequestUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +37,10 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
     @Autowired
     private DeviceCategoryMapper deviceCategoryMapper;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RoleCategoryMapper roleCategoryMapper;
 
     @Override
     public void insertCategoryTree(List<Category> categoryList) {
@@ -112,7 +124,38 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> listCategoryByPId(CategoryVO categoryVO) {
+        int flag=0;
         QueryPage queryPage = categoryVO.getQueryPage();
+        UserDTO user = userService.getUserById(RequestUtil.getCurrentUserId());
+        String pid=categoryVO.getParentId();
+        List<String> roleIds=new ArrayList<>();
+        List<String> categoryIds= new ArrayList<>();
+        List<Category> categoryList;
+        List<RoleCategory> roleCategories;
+
+        for (Role role:user.getRoleList()){
+            roleIds.add(role.getId());
+        }
+
+        roleCategories=roleCategoryMapper.selectByRoleIds(roleIds);
+
+        for (RoleCategory roleCategory:roleCategories){
+            categoryIds.add(roleCategory.getCategoryId());
+        }
+
+        categoryList=categoryMapper.getAllChildIdByIds(categoryIds);
+
+        for (Category location:categoryList){
+            if (location.getId().equals(pid)){
+                flag=1;
+                break;
+            }
+        }
+
+        if (flag==0){
+            throw new CommonException(ResultEnum.UNAUTHORIZED);
+        }
+
         PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(), "name");
         return categoryMapper.getChildrenById(categoryVO.getParentId());
     }

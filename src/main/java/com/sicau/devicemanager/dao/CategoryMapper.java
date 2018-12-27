@@ -62,4 +62,11 @@ public interface CategoryMapper {
     List<Category> getDescendants(String rootId);
 
     int deleteByIds(List<String> ids);
+
+    /**
+     * 查看在id列表中所有的子分类，返回自身和子分类
+     * @param ids 地点的id
+     * @return
+     */
+    List<Category> getAllChildIdByIds(List<String> ids);
 }

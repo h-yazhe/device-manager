@@ -98,4 +98,14 @@
           where user_location.user_id=#{userId}
         )
     </select>
+
+    <select id="getAllChildIdByIds" resultType="com.sicau.devicemanager.POJO.DO.Location">
+        select * from location
+        <if test="list!=null and list.size>0">
+            where
+            <foreach collection="list" item="id" index="idx" separator="or" open="(" close=")">
+                path like concat('%', #{id}, '%') or id=#{id}
+            </foreach>
+        </if>
+    </select>
 </mapper>
