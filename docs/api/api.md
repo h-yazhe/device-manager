@@ -506,9 +506,10 @@ statusId | 希望修改后设备的状态值 | Integer |s
     
     
 #### 11.根据设备ID删除设备
-   url:`/delete-device/{id}`
+   url:`/delete-device`
     data: 
        ```
+       ["11"]
        ```
       参数说明：
        
