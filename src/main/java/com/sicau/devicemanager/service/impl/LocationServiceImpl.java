@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Yazhe
@@ -149,17 +150,9 @@ public class LocationServiceImpl implements LocationService {
         List<Location> locationList ;
         List<RoleLocation> roleLocations;
 
-
-
-        for (Role role : user.getRoleList()) {
-            roleIds.add(role.getId());
-        }
-
+        roleIds=user.getRoleList().stream().map(Role::getId).collect(Collectors.toList());
         roleLocations=roleLocationMapper.selectByRoleIds(roleIds);
-
-        for (RoleLocation roleLocation:roleLocations){
-            locationIds.add(roleLocation.getLocationId());
-        }
+        locationIds=roleLocations.stream().map(RoleLocation::getLocationId).collect(Collectors.toList());
         locationList = locationMapper.getAllChildIdByIds(locationIds);
         for (Location location:locationList){
             if (location.getId().equals(pid)){
