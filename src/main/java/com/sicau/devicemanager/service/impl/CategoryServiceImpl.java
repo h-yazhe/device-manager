@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Yazhe
@@ -133,16 +134,11 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categoryList;
         List<RoleCategory> roleCategories;
 
-        for (Role role:user.getRoleList()){
-            roleIds.add(role.getId());
-        }
 
+        roleIds=user.getRoleList().stream().map(Role::getId).collect(Collectors.toList());
         roleCategories=roleCategoryMapper.selectByRoleIds(roleIds);
 
-        for (RoleCategory roleCategory:roleCategories){
-            categoryIds.add(roleCategory.getCategoryId());
-        }
-
+        categoryIds=roleCategories.stream().map(RoleCategory::getCategoryId).collect(Collectors.toList());
         categoryList=categoryMapper.getAllChildIdByIds(categoryIds);
 
         for (Category location:categoryList){
