@@ -119,7 +119,7 @@ data:
 	"amountUnitId": "asdz",
 	"brandId": "123",
 	"categoryId": "aaa",
-	"locationId": "zzz",
+	"locationId": "1231242141231231231",
 	"nationalId": "ada123",
 	"statusId": 1,
 	"startTime": 1537112303701,
@@ -156,72 +156,49 @@ queryPage | 分页参数 | obj | 1 |
     "msg": "成功",
     "data": {
         "pageNum": 1,
-        "pageSize": 2,
-        "size": 2,
+        "pageSize": 20,
+        "size": 1,
         "startRow": 1,
-        "endRow": 2,
-        "total": 6,
-        "pages": 3,
+        "endRow": 1,
+        "total": 1,
+        "pages": 1,
         "list": [
             {
-                "id": "1533799349223338772",
-                "name": "测试设备1",
+                "id": "1536310033567267675",
+                "name": "测试设备",
                 "nationalId": "a111345423",
                 "serialNumber": "44444444",
-                "useTime": 1536657241000,
-                "unitPrice": 100.4,
+                "useTime": 1536310038000,
+                "unitPrice": 0,
                 "description": "",
                 "statusId": 2,
-                "createTime": 1533770481000,
-                "updateTime": 1536628442000,
+                "createTime": 1533799281000,
+                "updateTime": 1539243375000,
                 "brand": {
                     "id": "2",
                     "name": "苹果"
                 },
-                "locationStr": "雅安",
-                "categoryStr": "电脑/台式机/神舟",
-                "workNature": "自用",
-                "custodian": "李四",
-                "amountUnit": "个"
-            },
-            {
-                "id": "1536216465902587143",
-                "name": "测试设备4",
-                "nationalId": "a111345423",
-                "serialNumber": "44444444",
-                "useTime": 1536662272000,
-                "unitPrice": 100.4,
-                "description": "",
-                "statusId": 3,
-                "createTime": 1536187669000,
-                "updateTime": 1536634036000,
-                "brand": {
-                    "id": "2",
-                    "name": "苹果"
-                },
-                "locationStr": "都江堰",
-                "categoryStr": "电脑/台式机/神舟",
+                "locationStr": "雅安/十教A区/一楼",
+                "categoryStr": "默认分类",
                 "workNature": "自用",
                 "custodian": "李四",
                 "amountUnit": "个"
             }
         ],
         "prePage": 0,
-        "nextPage": 2,
+        "nextPage": 0,
         "isFirstPage": true,
-        "isLastPage": false,
+        "isLastPage": true,
         "hasPreviousPage": false,
-        "hasNextPage": true,
+        "hasNextPage": false,
         "navigatePages": 8,
         "navigatepageNums": [
-            1,
-            2,
-            3
+            1
         ],
         "navigateFirstPage": 1,
-        "navigateLastPage": 3,
+        "navigateLastPage": 1,
         "firstPage": 1,
-        "lastPage": 3
+        "lastPage": 1
     }
 }
 ```
