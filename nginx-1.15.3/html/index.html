@@ -287,7 +287,7 @@
                                 <th>真实姓名</th>
                                 <th>邮箱</th>
                                 <th>电话</th>
-                                <th>最后一次登录时间</th>
+                                <th>创建时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -299,7 +299,7 @@
                                 <td>{{user.realName}}</td>
                                 <td>{{user.email}}</td>
                                 <td>{{user.phone}}</td>
-                                <td>{{userFormatTime(user.lastTime)}}</td>
+                                <td>{{userFormatTime(user.createTime)}}</td>
                                 <td><button class="btn btn-danger btn-xs">删除</button>
                                     <button class="btn btn-primary btn-xs" @click="showEditUserModal(user)">修改</button></td>
                             </tr>
@@ -878,6 +878,13 @@
                 <div class="form-group">
                     <label for="input-device-name">用户名</label>
                     <input v-model="user.username" type="text" class="form-control"  placeholder="用户名">
+                </div>
+                <div class="form-group">
+                    <label for="input-role">角色</label>
+                    <select id="input-role" v-model="user.roleId" type="text" class="form-control"  placeholder="角色">
+                        <option disabled value="">请选择</option>
+                        <option v-for="role in roleIds" :value="role.id">{{role.name}}</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="input-device-name">密码</label>
