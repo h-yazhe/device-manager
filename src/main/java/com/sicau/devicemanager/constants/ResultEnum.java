@@ -27,6 +27,7 @@ public enum ResultEnum {
     ORDER_ID_NOT_PRESENT(12, "订单id不存在"),
     DEVICE_ID_NOT_PRESENT(13, "设备id不存在"),
     DEVICE_MODEL_NAME_REPEAT(14, "设备型号重名"),
+	USERNAME_DUPLICATED(15,"已存在该用户名"),
 
     LOCATION_UNAUTHORIZED(100, "无该地点的权限"),
     ORDER_CANNOT_MODIFY(101, "修改失败，订单正在处理或已经处理"),

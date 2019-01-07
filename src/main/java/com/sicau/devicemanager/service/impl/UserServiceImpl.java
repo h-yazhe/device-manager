@@ -67,6 +67,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(UserRegisterDTO userRegisterDTO) {
+    	//用户名重复校验
+		if (userMapper.getIdByUsername(userRegisterDTO.getUsername()) != null){
+			throw new CommonException(ResultEnum.USERNAME_DUPLICATED);
+		}
         //用户信息写入
         User user = new User();
         BeanUtils.copyProperties(userRegisterDTO, user);
@@ -97,6 +101,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void modifyUser(UserRegisterDTO userRegisterDTO) {
+		//用户名重复校验
+		if (userMapper.getIdByUsername(userRegisterDTO.getUsername()) != null){
+			throw new CommonException(ResultEnum.USERNAME_DUPLICATED);
+		}
         //用户信息写入
         User user = new User();
         BeanUtils.copyProperties(userRegisterDTO, user);

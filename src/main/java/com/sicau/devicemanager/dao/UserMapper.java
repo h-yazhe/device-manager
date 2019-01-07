@@ -70,4 +70,10 @@ public interface UserMapper {
      */
     int deleteUserAuthByUserId(@Param("userId") String userId);
 
+	/**
+	 * 根据用户名查询id
+	 * @param username
+	 * @return
+	 */
+	String getIdByUsername(@Param("username") String username);
 }

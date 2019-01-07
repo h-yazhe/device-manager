@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.DeviceModel;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface DeviceModelMapper {
     List<DeviceModel> listAll();
 
     List<String> selectAllDeviceModelName();
+
+    String getIdByName(@Param("name") String name);
 }

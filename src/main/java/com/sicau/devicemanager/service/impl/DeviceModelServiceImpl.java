@@ -27,6 +27,10 @@ public class DeviceModelServiceImpl implements DeviceModelService {
 
     @Override
     public boolean submitDeviceModel(DeviceModel deviceModel) {
+    	//名称重复校验
+		if (deviceModelMapper.getIdByName(deviceModel.getName()) != null){
+			throw new CommonException("名称不能重复");
+		}
         String deviceModelName = deviceModel.getName();
         List<String> nameList = deviceModelMapper.selectAllDeviceModelName();
         for (String modelName : nameList) {

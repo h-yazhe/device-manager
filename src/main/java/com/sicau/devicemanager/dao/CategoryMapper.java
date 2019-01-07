@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.Category;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -69,4 +70,6 @@ public interface CategoryMapper {
      * @return
      */
     List<Category> getAllChildIdByIds(List<String> ids);
+
+    String getIdByName(@Param("name") String name);
 }

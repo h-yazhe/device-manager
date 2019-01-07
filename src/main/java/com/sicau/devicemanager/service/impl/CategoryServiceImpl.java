@@ -158,6 +158,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void insertCategoryByPId(Category category) {
+    	//检验名称重复
+		if (categoryMapper.getIdByName(category.getName()) != null){
+			throw new CommonException("名称不能重复");
+		}
         List<Category> categories = new ArrayList<>(1);
         category.setId(KeyUtil.genUniqueKey());
         //根据父节点信息设置当前节点其他信息
