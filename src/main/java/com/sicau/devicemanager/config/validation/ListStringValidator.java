@@ -33,7 +33,7 @@ public class ListStringValidator implements ConstraintValidator<ListStringConstr
             if (!pattern.matcher(s).find()) {
                 isValid = false;
             }
-            if (pats[1] != null && !pats[1].equals(String.valueOf(s.length()))) {
+            if (s.length()!=0&&pats[1] != null && !pats[1].equals(String.valueOf(s.length()))) {
                 isValid = false;
             }
         }
