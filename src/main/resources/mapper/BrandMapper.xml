@@ -17,4 +17,9 @@
         SELECT *
         FROM brand
     </select>
+	<select id="getIdByName" resultType="java.lang.String">
+		select id
+		from brand
+		where name = #{name};
+	</select>
 </mapper>

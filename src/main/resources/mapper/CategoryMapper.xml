@@ -82,4 +82,9 @@
             </foreach>
         </if>
     </select>
+	<select id="getIdByName" resultType="java.lang.String">
+		select id
+		from category
+		where name = #{name}
+	</select>
 </mapper>

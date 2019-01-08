@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Yazhe
@@ -65,6 +66,9 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public void insertLocationByPId(Location location) {
+    	if (locationMapper.getIdByName(location.getName()) != null){
+    		throw new CommonException("名称不能重复");
+		}
         List<Location> locationList = new ArrayList<>(1);
         location.setId(KeyUtil.genUniqueKey());
         //根据父节点信息设置当前节点其他信息
@@ -149,17 +153,9 @@ public class LocationServiceImpl implements LocationService {
         List<Location> locationList ;
         List<RoleLocation> roleLocations;
 
-
-
-        for (Role role : user.getRoleList()) {
-            roleIds.add(role.getId());
-        }
-
+        roleIds=user.getRoleList().stream().map(Role::getId).collect(Collectors.toList());
         roleLocations=roleLocationMapper.selectByRoleIds(roleIds);
-
-        for (RoleLocation roleLocation:roleLocations){
-            locationIds.add(roleLocation.getLocationId());
-        }
+        locationIds=roleLocations.stream().map(RoleLocation::getLocationId).collect(Collectors.toList());
         locationList = locationMapper.getAllChildIdByIds(locationIds);
         for (Location location:locationList){
             if (location.getId().equals(pid)){

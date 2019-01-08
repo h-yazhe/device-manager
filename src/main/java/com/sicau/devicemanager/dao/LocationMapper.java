@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.Location;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -83,4 +84,11 @@ public interface LocationMapper {
      * @return
      */
     List<Location> getAllChildIdByIds(List<String> ids);
+
+	/**
+	 * 根据名称获取id
+	 * @param name
+	 * @return
+	 */
+	String getIdByName(@Param("name") String name);
 }

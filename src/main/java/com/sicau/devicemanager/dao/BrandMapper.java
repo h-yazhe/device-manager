@@ -31,4 +31,11 @@ public interface BrandMapper {
      * @return
      */
     int deleteBrandById(@Param("id") String id);
+
+	/**
+	 * 根据名称查询id
+	 * @param name
+	 * @return
+	 */
+	String getIdByName(@Param("name") String name);
 }

@@ -202,8 +202,11 @@ var deviceSearchSelection = {
  * @returns {string}
  */
 function formatTime(timestamp) {
-    var date = new Date(timestamp);
-    return date.getFullYear() + "." + date.getMonth() + "." + date.getDay();
+    let date = new Date(timestamp);
+    let y = date.getFullYear();
+    let m = date.getMonth() + 1;
+    let d = date.getDate();
+    return y + "." + (m < 10 ? "0" + m : m) + "." + (d < 10 ? "0" + d : d);
 }
 //设备详情中分类树形菜单组件
 var SelectCaTree = {

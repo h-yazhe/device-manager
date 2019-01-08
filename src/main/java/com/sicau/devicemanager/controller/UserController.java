@@ -90,7 +90,7 @@ public class UserController {
     )
     @PostMapping("add")
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.ADD)
-    public ResultVO addUser(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
+    public ResultVO addUser(@Validated({DeviceValidatedGroup.addUser.class}) @RequestBody UserRegisterDTO userRegisterDTO) {
         userService.addUser(userRegisterDTO);
         return ResultVOUtil.success();
     }

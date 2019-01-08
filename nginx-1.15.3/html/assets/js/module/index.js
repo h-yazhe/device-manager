@@ -65,7 +65,8 @@ var vueDeviceList = new Vue({
                 "realName": "",
                 "email": "",
                 "phone": "",
-                "lastTime": "",
+                "lastTime": 0,
+                "createTime": 0,
                 roleList: [{
                     "id": "",
                     "name":""
@@ -600,7 +601,7 @@ var userModal=new Vue({
             }
         },
     created:function () {
-        this.getUserSelection;
+        this.getUserSelection();
     }
 
 })

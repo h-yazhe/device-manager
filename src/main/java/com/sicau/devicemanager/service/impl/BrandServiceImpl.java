@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.Brand;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.config.exception.CommonException;
 import com.sicau.devicemanager.dao.BrandMapper;
 import com.sicau.devicemanager.service.BrandService;
 import com.sicau.devicemanager.util.KeyUtil;
@@ -35,6 +36,9 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public void insertBrand(Brand brand) {
+    	if (brandMapper.getIdByName(brand.getName()) != null){
+    		throw new CommonException("名称已存在！");
+		}
         brand.setId(KeyUtil.genUniqueKey());
         brandMapper.insertBrand(brand);
     }
