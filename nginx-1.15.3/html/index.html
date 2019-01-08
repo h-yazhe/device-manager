@@ -153,14 +153,14 @@
                         <span>报废设备</span>
                     </a>
                 </li>
-                <li class="sub-menu">
+                <li v-if="showSysSetting" class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa fa-cogs"></i>
                         <span>系统设置</span>
                     </a>
                     <ul class="sub">
-                        <li><a href="javascript:;" @click="ListUser()">用户管理</a></li>
-                        <li><a href="">菜单管理</a>
+                        <li v-if="showUserManagement"><a href="javascript:;" @click="ListUser()">用户管理</a></li>
+                        <li v-if="showMenuManagement"><a href="">菜单管理</a>
                             <ul class="sub">
                                 <li><a href="javascript:;" @click="sortList(-1)">分类</a></li>
                                 <li><a href="javascript:;" @click="addressDevice(-1)">地点</a></li>
@@ -245,10 +245,10 @@
                                 <td>{{device.unitPrice}}</td>
                                 <td>{{parseStatus(device.statusId)}}</td>
                                 <td class="noExl">
-                                    <button @click="showDistributeModal(device.id)" v-if="device.statusId==1" class="btn btn-success btn-xs"><i class="fa fa-check"></i>分发</button>
-                                    <button @click="showDiscardModal(device.id)" v-if="device.statusId==2" class="btn btn-danger btn-xs"><i class="fa fa-dropbox"></i>报废</button>
+                                    <button @click="showDistributeModal(device.id)" v-if="showDistributeButton(device.statusId)" class="btn btn-success btn-xs"><i class="fa fa-check"></i>分发</button>
+                                    <button @click="showDiscardModal(device.id)" v-if="showDiscardButton(device.statusId)" class="btn btn-danger btn-xs"><i class="fa fa-dropbox"></i>报废</button>
                                     <button  type="button" class="btn btn-primary btn-xs"  @click="showDetailsModal(device)">详情</button>
-                                    <button  type="button" class="btn btn-danger btn-xs"  @click="deleteDevice(device.id)" v-if="device.statusId==1||device.statusId==2||device.statusId==3">删除</button>
+                                    <button  type="button" class="btn btn-danger btn-xs"  @click="deleteDevice(device.id)" v-if="showDeleteDeviceButton(device.statusId)">删除</button>
                                 </td>
                             </tr>
 
@@ -743,7 +743,7 @@
                 <button type="button" class="btn btn-default btn-xs"
                         data-dismiss="modal">关闭
                 </button>
-                <button type="button" class="btn btn-primary btn-xs" @click="changeDetail">
+                <button v-if="showSaveDeviceButton" type="button" class="btn btn-primary btn-xs" @click="changeDetail">
                     保存
                 </button>
             </div>
@@ -929,6 +929,7 @@
 <script src="assets/js/zabuto_calendar.js"></script>
 <script src="assets/js/vue.js"></script>
 <script src="assets/js/module/common.js"></script>
+<script src="assets/js/module/permission.js"></script>
 <script src="assets/js/module/index.js"></script>
 <script src="assets/js/jquery.table2excel.js"></script>
 <script src="assets/js/module/eqmanage.js"></script>

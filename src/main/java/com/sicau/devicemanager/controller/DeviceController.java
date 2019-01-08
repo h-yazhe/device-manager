@@ -11,12 +11,15 @@ import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.Dist
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.GetDeviceStatusRecordByDeviceId;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
+import com.sicau.devicemanager.constants.PermissionActionConstant;
+import com.sicau.devicemanager.constants.ResourceConstants;
 import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.util.JWTUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +43,7 @@ public class DeviceController {
     @ApiOperation("添加设备")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("/add")
+	@RequiresPermissions(ResourceConstants.DEVICE + PermissionActionConstant.ADD)
     //验证分成两部分：1.非空验证(AddDeviceGroup)，2.判断一个字段是否符合格式要求(DefaultGroup)，格式要求是一致的
     public ResultVO addDevice(@Validated({DeviceValidatedGroup.AddDeviceGroup.class, CommonValidatedGroup.LegalityGroup.class})
                               @RequestBody DeviceDTO deviceDTO) {
@@ -50,6 +54,7 @@ public class DeviceController {
     @ApiOperation("更新设备")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("/update")
+	@RequiresPermissions(ResourceConstants.DEVICE + PermissionActionConstant.UPDATE)
     public ResultVO updateDeviceById(@Validated({DeviceValidatedGroup.UpdateDeviceGroup.class, CommonValidatedGroup.LegalityGroup.class})
                                      @RequestBody DeviceDTO deviceDTO) {
         deviceService.updateDeviceById(deviceDTO);
@@ -59,6 +64,7 @@ public class DeviceController {
     @ApiOperation("根据条件查询设备列表")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("/list")
+	@RequiresPermissions(ResourceConstants.DEVICE + PermissionActionConstant.GET)
     public ResultVO listDeviceByCondition(@Validated({DeviceValidatedGroup.QueryDeviceGroup.class, CommonValidatedGroup.LegalityGroup.class})
                                           @RequestBody DeviceDTO deviceDTO, HttpServletRequest request) {
 
@@ -70,6 +76,7 @@ public class DeviceController {
     @ApiOperation("删除设备")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("/delete-device")
+	@RequiresPermissions(ResourceConstants.DEVICE + PermissionActionConstant.DELETE)
     public ResultVO deleteDeviceById(@RequestBody List<String> ids) {
         deviceService.deleteDeviceById(ids);
         return ResultVOUtil.success();
@@ -78,6 +85,7 @@ public class DeviceController {
     @ApiOperation("分发设备")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("/distribute")
+	@RequiresPermissions(ResourceConstants.DEVICE + ":distribute")
     public ResultVO distributeDevice(@Validated(DistributeDeviceGroup.class) @RequestBody DistributeDeviceDTO distributeDeviceDTO) {
         deviceService.distributeDevice(distributeDeviceDTO);
         return ResultVOUtil.success();
@@ -86,6 +94,7 @@ public class DeviceController {
     @ApiOperation("报废设备")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("/discard")
+	@RequiresPermissions(ResourceConstants.DEVICE + ":discard")
     public ResultVO discardDevice(@RequestBody String deviceId) {
         deviceService.discardDevice(deviceId);
         return ResultVOUtil.success();
@@ -105,6 +114,7 @@ public class DeviceController {
      * @return
      */
     @PostMapping("get-status-record-by-deviceId")
+	@RequiresPermissions(ResourceConstants.DEVICE + PermissionActionConstant.GET)
     public ResultVO getDeviceStatusRecordByDeviceId(@Validated({GetDeviceStatusRecordByDeviceId.class, CommonValidatedGroup.LegalityGroup.class})
                                                     @RequestBody DeviceStatusRecordDTO deviceStatusRecordDTO) {
         return ResultVOUtil.success(deviceService.getDeviceStatusRecordByDeviceId(deviceStatusRecordDTO));

@@ -46,4 +46,9 @@ public interface ResourceConstants {
      * 工作性质
      */
     String NATURE="nature";
+
+	/**
+	 * 设备
+	 */
+	String DEVICE = "device";
 }

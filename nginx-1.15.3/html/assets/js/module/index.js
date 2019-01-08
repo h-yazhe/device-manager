@@ -132,6 +132,16 @@ var vueDeviceList = new Vue({
         searchSelection: $.extend(true,{},deviceSearchSelection)
     },
     methods: {
+        //是否显示按钮
+        showDistributeButton: function (statusId) {
+            return statusId===1 && checkPermission(PERMISSION_ENUM.DEVICE.DEVICE_DISTRIBUTE);
+        },
+        showDiscardButton: function (statusId) {
+            return statusId===2 && checkPermission(PERMISSION_ENUM.DEVICE.DEVICE_DISCARD);
+        },
+        showDeleteDeviceButton: function (statusId) {
+            return (statusId===1 || statusId===2 || statusId===3) && checkPermission(PERMISSION_ENUM.DEVICE.DEVICE_DELETE);
+        },
         /**
          * 渲染表格
          */
@@ -139,8 +149,7 @@ var vueDeviceList = new Vue({
         getValue:function (a, b) {
             addCategory.category.parentId = a;
             addCategory.parentName = b;
-        }
-    ,
+        },
         //分类
         sort:function(){
             sendPost({
@@ -760,6 +769,11 @@ var saveChange=new Vue({
             description:""
         }
     },
+    computed: {
+        showSaveDeviceButton: function () {
+            return checkPermission(PERMISSION_ENUM.DEVICE.DEVICE_UPDATE);
+        }
+    },
     methods: {
         changeDetail: function () {
                 this.data.id = deviceDtail.id,
@@ -1226,6 +1240,17 @@ var sideBarVm = new Vue({
     data: {
         username: getLocalStorage(STORAGE_KEY.userInfo).username,
         roleList: parseRoleList(getLocalStorage(STORAGE_KEY.userInfo).roleList)
+    },
+    computed: {
+        showSysSetting: function() {
+            return checkPermission(PERMISSION_ENUM.SYS_SETTING);
+        },
+        showUserManagement: function () {
+            return checkPermission(PERMISSION_ENUM.SYS_SETTING.USER);
+        },
+        showMenuManagement: function () {
+            return checkPermission(PERMISSION_ENUM.SYS_SETTING.MENU_MANAGEMENT);
+        }
     },
     methods: {
         listDevice: function (statusId) {
