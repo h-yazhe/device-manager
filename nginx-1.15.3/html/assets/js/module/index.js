@@ -404,8 +404,8 @@ var vueDeviceList = new Vue({
         //删除用户传值
         showDeleteUserModal:function(userId)
         {
-            $("#delete-user").modal('toggle');
             deleteUserVm.user.id = userId;
+            $("#delete-user").modal('toggle');
         },
         /*获取地点列表*/
         addressDevice:function(){
@@ -571,24 +571,6 @@ var deleteUserVm = new Vue({
         user:
             {"id": ""}
     },
-    methods: {
-        deleteUser: function () {
-            var data = this.user;
-            sendPost({
-                url: API.getApi(API.deleteUser)+data.id,
-                success: function (res) {
-                    if (res.code == 0) {
-                        alert("删除成功！");
-                        $("#delete-user").modal('toggle');
-                        //刷新设备列表
-                        vueDeviceList.ListUser();
-                    } else {
-                        alert("删除失败！");
-                    }
-                }
-            });
-        },
-    }
 });
 //修改用户信息
 var userModal=new Vue({
@@ -1245,25 +1227,7 @@ var deleteUserVm = new Vue({
     data: {
         user:
             {"id": ""}
-     },
-    methods: {
-        deleteUser: function () {
-            var data = this.user;
-            sendPost({
-                url: API.getApi(API.deleteUser)+data.id,
-                success: function (res) {
-                    if (res.code == 0) {
-                        alert("删除成功！");
-                        $("#delete-user").modal('toggle');
-                        //刷新设备列表
-                        vueDeviceList.ListUser();
-                    } else {
-                        alert("删除失败！");
-                    }
-                }
-            });
-        },
-    }
+     }
 });
 
 //侧边栏
@@ -1379,4 +1343,20 @@ var logoutVm = new Vue({
             window.location.href = "login.html";
         }
     }
-});
+})
+//删除用户
+function deleteUser() {
+    sendPost({
+        url: API.getApi(API.deleteUser) +deleteUserVm.user.id,
+        success: function (res) {
+            if (res.code == 0) {
+                alert("删除成功！");
+                $("#delete-user").modal('toggle');
+                //刷新设备列表
+                vueDeviceList.ListUser();
+            } else {
+                alert("删除失败！");
+            }
+        }
+    });
+}
