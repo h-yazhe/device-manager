@@ -22,8 +22,7 @@ public class RepairOrder {
      * 设备id
      */
     @NotNull(message = "设备id不能为空", groups = {SubmitRepairOrder.class})
-    @Pattern(regexp = "\\d+", message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
-    @Size(min = 19, max = 19, message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^$|^\\d{19}$", message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String deviceId;
 
     /**

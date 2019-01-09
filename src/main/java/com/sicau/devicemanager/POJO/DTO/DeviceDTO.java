@@ -46,7 +46,7 @@ public class DeviceDTO extends Device {
     @ListStringConstraint(regexp = "\\d+,19", message = "categoryIds只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private List<String> categoryIds;
 
-    @Pattern(regexp = "^$|^\\d{19}$", message = "categoryId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^\\d*$", message = "categoryId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String categoryId;
 
     @Pattern(regexp = "[\\u4e00-\\u9fa5\\w-]+", message = "locationStr只能包含汉字、英文、“_”、“-”和数字 ",groups = CommonValidatedGroup.LegalityGroup.class)

@@ -67,7 +67,6 @@ public class DeviceController {
 	@RequiresPermissions(ResourceConstants.DEVICE + PermissionActionConstant.GET)
     public ResultVO listDeviceByCondition(@Validated({DeviceValidatedGroup.QueryDeviceGroup.class, CommonValidatedGroup.LegalityGroup.class})
                                           @RequestBody DeviceDTO deviceDTO, HttpServletRequest request) {
-
         deviceDTO.setUserId(JWTUtil.getUserId(request.getHeader(HttpParamKey.TOKEN)));
         return ResultVOUtil.success(deviceService.listDevice(deviceDTO));
 

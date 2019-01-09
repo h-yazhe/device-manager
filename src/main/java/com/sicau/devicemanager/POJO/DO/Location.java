@@ -30,15 +30,13 @@ import java.util.Set;
 public class Location {
 
     @NotNull(message = "id不能为空", groups = {InsertTree.class})
-    @Pattern(regexp = "\\d+", message = "location的id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
-    @Size(min = 19, max = 19, message = "location的id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^$|^\\d{19}$", message = "location的id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String id;
 
     /**
      * 父级地点id
      */
-    @Pattern(regexp = "\\d+", message = "location的parentId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
-    @Size(min = 19, max = 19, message = "location的parentId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^$|^\\d{19}$", message = "location的parentId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String parentId;
 
     /**
