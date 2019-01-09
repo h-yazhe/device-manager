@@ -51,4 +51,9 @@ public interface ResourceConstants {
 	 * 设备
 	 */
 	String DEVICE = "device";
+
+	/**
+	 * 分类
+	 */
+	String CATEGORY = "category";
 }

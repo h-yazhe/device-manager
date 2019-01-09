@@ -45,7 +45,7 @@ public class CategoryController {
     @ApiOperation("根据父id查询分类")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("list-category-by-pId")
-    @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
+    @RequiresPermissions(ResourceConstants.CATEGORY + PermissionActionConstant.GET)
     public ResultVO listCategoryByPId(@Validated({ListTreeByPId.class, CommonValidatedGroup.LegalityGroup.class}) @RequestBody CategoryVO categoryVO) {
         return ResultVOUtil.success(categoryService.listCategoryByPId(categoryVO));
     }
@@ -53,7 +53,7 @@ public class CategoryController {
     @ApiOperation("删除该节点为根的树")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("delete-category-by-id/{rootId}")
-    @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.DELETE)
+    @RequiresPermissions(ResourceConstants.CATEGORY + PermissionActionConstant.DELETE)
     public ResultVO deleteCategoryTree(@PathVariable("rootId") String rootId) {
         categoryService.deleteCategoryTree(rootId);
         return ResultVOUtil.success();
@@ -62,7 +62,7 @@ public class CategoryController {
     @ApiOperation("更新分类树")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PutMapping("category/{rootId}")
-    @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.UPDATE)
+    @RequiresPermissions(ResourceConstants.CATEGORY + PermissionActionConstant.UPDATE)
     public ResultVO updateCategoryTree(@PathVariable String rootId, @RequestBody List<Category> categoryList) {
         categoryService.updateCategoryTree(rootId, categoryList);
         return ResultVOUtil.success();
@@ -71,7 +71,7 @@ public class CategoryController {
     @ApiOperation("插入一个分类树")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("category")
-    @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.ADD)
+    @RequiresPermissions(ResourceConstants.CATEGORY + PermissionActionConstant.ADD)
     public ResultVO insertCategoryTree(@RequestBody List<Category> categoryList) {
         categoryService.insertCategoryTree(categoryList);
         return ResultVOUtil.success();
@@ -83,7 +83,7 @@ public class CategoryController {
      * @return
      */
     @PostMapping("insert-category-by-pid")
-    @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.ADD)
+    @RequiresPermissions(ResourceConstants.CATEGORY + PermissionActionConstant.ADD)
     public ResultVO insertCategoryByPId(@RequestBody Category category) {
         categoryService.insertCategoryByPId(category);
         return ResultVOUtil.success();
