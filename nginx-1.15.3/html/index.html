@@ -191,7 +191,7 @@
                 </div>
                 <div id="device-list" class="col-md-10 main-chart"  style="padding-left: 0">
                     <!--搜索模块-->
-                    <search-device :selection="searchSelection" v-if="device"></search-device>
+                    <search-device :selection="searchSelection" v-show="device"></search-device>
                     <!--设备详情页-->
                     <div class="content-panel table-responsive" v-if="device">
                         <h4 style="float: left"><i class="fa fa-angle-right"></i>
@@ -300,7 +300,7 @@
                                 <td>{{user.email}}</td>
                                 <td>{{user.phone}}</td>
                                 <td>{{userFormatTime(user.createTime)}}</td>
-                                <td><button class="btn btn-danger btn-xs">删除</button>
+                                <td><button class="btn btn-danger btn-xs" @click="showDeleteUserModal(user.id)">删除</button>
                                     <button class="btn btn-primary btn-xs" @click="showEditUserModal(user)">修改</button></td>
                             </tr>
                             </tbody>
@@ -561,7 +561,26 @@
         </div>
     </div>
 </div>
-
+<!--删除用户模态框-->
+<div id="delete-user" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="delete-user">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">删除用户</h4>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <h2>确定删除该用户吗？</h2>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button @click="deleteUser" type="button" class="btn btn-success">删除</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+    </div>
+</div>
 <!--添加设备模态框-->
 <div id="add-device" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="add-device">
     <div class="modal-dialog modal-lg" role="document">
@@ -669,8 +688,8 @@
                         </thead>
                         <tbody  id="table-device-detail">
                         <tr>
-                            <td><input type="text" v-bind:value="id" v-model="id"></td>
-                            <td><input type="text" v-bind:value="name" v-model="name"></td>
+                            <td><input type="text"  v-model="id"></td>
+                            <td><input type="text"  v-model="name"></td>
                             <td>
                                 <!--<select v-model="categoryStr">-->
                                     <!--<option v-for="category in selection.categoryList" v-bind:value="category.name">{{category.name}}</option>-->
@@ -679,7 +698,7 @@
                                     <div id="select-catree"></div>
                                 </div>
                             </td>
-                            <td><input type="text" v-bind:value="department"></td>
+                            <td><input type="text" v-bind:value="department" disabled="disabled"></td>
                             <td>
                                 <select v-model="brand.id">
                                     <option v-for="brand in selection.brandList" v-bind:value="brand.id">{{brand.name}}</option>
@@ -690,21 +709,17 @@
                                     <option v-for="deviceModel in selection.deviceModelList" v-bind:value="deviceModel.name">{{deviceModel.name}}</option>
                                 </select>
                             </td>
-                            <td><input type="text" v-bind:value="nationalId" v-model="nationalId"></td>
-                            <td><input type="text" v-bind:value="serialNumber" v-model="serialNumber"></td>
-                            <td>
-                                <select v-model="location">
-                                    <option v-for="location in selection.locationList" v-bind:value="location.id">{{location.name}}</option>
-                                </select>
-                            </td>
-                            <td><input type="text" v-bind:value="time"></td>
+                            <td><input type="text"  v-model="nationalId"></td>
+                            <td><input type="text"  v-model="serialNumber"></td>
+                            <td><input type="text" v-model="location" disabled="disabled"></td>
+                            <td><input type="text" v-model="time"></td>
                             <td>
                                 <select v-model="workNature">
                                     <option v-for="workNature in selection.workNatureList" v-bind:value="workNature.name">{{workNature.name}}</option>
                                 </select></td>
-                            <td><input type="text" v-bind:value="custodian" v-model="custodian"></td>
-                            <td><input type="text" v-bind:value="unitPrice" v-model="unitPrice"></td>
-                            <td><input type="text" v-bind:value="status" v-model="status"></td>
+                            <td><input type="text"  v-model="custodian"></td>
+                            <td><input type="text" v-model="unitPrice"></td>
+                            <td><input type="text"  v-model="status"></td>
                         </tbody>
                     </table>
                 </div>

@@ -258,6 +258,12 @@ var vueDeviceList = new Vue({
                 }
             });
         },
+        //删除用户传值
+        showDeleteUserModal:function(userId)
+        {
+            $("#delete-user").modal('toggle');
+            deleteUserVm.user.id = userId;
+        },
         //处理用户角色
         parseRoleList: function(roleList){
              return parseRoleList(roleList);
@@ -533,7 +539,7 @@ var vueDeviceList = new Vue({
             deviceDtail.id=device.id;
             deviceDtail.brand=device.brand;
             deviceDtail.deviceModel.name=device.deviceModel;
-            deviceDtail.location=device.locationStr;
+            deviceDtail.location=device.locationStr.split('/')[0];
             deviceDtail.name=device.name;
             deviceDtail.department=vueDeviceList.getDepartment(device.locationStr);
             deviceDtail.status=vueDeviceList.parseStatus(device.statusId);
@@ -556,6 +562,32 @@ var vueDeviceList = new Vue({
     },
     created: function () {
         this.listDevice(this);
+    }
+});
+//删除用户
+var deleteUserVm = new Vue({
+    el: "#delete-user",
+    data: {
+        user:
+            {"id": ""}
+    },
+    methods: {
+        deleteUser: function () {
+            var data = this.user;
+            sendPost({
+                url: API.getApi(API.deleteUser)+data.id,
+                success: function (res) {
+                    if (res.code == 0) {
+                        alert("删除成功！");
+                        $("#delete-user").modal('toggle');
+                        //刷新设备列表
+                        vueDeviceList.ListUser();
+                    } else {
+                        alert("删除失败！");
+                    }
+                }
+            });
+        },
     }
 });
 //修改用户信息
