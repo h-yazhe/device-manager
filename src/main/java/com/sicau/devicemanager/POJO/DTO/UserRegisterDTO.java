@@ -21,8 +21,7 @@ public class UserRegisterDTO {
      * 用户名
      */
     @NotNull(message = "用户id不能为空",groups = {DeviceValidatedGroup.modifyUser.class})
-    @Pattern(regexp = "\\d+", message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
-    @Size(min = 19, max = 19, message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^$|^\\d{19}$", message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String userId;
 
     /**

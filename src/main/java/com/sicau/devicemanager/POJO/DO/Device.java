@@ -19,8 +19,7 @@ import java.util.Date;
 public class Device {
 
     @NotNull(groups = {UpdateDeviceGroup.class, DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class})
-    @Pattern(regexp = "\\d+", message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
-    @Size(min = 19, max = 19, message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^$|^\\d{19}$", message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String id;
 
     @Pattern(regexp = "^[a-zA-Z\u4e00-\u9fa5_0-9]+$", groups = CommonValidatedGroup.LegalityGroup.class, message = "设备名只能为汉字、英文字母、数字、下划线的组合")
@@ -46,8 +45,7 @@ public class Device {
     private Date useTime;
 
     @NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
-    @Pattern(regexp = "\\d+", message = "workNatureId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
-    @Size(min = 19, max = 19, message = "workNatureId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^$|^\\d{19}$", message = "workNatureId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String workNatureId;
 
     @NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})

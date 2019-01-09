@@ -21,8 +21,7 @@ import javax.validation.constraints.Size;
 public class Brand {
 
     @NotNull(groups = {QueryDeviceGroup.class}, message = "品牌id不能为空")
-    @Pattern(regexp = "\\d+", message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
-    @Size(min = 19, max = 19, message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^$|^\\d{19}$", message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String id;
 
     /**

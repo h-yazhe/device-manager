@@ -23,15 +23,13 @@ import javax.validation.constraints.Size;
 public class Category {
 
     @NotNull(message = "id不能为空", groups = {InsertTree.class})
-    @Pattern(regexp = "\\d+", message = "category的id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
-    @Size(min = 19, max = 19, message = "category的id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^$|^\\d{19}$", message = "category的id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String id;
 
     /**
      * 父级地点id
      */
-    @Pattern(regexp = "\\d+", message = "category的parentId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
-    @Size(min = 19, max = 19, message = "category的parentId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^\\d*$", message = "category的parentId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String parentId;
 
     /**
