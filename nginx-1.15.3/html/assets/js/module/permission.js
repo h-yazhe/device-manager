@@ -42,6 +42,11 @@ var PERMISSION_ENUM = {
                 LOCATION_UPDATE: 'location:update',
                 LOCATION_DELETE: 'location:delete'
             },
+            CATEGORY: {
+                CATEGORY_ADD: 'category:add',
+                CATEGORY_UPDATE: 'category:update',
+                CATEGORY_DELETE: 'category:delete'
+            },
             WORK_NATURE: {
                 WORK_NATURE_ADD: 'nature:add',
                 WORK_NATURE_DELETE: 'nature:delete'
