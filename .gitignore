@@ -4,4 +4,3 @@
 *.yml
 /target/
 /src/test
-/nginx-1.15.3
