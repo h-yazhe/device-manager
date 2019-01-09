@@ -142,6 +142,9 @@ var vueDeviceList = new Vue({
         showDeleteDeviceButton: function (statusId) {
             return (statusId===1 || statusId===2 || statusId===3) && checkPermission(PERMISSION_ENUM.DEVICE.DEVICE_DELETE);
         },
+        showAddDeviceButton: function () {
+            return checkPermission(PERMISSION_ENUM.DEVICE.DEVICE_ADD);
+        },
         /**
          * 渲染表格
          */

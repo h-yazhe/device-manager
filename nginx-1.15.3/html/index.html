@@ -198,7 +198,7 @@
                             设备详情
                         </h4>
                         <div class="turn-page-right">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-device">添加设备</button>
+                            <button v-if="showAddDeviceButton()" type="button" class="btn btn-success" data-toggle="modal" data-target="#add-device">添加设备</button>
                             <button type="button" class="btn btn-info" onclick="$('#deviceTable').table2excel({ exclude: '.excludeThisClass',
                                                 name: 'Worksheet Name',
                                                 filename: '设备列表',
