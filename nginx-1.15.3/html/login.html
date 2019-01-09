@@ -112,7 +112,7 @@
             methods: {
                 login: function () {
                     $.ajax({
-                        url: "http://39.108.97.103:8080"+API.getApi(API.login),
+                        url: API.getApi(API.login),
                         method: "post",
                         contentType: "application/json",
                         data: JSON.stringify({
