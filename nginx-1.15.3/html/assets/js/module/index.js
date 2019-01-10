@@ -2,7 +2,7 @@
 var vueDeviceList = new Vue({
     el: "#device-list",
     components: {
-      'search-device': SearchDevice
+        'search-device': SearchDevice
     },
     data: {
         device:true,
@@ -234,7 +234,7 @@ var vueDeviceList = new Vue({
             })
         },
         /*获取用户列表*/
-         ListUser:function(){
+        ListUser:function(){
             sendPost({
                 url:API.getApi(API.ListUser),
                 data: JSON.stringify(
@@ -269,7 +269,7 @@ var vueDeviceList = new Vue({
         },
         //处理用户角色
         parseRoleList: function(roleList){
-             return parseRoleList(roleList);
+            return parseRoleList(roleList);
         },
         //渲染设备品牌表格
         listDeviceBrand: function () {
@@ -362,7 +362,7 @@ var vueDeviceList = new Vue({
         },
         //渲染工作性质表格
         listWorkNature: function () {
-             var vue=this;
+            var vue=this;
             sendPost({
                 url: API.getApi(API.listWorkNature),
                 data: JSON.stringify(vue.workNaturePage),
@@ -583,49 +583,49 @@ var userModal=new Vue({
         roleIds: '',
         pageParam: new defaultQueryPage()
     },
-        methods:{
+    methods:{
         //修改保存
-            saveEdit:function(){
-                var self = this;
-                var value={
-                    userId:self.user.id,
-                    realName:self.user.realName,
-                    roleId:self.user.roleList[0].id,
-                    email:self.user.email,
-                    phone:self.user.phone,
-                    address:self.user.address
-                };
-                console.log(value);
-                sendPost({
-                    url:API.getApi(API.updateUser),
-                    data: JSON.stringify(value),
-                    success: function (data) {
-                        if (data.code === 0){
-                            alert("修改用户信息成功！");
-                            $('#user-modal').modal('toggle');
-                            // sideBarVm.ListUser();
-                        }else {
-                            console.error(data.msg);
-                        }
+        saveEdit:function(){
+            var self = this;
+            var value={
+                userId:self.user.id,
+                realName:self.user.realName,
+                roleId:self.user.roleList[0].id,
+                email:self.user.email,
+                phone:self.user.phone,
+                address:self.user.address
+            };
+            console.log(value);
+            sendPost({
+                url:API.getApi(API.updateUser),
+                data: JSON.stringify(value),
+                success: function (data) {
+                    if (data.code === 0){
+                        alert("修改用户信息成功！");
+                        $('#user-modal').modal('toggle');
+                        // sideBarVm.ListUser();
+                    }else {
+                        console.error(data.msg);
                     }
-                });
-            },
-        //角色选项卡
-            getUserSelection: function () {
-                var self = this;
-                sendPost({
-                    url:API.getApi(API.getUserSelection),
-                    data: JSON.stringify(this.pageParam),
-                    success: function (data) {
-                        if (data.code === 0){
-                            self.roleIds=data.data.list;
-                        }else {
-                            console.error(data.msg);
-                        }
-                    }
-                });
-            }
+                }
+            });
         },
+        //角色选项卡
+        getUserSelection: function () {
+            var self = this;
+            sendPost({
+                url:API.getApi(API.getUserSelection),
+                data: JSON.stringify(this.pageParam),
+                success: function (data) {
+                    if (data.code === 0){
+                        self.roleIds=data.data.list;
+                    }else {
+                        console.error(data.msg);
+                    }
+                }
+            });
+        }
+    },
     created:function () {
         this.getUserSelection();
     }
@@ -726,12 +726,12 @@ var deviceChange=new Vue({
             sendPost({
                 url:API.getApi(API.DeviceRecord),
                 data: JSON.stringify({
-                    "deviceId":this.id,
+                        "deviceId":this.id,
                         "queryPage": {
-                    "pageNum": 1,
-                    "pageSize": 20
-                }
-            }
+                            "pageNum": 1,
+                            "pageSize": 20
+                        }
+                    }
                 ),
                 success: function (res) {
                     var data = res.data.list;
@@ -763,9 +763,9 @@ var deviceChange=new Vue({
             }
         },
         formatTime:function(timestamp) {
-        var date = new Date(timestamp);
-        return date.getFullYear() + "." + date.getMonth() + "." + date.getDay();
-}
+            var date = new Date(timestamp);
+            return date.getFullYear() + "." + date.getMonth() + "." + date.getDay();
+        }
     }
 })
 var saveChange=new Vue({
@@ -793,7 +793,7 @@ var saveChange=new Vue({
     },
     methods: {
         changeDetail: function () {
-                this.data.id = deviceDtail.id,
+            this.data.id = deviceDtail.id,
                 this.data.name = deviceDtail.name,
                 this.data.locationId = deviceDtail.location,
                 this.data.nationalId = deviceDtail.nationalId,
@@ -897,13 +897,13 @@ var selectcatVm=new Vue({
         }
     },
     template:' <div id="select-catree">\n'+"<button class=\"form-control\" @click=\"shiftStatus\" v-bind:value=\"id\" style=\"width:81px;\">{{name}}<div><span class=\"caret\"></span></div></button>\n"+
-    '      <div class="content" v-show="Show" style=" margin-top: 0;\n' +
-    '            border: 1px #428bca solid;\n' +
-    '            position: absolute;\n' +
-    '            top: 100%;\n' +
-    '            width:81px;\n' +
-    'list-style: none;"> <SelectCaTree v-for="(item,i) in selectcatList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select" style="z-index: 1000;"></SelectCaTree></div>\n' +
-    '                        </div>'
+        '      <div class="content" v-show="Show" style=" margin-top: 0;\n' +
+        '            border: 1px #428bca solid;\n' +
+        '            position: absolute;\n' +
+        '            top: 100%;\n' +
+        '            width:81px;\n' +
+        'list-style: none;"> <SelectCaTree v-for="(item,i) in selectcatList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select" style="z-index: 1000;"></SelectCaTree></div>\n' +
+        '                        </div>'
 })
 var selectVm=new Vue({
     el:"#select-tree",
@@ -960,36 +960,6 @@ var addressSortVm = new Vue({
         '                            <AddressTree v-for="(item,i) in addressList" :index="i" :parent="item" :key="item.id"></AddressTree>\n' +
         '                        </div>'
 });
-var partitionVm=new Vue({
-    el:"#partition-tree",
-    components:{
-        'PartitionTree':PartitionTree
-    },
-    data:{
-        id:'',
-        name:'请选择',
-        Show:false,
-        partitionList: [
-            {
-                id: "0",
-                name:'',
-                level:'',
-                children: [
-                ],
-                active: true,//是否激活
-                expanded: false,//是否展开
-            }
-        ],
-    },
-    methods:{
-        shiftStatus:function () {
-            this.Show=!this.Show;
-        }
-    },
-    template:' <div id="partition-tree">\n'+"<button class=\"form-control\" @click=\"shiftStatus\" v-bind:value=\"id\" type=\"button\">{{name}}<div><span class=\"caret\"></span></div></button>\n"+
-    '      <div class="content" v-show="Show"><PartitionTree v-for="(item,i) in partitionList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select"></PartitionTree></div>\n' +
-    '                        </div>'
-})
 //添加分类
 var addCategory=new Vue({
     el:"#add-category",
@@ -1105,7 +1075,7 @@ var addUserVm = new Vue({
                 data: JSON.stringify(self.pageParam),
                 success: function (res) {
                     if (res.code === 0){
-                            self.roleIds=res.data.list;
+                        self.roleIds=res.data.list;
                     }else {
                         console.error(res.msg);
                     }
@@ -1120,7 +1090,24 @@ var addUserVm = new Vue({
 //添加设备
 var addDeviceVm = new Vue({
     el: "#add-device",
+    components:{
+        'partition-tree':PartitionTree
+    },
     data: {
+        id:'',
+        name:'请选择',
+        Show:false,
+        partitionList: [
+            {
+                id: "0",
+                name:'',
+                level:'',
+                children: [
+                ],
+                active: true,//是否激活
+                expanded: false//是否展开
+            }
+        ],
         device: {
             "amountUnitId": "",
             "brandId": "",
@@ -1141,6 +1128,9 @@ var addDeviceVm = new Vue({
         selection: $.extend(true,{},deviceSearchSelection)
     },
     methods:{
+        shiftStatus:function () {
+            this.Show=!this.Show;
+        },
         //添加设备
         addDevice: function () {
             var data = this.device;
@@ -1177,6 +1167,7 @@ var addDeviceVm = new Vue({
                         categoryVm.categoryList = categoryList;
                         addressSortVm.addressList=locationList;
                         selectVm.selectList=locationList;
+                        addDeviceVm.partitionList=locationList;
                         //渲染选项卡数据
                         self.selection.categoryList = res.data.categoryList;
                         self.selection.brandList = res.data.brandList;
@@ -1230,7 +1221,7 @@ var deleteUserVm = new Vue({
     data: {
         user:
             {"id": ""}
-     }
+    }
 });
 
 //侧边栏
@@ -1284,11 +1275,11 @@ var sideBarVm = new Vue({
         sortList:function (id) {
             if(id==-1){
                 vueDeviceList.showButton=false;
-                    vueDeviceList.dataList.parentId="";
+                vueDeviceList.dataList.parentId="";
                 addDeviceVm.getDeviceSelection();
             }else {
                 vueDeviceList.showButton=true;
-                    vueDeviceList.dataList.parentId=id;
+                vueDeviceList.dataList.parentId=id;
             }
             vueDeviceList.sort();
             vueDeviceList.brand=false;
@@ -1306,11 +1297,11 @@ var sideBarVm = new Vue({
             if(id==-1){
                 addDeviceVm.getDeviceSelection();
                 vueDeviceList.showButton=false;
-                    vueDeviceList.locationList.parentId="";
+                vueDeviceList.locationList.parentId="";
 
             }else {
                 vueDeviceList.showButton=true;
-                    vueDeviceList.locationList.parentId=id;
+                vueDeviceList.locationList.parentId=id;
             }
             vueDeviceList.addressDevice();
             vueDeviceList.device=false;
