@@ -1,5 +1,6 @@
 package com.sicau.devicemanager.POJO.DTO;
 
+import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.DO.Permission;
 import com.sicau.devicemanager.POJO.DO.Role;
 import lombok.Data;
@@ -71,4 +72,9 @@ public class UserDTO {
      * 权限列表
      */
     private List<Permission> permissionList;
+
+	/**
+	 * 管理的地点列表
+	 */
+	private List<Location> locationList;
 }

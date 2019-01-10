@@ -12,3 +12,9 @@
     clear: both;
 }
 
+.location-span{
+    padding: 2px;
+    color: white;
+    border: 1px solid rgb(104, 223, 240);
+    border-radius: 20%;
+}
