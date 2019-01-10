@@ -599,7 +599,9 @@
                 </div>
                 <div class="form-group">
                        <label for="segment-tree">使用部门</label>
-                    <div id="partition-tree"></div>
+                    <div id="partition-tree"><button class="form-control" @click="shiftStatus" v-bind:value="id" type="button">{{name}}<div><span class="caret"></span></div></button>
+                        <div class="content" v-show="Show"><partition-tree v-for="(item,i) in partitionList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select"></partition-tree></div>
+                             </div>
                 </div>
                 <div class="form-group">
                     <label for="input-device-name">名称</label>

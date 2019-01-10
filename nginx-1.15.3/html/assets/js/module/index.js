@@ -960,36 +960,6 @@ var addressSortVm = new Vue({
         '                            <AddressTree v-for="(item,i) in addressList" :index="i" :parent="item" :key="item.id"></AddressTree>\n' +
         '                        </div>'
 });
-var partitionVm=new Vue({
-    el:"#partition-tree",
-    components:{
-        'PartitionTree':PartitionTree
-    },
-    data:{
-        id:'',
-        name:'请选择',
-        Show:false,
-        partitionList: [
-            {
-                id: "0",
-                name:'',
-                level:'',
-                children: [
-                ],
-                active: true,//是否激活
-                expanded: false,//是否展开
-            }
-        ],
-    },
-    methods:{
-        shiftStatus:function () {
-            this.Show=!this.Show;
-        }
-    },
-    template:' <div id="partition-tree">\n'+"<button class=\"form-control\" @click=\"shiftStatus\" v-bind:value=\"id\" type=\"button\">{{name}}<div><span class=\"caret\"></span></div></button>\n"+
-    '      <div class="content" v-show="Show"><PartitionTree v-for="(item,i) in partitionList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select"></PartitionTree></div>\n' +
-    '                        </div>'
-})
 //添加分类
 var addCategory=new Vue({
     el:"#add-category",
@@ -1120,7 +1090,24 @@ var addUserVm = new Vue({
 //添加设备
 var addDeviceVm = new Vue({
     el: "#add-device",
+    components:{
+        'partition-tree':PartitionTree
+    },
     data: {
+        id:'',
+        name:'请选择',
+        Show:false,
+        partitionList: [
+            {
+                id: "0",
+                name:'',
+                level:'',
+                children: [
+                ],
+                active: true,//是否激活
+                expanded: false//是否展开
+            }
+        ],
         device: {
             "amountUnitId": "",
             "brandId": "",
@@ -1141,6 +1128,9 @@ var addDeviceVm = new Vue({
         selection: $.extend(true,{},deviceSearchSelection)
     },
     methods:{
+        shiftStatus:function () {
+            this.Show=!this.Show;
+        },
         //添加设备
         addDevice: function () {
             var data = this.device;
