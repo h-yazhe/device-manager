@@ -28,6 +28,10 @@
             <result property="permissionName" column="permission_name"/>
             <result property="required" column="required"/>
         </collection>
+		<collection property="locationList" ofType="com.sicau.devicemanager.POJO.DO.Location">
+			<id property="id" column="l_id" />
+			<result property="name" column="l_name" />
+		</collection>
     </resultMap>
 
     <sql id="listUser">
@@ -131,12 +135,15 @@
 			   resource_name,
 			   permission_code,
 			   permission_name,
-			   required
+			   required,
+			   l.id l_id, l.name l_name
 		FROM `user` u_temp
 				 JOIN `user_role` ON u_temp.id = user_role.user_id
 				 JOIN role ON user_role.role_id = role.id
 				 JOIN role_permission ON role.id = role_permission.role_id
 				 JOIN permission ON role_permission.permission_id = permission.id
+				left JOIN role_location rl on rl.role_id = role.id
+				left join location l on l.id = rl.location_id
         WHERE user_id = #{userId}
     </select>
 

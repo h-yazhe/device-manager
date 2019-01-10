@@ -1228,7 +1228,8 @@ var sideBarVm = new Vue({
     el: "#sidebar",
     data: {
         username: getLocalStorage(STORAGE_KEY.userInfo).username,
-        roleList: parseRoleList(getLocalStorage(STORAGE_KEY.userInfo).roleList)
+        roleList: parseRoleList(getLocalStorage(STORAGE_KEY.userInfo).roleList),
+        locations: getLocalStorage(STORAGE_KEY.userInfo).locationList
     },
     computed: {
         showSysSetting: function() {
@@ -1239,7 +1240,7 @@ var sideBarVm = new Vue({
         },
         showMenuManagement: function () {
             return checkPermission(PERMISSION_ENUM.SYS_SETTING.MENU_MANAGEMENT);
-        }
+        },
     },
     methods: {
         listDevice: function (statusId) {
