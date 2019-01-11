@@ -218,10 +218,10 @@ var SelectCaTree = {
         }
     },
     template: '<div>\n' +
-    '                                <li :class="{active: parent.active}"   :style="indent"  @mouseover="listChildren()"   @click="cValue(parent.id,parent.name)"><span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n'+
-    '                                </li>\n' +
-    '                                <SelectCaTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></SelectCaTree>'+
-    '</div>',
+        '                                <li :class="{active: parent.active}"   :style="indent"  @mouseover="listChildren()"   @click="cValue(parent.id,parent.name)"><span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n'+
+        '                                </li>\n' +
+        '                                <SelectCaTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></SelectCaTree>'+
+        '</div>',
     methods: {
         listChildren: function () {
             var self = this;
@@ -334,10 +334,10 @@ var PartitionTree = {
         }
     },
     template: '<div>\n' +
-    '                                <li :class="{active: parent.active}"   :style="indent"  @mouseover="listChildren()"   @click="sValue(parent.id,parent.name)"><span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n'+
-    '                                </li>\n' +
-    '                                <PartitionTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></PartitionTree>'+
-    '</div>',
+        '                                <li :class="{active: parent.active}"   :style="indent"  @mouseover="listChildren()"   @click="sValue(parent.id,parent.name)"><span v-bind:class="[parent.expanded ?\'glyphicon-chevron-down\':\'glyphicon glyphicon-chevron-right\']" class="glyphicon"></span>{{parent.name}}\n'+
+        '                                </li>\n' +
+        '                                <PartitionTree v-if="parent.expanded"  v-for="child in parent.children" :parent="child" :key="child.id"></PartitionTree>'+
+        '</div>',
     methods: {
         listChildren: function () {
             var self = this;
