@@ -247,7 +247,7 @@
                                 <td class="noExl">
                                     <button @click="showDistributeModal(device.id)" v-if="showDistributeButton(device.statusId)" class="btn btn-success btn-xs"><i class="fa fa-check"></i>分发</button>
                                     <button @click="showDiscardModal(device.id)" v-if="showDiscardButton(device.statusId)" class="btn btn-danger btn-xs"><i class="fa fa-dropbox"></i>报废</button>
-                                    <button  type="button" class="btn btn-primary btn-xs"  @click="showDetailsModal(device)">详情</button>
+                                    <button  type="button" class="btn btn-primary btn-xs" v-if="showDiscardButton(device.statusId)"  @click="showDetailsModal(device)">详情</button>
                                     <button  type="button" class="btn btn-danger btn-xs"  @click="deleteDevice(device.id)" v-if="showDeleteDeviceButton(device.statusId)">删除</button>
                                 </td>
                             </tr>
