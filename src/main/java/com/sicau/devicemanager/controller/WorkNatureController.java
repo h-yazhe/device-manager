@@ -31,7 +31,7 @@ public class WorkNatureController {
      */
     @PostMapping("/add")
     @RequiresPermissions(ResourceConstants.NATURE+PermissionActionConstant.ADD)
-    public ResultVO addWorkNature(@Validated({DeviceValidatedGroup.addWorkNature.class, CommonValidatedGroup.LegalityGroup.class})
+    public ResultVO addWorkNature(@Validated({DeviceValidatedGroup.addWorkNature.class})
                                   @RequestBody WorkNature workNature) {
         workNatureService.addWorkNature(workNature);
         return ResultVOUtil.success();

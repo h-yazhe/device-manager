@@ -24,17 +24,14 @@ public class ListStringValidator implements ConstraintValidator<ListStringConstr
 
         boolean isValid = true;
 
-        String[] pats = regexp.split(",");
-        Pattern pattern = Pattern.compile(pats[0]);
+        Pattern pattern = Pattern.compile(regexp);
 
 
         for (Object e : value) {
             String s = (String) e;
             if (!pattern.matcher(s).find()) {
                 isValid = false;
-            }
-            if (s.length()!=0&&pats[1] != null && !pats[1].equals(String.valueOf(s.length()))) {
-                isValid = false;
+                break;
             }
         }
 

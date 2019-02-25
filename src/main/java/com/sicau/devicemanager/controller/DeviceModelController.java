@@ -36,7 +36,7 @@ public class DeviceModelController {
      */
     @PostMapping("/device-model-submit")
     @RequiresPermissions(ResourceConstants.MODEl + PermissionActionConstant.ADD)
-    public ResultVO submitDeviceModel(@Validated({DeviceValidatedGroup.addDeviceModel.class, CommonValidatedGroup.LegalityGroup.class}) @RequestBody DeviceModel deviceModel) {
+    public ResultVO submitDeviceModel(@Validated({DeviceValidatedGroup.addDeviceModel.class}) @RequestBody DeviceModel deviceModel) {
         return ResultVOUtil.success(deviceModelService.submitDeviceModel(deviceModel));
     }
 

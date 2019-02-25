@@ -59,6 +59,7 @@ public class BrandController {
     @PostMapping("delete-brand/{id}")
 	@RequiresPermissions(ResourceConstants.BRAND + PermissionActionConstant.DELETE)
     public ResultVO deleteBrandById(@PathVariable String id) {
+        
         brandService.deleteBrandById(id);
         return ResultVOUtil.success();
     }
