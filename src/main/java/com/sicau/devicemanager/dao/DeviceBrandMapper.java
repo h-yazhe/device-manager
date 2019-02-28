@@ -13,6 +13,15 @@ public interface DeviceBrandMapper {
 
     DeviceBrand selectByPrimaryKey(String id);
 
+    /**
+     * Select from device_brand by brandId
+     *
+     * @param brandId the id of a brand
+     * @return a list of 'devicebrand'
+     * @author Xiao W
+     */
+    List<DeviceBrand> selectByBrandId(String brandId);
+
     int updateByPrimaryKeySelective(DeviceBrand record);
 
     int updateByPrimaryKey(DeviceBrand record);

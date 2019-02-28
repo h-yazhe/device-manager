@@ -6,6 +6,7 @@ import com.sicau.devicemanager.POJO.DO.Brand;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.config.exception.CommonException;
 import com.sicau.devicemanager.dao.BrandMapper;
+import com.sicau.devicemanager.dao.DeviceBrandMapper;
 import com.sicau.devicemanager.service.BrandService;
 import com.sicau.devicemanager.util.KeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class BrandServiceImpl implements BrandService {
 
     @Autowired
     private BrandMapper brandMapper;
+    @Autowired
+    private DeviceBrandMapper deviceBrandMapper;
 
     @Override
     public List<Brand> listBrand() {
@@ -45,6 +48,9 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public void deleteBrandById(String id) {
+        if (deviceBrandMapper.selectByBrandId(id).size() > 0) {
+            throw new CommonException("还存在设备是此品牌，删除失败!");
+        }
         brandMapper.deleteBrandById(id);
     }
 }

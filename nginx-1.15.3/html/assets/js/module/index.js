@@ -310,7 +310,7 @@ var vueDeviceList = new Vue({
                         alert(data.msg);
                         vueDeviceList.listDeviceBrand();
                     } else {
-                        alert("删除失败！");
+                        alert(data.msg);
                     }
                 }
             })
@@ -1208,7 +1208,7 @@ var deleteAddress = new Vue({
                         alert(data.msg);
                         vueDeviceList.addressDevice();
                     } else {
-                        alert("删除失败！");
+                        alert(data.msg);
                     }
                 }
             });

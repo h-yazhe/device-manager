@@ -17,6 +17,14 @@ public interface DeviceMapper {
     Device selectByPrimaryKey(String id);
 
     /**
+     * 根据location_id查找设备
+     *
+     * @param locationId device表中的location_id字段的值
+     * @return 是此location的设备的列表
+     */
+    List<Device> selectByLocationId(String locationId);
+
+    /**
      * 根据设备id批量查询设备表信息
      * @param ids
      * @return

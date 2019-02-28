@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author BeFondOfTaro
@@ -52,11 +53,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String,Object> listUser(QueryPage queryPage) {
-		Map<String,Object> resMap = new HashMap<>(2);
-		Integer startNum = (queryPage.getPageNum()-1)*queryPage.getPageSize();
-		resMap.put("list",userMapper.listUser(startNum,startNum+queryPage.getPageSize()));
-		resMap.put("total",userMapper.countUser());
+    public Map<String, Object> listUser(QueryPage queryPage) {
+        Map<String, Object> resMap = new HashMap<>(2);
+        Integer startNum = (queryPage.getPageNum() - 1) * queryPage.getPageSize();
+        //如果用户被锁定了或者删除了就不再显示了；删除用户就是将locked和deleted都设为1
+        List<UserDTO> users = userMapper.listUser(startNum, startNum + queryPage.getPageSize())
+                .stream().filter((user -> !user.getLocked())).collect(Collectors.toList());
+        resMap.put("list", users);
+        resMap.put("total", users.size());
         return resMap;
     }
 
@@ -67,10 +71,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(UserRegisterDTO userRegisterDTO) {
-    	//用户名重复校验
-		if (userMapper.getIdByUsername(userRegisterDTO.getUsername()) != null){
-			throw new CommonException(ResultEnum.USERNAME_DUPLICATED);
-		}
+        //用户名重复校验
+        if (userMapper.getIdByUsername(userRegisterDTO.getUsername()) != null) {
+            throw new CommonException(ResultEnum.USERNAME_DUPLICATED);
+        }
         //用户信息写入
         User user = new User();
         BeanUtils.copyProperties(userRegisterDTO, user);
@@ -101,10 +105,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void modifyUser(UserRegisterDTO userRegisterDTO) {
-		//用户名重复校验
-		if (userMapper.getIdByUsername(userRegisterDTO.getUsername()) != null){
-			throw new CommonException(ResultEnum.USERNAME_DUPLICATED);
-		}
+        //用户名重复校验
+        if (userMapper.getIdByUsername(userRegisterDTO.getUsername()) != null) {
+            throw new CommonException(ResultEnum.USERNAME_DUPLICATED);
+        }
         //用户信息写入
         User user = new User();
         BeanUtils.copyProperties(userRegisterDTO, user);
@@ -118,8 +122,8 @@ public class UserServiceImpl implements UserService {
         }
 
         UserRole userRole = new UserRole();
-        BeanUtils.copyProperties(userRegisterDTO,userRole);
-        if (null!=userRole.getRoleId()){
+        BeanUtils.copyProperties(userRegisterDTO, userRole);
+        if (null != userRole.getRoleId()) {
             if (1 != userRoleMapper.updateUserRole(userRole)) {
                 throw new CommonException(ResultEnum.UNKNOWN_ERROR);
             }
@@ -142,8 +146,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(String userId) {
-        userMapper.deleteUserAuthByUserId(userId);
+        userMapper.deleteUserLogically(userId);
+/*        userMapper.deleteUserAuthByUserId(userId);
         userRoleMapper.deleteUserRoleByUserId(userId);
-        userMapper.deleteUserById(userId);
+        userMapper.deleteUserById(userId);*/
     }
 }

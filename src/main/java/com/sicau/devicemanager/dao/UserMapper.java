@@ -57,6 +57,14 @@ public interface UserMapper {
     int insertUserAuth(UserAuth userAuth);
 
     /**
+     * 逻辑删除用户，设locked(为了兼容)和deleted字段为1
+     *
+     * @param userId 目标用户的id
+     * @return 成功“删除”的用户的数目
+     */
+    int deleteUserLogically(String userId);
+
+    /**
      * 根据用户id删除user表信息
      * @param userId 用户id
      * @return
