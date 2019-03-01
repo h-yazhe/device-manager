@@ -370,9 +370,9 @@ var PartitionTree = {
             }
         },
         sValue:function (id,name) {
-            partitionVm.id=id;
-            partitionVm.name=name;
-            partitionVm.Show=false;
+            addDeviceVm.id=id;
+            addDeviceVm.name=name;
+            addDeviceVm.Show=false;
             vueDeviceList.queryParams.locationId=id;
         }
     },

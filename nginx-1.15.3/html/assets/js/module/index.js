@@ -905,6 +905,7 @@ var selectcatVm=new Vue({
         'list-style: none;"> <SelectCaTree v-for="(item,i) in selectcatList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select" style="z-index: 1000;"></SelectCaTree></div>\n' +
         '                        </div>'
 })
+
 var selectVm=new Vue({
     el:"#select-tree",
     components:{
@@ -1087,6 +1088,7 @@ var addUserVm = new Vue({
         this.getUserSelection();
     }
 });
+
 //添加设备
 var addDeviceVm = new Vue({
     el: "#add-device",

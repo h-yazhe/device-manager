@@ -599,7 +599,7 @@
                 </div>
              <div class="form-group">
                  <label for="partition-tree">使用部门</label>
-                 <div id="partition-tree"><button class="form-control" @click="shiftStatus" v-bind:value="id" type="button" style="float: left; z-index:1000;"><span class="left" style="padding-top: 0px;">{{name}}</span><span class="caret" style="float: right;padding-top: 9px;border-top-width: 6px;margin-top: 7px;"></span></button>
+                 <div id="partition-tree"><button class="form-control" @click="shiftStatus" v-bind:value="id" style="float: left; z-index:1000;"><span class="left" style="padding-top: 0px;">{{name}}</span><span class="caret" style="float: right;padding-top: 9px;border-top-width: 6px;margin-top: 7px;"></span></button>
                      <div class="content" v-show="Show" style="position: absolute;width: 870px;top: 145px;"><partition-tree v-for="(item,i) in partitionList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select"></partition-tree></div>
                  </div>
              </div>
