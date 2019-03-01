@@ -61,6 +61,8 @@ public class ShiroConfig {
         Map<String, String> filterRuleMap = new LinkedHashMap<>();
         //登录不需要拦截
         filterRuleMap.put(CommonConstants.API_PREFIX + "/login", "anon");
+        filterRuleMap.put(CommonConstants.API_PREFIX + "/interimToken", "anon");
+		filterRuleMap.put(CommonConstants.API_PREFIX + "/imageValidation/**", "anon");
         // 所有rest请求通过我们自己的auth Filter
         filterRuleMap.put(CommonConstants.API_PREFIX + "/**", "statelessAuthc");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);

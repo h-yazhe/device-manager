@@ -2,6 +2,7 @@ package com.sicau.devicemanager.util.web;
 
 
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.constants.BusinessExceptionEnum;
 import com.sicau.devicemanager.constants.ResultEnum;
 
 /**
@@ -36,4 +37,27 @@ public class ResultVOUtil {
         resultVO.setMsg(resultEnum.getMessage());
         return resultVO;
     }
+
+	/**
+	 * 返回系统异常
+	 * @return
+	 */
+	public static ResultVO retSysError(){
+		ResultVO resultVO = new ResultVO();
+		resultVO.setCode(ResultEnum.UNKNOWN_ERROR.getCode());
+		resultVO.setMsg(ResultEnum.UNKNOWN_ERROR.getMessage());
+		return resultVO;
+	}
+
+	/**
+	 * 返回业务异常
+	 * @param businessExceptionEnum
+	 * @return
+	 */
+	public static ResultVO retBusinessError(BusinessExceptionEnum businessExceptionEnum) {
+		ResultVO resultVO = new ResultVO();
+		resultVO.setCode(businessExceptionEnum.getCode());
+		resultVO.setMsg(businessExceptionEnum.getException());
+		return resultVO;
+	}
 }

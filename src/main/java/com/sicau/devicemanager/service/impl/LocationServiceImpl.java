@@ -8,7 +8,7 @@ import com.sicau.devicemanager.POJO.DTO.LocationDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
-import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.DeviceMapper;
 import com.sicau.devicemanager.dao.LocationMapper;
@@ -69,7 +69,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public void insertLocationByPId(Location location) {
     	if (locationMapper.getIdByName(location.getName()) != null){
-    		throw new CommonException("名称不能重复");
+    		throw new BusinessException("名称不能重复");
 		}
         List<Location> locationList = new ArrayList<>(1);
         location.setId(KeyUtil.genUniqueKey());
@@ -115,7 +115,7 @@ public class LocationServiceImpl implements LocationService {
     public void deleteLocationTree(String rootId) {
         List<Location> descendants = locationMapper.getDescendants(rootId);
         if (deviceMapper.selectByLocationId(rootId).size() > 0||descendants.size()>0) {
-            throw new CommonException("有子地点存在或者有设备使用此地点，删除失败!");
+            throw new BusinessException("有子地点存在或者有设备使用此地点，删除失败!");
         }
         List<String> ids = new ArrayList<>();
         descendants.forEach(location -> {
@@ -175,7 +175,7 @@ public class LocationServiceImpl implements LocationService {
         }
         //如果要访问的id不是用户角色所能管理的
         if (flag==0){
-            throw new CommonException(ResultEnum.UNAUTHORIZED);
+            throw new BusinessException(ResultEnum.UNAUTHORIZED);
         }
         PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(), "name");
         return locationMapper.getChildrenById(pid);

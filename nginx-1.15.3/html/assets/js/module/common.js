@@ -47,6 +47,10 @@ var API = {
     prefix: '/dev-manager/api_v1/',
     //登录
     login: "login",
+    //获取验证码token
+    getValidationToken: "interimToken",
+    //用户获取图片验证码
+    getValidateCode: "imageValidation/",
     //查询设备列表
     listDevice: "device/list",
     //更新设备

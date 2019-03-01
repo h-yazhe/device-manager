@@ -1,5 +1,7 @@
 package com.sicau.devicemanager.service;
 
+import com.sicau.devicemanager.POJO.DO.UserAuth;
+
 import java.util.Map;
 
 /**
@@ -11,11 +13,8 @@ public interface LoginService {
 
     /**
      * 登录
-     * @param identifier
-     * @param credential
-     * @param identifyType
      * @return 用户通行token
      */
-    Map<String, Object> login(String identifier, String credential, Integer identifyType);
+    Map<String, Object> login(UserAuth userAuthRequest);
 
 }

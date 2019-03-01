@@ -1,8 +1,8 @@
 package com.sicau.devicemanager.config.shiro.filter;
 
 import com.sicau.devicemanager.config.shiro.token.SimpleToken;
+import com.sicau.devicemanager.constants.BusinessExceptionEnum;
 import com.sicau.devicemanager.constants.HttpParamKey;
-import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.util.web.ResponseUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +61,7 @@ public class AuthFilter extends AccessControlFilter {
      * 如果返回false表示该拦截器实例已经处理了，将直接返回即可。
      */
     @Override
-    protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws IOException {
+    protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) {
         return false;
     }
 
@@ -75,7 +75,7 @@ public class AuthFilter extends AccessControlFilter {
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         ResponseUtil.toJson(
                 httpServletResponse,
-                ResultVOUtil.error(ResultEnum.LOGIN_EXCEPTION)
+                ResultVOUtil.retBusinessError(BusinessExceptionEnum.USER_AUTH_EXCEPTION)
         );
     }
 

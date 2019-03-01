@@ -24,20 +24,32 @@ public class UserAuth {
     /**
      * 登录认证类型,0：用户名密码登录，1：微信登录
      */
-    @NotNull(groups = {Login.class})
+    @NotNull(groups = {Login.class}, message = "请选择登录类型")
     private Integer identifyType;
 
     /**
      * 标识（手机号 邮箱 用户名或第三方应用的唯一标识）
      */
-    @NotNull(groups = {Login.class})
+    @NotNull(groups = {Login.class}, message = "密码不能为空")
     private String identifier;
 
     /**
      * 登录凭证
      */
-    @NotNull(groups = {Login.class})
+    @NotNull(groups = {Login.class}, message = "密码不能为空")
     private String credential;
+
+	/**
+	 * 验证码
+	 */
+	@NotNull(groups = {Login.class}, message = "验证码不能为空")
+    private String imageValidationCode;
+
+	/**
+	 * 验证码token
+	 */
+	@NotNull(groups = {Login.class}, message = "验证码token不能为空")
+	private String validationToken;
 
     /**
      * 是否锁定

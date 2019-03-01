@@ -8,7 +8,8 @@ import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
-import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.config.exception.BusinessException;
+import com.sicau.devicemanager.constants.BusinessExceptionEnum;
 import com.sicau.devicemanager.constants.DeviceStatusEnum;
 import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.*;
@@ -121,7 +122,7 @@ public class DeviceServiceImpl implements DeviceService {
             int result = startTime.compareTo(endTime);
             //开始时间大于结束时间
             if (result == 1) {
-                throw new CommonException(ResultEnum.DATE_INCORRECT.getCode(), "请选择合适的日期");
+                throw new BusinessException(BusinessExceptionEnum.DATE_INCORRECT, "请选择合适的日期");
             } else if (result == 0) {
                 //开始时间=结束时间
                 deviceDTO.setStartTime(DateUtil.getStartTimeToday(startTime));
@@ -155,7 +156,7 @@ public class DeviceServiceImpl implements DeviceService {
         //开始校验地点
         if (!StringUtils.isEmpty(deviceDTO.getLocationId())) {
             if (!checkLocationId(deviceDTO.getLocationId(), locationList)) {
-                throw new CommonException(ResultEnum.LOCATION_UNAUTHORIZED);
+                throw new BusinessException(BusinessExceptionEnum.LOCATION_UNAUTHORIZED);
             }
             //设置地点id作为查询条件
             List<String> locationIds = new ArrayList<>();

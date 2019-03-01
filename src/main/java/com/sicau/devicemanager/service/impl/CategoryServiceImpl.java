@@ -7,7 +7,7 @@ import com.sicau.devicemanager.POJO.DTO.CategoryDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.VO.CategoryVO;
-import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.CategoryMapper;
 import com.sicau.devicemanager.dao.DeviceCategoryMapper;
@@ -131,7 +131,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void insertCategoryByPId(Category category) {
     	//检验名称重复
 		if (categoryMapper.getIdByName(category.getName()) != null){
-			throw new CommonException("名称不能重复");
+			throw new BusinessException("名称不能重复");
 		}
         List<Category> categories = new ArrayList<>(1);
         category.setId(KeyUtil.genUniqueKey());

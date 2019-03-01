@@ -40,6 +40,11 @@
 		            <input v-model="identifier" type="text" class="form-control" placeholder="用户名" autofocus>
 		            <br>
 		            <input v-model="credential" type="password" class="form-control" placeholder="密码">
+                    <br>
+                    <div class="form-inline">
+                        <input v-model="imageValidationCode" type="text" placeholder="请输入验证码" class="form-control">
+                        <img v-bind:src="validationCodeUrl" alt="验证码" v-on:click="getValidationToken">
+                    </div>
 		            <label class="checkbox">
 		                <span class="pull-right">
 		                    <a data-toggle="modal" href="login.html#myModal"> 忘记密码?</a>
@@ -103,18 +108,28 @@
             data: {
                 identifier: "",
                 credential: "",
-                identifyType: 0
+                identifyType: 0,
+                imageValidationCode: "",
+                validationToken: ""
+            },
+            computed: {
+                validationCodeUrl: function () {
+                    return API.getApi(API.getValidateCode) + this.validationToken;
+                }
             },
             methods: {
                 login: function () {
+                    var vue = this;
                     $.ajax({
                         url: API.getApi(API.login),
                         method: "post",
                         contentType: "application/json",
                         data: JSON.stringify({
                             identifier: loginVm.identifier,
-                            credential: loginVm.credential,
-                            identifyType: loginVm.identifyType
+                            credential: btoa(loginVm.credential),
+                            identifyType: loginVm.identifyType,
+                            imageValidationCode: vue.imageValidationCode,
+                            validationToken: vue.validationToken
                         }),
                         success: function (res) {
                             if (res.code == 0){
@@ -129,9 +144,26 @@
                             alert("网络连接异常！");
                         }
                     })
+                },
+                //获取验证码token
+                getValidationToken: function () {
+                    var vue = this;
+                    $.ajax({
+                        url: API.getApi(API.getValidationToken),
+                        method: "get",
+                        contentType: "application/json",
+                        success: function (res) {
+                            vue.validationToken = res.token;
+                        }
+                    })
                 }
+            },
+            mounted: function () {
+                this.getValidationToken();
             }
         })
+
+
     </script>
 
   </body>

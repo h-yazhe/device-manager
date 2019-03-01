@@ -3,7 +3,7 @@ package com.sicau.devicemanager.controller;
 import com.sicau.devicemanager.POJO.DO.RepairOrder;
 import com.sicau.devicemanager.POJO.DTO.RepairOrderDTO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
-import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.constants.*;
@@ -12,7 +12,6 @@ import com.sicau.devicemanager.util.EnumUtil;
 import com.sicau.devicemanager.util.web.RequestUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -85,7 +84,7 @@ public class RepairDeviceController {
     @PostMapping("/orders/device/{deviceId}")
     public ResultVO getOrders(@PathVariable String deviceId) {
         if (StringUtils.isEmpty(deviceId)) {
-            throw new CommonException(ResultEnum.DEVICE_ID_CANNOT_BE_NULL);
+            throw new BusinessException(BusinessExceptionEnum.DEVICE_ID_CANNOT_BE_NULL);
         }
         return ResultVOUtil.success(repairDeviceService.getOrdersByDeviceId(deviceId));
     }
@@ -125,7 +124,7 @@ public class RepairDeviceController {
         if (repairDeviceService.deleteOneselfRepairDeviceOrder(repairId)) {
             return ResultVOUtil.success();
         }
-        return ResultVOUtil.error(ResultEnum.DELETE_FAILED);
+        throw new BusinessException("删除失败");
     }
 
     /**

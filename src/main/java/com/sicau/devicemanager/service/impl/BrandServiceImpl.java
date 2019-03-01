@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.Brand;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
-import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.dao.BrandMapper;
 import com.sicau.devicemanager.dao.DeviceBrandMapper;
 import com.sicau.devicemanager.service.BrandService;
@@ -40,7 +40,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public void insertBrand(Brand brand) {
     	if (brandMapper.getIdByName(brand.getName()) != null){
-    		throw new CommonException("名称已存在！");
+    		throw new BusinessException("名称已存在！");
 		}
         brand.setId(KeyUtil.genUniqueKey());
         brandMapper.insertBrand(brand);
@@ -49,7 +49,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public void deleteBrandById(String id) {
         if (deviceBrandMapper.selectByBrandId(id).size() > 0) {
-            throw new CommonException("还存在设备是此品牌，删除失败!");
+            throw new BusinessException("还存在设备是此品牌，删除失败!");
         }
         brandMapper.deleteBrandById(id);
     }

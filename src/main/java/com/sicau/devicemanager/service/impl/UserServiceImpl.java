@@ -1,14 +1,14 @@
 package com.sicau.devicemanager.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.sicau.devicemanager.POJO.DO.User;
 import com.sicau.devicemanager.POJO.DO.UserAuth;
 import com.sicau.devicemanager.POJO.DO.UserRole;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.DTO.UserRegisterDTO;
-import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.config.exception.ResourceException;
+import com.sicau.devicemanager.constants.BusinessExceptionEnum;
 import com.sicau.devicemanager.constants.ResourceConstants;
 import com.sicau.devicemanager.constants.ResourceExceptionEnum;
 import com.sicau.devicemanager.constants.ResultEnum;
@@ -17,7 +17,6 @@ import com.sicau.devicemanager.dao.UserMapper;
 import com.sicau.devicemanager.dao.UserRoleMapper;
 import com.sicau.devicemanager.service.UserService;
 import com.sicau.devicemanager.util.KeyUtil;
-import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,7 +72,7 @@ public class UserServiceImpl implements UserService {
     public void addUser(UserRegisterDTO userRegisterDTO) {
         //用户名重复校验
         if (userMapper.getIdByUsername(userRegisterDTO.getUsername()) != null) {
-            throw new CommonException(ResultEnum.USERNAME_DUPLICATED);
+            throw new BusinessException(BusinessExceptionEnum.USERNAME_DUPLICATED);
         }
         //用户信息写入
         User user = new User();
@@ -81,7 +80,7 @@ public class UserServiceImpl implements UserService {
         String userId = KeyUtil.genUniqueKey();
         user.setId(userId);
         if (1 != userMapper.insertUser(user)) {
-            throw new CommonException(ResultEnum.UNKNOWN_ERROR);
+            throw new BusinessException("新增用户失败");
         }
         //用户身份认证信息写入
         UserAuth userAuth = new UserAuth();
@@ -91,7 +90,7 @@ public class UserServiceImpl implements UserService {
         userAuth.setIdentifier(userRegisterDTO.getUsername());
         userAuth.setCredential(userRegisterDTO.getPassword());
         if (1 != userMapper.insertUserAuth(userAuth)) {
-            throw new CommonException(ResultEnum.UNKNOWN_ERROR);
+            throw new BusinessException(ResultEnum.UNKNOWN_ERROR);
         }
         //写入用户角色
         UserRole userRole = new UserRole();
@@ -99,7 +98,7 @@ public class UserServiceImpl implements UserService {
         userRole.setUserId(userId);
         userRole.setRoleId(userRegisterDTO.getRoleId());
         if (1 != userRoleMapper.insertUserRole(userRole)) {
-            throw new CommonException(ResultEnum.UNKNOWN_ERROR);
+            throw new BusinessException(ResultEnum.UNKNOWN_ERROR);
         }
     }
 
@@ -107,7 +106,7 @@ public class UserServiceImpl implements UserService {
     public void modifyUser(UserRegisterDTO userRegisterDTO) {
         //用户名重复校验
         if (userMapper.getIdByUsername(userRegisterDTO.getUsername()) != null) {
-            throw new CommonException(ResultEnum.USERNAME_DUPLICATED);
+            throw new BusinessException(BusinessExceptionEnum.USERNAME_DUPLICATED);
         }
         //用户信息写入
         User user = new User();
@@ -115,17 +114,17 @@ public class UserServiceImpl implements UserService {
         user.setId(userRegisterDTO.getUserId());
         UserDTO savedUser = userMapper.getUserById(user.getId());
         if (null == savedUser) {
-            throw new CommonException(ResultEnum.USER_NOT_FOUND);
+            throw new BusinessException("未找到该用户");
         }
         if (1 != userMapper.updateUser(user)) {
-            throw new CommonException(ResultEnum.UNKNOWN_ERROR);
+            throw new BusinessException(ResultEnum.UNKNOWN_ERROR);
         }
 
         UserRole userRole = new UserRole();
         BeanUtils.copyProperties(userRegisterDTO, userRole);
         if (null != userRole.getRoleId()) {
             if (1 != userRoleMapper.updateUserRole(userRole)) {
-                throw new CommonException(ResultEnum.UNKNOWN_ERROR);
+                throw new BusinessException(ResultEnum.UNKNOWN_ERROR);
             }
         }
     }

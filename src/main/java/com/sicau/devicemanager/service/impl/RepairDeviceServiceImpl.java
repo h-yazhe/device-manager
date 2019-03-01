@@ -5,11 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.Device;
 import com.sicau.devicemanager.POJO.DO.DeviceStatusRecord;
 import com.sicau.devicemanager.POJO.DO.RepairOrder;
-import com.sicau.devicemanager.POJO.DO.Role;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.RepairOrderDTO;
-import com.sicau.devicemanager.POJO.DTO.UserDTO;
-import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.config.exception.ResourceException;
 import com.sicau.devicemanager.constants.*;
 import com.sicau.devicemanager.dao.DeviceMapper;
@@ -110,12 +108,12 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
     @Override
     public void modifyOrder(RepairOrder repairOrder) {
         if (repairOrder == null || StringUtils.isEmpty(repairOrder.getId())) {
-            throw new CommonException(ResultEnum.ORDER_ID_NOT_PRESENT);
+            throw new BusinessException(BusinessExceptionEnum.ORDER_ID_NOT_PRESENT);
         }
         //订单还没开始处理才可以修改
         RepairOrder oldOrder = repairOrderMapper.selectByPrimaryKey(repairOrder.getId());
         if (!oldOrder.getStatusCode().equals(OrderStatusEnum.TO_BE_REPAIRED.getCode())) {
-            throw new CommonException(ResultEnum.ORDER_CANNOT_MODIFY);
+            throw new BusinessException(BusinessExceptionEnum.ORDER_CANNOT_MODIFY);
         }
         repairOrderMapper.updateByPrimaryKeySelective(repairOrder);
     }
@@ -127,7 +125,7 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
     @Override
     public List<RepairOrder> getOrdersByDeviceId(String deviceId) {
         if (StringUtils.isEmpty(deviceId)) {
-            throw new CommonException(ResultEnum.DEVICE_ID_NOT_PRESENT);
+            throw new BusinessException(BusinessExceptionEnum.DEVICE_ID_NOT_PRESENT);
         }
         return repairOrderMapper.getOrdersByDeviceId(deviceId);
     }
@@ -141,7 +139,7 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
         RepairOrder oldOrder = repairOrderMapper.selectByPrimaryKey(orderId);
         //订单不是维修中，将不能完结
         if (!oldOrder.getStatusCode().equals(OrderStatusEnum.IN_MAINTENANCE.getCode())) {
-            throw new CommonException(ResultEnum.ORDER_CANNOT_FINISHED);
+            throw new BusinessException(BusinessExceptionEnum.ORDER_CANNOT_FINISHED);
         }
         RepairOrder repairOrder = new RepairOrder();
         repairOrder.setId(orderId);
@@ -158,14 +156,14 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
         RepairOrder oldOrder = repairOrderMapper.selectByPrimaryKey(orderId);
         //订单不是处理完成，将不能修改设备状态
         if (oldOrder.getStatusCode().equals(OrderStatusEnum.IN_MAINTENANCE.getCode()) || oldOrder.getStatusCode() == OrderStatusEnum.TO_BE_REPAIRED.getCode()) {
-            throw new CommonException(ResultEnum.ORDERS_DEVICE_STATUS_CANNOT_CHANGE);
+            throw new BusinessException(BusinessExceptionEnum.ORDERS_DEVICE_STATUS_CANNOT_CHANGE);
         }
 
         String deviceId = oldOrder.getDeviceId();
         Device oldDevice = deviceMapper.selectByPrimaryKey(deviceId);
         //设备状态只能从维修改为其他
         if (!oldDevice.getStatusId().equals(DeviceStatusEnum.FIXING.getCode())) {
-            throw new CommonException(ResultEnum.ORDERS_DEVICE_STATUS_CANNOT_CHANGE);
+            throw new BusinessException(BusinessExceptionEnum.ORDERS_DEVICE_STATUS_CANNOT_CHANGE);
         }
         //能提交订单成功，设备不可能为空，所以直接改变
         deviceMapper.updateStatusIdById(deviceId, deviceStatusEnum.getCode());
