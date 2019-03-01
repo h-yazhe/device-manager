@@ -35,7 +35,7 @@ public class DeviceDTO extends Device {
     private Brand brand;
 
     @NotNull(message = "brandId不能为空",groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
-    @Pattern(regexp = "^$|^\\d{19}$", message = "brandId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^\\d*$", message = "brandId只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String brandId;
 
     /**
@@ -43,19 +43,17 @@ public class DeviceDTO extends Device {
      */
     @NotNull(message = "分类不能为空",groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
     @NotEmpty(message = "分类不能为空",groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
-    @ListStringConstraint(regexp = "\\d+,19", message = "categoryIds只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @ListStringConstraint(regexp = "\\d+", message = "categoryIds只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private List<String> categoryIds;
 
-    @Pattern(regexp = "^\\d*$", message = "categoryId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^\\d*$", message = "categoryId只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String categoryId;
 
-    @Pattern(regexp = "[\\u4e00-\\u9fa5\\w-]+", message = "locationStr只能包含汉字、英文、“_”、“-”和数字 ",groups = CommonValidatedGroup.LegalityGroup.class)
     private String locationStr;
 
     @Valid
     private Location location;
 
-    @Pattern(regexp = "[\\u4e00-\\u9fa5\\w]+", message = "categoryStr只能是汉字和英文", groups = CommonValidatedGroup.LegalityGroup.class)
     private String categoryStr;
 
     @Valid
@@ -77,7 +75,6 @@ public class DeviceDTO extends Device {
     @NotNull(groups = {QueryDeviceGroup.class}, message = "分页参数不能为空")
     private QueryPage queryPage;
 
-    @Pattern(regexp = "[\\u4e00-\\u9fa5]+", message = "queryKey只能是汉字", groups = CommonValidatedGroup.LegalityGroup.class)
     private String queryKey;
 
     private List<Location> locationList;

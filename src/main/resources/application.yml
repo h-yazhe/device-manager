@@ -1,5 +1,6 @@
 server:
   context-path: /dev-manager
+  address: 127.0.0.1
 
 websocket:
   port: 8888
@@ -31,9 +32,9 @@ jasypt:
 #token过期时间（天）
 token-expire-time: 30
 
-logging:
-  level:
-    com:
-      sicau:
-        devicemanager:
-          dao: debug
+#logging:
+#  level:
+#    com:
+#      sicau:
+#        devicemanager:
+#          dao: debug

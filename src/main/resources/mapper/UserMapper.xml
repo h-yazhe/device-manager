@@ -110,6 +110,11 @@
         VALUES (#{id}, #{userId}, #{identifyType}, #{identifier}, #{credential});
     </insert>
 
+    <delete id="deleteUserLogically">
+        update `user`
+        set deleted=1,locked=1
+        WHERE id = #{userId}
+    </delete>
 
     <delete id="deleteUserById">
         DELETE

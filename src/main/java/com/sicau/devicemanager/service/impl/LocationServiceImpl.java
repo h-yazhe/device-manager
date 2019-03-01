@@ -10,6 +10,7 @@ import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
 import com.sicau.devicemanager.config.exception.CommonException;
 import com.sicau.devicemanager.constants.ResultEnum;
+import com.sicau.devicemanager.dao.DeviceMapper;
 import com.sicau.devicemanager.dao.LocationMapper;
 import com.sicau.devicemanager.dao.RoleLocationMapper;
 import com.sicau.devicemanager.service.DeviceService;
@@ -22,8 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +42,8 @@ public class LocationServiceImpl implements LocationService {
     private UserService userService;
     @Autowired
     private RoleLocationMapper roleLocationMapper;
+    @Autowired
+    private DeviceMapper deviceMapper;
     @Override
     public void insertLocationTree(List<Location> locationList) {
         //根节点数量
@@ -111,8 +113,12 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public void deleteLocationTree(String rootId) {
+        List<Location> descendants = locationMapper.getDescendants(rootId);
+        if (deviceMapper.selectByLocationId(rootId).size() > 0||descendants.size()>0) {
+            throw new CommonException("有子地点存在或者有设备使用此地点，删除失败!");
+        }
         List<String> ids = new ArrayList<>();
-        locationMapper.getDescendants(rootId).forEach(location -> {
+        descendants.forEach(location -> {
             ids.add(location.getId());
         });
         ids.add(rootId);
@@ -157,12 +163,17 @@ public class LocationServiceImpl implements LocationService {
         roleLocations=roleLocationMapper.selectByRoleIds(roleIds);
         locationIds=roleLocations.stream().map(RoleLocation::getLocationId).collect(Collectors.toList());
         locationList = locationMapper.getAllChildIdByIds(locationIds);
+        //如果要访问的pid是空，则返回此用户所有能够管理的地址
+        if (pid != null && pid.isEmpty()) {
+            return locationMapper.getAllChildIdByIds(locationList.stream().map(Location::getId).collect(Collectors.toList()));
+        }
         for (Location location:locationList){
             if (location.getId().equals(pid)){
                 flag=1;
                 break;
             }
         }
+        //如果要访问的id不是用户角色所能管理的
         if (flag==0){
             throw new CommonException(ResultEnum.UNAUTHORIZED);
         }

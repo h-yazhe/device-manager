@@ -148,6 +148,13 @@
         where id = #{id,jdbcType=VARCHAR}
     </select>
 
+    <select id="selectByLocationId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from device
+        where location_id = #{locationId,jdbcType=VARCHAR}
+    </select>
+
     <select id="getDeviceInfo" parameterType="com.sicau.devicemanager.POJO.DTO.DeviceDTO" resultMap="deviceDTO">
         <include refid="getDeviceInfo"/>
     </select>

@@ -21,7 +21,7 @@ public class UserRegisterDTO {
      * 用户名
      */
     @NotNull(message = "用户id不能为空",groups = {DeviceValidatedGroup.modifyUser.class})
-    @Pattern(regexp = "^$|^\\d{19}$", message = "id只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^\\d*$", message = "id只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String userId;
 
     /**
@@ -54,7 +54,7 @@ public class UserRegisterDTO {
      * 电话
      */
     @NotNull(message = "电话不能为空",groups = {DeviceValidatedGroup.addUser.class})
-    @Pattern(regexp = "\\d+", message = "phone只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^\\d+$", message = "phone只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String phone;
 
     /**
@@ -66,6 +66,6 @@ public class UserRegisterDTO {
      * 角色id
      */
     @NotNull(message = "角色不能为空",groups = {DeviceValidatedGroup.addUser.class})
-    @Pattern(regexp = "\\d+", message = "roleId只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^\\d*$", message = "roleId只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String roleId;
 }

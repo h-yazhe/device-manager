@@ -10,7 +10,6 @@ public class WorkNature {
     private String id;
 
     @NotNull(message = "名称不能为空", groups = {DeviceValidatedGroup.addWorkNature.class})
-    @Pattern(regexp = "^[a-zA-Z\u4e00-\u9fa5_0-9]+$", groups = CommonValidatedGroup.LegalityGroup.class, message = "name只能为汉字、英文字母、数字、下划线的组合")
     private String name;
 
     public String getId() {

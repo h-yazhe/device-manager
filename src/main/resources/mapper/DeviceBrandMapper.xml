@@ -18,6 +18,13 @@
         where id = #{id,jdbcType=VARCHAR}
     </select>
 
+    <select id="selectByBrandId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from device_brand
+        where brand_id = #{brandId,jdbcType=VARCHAR}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete
         from device_brand
