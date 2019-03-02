@@ -1,6 +1,5 @@
 server:
   context-path: /dev-manager
-  address: 127.0.0.1
 
 websocket:
   port: 8888
