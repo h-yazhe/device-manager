@@ -133,7 +133,7 @@ public class DeviceController {
         return ResultVOUtil.success();
     }
 
-    @RequestMapping("/download-device-template")
+    @PostMapping("/download-device-template")
     public ResultVO downloadTemplate(HttpServletResponse response){
         String path="src/main/resources/file/";
         deviceService.downloadTemplate(path,"device-template.xlsx",response);
