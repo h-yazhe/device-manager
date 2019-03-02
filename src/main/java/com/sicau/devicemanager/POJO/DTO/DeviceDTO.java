@@ -7,18 +7,17 @@ import com.sicau.devicemanager.POJO.DO.Brand;
 import com.sicau.devicemanager.POJO.DO.Category;
 import com.sicau.devicemanager.POJO.DO.Device;
 import com.sicau.devicemanager.POJO.DO.Location;
+import com.sicau.devicemanager.POJO.RO.DeviceQueryKeyCondition;
+import com.sicau.devicemanager.config.validation.ListStringConstraint;
 import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.QueryDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UpdateDeviceGroup;
-import com.sicau.devicemanager.config.validation.ListStringConstraint;
-import net.bytebuddy.implementation.bind.annotation.Empty;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -77,6 +76,11 @@ public class DeviceDTO extends Device {
 
     private String queryKey;
 
+	/**
+	 * 搜索选项
+	 */
+	private DeviceQueryKeyCondition deviceQueryKeyCondition;
+
     private List<Location> locationList;
 
     private List<String> locationIds;
@@ -93,7 +97,15 @@ public class DeviceDTO extends Device {
      */
     private String deviceModel;
 
-    public String getBrandId() {
+	public DeviceQueryKeyCondition getDeviceQueryKeyCondition() {
+		return deviceQueryKeyCondition;
+	}
+
+	public void setDeviceQueryKeyCondition(DeviceQueryKeyCondition deviceQueryKeyCondition) {
+		this.deviceQueryKeyCondition = deviceQueryKeyCondition;
+	}
+
+	public String getBrandId() {
         return brandId;
     }
 

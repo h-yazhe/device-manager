@@ -45,4 +45,20 @@ public interface LocationService {
     List<LocationDTO> listLocationTree();
 
     List<Location> listLocationByPId(LocationVO locationVO);
+
+	/**
+	 * 获取用户管理的区域
+	 * @param userId
+	 * @return
+	 */
+	List<Location> getUserManagedLocations(String userId);
+
+	/**
+	 * 校验地点是否是用户管理的地点
+	 * @param locationId 要校验的地点
+	 * @param userId 用户id
+	 * @return 返回用户管理的所有地点
+	 * @throws com.sicau.devicemanager.config.exception.BusinessException 校验不通过抛出此异常
+	 */
+	List<Location> checkLocationInUserManagement(String locationId, String userId);
 }

@@ -5,6 +5,7 @@ import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
+import com.sicau.devicemanager.config.exception.VerificationException;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public interface DeviceService {
      * @param deviceDTO
      * @return
      */
-    PageInfo<DeviceDTO> listDevice(DeviceDTO deviceDTO);
+    PageInfo<DeviceDTO> listDevice(DeviceDTO deviceDTO) throws VerificationException;
 
     /**
      * 分发设备

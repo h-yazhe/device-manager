@@ -134,9 +134,20 @@
                 AND use_time <![CDATA[ <= ]]> #{endTime,jdbcType=TIMESTAMP}
             </if>
             <if test="queryKey!=null">
-                AND (d.id LIKE CONCAT('%',#{queryKey},'%') or
-                d.name like concat('%',#{queryKey},'%') or
-                d.serial_number like concat('%',#{queryKey},'%'))
+				<trim prefix="and (" suffix=")" prefixOverrides="or | and" >
+					<if test="deviceQueryKeyCondition == null or deviceQueryKeyCondition.queryId == null or deviceQueryKeyCondition.queryId == true ">
+						d.id LIKE CONCAT('%',#{queryKey},'%')
+					</if>
+					<if test="deviceQueryKeyCondition == null or deviceQueryKeyCondition.queryName == null or deviceQueryKeyCondition.queryName == true">
+						or d.name like concat('%',#{queryKey},'%')
+					</if>
+					<if test="deviceQueryKeyCondition == null or deviceQueryKeyCondition.querySerialNumber == null or deviceQueryKeyCondition.querySerialNumber == true">
+						or d.serial_number like concat('%',#{queryKey},'%')
+					</if>
+					<if test="deviceQueryKeyCondition == null or deviceQueryKeyCondition.locationName == null or deviceQueryKeyCondition.locationName == true">
+						or l.name like concat('%',#{queryKey},'%')
+					</if>
+				</trim>
             </if>
         </where>
     </sql>

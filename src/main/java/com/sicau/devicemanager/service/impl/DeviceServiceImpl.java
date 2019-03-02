@@ -9,11 +9,12 @@ import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
 import com.sicau.devicemanager.config.exception.BusinessException;
+import com.sicau.devicemanager.config.exception.VerificationException;
 import com.sicau.devicemanager.constants.BusinessExceptionEnum;
 import com.sicau.devicemanager.constants.DeviceStatusEnum;
-import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.*;
 import com.sicau.devicemanager.service.DeviceService;
+import com.sicau.devicemanager.service.LocationService;
 import com.sicau.devicemanager.util.DateUtil;
 import com.sicau.devicemanager.util.KeyUtil;
 import com.sicau.devicemanager.util.web.RequestUtil;
@@ -56,7 +57,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private WorkNatureMapper workNatureMapper;
     @Autowired
-    private RepairOrderMapper repairOrderMapper;
+	private LocationService locationService;
 
     @Override
     public void addDevice(DeviceDTO deviceDTO) {
@@ -114,7 +115,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public PageInfo<DeviceDTO> listDevice(DeviceDTO deviceDTO) {
+    public PageInfo<DeviceDTO> listDevice(DeviceDTO deviceDTO) throws VerificationException {
         //校验时间
         Date startTime = deviceDTO.getStartTime();
         Date endTime = deviceDTO.getEndTime();
@@ -142,28 +143,22 @@ public class DeviceServiceImpl implements DeviceService {
         //获取查询条件的地点id及所有子地点id，若查询的地点id不属于角色管理区域下的id，则抛出异常
         String userId = deviceDTO.getUserId();
         if (userId == null) {
-            throw new RuntimeException("用户id不能为空");
+            throw new VerificationException("用户id不能为空");
         }
-        //获取用户管理的地点（根地点）
-        List<Location> userLocationList = locationMapper.getByUserId(userId);
         //存储用户管理的所有地点及子孙地点
-        List<Location> locationList = new ArrayList<>();
-        userLocationList.forEach((userLocation) -> {
-            locationList.add(userLocation);
-            //获取所有子地点
-            locationList.addAll(locationMapper.getDescendants(userLocation.getId()));
-        });
+        List<Location> locationList = locationService.getUserManagedLocations(userId);
         //开始校验地点
-        if (!StringUtils.isEmpty(deviceDTO.getLocationId())) {
-            if (!checkLocationId(deviceDTO.getLocationId(), locationList)) {
+		String locationId = deviceDTO.getLocationId();
+        if (!StringUtils.isEmpty(locationId)) {
+            if (!checkLocationId(locationId, locationList)) {
                 throw new BusinessException(BusinessExceptionEnum.LOCATION_UNAUTHORIZED);
             }
             //设置地点id作为查询条件
             List<String> locationIds = new ArrayList<>();
-            locationMapper.getDescendants(deviceDTO.getLocationId()).forEach(location -> {
+            locationMapper.getDescendants(locationId).forEach(location -> {
                 locationIds.add(location.getId());
             });
-            locationIds.add(deviceDTO.getLocationId());
+            locationIds.add(locationId);
             deviceDTO.setLocationIds(locationIds);
         }
         //如果没有传入locationId，则默认查询用户管理的所有地点

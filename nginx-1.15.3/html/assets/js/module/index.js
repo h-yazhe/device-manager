@@ -208,8 +208,8 @@ var vueDeviceList = new Vue({
                 },
                 error: function (res) {
                     var json = res.responseJSON;
-                    if (json != null && json.code == 3) {
-                        alert("登录异常！");
+                    if (json != null && json.code === 16) {
+                        alert("登录已过期！");
                         window.location.href = "login.html";
                     } else {
                         alert("网络连接异常！");
@@ -253,8 +253,8 @@ var vueDeviceList = new Vue({
                 },
                 error: function (res) {
                     var json = res.responseJSON;
-                    if (json != null && json.code == 3) {
-                        alert("登录异常！");
+                    if (json != null && json.code === 16) {
+                        alert("登录已过期！");
                     } else {
                         alert("网络连接异常！");
                     }

@@ -5,6 +5,7 @@ import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.exception.VerificationException;
 import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.DistributeDeviceGroup;
@@ -66,7 +67,7 @@ public class DeviceController {
     @PostMapping("/list")
 	@RequiresPermissions(ResourceConstants.DEVICE + PermissionActionConstant.GET)
     public ResultVO listDeviceByCondition(@Validated({DeviceValidatedGroup.QueryDeviceGroup.class, CommonValidatedGroup.LegalityGroup.class})
-                                          @RequestBody DeviceDTO deviceDTO, HttpServletRequest request) {
+                                          @RequestBody DeviceDTO deviceDTO, HttpServletRequest request) throws VerificationException {
         deviceDTO.setUserId(JWTUtil.getUserId(request.getHeader(HttpParamKey.TOKEN)));
         return ResultVOUtil.success(deviceService.listDevice(deviceDTO));
 

@@ -9,6 +9,7 @@ import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
 import com.sicau.devicemanager.config.exception.BusinessException;
+import com.sicau.devicemanager.constants.BusinessExceptionEnum;
 import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.DeviceMapper;
 import com.sicau.devicemanager.dao.LocationMapper;
@@ -22,6 +23,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -181,7 +183,47 @@ public class LocationServiceImpl implements LocationService {
         return locationMapper.getChildrenById(pid);
     }
 
-    /**
+	@Override
+	public List<Location> getUserManagedLocations(String userId) {
+		//获取用户管理的地点（根地点）
+		List<Location> userLocationList = locationMapper.getByUserId(userId);
+		//存储用户管理的所有地点及子孙地点
+		List<Location> locationList = new ArrayList<>();
+		userLocationList.forEach((userLocation) -> {
+			locationList.add(userLocation);
+			//获取所有子地点
+			locationList.addAll(locationMapper.getDescendants(userLocation.getId()));
+		});
+		return locationList;
+	}
+
+	@Override
+	public List<Location> checkLocationInUserManagement(String locationId, String userId) {
+    	List<Location> locationList = this.getUserManagedLocations(userId);
+		if (!StringUtils.isEmpty(locationId)) {
+			if (!checkLocationId(locationId, locationList)) {
+				throw new BusinessException(BusinessExceptionEnum.LOCATION_UNAUTHORIZED);
+			}
+		}
+		return locationList;
+	}
+
+	/**
+	 * 校验locationId是否在目标list中
+	 * @param locationId
+	 * @param locationList
+	 * @return 存在返回true，否则返回false
+	 */
+	private boolean checkLocationId(String locationId, List<Location> locationList) {
+		for (Location location : locationList) {
+			if (locationId.equals(location.getId())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
      * 由当前节点生成子节点的DTO
      * @param root         当前节点
      * @param locationList 所有节点
