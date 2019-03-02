@@ -7,6 +7,7 @@ import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
 import com.sicau.devicemanager.config.exception.VerificationException;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -73,4 +74,6 @@ public interface DeviceService {
      * @param statusId
      */
     void updateRepairedStatusByDeviceId(String deviceId, Integer statusId);
+
+    void downloadTemplate(String url,String fileName,HttpServletResponse resp);
 }

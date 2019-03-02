@@ -51,4 +51,10 @@
         <include refid="listRole"/>
     </select>
 
+    <update id="logicDeleteById">
+        update role
+        set deleted = 1
+        WHERE id =#{roleId} and deleted=0
+    </update>
+
 </mapper>

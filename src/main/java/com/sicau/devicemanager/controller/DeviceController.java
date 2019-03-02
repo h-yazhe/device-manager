@@ -26,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -129,6 +130,13 @@ public class DeviceController {
     public ResultVO updateRepairedStatusByDeviceId(@Validated({DeviceValidatedGroup.UpdateRepairedStatusByDeviceId.class, CommonValidatedGroup.LegalityGroup.class})
                                                    @RequestBody Device device) {
         deviceService.updateRepairedStatusByDeviceId(device.getId(), device.getStatusId());
+        return ResultVOUtil.success();
+    }
+
+    @PostMapping("/download-device-template")
+    public ResultVO downloadTemplate(@PathVariable String path, HttpServletResponse response){
+        System.out.println(path);
+        deviceService.downloadTemplate(path,"device-template",response);
         return ResultVOUtil.success();
     }
 }

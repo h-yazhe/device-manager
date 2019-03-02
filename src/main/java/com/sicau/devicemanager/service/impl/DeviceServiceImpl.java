@@ -23,6 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -359,5 +362,41 @@ public class DeviceServiceImpl implements DeviceService {
                 device.getLocationId(),
                 RequestUtil.getCurrentUserId()
         ));
+    }
+
+    /**
+     * 下载设备导入模板
+     * @param url 文件路径
+     * @param fileName 文件名
+     */
+    public void downloadTemplate(String url, String fileName, HttpServletResponse resp) {
+        //1、设置响应的头文件，会自动识别文件内容
+        resp.setContentType("multipart/form-data");
+
+        //2、设置Content-Disposition
+        resp.setHeader("Content-Disposition", "attachment;filename=device-template.xls");
+
+        OutputStream out = null;
+        InputStream in = null;
+        try {
+            String path=url+fileName;
+            //3、输出流
+            System.out.println(path);
+            out = resp.getOutputStream();
+
+            //4、获取服务端生成的excel文件，这里的path等于4.8中的path
+            in = new FileInputStream(new File(path));
+
+            //5、输出文件
+            int b;
+            while((b=in.read())!=-1){
+                out.write(b);
+            }
+            in.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

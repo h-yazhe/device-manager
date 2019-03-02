@@ -12,6 +12,7 @@ import com.sicau.devicemanager.util.EnumUtil;
 import com.sicau.devicemanager.util.web.RequestUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -121,10 +122,8 @@ public class RepairDeviceController {
      */
     @PostMapping("/delete-onself-repair-order/{repairId}")
     public ResultVO deleteRepairDeviceOrder(@PathVariable Integer repairId) {
-        if (repairDeviceService.deleteOneselfRepairDeviceOrder(repairId)) {
-            return ResultVOUtil.success();
-        }
-        throw new BusinessException("删除失败");
+        repairDeviceService.deleteOneselfRepairDeviceOrder(repairId);
+        return ResultVOUtil.success();
     }
 
     /**

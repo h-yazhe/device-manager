@@ -423,4 +423,10 @@
         where id = #{deviceId}
     </update>
 
+    <select id="selectDeviceByWorkNatureId" parameterType="java.lang.String" resultType="com.sicau.devicemanager.POJO.DO.Device">
+        SELECT *
+        FROM device
+        where work_nature_id=#{workNatureId} and deleted=0
+    </select>
+
 </mapper>

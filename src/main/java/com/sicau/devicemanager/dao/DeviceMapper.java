@@ -77,4 +77,6 @@ public interface DeviceMapper {
      * @return
      */
     int updateStatusIdById(@Param("deviceId") String deviceId, @Param("statusId") Integer statusId);
+
+    List<Device> selectDeviceByWorkNatureId(String workNatureId);
 }

@@ -70,7 +70,7 @@ public class RoleServiceImpl implements RoleService {
         //删除角色权限关联信息
         roleMapper.deleteRolePermissionByRoleId(roleId);
         //删除角色
-        roleMapper.deleteRoleById(roleId);
+        roleMapper.logicDeleteById(roleId);
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
