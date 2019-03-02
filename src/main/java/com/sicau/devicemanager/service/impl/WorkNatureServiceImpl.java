@@ -4,7 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.WorkNature;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
-import com.sicau.devicemanager.config.exception.CommonException;
+import com.sicau.devicemanager.config.exception.BusinessException;
+import com.sicau.devicemanager.constants.BusinessExceptionEnum;
 import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.DeviceMapper;
 import com.sicau.devicemanager.dao.WorkNatureMapper;
@@ -54,7 +55,7 @@ public class WorkNatureServiceImpl implements WorkNatureService {
     @Override
     public void deleteWordNatureById(String id) {
         if (!deviceMapper.selectDeviceByWorkNatureId(id).isEmpty()){
-            throw new CommonException(ResultEnum.DELETE_FAILED);
+            throw new BusinessException(BusinessExceptionEnum.DELETE_FAILED);
         }
         workNatureMapper.deleteByPrimaryKey(id);
     }

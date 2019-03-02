@@ -137,5 +137,7 @@
     <orderEntry type="library" name="Maven: com.github.ulisesbocchio:jasypt-spring-boot-starter:1.14" level="project" />
     <orderEntry type="library" name="Maven: com.github.ulisesbocchio:jasypt-spring-boot:1.14" level="project" />
     <orderEntry type="library" name="Maven: org.jasypt:jasypt:1.9.2" level="project" />
+    <orderEntry type="library" name="Maven: com.github.bingoohuang:patchca:0.0.1" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.24" level="project" />
   </component>
 </module>
