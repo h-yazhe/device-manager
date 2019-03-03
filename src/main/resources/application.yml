@@ -6,7 +6,7 @@ websocket:
 
 spring:
   profiles:
-    active: hyz
+    active: prod
   datasource:
       driver-class-name: com.mysql.jdbc.Driver
       druid:

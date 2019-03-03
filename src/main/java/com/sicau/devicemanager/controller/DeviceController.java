@@ -152,7 +152,7 @@ public class DeviceController {
 
     @PostMapping("/download-device-template")
     public void downloadTemplate(HttpServletResponse response){
-        String path="src/main/resources/file/";
+        String path="/file/";
         deviceService.downloadTemplate(path,"device-template.xlsx",response);
     }
 }
