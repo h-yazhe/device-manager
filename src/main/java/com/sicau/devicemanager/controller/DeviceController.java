@@ -5,15 +5,13 @@ import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.exception.SystemException;
 import com.sicau.devicemanager.config.exception.VerificationException;
 import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.DistributeDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.GetDeviceStatusRecordByDeviceId;
-import com.sicau.devicemanager.constants.CommonConstants;
-import com.sicau.devicemanager.constants.HttpParamKey;
-import com.sicau.devicemanager.constants.PermissionActionConstant;
-import com.sicau.devicemanager.constants.ResourceConstants;
+import com.sicau.devicemanager.constants.*;
 import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.util.JWTUtil;
 import com.sicau.devicemanager.util.web.ResultVOUtil;
@@ -24,6 +22,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -119,6 +118,24 @@ public class DeviceController {
     public ResultVO getDeviceStatusRecordByDeviceId(@Validated({GetDeviceStatusRecordByDeviceId.class, CommonValidatedGroup.LegalityGroup.class})
                                                     @RequestBody DeviceStatusRecordDTO deviceStatusRecordDTO) {
         return ResultVOUtil.success(deviceService.getDeviceStatusRecordByDeviceId(deviceStatusRecordDTO));
+    }
+
+    @ApiOperation("批量添加设备")
+    @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
+    @PostMapping("/add-list")
+    @RequiresPermissions(ResourceConstants.DEVICE + PermissionActionConstant.ADD)
+    //验证分成两部分：1.非空验证(AddDeviceGroup)，2.判断一个字段是否符合格式要求(DefaultGroup)，格式要求是一致的
+    public ResultVO addDeviceList(@RequestParam("file") MultipartFile file) throws Exception {
+        if (file.isEmpty()) {
+            throw new SystemException(ResultEnum.UPLOAD_FAILED.getMessage());
+        }
+        try {
+            deviceService.addDeviceList(file.getInputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SystemException(e.getMessage());
+        }
+        return ResultVOUtil.success();
     }
 
     /**
