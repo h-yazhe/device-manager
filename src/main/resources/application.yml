@@ -31,6 +31,9 @@ jasypt:
 #token过期时间（天）
 token-expire-time: 30
 
+logging:
+  file: /log/service.log
+
 #logging:
 #  level:
 #    com:
