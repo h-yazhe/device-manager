@@ -20,7 +20,8 @@ public enum ResultEnum {
 
 	RESOURCE_NOT_FOUND(10, "资源不存在"),
 	RESOURCE_EXCEPTION(11, "资源异常"),
-	BUSINESS_EXCEPTION(12, "业务异常")
+	BUSINESS_EXCEPTION(12, "业务异常"),
+    UPLOAD_FAILED(13,"上传失败")
 	;
 
     private Integer code;

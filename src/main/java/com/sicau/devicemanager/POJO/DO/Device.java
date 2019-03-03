@@ -13,6 +13,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 @ApiModel("设备")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -204,5 +205,21 @@ public class Device {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Device device = (Device) o;
+        return Objects.equals(name, device.name) &&
+                Objects.equals(nationalId, device.nationalId) &&
+                Objects.equals(serialNumber, device.serialNumber) &&
+                Objects.equals(deviceModelId, device.deviceModelId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, nationalId, serialNumber, deviceModelId);
     }
 }

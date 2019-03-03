@@ -12,7 +12,8 @@ public enum DeviceStatusEnum implements CodeEnum {
     IN_STORAGE(1, "库存中"),
     USING(2, "使用中"),
     DISCARDED(3, "报废"),
-    FIXING(4, "维修");
+    FIXING(4, "维修"),
+    UNBOUND(5, "未绑定");
 
     /**
      * 状态码

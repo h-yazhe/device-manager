@@ -77,14 +77,14 @@ public class BaseExceptionHandle {
 	@ResponseBody
 	public ResultVO handleException(SystemException e) {
 		log.error(e.getMessage(),e);
-		return ResultVOUtil.retSysError();
+		return ResultVOUtil.retSysError(e.getMessage());
 	}
 
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
 	public ResultVO handleException(Exception e) {
 		log.error(e.getMessage(),e);
-		return ResultVOUtil.retSysError();
+		return ResultVOUtil.retSysError(e.getMessage());
 	}
 
 	@ExceptionHandler(Throwable.class)

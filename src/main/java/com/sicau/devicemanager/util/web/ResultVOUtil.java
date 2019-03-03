@@ -50,6 +50,17 @@ public class ResultVOUtil {
 	}
 
 	/**
+	 * 返回自定义错误信息的异常
+     * @param msg 自定义错误信息
+	 */
+    public static ResultVO retSysError(String msg){
+        ResultVO resultVO = new ResultVO();
+        resultVO.setCode(ResultEnum.UNKNOWN_ERROR.getCode());
+        resultVO.setMsg(msg);
+        return resultVO;
+    }
+
+	/**
 	 * 返回业务异常
 	 * @param businessExceptionEnum
 	 * @return
