@@ -105,6 +105,10 @@ var API = {
     addWorkNature:"work_nature/add",
     //删除工作性质
     deleteWorkNature:"work_nature/delete/",
+    //多个设备导入：下载表格
+    downloadTemplate:"device/download-device-template",
+    //多个设备导入:上传
+    addList:"device/add-list",
     getApi: function (name) {
         return this.prefix + name;
     }

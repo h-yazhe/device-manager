@@ -1192,6 +1192,46 @@ var addDeviceVm = new Vue({
         this.getDeviceSelection();
     }
 });
+//批量添加设备
+var adviceList=new Vue({
+    el:"#add-device-list",
+    methods:{
+        //下载模板
+        download: function () {
+            sendPost({
+                url: API.getApi(API.downloadTemplate),
+                success: function (data) {
+                    if (data.code == 0){
+                      console.log(data)
+                    }else {
+                        alert(data.msg);
+                    }
+                }
+            });
+        },
+        //提交设备信息
+        addList:function () {
+            var form= new window.FormData();
+            form.append("file",$('#file')[0].files[0]);
+            sendPost({
+                url: API.getApi(API.addList),
+                data:form,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.code == 0){
+                        alert("导入设备成功！");
+                        $("#add-device-list").modal('toggle');
+                        //刷新设备列表
+                        vueDeviceList.listDevice();
+                    }else {
+                        alert(data.msg);
+                    }
+                }
+            });
+        }
+    }
+})
 //删除地点
 var deleteAddress = new Vue({
     el: "#delete-address",

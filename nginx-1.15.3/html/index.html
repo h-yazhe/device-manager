@@ -199,6 +199,7 @@
                         </h4>
                         <div class="turn-page-right">
                             <button v-if="showAddDeviceButton()" type="button" class="btn btn-success" data-toggle="modal" data-target="#add-device">添加设备</button>
+                            <button v-if="showAddDeviceButton()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-device-list">批量添加设备</button>
                             <button type="button" class="btn btn-info" onclick="$('#deviceTable').table2excel({ exclude: '.excludeThisClass',
                                                 name: 'Worksheet Name',
                                                 filename: '设备列表',
@@ -652,6 +653,29 @@
             <button @click="addDevice" type="button" class="btn btn-success">添加</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
          </div>
+        </div>
+    </div>
+</div>
+<div id="add-device-list" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="add-device-list">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">批量导入设备</h4>
+            </div>
+            <div class="modal-body">
+                  <div class="alert alert-danger">批量导入设备时请先下载模板，填写数据后，点击上传文件，上传成功后，点击确定按钮即可批量导入设备</div>
+                 <div class="showback">
+                First one：<button @click="download" type="button" class="btn btn-danger">下载填写模板</button>
+                <br>
+                        <div class="row">
+                            <div class="col-md-2">Second two:</div>
+                            <div class="col-md-10"><input  type="file" id="file">
+                        </div>
+                        </div>
+                Last:<button @click="addList" type="button" class="btn btn-primary">确定</button>
+                        </div>
+            </div>
         </div>
     </div>
 </div>
