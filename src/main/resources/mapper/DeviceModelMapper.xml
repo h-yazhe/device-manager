@@ -35,7 +35,7 @@
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into device_model (name, create_time, update_time
+        insert ignore into device_model (name, create_time, update_time
         )
         values (#{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
         )
@@ -45,7 +45,7 @@
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into device_model
+        insert ignore into device_model
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">
                 name,

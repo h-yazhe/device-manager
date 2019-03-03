@@ -24,7 +24,7 @@ public interface RepairDeviceService {
      * 删除自己的维修订单
      * @param id
      */
-    boolean deleteOneselfRepairDeviceOrder(Integer id);
+    void deleteOneselfRepairDeviceOrder(Integer id);
 
     /**
      * 删除任意维修订单

@@ -17,16 +17,19 @@ import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.service.LocationService;
 import com.sicau.devicemanager.util.DateUtil;
 import com.sicau.devicemanager.util.KeyUtil;
+import com.sicau.devicemanager.util.XssfUtil;
 import com.sicau.devicemanager.util.web.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import javax.crypto.KeyGenerator;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Yazhe
@@ -57,7 +60,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private WorkNatureMapper workNatureMapper;
     @Autowired
-	private LocationService locationService;
+    private LocationService locationService;
 
     @Override
     public void addDevice(DeviceDTO deviceDTO) {
@@ -73,6 +76,103 @@ public class DeviceServiceImpl implements DeviceService {
                         DeviceStatusEnum.UNCONNECTED.getCode(), DeviceStatusEnum.IN_STORAGE.getCode(),
                         "", deviceDTO.getLocationId(), RequestUtil.getCurrentUserId())
         );
+    }
+
+    @Override
+    public void addDeviceList(InputStream inputStream) throws Exception {
+        List<List> bigList = XssfUtil.parseExcel(inputStream);
+        List<Device> devices = bigList.get(0);
+        List<Brand> brands = bigList.get(1);
+        List<DeviceBrand> deviceBrands = bigList.get(2);
+        List<DeviceModel> deviceModels = bigList.get(3);
+
+        //BrandId DeviceBrand Map
+        Map<String, DeviceBrand> bidDeviceBMap = deviceBrands.stream()
+                .collect(Collectors.toMap(DeviceBrand::getBrandId, deviceBrand -> deviceBrand));
+        for (Brand brand : brands
+        ) {
+            String dbBrandId = brandMapper.getIdByName(brand.getName());
+            if (dbBrandId != null) {
+                bidDeviceBMap.get(brand.getId()).setBrandId(dbBrandId);
+                brand.setId(dbBrandId);
+            }
+        }
+
+        //ModelId Device Map
+        Map<Integer, Device> mIdDeviceMap = devices.stream()
+                .collect(Collectors.toMap(Device::getDeviceModelId, device -> device));
+        for (DeviceModel deviceModel : deviceModels
+        ) {
+            String dbModelId = deviceModelMapper.getIdByName(deviceModel.getName());
+            if (dbModelId != null) {
+                Integer dbModeIdInt = Integer.parseInt(dbModelId);
+                mIdDeviceMap.get(deviceModel.getId()).setDeviceModelId(dbModeIdInt);
+                deviceModel.setId(dbModeIdInt);
+            }
+        }
+
+        //DeviceId DeviceBrand Map
+        Map<String, DeviceBrand> dIdDeviceBMap = deviceBrands.stream()
+                .collect(Collectors.toMap(DeviceBrand::getDeviceId, deviceBrand -> deviceBrand));
+        //BrandId Brand Map
+        Map<String, Brand> bIdBrandMap = brands.stream()
+                .collect(Collectors.toMap(Brand::getId, brand -> brand));
+        //DeviceId DeviceModel Map
+        Map<Integer, DeviceModel> dIdDeviceMMap = deviceModels.stream()
+                .collect(Collectors.toMap(DeviceModel::getId, deviceModel -> deviceModel));
+        for (Device device : devices
+        ) {
+            boolean isEqualDbItem = false;
+            List<Device> dbDevices = deviceMapper.selectByName(device.getName());
+            for (Device dbDeviceItem : dbDevices
+            ) {
+                if (dbDeviceItem.equals(device)) {
+                    isEqualDbItem = true;
+                    break;
+                }
+            }
+            if (!isEqualDbItem) {
+                //获取用户能管理的结点的根节点
+                String rootLocationId = "";
+                List<Location> ownedLocations = locationMapper.getOnesLocationByUserId(RequestUtil.getCurrentUserId());
+                Map<String, Location> locationMap = ownedLocations.stream()
+                        .collect(Collectors.toMap(Location::getId, location -> location));
+                for (Location location : ownedLocations
+                ) {
+                    if (locationMap.get(location.getParentId()) == null) {
+                        rootLocationId = location.getId();
+                        break;
+                    }
+                }
+
+                device.setLocationId(rootLocationId);
+                //默认“自用”
+                device.setWorkNatureId("1");
+                //默认
+                device.setCustodianId("1");
+                //数量单位，默认为“个”
+                device.setAmountUnitId("1");
+                device.setStatusId(DeviceStatusEnum.UNBOUND.getCode());
+                deviceMapper.insertSelective(device);
+
+                brandMapper.insertBrand(bIdBrandMap.get(dIdDeviceBMap.get(device.getId()).getBrandId()));
+                deviceBrandMapper.insert(dIdDeviceBMap.get(device.getId()));
+                deviceModelMapper.insert(dIdDeviceMMap.get(device.getDeviceModelId()));
+
+                //设置分类为默认分类（id为0）
+                DeviceCategory deviceCategory = new DeviceCategory();
+                deviceCategory.setId(KeyUtil.genUniqueKey());
+                deviceCategory.setCategoryId("0");
+                deviceCategory.setDeviceId(device.getId());
+                deviceCategoryMapper.insert(deviceCategory);
+                //插入设备状态记录
+                deviceStatusRecordMapper.insert(
+                        new DeviceStatusRecord(KeyUtil.genUniqueKey(), device.getId(),
+                                DeviceStatusEnum.UNCONNECTED.getCode(), DeviceStatusEnum.UNBOUND.getCode(),
+                                "", rootLocationId, RequestUtil.getCurrentUserId())
+                );
+            }
+        }
     }
 
     private void insertDeviceBrand(DeviceDTO deviceDTO) {
@@ -148,7 +248,7 @@ public class DeviceServiceImpl implements DeviceService {
         //存储用户管理的所有地点及子孙地点
         List<Location> locationList = locationService.getUserManagedLocations(userId);
         //开始校验地点
-		String locationId = deviceDTO.getLocationId();
+        String locationId = deviceDTO.getLocationId();
         if (!StringUtils.isEmpty(locationId)) {
             if (!checkLocationId(locationId, locationList)) {
                 throw new BusinessException(BusinessExceptionEnum.LOCATION_UNAUTHORIZED);
@@ -253,6 +353,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     /**
      * 校验locationId是否在目标list中
+     *
      * @param locationId
      * @param locationList
      * @return 存在返回true，否则返回false
@@ -268,6 +369,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     /**
      * 根据地点的路径来获取地点名称表示路径，如 /雅安/十教
+     *
      * @param locationPath 地点的路径
      * @return
      */
@@ -338,6 +440,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     /**
      * 根据设备id修改设备维护状态
+     *
      * @param deviceId
      * @param statusId
      */
@@ -359,5 +462,42 @@ public class DeviceServiceImpl implements DeviceService {
                 device.getLocationId(),
                 RequestUtil.getCurrentUserId()
         ));
+    }
+
+    /**
+     * 下载设备导入模板
+     *
+     * @param url      文件路径
+     * @param fileName 文件名
+     */
+    @Override
+    public void downloadTemplate(String url, String fileName, HttpServletResponse resp) {
+        //1、设置响应的头文件，会自动识别文件内容
+        resp.setContentType("multipart/form-data");
+
+        //2、设置Content-Disposition
+        resp.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+
+        OutputStream out = null;
+        InputStream in = null;
+        try {
+            String path = url + fileName;
+            //3、输出流
+            out = resp.getOutputStream();
+
+            //4、获取服务端的excel文件，这里的path等于4.8中的path
+            in = new FileInputStream(new File(path));
+
+            //5、输出文件
+            int b;
+            while ((b = in.read()) != -1) {
+                out.write(b);
+            }
+            in.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

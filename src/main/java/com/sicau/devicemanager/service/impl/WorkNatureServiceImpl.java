@@ -4,6 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.WorkNature;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.config.exception.BusinessException;
+import com.sicau.devicemanager.constants.BusinessExceptionEnum;
+import com.sicau.devicemanager.constants.ResultEnum;
+import com.sicau.devicemanager.dao.DeviceMapper;
 import com.sicau.devicemanager.dao.WorkNatureMapper;
 import com.sicau.devicemanager.service.WorkNatureService;
 import com.sicau.devicemanager.util.KeyUtil;
@@ -22,6 +26,8 @@ public class WorkNatureServiceImpl implements WorkNatureService {
 
     @Autowired
     WorkNatureMapper workNatureMapper;
+    @Autowired
+    DeviceMapper deviceMapper;
 
     /**
      * 添加一条工作性质的记录
@@ -48,6 +54,9 @@ public class WorkNatureServiceImpl implements WorkNatureService {
 
     @Override
     public void deleteWordNatureById(String id) {
+        if (!deviceMapper.selectDeviceByWorkNatureId(id).isEmpty()){
+            throw new BusinessException(BusinessExceptionEnum.DELETE_FAILED);
+        }
         workNatureMapper.deleteByPrimaryKey(id);
     }
 }

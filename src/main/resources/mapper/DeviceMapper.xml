@@ -152,6 +152,13 @@
         </where>
     </sql>
 
+    <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from device
+        where `name` = #{name,jdbcType=VARCHAR}
+    </select>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
@@ -422,5 +429,11 @@
         set status_id = #{statusId}
         where id = #{deviceId}
     </update>
+
+    <select id="selectDeviceByWorkNatureId" parameterType="java.lang.String" resultType="com.sicau.devicemanager.POJO.DO.Device">
+        SELECT *
+        FROM device
+        where work_nature_id=#{workNatureId} and deleted=0
+    </select>
 
 </mapper>

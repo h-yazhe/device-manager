@@ -5,8 +5,11 @@ import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.Device;
 import com.sicau.devicemanager.POJO.DO.DeviceStatusRecord;
 import com.sicau.devicemanager.POJO.DO.RepairOrder;
+import com.sicau.devicemanager.POJO.DO.Role;
+import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.RepairOrderDTO;
+import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.config.exception.ResourceException;
 import com.sicau.devicemanager.constants.*;
@@ -70,22 +73,24 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
     /**
      * 删除维修订单(申请用户可删除自己的，管理员都可以删除
      * @param id 订单id
-     * @return
      * @author pettrgo
      */
     @Override
-    public boolean deleteOneselfRepairDeviceOrder(Integer id) {
+    public void deleteOneselfRepairDeviceOrder(Integer id) {
         String userId = RequestUtil.getCurrentUserId();
         //获取用户角色信息
         RepairOrder repairOrder = repairOrderMapper.selectByPrimaryKey(id);
-        if (repairOrder == null) {
+        String deviceId=repairOrder.getDeviceId();
+        List<DeviceStatusRecordDTO> deviceStatusRecordDTOs=deviceStatusRecordMapper.getByDeviceId(deviceId);
+        if (repairOrder.getId() == null) {
             throw new ResourceException(ResourceExceptionEnum.RESOURCE_NOT_FOUND, ResourceConstants.USER);
         }
         if (repairOrder.getApplyUserId().equals(userId)) {
+            if (!deviceStatusRecordDTOs.isEmpty()){
+                throw new BusinessException(BusinessExceptionEnum.DELETE_FAILED);
+            }
             repairOrderMapper.deleteByPrimaryKey(id);
-            return true;
         }
-        return false;
     }
 
     /**
@@ -95,8 +100,12 @@ public class RepairDeviceServiceImpl implements RepairDeviceService {
     @Override
     public void deleteAnyRepairDeviceOrder(Integer id) {
         RepairOrder repairOrder = repairOrderMapper.selectByPrimaryKey(id);
-        if (repairOrder == null) {
+        String deviceId=repairOrder.getDeviceId();
+        List<DeviceStatusRecordDTO> deviceStatusRecordDTOs=deviceStatusRecordMapper.getByDeviceId(deviceId);
+        if (repairOrder.getId() == null) {
             throw new ResourceException(ResourceExceptionEnum.RESOURCE_NOT_FOUND, ResourceConstants.USER);
+        }else if (!deviceStatusRecordDTOs.isEmpty()){
+            throw new BusinessException(BusinessExceptionEnum.DELETE_FAILED);
         }
         repairOrderMapper.deleteByPrimaryKey(id);
     }

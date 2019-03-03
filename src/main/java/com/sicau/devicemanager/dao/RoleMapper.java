@@ -47,4 +47,12 @@ public interface RoleMapper {
      * @return
      */
     List<RoleDTO> listRole();
+
+    /**
+     * 根据角色id逻辑删除角色
+     * @param roleId 角色id
+     * @author pettrgo
+     * @return
+     */
+    int logicDeleteById(@Param("roleId")String roleId);
 }

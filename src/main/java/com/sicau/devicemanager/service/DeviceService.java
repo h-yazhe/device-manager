@@ -7,6 +7,8 @@ import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
 import com.sicau.devicemanager.config.exception.VerificationException;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -21,6 +23,12 @@ public interface DeviceService {
      * @param deviceDTO 设备信息
      */
     void addDevice(DeviceDTO deviceDTO);
+
+    /**
+     * 批量添加设备
+     * @param inputStream 包含设备信息的输入流
+     */
+    void addDeviceList(InputStream inputStream) throws Exception;
 
     /**
      * 通过设备id更新设备信息
@@ -73,4 +81,6 @@ public interface DeviceService {
      * @param statusId
      */
     void updateRepairedStatusByDeviceId(String deviceId, Integer statusId);
+
+    void downloadTemplate(String url,String fileName,HttpServletResponse resp);
 }

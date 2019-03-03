@@ -3,7 +3,7 @@
 <mapper namespace="com.sicau.devicemanager.dao.BrandMapper">
 
     <insert id="insertBrand">
-        INSERT INTO brand (id, name)
+        INSERT IGNORE INTO brand (id, name)
         VALUES (#{id}, #{name})
     </insert>
 

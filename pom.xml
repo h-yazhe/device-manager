@@ -133,6 +133,19 @@
         <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
         <!--<scope>provided</scope>-->
         <!--</dependency>-->
+        <!--POI基础-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+        <!--解析excel文件-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
