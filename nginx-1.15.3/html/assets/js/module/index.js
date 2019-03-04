@@ -1200,10 +1200,10 @@ var adviceList=new Vue({
         download: function () {
             sendPost({
                 url: API.getApi(API.downloadTemplate),
-                success: function(response, status, request) {
+                 success: function(response, status, request) {
                     var disp = request.getResponseHeader('Content-Disposition');
                     if (disp && disp.search('attachment') != -1) {  //判断是否为文件
-                        var form = $('<form method="POST"  action="' + API.getApi(API.downloadTemplate) + '" enctype="multipart/form-data">' );
+                        var form = $('<form method="POST"  action="' + API.getApi(API.downloadTemplate) + '">' );
                         form.append($('<input type="hidden" >'));
                         $('body').append(form);
                        form.submit();
@@ -1214,23 +1214,35 @@ var adviceList=new Vue({
         //提交设备信息
         addList:function () {
             var form= new window.FormData();
-            form.append("file",$('#file')[0].files[0]);
-            sendPost({
-                url: API.getApi(API.addList),
-                data:form,
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    if (data.code == 0){
-                        alert("导入设备成功！");
-                        $("#add-device-list").modal('toggle');
-                        //刷新设备列表
-                        vueDeviceList.listDevice();
-                    }else {
-                        alert(data.msg);
-                    }
+            var hasFile = false;
+            $("input[name='file']").each(function(){
+                if($(this).val()!="") {
+                    hasFile = true;
+                    return false;
                 }
             });
+            if(hasFile) {
+                form.append("file",$('#file')[0].files[0]);
+                sendPost({
+                    url: API.getApi(API.addList),
+                    data:form,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        if (data.code == 0){
+                            alert("导入设备成功！");
+                            $("#add-device-list").modal('toggle');
+                            //刷新设备列表
+                            vueDeviceList.listDevice();
+                        }else {
+                            alert(data.msg);
+                        }
+                    }
+                });
+            }else {
+                alert("请先选择文件！")
+            }
+
         }
     }
 })
