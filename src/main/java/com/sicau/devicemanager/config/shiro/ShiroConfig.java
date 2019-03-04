@@ -63,7 +63,7 @@ public class ShiroConfig {
         filterRuleMap.put(CommonConstants.API_PREFIX + "/login", "anon");
         filterRuleMap.put(CommonConstants.API_PREFIX + "/interimToken", "anon");
 		filterRuleMap.put(CommonConstants.API_PREFIX + "/imageValidation/**", "anon");
-		filterRuleMap.put(CommonConstants.API_PREFIX + "/device/download-device-template/","anon");
+		filterRuleMap.put(CommonConstants.API_PREFIX + "/device/download-device-template","anon");
         // 所有rest请求通过我们自己的auth Filter
         filterRuleMap.put(CommonConstants.API_PREFIX + "/**", "statelessAuthc");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
