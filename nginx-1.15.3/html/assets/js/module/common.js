@@ -539,7 +539,7 @@ var SearchDevice = {
         "                    </select>"+
         "                        </div>\n" +
         "                        <div class=\"col-md-5\">\n" +
-        "                            检索关键词：<input v-model=\"queryParams.queryKey\" type=\"text\" style=\"width: 40%\" placeholder=\"从设备id，序列号，名称中检索\"/>\n" +
+        "                            检索关键词：<input v-model=\"queryParams.queryKey\" type=\"text\" style=\"width: 50%\" placeholder=\"从设备id，序列号，设备名称，地点名称中检索\"/>\n" +
         "                            <button @click=\"searchDevice\" type=\"button\" class=\"btn btn-success\">\n" +
         "                                查询\n" +
         "                            </button>\n" +
