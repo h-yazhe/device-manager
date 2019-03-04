@@ -7,7 +7,6 @@ import com.sicau.devicemanager.POJO.DO.DeviceModel;
 import com.sicau.devicemanager.config.exception.VerificationException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import sun.plugin2.util.SystemUtil;
 
 import java.io.File;
 import java.io.FileInputStream;

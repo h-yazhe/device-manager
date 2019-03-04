@@ -147,11 +147,11 @@ public class DeviceServiceImpl implements DeviceService {
 
                 device.setLocationId(rootLocationId);
                 //默认“自用”
-                device.setWorkNatureId("1");
+                device.setWorkNatureId("");
                 //默认
-                device.setCustodianId("1");
+                device.setCustodianId("");
                 //数量单位，默认为“个”
-                device.setAmountUnitId("1");
+                device.setAmountUnitId("");
                 device.setStatusId(DeviceStatusEnum.UNBOUND.getCode());
                 deviceMapper.insertSelective(device);
 
@@ -486,7 +486,7 @@ public class DeviceServiceImpl implements DeviceService {
             out = resp.getOutputStream();
 
             //4、获取服务端的excel文件，这里的path等于4.8中的path
-            in = new FileInputStream(new File(path));
+            in = DeviceServiceImpl.class.getClassLoader().getResourceAsStream(path);
 
             //5、输出文件
             int b;
