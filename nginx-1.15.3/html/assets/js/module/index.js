@@ -1200,11 +1200,13 @@ var adviceList=new Vue({
         download: function () {
             sendPost({
                 url: API.getApi(API.downloadTemplate),
-                success: function (data) {
-                    if (data.code == 0){
-                      console.log(data)
-                    }else {
-                        alert(data.msg);
+                success: function(response, status, request) {
+                    var disp = request.getResponseHeader('Content-Disposition');
+                    if (disp && disp.search('attachment') != -1) {  //判断是否为文件
+                        var form = $('<form method="POST"  action="' + API.getApi(API.downloadTemplate) + '" enctype="multipart/form-data">' );
+                        form.append($('<input type="hidden" >'));
+                        $('body').append(form);
+                       form.submit();
                     }
                 }
             });
