@@ -139,7 +139,7 @@
                         method: "get",
                         contentType: "application/json",
                         success: function (res) {
-                            vue.validationToken = res.token;
+                            vue.validationToken = res.data.token;
                         }
                     })
                 }

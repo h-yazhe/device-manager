@@ -57,11 +57,11 @@ public class LoginController {
 	 */
 	@ApiOperation(value = "用户获取临时token")
 	@GetMapping("/interimToken")
-	public Map<String, Object> getToken() {
+	public ResultVO getToken() {
 		String token = UUID.randomUUID().toString();
 		Map<String, Object> map = new HashMap<>(16);
 		map.put("token", token);
-		return map;
+		return ResultVOUtil.success(map);
 	}
 
 	/**
