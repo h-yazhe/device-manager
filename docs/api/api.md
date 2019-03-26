@@ -622,7 +622,7 @@ rootId | 要删除的根节点id | str | 1 |
 
 url:`delete-category-by-id{id}`
 data:
-```aidl
+```
 ```
 参数说明：
 
@@ -630,7 +630,7 @@ data:
 :-----: | :-------: | :-------: | :------: | :-------:
 
 返回值示例:
-```aidl
+```
        {
            "code": 0,
            "msg": "成功"
@@ -641,8 +641,7 @@ data:
 
 url:`category/{rootId}`
 data:
-```aidl
-     
+```  
 [
 	{
 		"id":"1234567",
@@ -668,7 +667,7 @@ id | 要传入的根树的id | str | 1 |
 List<Category>| 要传入的分类树的List集合 | Category | 1 | 
 
 返回值示例：
-```aidl
+```
 {
     "code": 0,
     "msg": "成功"
@@ -679,8 +678,7 @@ List<Category>| 要传入的分类树的List集合 | Category | 1 |
 
 url:`category`
 data:
-```aidl
-
+```
 [
 	{
 		"id":"1234567",
@@ -706,7 +704,7 @@ List<Category>| 要传入的分类树的List集合 | Category | 1 |
 
 
 返回值示例：
-```aidl
+```
 {
     "code": 0,
     "msg": "成功"
