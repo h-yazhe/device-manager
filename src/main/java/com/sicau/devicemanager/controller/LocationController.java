@@ -3,7 +3,6 @@ package com.sicau.devicemanager.controller;
 import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
-import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.ListTreeByPId;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
@@ -44,7 +43,7 @@ public class LocationController {
 
     @PostMapping("list-location-by-pid")
     @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
-    public ResultVO listLocationByPId(@Validated({ListTreeByPId.class, CommonValidatedGroup.LegalityGroup.class}) @RequestBody LocationVO locationVO) {
+    public ResultVO listLocationByPId(@Validated({ListTreeByPId.class}) @RequestBody LocationVO locationVO) {
         return ResultVOUtil.success(locationService.listLocationByPId(locationVO));
     }
 

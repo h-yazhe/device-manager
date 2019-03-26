@@ -152,35 +152,9 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<Location> listLocationByPId(LocationVO locationVO) {
-        int flag=0;
-        QueryPage queryPage = locationVO.getQueryPage();
-        UserDTO user = userService.getUserById(RequestUtil.getCurrentUserId());
-        String pid=locationVO.getParentId();
-        List<String> roleIds=new ArrayList<>();
-        List<String> locationIds= new ArrayList<>();
-        List<Location> locationList ;
-        List<RoleLocation> roleLocations;
-
-        roleIds=user.getRoleList().stream().map(Role::getId).collect(Collectors.toList());
-        roleLocations=roleLocationMapper.selectByRoleIds(roleIds);
-        locationIds=roleLocations.stream().map(RoleLocation::getLocationId).collect(Collectors.toList());
-        locationList = locationMapper.getAllChildIdByIds(locationIds);
-        //如果要访问的pid是空，则返回此用户所有能够管理的地址
-        if (pid != null && pid.isEmpty()) {
-            return locationMapper.getAllChildIdByIds(locationList.stream().map(Location::getId).collect(Collectors.toList()));
-        }
-        for (Location location:locationList){
-            if (location.getId().equals(pid)){
-                flag=1;
-                break;
-            }
-        }
-        //如果要访问的id不是用户角色所能管理的
-        if (flag==0){
-            throw new BusinessException(ResultEnum.UNAUTHORIZED);
-        }
-        PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(), "name");
-        return locationMapper.getChildrenById(pid);
+    	String pId = locationVO.getParentId();
+    	this.checkLocationInUserManagement(pId, RequestUtil.getCurrentUserId());
+        return locationMapper.getChildrenById(pId);
     }
 
 	@Override

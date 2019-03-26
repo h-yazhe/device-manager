@@ -36,7 +36,7 @@ public class Location {
     /**
      * 父级地点id
      */
-    @Pattern(regexp = "^\\d*$", message = "location的parentId只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
+    @Pattern(regexp = "^\\d*$", message = "location的parentId只能是数字",groups = ListTreeByPId.class)
     private String parentId;
 
     /**
