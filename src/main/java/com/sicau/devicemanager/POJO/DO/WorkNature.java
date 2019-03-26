@@ -9,7 +9,6 @@ import javax.validation.constraints.Pattern;
 public class WorkNature {
     private String id;
 
-    @NotNull(message = "名称不能为空", groups = {DeviceValidatedGroup.addWorkNature.class})
     private String name;
 
     public String getId() {
