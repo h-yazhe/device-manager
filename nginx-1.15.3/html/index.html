@@ -235,6 +235,7 @@
                                 <th>单价（元）</th>
                                 <th>状态</th>
                                 <th>操作</th>
+                                <th v-if="queryParams.statusId!=1">创建时间</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -259,6 +260,7 @@
                                     <button  type="button" class="btn btn-primary btn-xs" v-if="showDiscardButton(device.statusId)"  @click="showDetailsModal(device)">详情</button>
                                     <button  type="button" class="btn btn-danger btn-xs"  @click="deleteDevice(device.id)" v-if="showDeleteDeviceButton(device.statusId)">删除</button>
                                 </td>
+                                <td v-if="queryParams.statusId!=1">{{formatTime(device.createTime,device.statusId)}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -599,18 +601,18 @@
             <h4 class="modal-title">添加设备</h4>
          </div>
          <div class="modal-body">
-                <div class="form-group">
-                    <label for="input-category">分类</label>
-                    <select v-model="device.categoryIds[0]" id="input-category" class="form-control">
-                        <option disabled value="">请选择</option>
-                        <option v-for="category in selection.categoryList" v-bind:value="category.id">{{category.name}}</option>
-                    </select>
-                </div>
+             <!--<div class="form-group">-->
+                 <!--<label for="partition-tree">使用部门</label>-->
+                 <!--<div id="partition-tree"><button class="form-control" @click="shiftStatus" v-bind:value="id" style="float: left; z-index:1000;"><span class="left" style="padding-top: 0px;">{{name}}</span><span class="caret" style="float: right;padding-top: 9px;border-top-width: 6px;margin-top: 7px;"></span></button>-->
+                     <!--<div class="content" v-show="Show" style="position: absolute;width: 870px;top: 145px;"><partition-tree v-for="(item,i) in partitionList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select"></partition-tree></div>-->
+                 <!--</div>-->
+             <!--</div>-->
              <div class="form-group">
-                 <label for="partition-tree">使用部门</label>
-                 <div id="partition-tree"><button class="form-control" @click="shiftStatus" v-bind:value="id" style="float: left; z-index:1000;"><span class="left" style="padding-top: 0px;">{{name}}</span><span class="caret" style="float: right;padding-top: 9px;border-top-width: 6px;margin-top: 7px;"></span></button>
-                     <div class="content" v-show="Show" style="position: absolute;width: 870px;top: 145px;"><partition-tree v-for="(item,i) in partitionList" :index="i" :parent="item" :key="item.id" v-if="Show" class="select"></partition-tree></div>
-                 </div>
+                 <label for="input-partition">使用部门</label>
+                 <select v-model="device.locationId" id="input-partition" class="form-control">
+                     <option disabled value="">请选择</option>
+                     <option v-for="location in selection.locationList" v-bind:value="location.id">{{location.name}}</option>
+                 </select>
              </div>
                 <div class="form-group">
                     <label for="input-device-name">名称</label>
@@ -737,17 +739,13 @@
                                 </select>
                             </td>
                             <td>
-                                <select v-model="deviceModel">
+                                <select v-model="deviceModel.id">
                                     <option v-for="deviceModel in selection.deviceModelList" v-bind:value="deviceModel.name">{{deviceModel.name}}</option>
                                 </select>
                             </td>
                             <td><input type="text"  v-model="nationalId"></td>
                             <td><input type="text"  v-model="serialNumber"></td>
                             <td><input type="text" v-model="location" disabled="disabled"></td>
-                            <td><input type="text" v-model="time"></td>
-                            <td>
-                                <input type="text" v-bind:value="location" disabled="disabled">
-                            </td>
                             <td><input type="text" v-bind:value="time"></td>
                             <td>
                                 <select v-model="workNature">
