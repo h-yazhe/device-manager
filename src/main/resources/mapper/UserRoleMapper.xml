@@ -25,4 +25,10 @@
         where user_id=#{userId}
     </update>
 
+    <select id="selectUserRoleByRoleId" resultType="UserRole">
+        select *
+        from user_role
+        where user_id =#{roleId}
+    </select>
+
 </mapper>

@@ -55,7 +55,7 @@ public class WorkNatureServiceImpl implements WorkNatureService {
     @Override
     public void deleteWordNatureById(String id) {
         if (!deviceMapper.selectDeviceByWorkNatureId(id).isEmpty()){
-            throw new BusinessException(BusinessExceptionEnum.DELETE_FAILED);
+            throw new BusinessException("还存在设备是此工作性质，删除失败!");
         }
         workNatureMapper.deleteByPrimaryKey(id);
     }
