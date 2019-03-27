@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.sicau.devicemanager.POJO.DO.Device;
 import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.DO.Role;
 import com.sicau.devicemanager.POJO.DO.RoleLocation;
@@ -137,9 +138,16 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public String getLocationIdOfName(String name) {
-        return locationMapper.getIdByName(name);
+    public String getRootLocationIdOfDevice(String deviceId) {
+        String currentLocationId = deviceMapper.selectByPrimaryKey(deviceId).getLocationId();
+        String parentId = "";
+        while (currentLocationId!=null&&!currentLocationId.isEmpty()){
+            parentId = currentLocationId;
+            currentLocationId = locationMapper.getById(currentLocationId).getParentId();
+        }
+        return parentId;
     }
+
 
     @Override
     public List<LocationDTO> listLocationTree() {
