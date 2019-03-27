@@ -48,6 +48,12 @@ public class LocationController {
         return ResultVOUtil.success(locationService.listLocationByPId(locationVO));
     }
 
+    @PostMapping("get-locationid-by-name")
+    @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
+    public ResultVO getIdByName(@RequestBody LocationVO locationVO) {
+        return ResultVOUtil.success(locationService.getLocationIdOfName(locationVO.getName()));
+    }
+
     @ApiOperation("删除该节点为根的树")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")
     @PostMapping("delete-location-tree-by-Id/{rootId}")

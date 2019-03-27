@@ -137,6 +137,11 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    public String getLocationIdOfName(String name) {
+        return locationMapper.getIdByName(name);
+    }
+
+    @Override
     public List<LocationDTO> listLocationTree() {
         List<Location> locationList = locationMapper.selectAll();
         List<LocationDTO> locationDTOList = new ArrayList<>();

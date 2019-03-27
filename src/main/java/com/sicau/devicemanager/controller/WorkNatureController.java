@@ -26,34 +26,37 @@ public class WorkNatureController {
 
     /**
      * 添加一条工作性质的记录
+     *
      * @param workNature
      * @return
      */
     @PostMapping("/add")
-    @RequiresPermissions(ResourceConstants.NATURE+PermissionActionConstant.ADD)
-    public ResultVO addWorkNature(@Validated({DeviceValidatedGroup.addWorkNature.class})
-                                  @RequestBody WorkNature workNature) {
+    @RequiresPermissions(ResourceConstants.NATURE + PermissionActionConstant.ADD)
+    public ResultVO addWorkNature(
+            @RequestBody WorkNature workNature) {
         workNatureService.addWorkNature(workNature);
         return ResultVOUtil.success();
     }
 
     /**
      * 查询所有工作性质的记录
+     *
      * @return
      */
     @PostMapping("/listAll")
-    @RequiresPermissions(ResourceConstants.NATURE+PermissionActionConstant.GET)
+    @RequiresPermissions(ResourceConstants.NATURE + PermissionActionConstant.GET)
     public ResultVO listAllWorkNature(@RequestBody QueryPage queryPage) {
         return ResultVOUtil.success(workNatureService.findAllWorkNature(queryPage));
     }
 
     /**
      * 根据id删除工作性质
+     *
      * @return
      * @author Xiao W
      */
     @PostMapping("/delete/{id}")
-    @RequiresPermissions(ResourceConstants.NATURE+PermissionActionConstant.DELETE)
+    @RequiresPermissions(ResourceConstants.NATURE + PermissionActionConstant.DELETE)
     public ResultVO deleteById(@PathVariable String id) {
         workNatureService.deleteWordNatureById(id);
         return ResultVOUtil.success();
