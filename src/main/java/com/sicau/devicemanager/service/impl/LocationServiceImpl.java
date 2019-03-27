@@ -1,22 +1,14 @@
 package com.sicau.devicemanager.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.sicau.devicemanager.POJO.DO.Location;
-import com.sicau.devicemanager.POJO.DO.Role;
-import com.sicau.devicemanager.POJO.DO.RoleLocation;
 import com.sicau.devicemanager.POJO.DTO.LocationDTO;
-import com.sicau.devicemanager.POJO.DTO.QueryPage;
-import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
 import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.constants.BusinessExceptionEnum;
-import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.DeviceMapper;
 import com.sicau.devicemanager.dao.LocationMapper;
-import com.sicau.devicemanager.dao.RoleLocationMapper;
 import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.service.LocationService;
-import com.sicau.devicemanager.service.UserService;
 import com.sicau.devicemanager.util.KeyUtil;
 import com.sicau.devicemanager.util.web.RequestUtil;
 import org.springframework.beans.BeanUtils;
@@ -25,8 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Yazhe
@@ -40,10 +32,6 @@ public class LocationServiceImpl implements LocationService {
     private LocationMapper locationMapper;
     @Autowired
     private DeviceService deviceService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RoleLocationMapper roleLocationMapper;
     @Autowired
     private DeviceMapper deviceMapper;
     @Override

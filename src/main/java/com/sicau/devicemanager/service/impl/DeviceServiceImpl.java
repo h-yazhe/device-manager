@@ -408,9 +408,13 @@ public class DeviceServiceImpl implements DeviceService {
                     locationStr.append(item.getName());
                     locationStr.append("/");
                 }
+                // 返回设备所处的第一级地点id
+                deviceDTO.setLocationId(locationIds.get(0));
+                // 组装设备的地点路径
                 deviceDTO.setLocationStr(locationStr.append(location.getName()).toString());
             } else {
                 //否则为顶级区域
+				deviceDTO.setLocationId(location.getId());
                 deviceDTO.setLocationStr(location.getName());
             }
 
