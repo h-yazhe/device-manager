@@ -170,9 +170,9 @@ public class LocationServiceImpl implements LocationService {
         roleLocations=roleLocationMapper.selectByRoleIds(roleIds);
         locationIds=roleLocations.stream().map(RoleLocation::getLocationId).collect(Collectors.toList());
         locationList = locationMapper.getAllChildIdByIds(locationIds);
-        //如果要访问的pid是空，则返回此用户所有能够管理的地址
+        //如果要访问的pid是空，则返回第一级地址
         if (pid != null && pid.isEmpty()) {
-            return locationMapper.getAllChildIdByIds(locationList.stream().map(Location::getId).collect(Collectors.toList()));
+            return locationMapper.getLocationByPid(pid);
         }
         for (Location location:locationList){
             if (location.getId().equals(pid)){
