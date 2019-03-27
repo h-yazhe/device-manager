@@ -139,6 +139,9 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public String getRootLocationIdOfDevice(String deviceId) {
+        if (deviceId==null||deviceId.isEmpty()){
+            throw new BusinessException("设备id不能为空");
+        }
         String currentLocationId = deviceMapper.selectByPrimaryKey(deviceId).getLocationId();
         String parentId = "";
         while (currentLocationId!=null&&!currentLocationId.isEmpty()){
