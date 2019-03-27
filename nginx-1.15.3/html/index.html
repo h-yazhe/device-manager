@@ -229,13 +229,13 @@
                                 <th>国资编号</th>
                                 <th>序列号</th>
                                 <th>所在校区</th>
+                                <th v-if="queryParams.statusId!=1">创建时间</th>
                                 <th v-if="queryParams.statusId!=1">领用时间</th>
                                 <th>工作性质</th>
                                 <th>保管人</th>
                                 <th>单价（元）</th>
                                 <th>状态</th>
                                 <th>操作</th>
-                                <th v-if="queryParams.statusId!=1">创建时间</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -249,6 +249,7 @@
                                 <td>{{device.nationalId}}</td>
                                 <td>{{device.serialNumber}}</td>
                                 <td>{{device.locationStr.split('/')[0]}}</td>
+                                <td v-if="queryParams.statusId!=1">{{formatTime(device.createTime,device.statusId)}}</td>
                                 <td v-if="queryParams.statusId!=1">{{formatTime(device.useTime,device.statusId)}}</td>
                                 <td>{{device.workNature}}</td>
                                 <td>{{device.custodian}}</td>
@@ -260,7 +261,6 @@
                                     <button  type="button" class="btn btn-primary btn-xs" v-if="showDiscardButton(device.statusId)"  @click="showDetailsModal(device)">详情</button>
                                     <button  type="button" class="btn btn-danger btn-xs"  @click="deleteDevice(device.id)" v-if="showDeleteDeviceButton(device.statusId)">删除</button>
                                 </td>
-                                <td v-if="queryParams.statusId!=1">{{formatTime(device.createTime,device.statusId)}}</td>
                             </tr>
                             </tbody>
                         </table>
