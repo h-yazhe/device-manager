@@ -1,5 +1,6 @@
 package com.sicau.devicemanager.controller;
 
+import com.sicau.devicemanager.POJO.DO.Device;
 import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
@@ -45,6 +46,12 @@ public class LocationController {
     @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
     public ResultVO listLocationByPId(@Validated({ListTreeByPId.class}) @RequestBody LocationVO locationVO) {
         return ResultVOUtil.success(locationService.listLocationByPId(locationVO));
+    }
+
+    @PostMapping("get-device-root-locationid/{deviceId}")
+    @RequiresPermissions(ResourceConstants.LOCATION + PermissionActionConstant.GET)
+    public ResultVO getRootIdByDevice(@PathVariable("deviceId") String deviceId) {
+        return ResultVOUtil.success(locationService.getRootLocationIdOfDevice(deviceId));
     }
 
     @ApiOperation("删除该节点为根的树")

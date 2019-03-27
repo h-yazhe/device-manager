@@ -55,4 +55,11 @@ public interface RoleMapper {
      * @return
      */
     int logicDeleteById(@Param("roleId")String roleId);
+
+    /**
+     * 根据角色id查看角色权限关联信息
+     * @param roleId 角色id
+     * @return
+     */
+    List<RolePermission> selectRolePermissionByRoleId(@Param("roleId") String roleId);
 }

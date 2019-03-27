@@ -272,10 +272,10 @@ public class DeviceServiceImpl implements DeviceService {
 
         //分页查询
         QueryPage queryPage = deviceDTO.getQueryPage();
-        //默认id升序
+        //默认createTime降序
         if (queryPage.getOrderBy() == null) {
-            queryPage.setOrderBy("id");
-            queryPage.setOrderDirection("asc");
+            queryPage.setOrderBy("create_time");
+            queryPage.setOrderDirection("desc");
         }
         PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(),
                 queryPage.getOrderBy() + " " + queryPage.getOrderDirection());

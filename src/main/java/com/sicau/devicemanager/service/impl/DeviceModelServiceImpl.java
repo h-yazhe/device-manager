@@ -6,6 +6,8 @@ import com.sicau.devicemanager.POJO.DO.DeviceModel;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.constants.BusinessExceptionEnum;
+import com.sicau.devicemanager.controller.DeviceController;
+import com.sicau.devicemanager.dao.DeviceMapper;
 import com.sicau.devicemanager.dao.DeviceModelMapper;
 import com.sicau.devicemanager.service.DeviceModelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class DeviceModelServiceImpl implements DeviceModelService {
 
     @Autowired
     private DeviceModelMapper deviceModelMapper;
+
+    @Autowired
+    private DeviceMapper deviceMapper;
 
     @Override
     public boolean submitDeviceModel(DeviceModel deviceModel) {
@@ -52,6 +57,9 @@ public class DeviceModelServiceImpl implements DeviceModelService {
 
     @Override
     public void deleteDeviceModelById(int id) {
+        if (!deviceMapper.selectDeviceByModelId(id).isEmpty()){
+            throw new BusinessException("还存在设备正使用该商标，删除失败!");
+        }
         deviceModelMapper.deleteByPrimaryKey(id);
     }
 }

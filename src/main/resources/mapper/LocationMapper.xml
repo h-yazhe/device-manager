@@ -113,4 +113,10 @@
 		from location
 		where name = #{name}
 	</select>
+
+    <select id="getLocationByPid" resultType="com.sicau.devicemanager.POJO.DO.Location">
+        select *
+        from location
+        where parent_id=#{pid}
+    </select>
 </mapper>

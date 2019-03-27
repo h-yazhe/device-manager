@@ -91,4 +91,11 @@ public interface LocationMapper {
 	 * @return
 	 */
 	String getIdByName(@Param("name") String name);
+
+    /**
+     * 根据pid查询地点
+     * @param pid 父节点的id
+     * @return
+     */
+	List<Location> getLocationByPid(String pid);
 }
