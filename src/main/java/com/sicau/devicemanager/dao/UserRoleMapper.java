@@ -3,6 +3,8 @@ package com.sicau.devicemanager.dao;
 import com.sicau.devicemanager.POJO.DO.UserRole;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author BeFondOfTaro
  * Created at 10:45 2018/5/15
@@ -36,4 +38,11 @@ public interface UserRoleMapper {
      * @return
      */
     int updateUserRole(UserRole userRole);
+
+    /**
+     * 通过roleId查询是否存在用户与角色的关联信息
+     * @param roleId 角色id
+     * @return
+     */
+    List<UserRole> selectUserRoleByRoleId(String roleId);
 }

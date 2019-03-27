@@ -55,9 +55,8 @@ public class UserServiceImpl implements UserService {
     public Map<String, Object> listUser(QueryPage queryPage) {
         Map<String, Object> resMap = new HashMap<>(2);
         Integer startNum = (queryPage.getPageNum() - 1) * queryPage.getPageSize();
-        //如果用户被锁定了或者删除了就不再显示了；删除用户就是将locked和deleted都设为1
-        List<UserDTO> users = userMapper.listUser(startNum, startNum + queryPage.getPageSize())
-                .stream().filter((user -> !user.getLocked())).collect(Collectors.toList());
+        //如果用户被删除了就不再显示了；删除用户就是将deleted设为1
+        List<UserDTO> users = userMapper.listUser(startNum, startNum + queryPage.getPageSize());
         resMap.put("list", users);
         resMap.put("total", users.size());
         return resMap;
@@ -146,8 +145,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(String userId) {
         userMapper.deleteUserLogically(userId);
-/*        userMapper.deleteUserAuthByUserId(userId);
-        userRoleMapper.deleteUserRoleByUserId(userId);
-        userMapper.deleteUserById(userId);*/
     }
 }

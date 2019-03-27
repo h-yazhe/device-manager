@@ -220,8 +220,11 @@ var vueDeviceList = new Vue({
         },
         //删除设备
         deleteDevice:function (deviceId) {
+            var deleteDeviceId=new Array();
+            deleteDeviceId[0]=deviceId;
             sendPost({
-                url: API.getApi(API.deleteDevice) + deviceId,
+                url: API.getApi(API.deleteDevice),
+                data:deleteDeviceId,
                 success: function (data) {
                     console.log(data);
                     if (data.code == 0) {
@@ -419,6 +422,7 @@ var vueDeviceList = new Vue({
                 success: function (res) {
                     var data = res.data;
                     if (res.code == 0) {
+                        console.log(data)
                         vueDeviceList.addressList = data;
 
                     } else {
@@ -1013,14 +1017,14 @@ var addressVm = new Vue({
             sendPost({
                 url: API.getApi(API.AddAddress),
                 data: JSON.stringify(data),
-                success: function (res) {
-                    if (res.code == 0) {
+                success: function (data) {
+                    if (data.code == 0) {
                         alert("添加成功！");
                         $("#address-device").modal('toggle');
                         //刷新设备列表
                         vueDeviceList.addressDevice();
                     } else {
-                        alert("添加失败！");
+                        alert(data.msg);
                     }
                 }
             });

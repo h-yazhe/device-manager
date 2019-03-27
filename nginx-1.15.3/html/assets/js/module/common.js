@@ -58,7 +58,7 @@ var API = {
     //添加设备
     addDevice: "device/add",
     //删除设备
-    deleteDevice:"delete-device/",
+    deleteDevice:"delete-device",
     //获取添加设备的选项卡数据
     getDeviceSelection: "device/search-selection",
     //分发设备
@@ -542,9 +542,6 @@ var SearchDevice = {
         "                            检索关键词：<input v-model=\"queryParams.queryKey\" type=\"text\" style=\"width: 50%\" placeholder=\"从设备id，序列号，设备名称，地点名称中检索\"/>\n" +
         "                            <button @click=\"searchDevice\" type=\"button\" class=\"btn btn-success\">\n" +
         "                                查询\n" +
-        "                            </button>\n" +
-        "                            <button class=\"btn btn-warning\">\n" +
-        "                                清除查询条件\n" +
         "                            </button>\n" +
         "                        </div>\n" +
         "                    </div>",
