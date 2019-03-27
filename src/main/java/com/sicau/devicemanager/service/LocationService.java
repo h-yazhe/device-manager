@@ -41,7 +41,7 @@ public interface LocationService {
 	/**
 	 * 根据地点名获取id
 	 */
-	String getLocationIdOfName(String name);
+	String getRootLocationIdOfDevice(String deviceId);
 
     /**
      * 查询所有地点
