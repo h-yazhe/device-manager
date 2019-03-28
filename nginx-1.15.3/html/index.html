@@ -229,7 +229,7 @@
                                 <th>国资编号</th>
                                 <th>序列号</th>
                                 <th>所在校区</th>
-                                <th v-if="queryParams.statusId!=1">创建时间</th>
+                                <th v-if="queryParams.statusId!=1">入库时间</th>
                                 <th v-if="queryParams.statusId!=1">领用时间</th>
                                 <th>工作性质</th>
                                 <th>保管人</th>
@@ -256,7 +256,7 @@
                                 <td>{{device.unitPrice}}</td>
                                 <td>{{parseStatus(device.statusId)}}</td>
                                 <td class="noExl">
-                                    <button @click="showDistributeModal(device.id)" v-if="showDistributeButton(device.statusId)" class="btn btn-success btn-xs"><i class="fa fa-check"></i>分发</button>
+                                    <button @click="showDistributeModal(device.id,device.locationId)" v-if="showDistributeButton(device.statusId)" class="btn btn-success btn-xs"><i class="fa fa-check"></i>分发</button>
                                     <button @click="showDiscardModal(device.id)" v-if="showDiscardButton(device.statusId)" class="btn btn-danger btn-xs"><i class="fa fa-dropbox"></i>报废</button>
                                     <button  type="button" class="btn btn-primary btn-xs" v-if="showDiscardButton(device.statusId)"  @click="showDetailsModal(device)">详情</button>
                                     <button  type="button" class="btn btn-danger btn-xs"  @click="deleteDevice(device.id)" v-if="showDeleteDeviceButton(device.statusId)">删除</button>

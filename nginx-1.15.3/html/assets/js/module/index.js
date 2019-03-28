@@ -226,7 +226,6 @@ var vueDeviceList = new Vue({
                 url: API.getApi(API.deleteDevice),
                 data:deleteDeviceId,
                 success: function (data) {
-                    console.log(data);
                     if (data.code == 0) {
                         alert(data.msg);
                         vueDeviceList.listDevice();
@@ -422,7 +421,6 @@ var vueDeviceList = new Vue({
                 success: function (res) {
                     var data = res.data;
                     if (res.code == 0) {
-                        console.log(data)
                         vueDeviceList.addressList = data;
 
                     } else {
@@ -527,8 +525,12 @@ var vueDeviceList = new Vue({
         getDepartment: function (locationStr) {
             return locationStr.substring(locationStr.indexOf('/') + 1 ,locationStr.length);
         },
-        showDistributeModal: function (deviceId) {
+        showDistributeModal: function (deviceId,locationId) {
+
             deviceModalVm.distributeDeviceParam.deviceIdList.push(deviceId);
+            deviceModalVm.locationList.parentId=locationId;
+            deviceModalVm.currentId=locationId;
+            deviceModalVm.address();
             $('#distribute-device-modal').modal('toggle');
         },
         showDiscardModal: function (deviceId) {
@@ -694,8 +696,6 @@ var deviceDtail=new Vue({
                         self.selection.custodianList = res.data.custodianList;
                         //选项数据同样给到搜索设备组件中
                         vueDeviceList.searchSelection = $.extend(true,{},res.data);
-                        //选项数据复制给分发设备组件
-                        deviceModalVm.distributeSelection = $.extend(true,{},res.data);
                     }else {
                         console.error(res.msg);
                     }
@@ -832,18 +832,51 @@ var deviceModalVm = new Vue({
     el: '#device-modals',
     components: {
         'distribute-device': DistributeDevice,
-        'discard-device': DiscardDevice
+        'discard-device': DiscardDevice,
     },
     data: {
         //分发设备的参数
         distributeDeviceParam: {
             deviceIdList: [],
-            locationId: null
+            locationId: null,
         },
-        distributeSelection: $.extend(true,{},deviceSearchSelection),
+        distributeSelection:{
+            id:'',
+            name:'',
+            level:'',
+            parentId:'',
+            children: [
+            ],
+            active: true,//是否激活
+            expanded: false//是否展开
+        },
         discardDeviceParam: {
             deviceId: null
         }
+    },
+    methods:{
+        address:function(){
+            sendPost({
+                url:API.getApi(API.addressDevice),
+                data: JSON.stringify(deviceModalVm.locationList),
+                success: function (res) {
+                    var data = res.data;
+                    if (res.code == 0) {
+                        deviceModalVm.distributeSelection = data;
+                    } else {
+                        alert(res.msg);
+                    }
+                },
+                error: function (res) {
+                    var json = res.responseJSON;
+                    if (json != null && json.code == 3) {
+                        alert("登录异常！");
+                    } else {
+                        alert("网络连接异常！");
+                    }
+                }
+            });
+        },
     },
     template: '<div>'+
         '<distribute-device :distributeParam=\"distributeDeviceParam\" :selection=\"distributeSelection\"></distribute-device>'+

@@ -558,7 +558,7 @@ var SearchDevice = {
 //分发设备组件
 var DistributeDevice = {
     name: 'distribute-device',
-    props: ['distributeParam','selection'],
+    props: ['distributeParam','selection','currentId'],
     data: function () {
         return {
         }
@@ -594,10 +594,10 @@ var DistributeDevice = {
         '        </div>\n' +
         '        <div class="modal-body">\n' +
         '            <label for="distribute-location">请选择分发的部门</label>\n' +
-        '            <select v-model="distributeParam.locationId" id="distribute-location" class="form-control">\n' +
+        '            <select v-model="distributeParam.locationId"id="distribute-location" class="form-control">\n' +
         '                <option disabled :value="null">请选择</option>\n' +
-        '                <option v-for="location in selection.locationList" v-bind:value="location.id">{{location.name}}</option>\n' +
-        '            </select>\n' +
+        '                <option v-for="location in selection" v-bind:value="location.id">{{location.name}}</option>\n' +
+        '            </select>\n'+
         '        </div>\n' +
         '<div class="modal-footer">\n' +
         '            <button @click="distributeDevice" type="button" class="btn btn-success">确定</button>\n' +
