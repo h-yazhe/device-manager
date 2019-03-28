@@ -47,7 +47,11 @@
                permission_code,
                permission_name,
                required
-        FROM (select u.* from `user` u limit #{startNum},#{endNum}) u_temp
+        FROM (
+			 select u.* from `user` u
+			 where u.deleted = 0
+			 limit #{startNum},#{endNum}
+			 ) u_temp
                  JOIN `user_role` ON u_temp.id = user_role.user_id
                  JOIN role ON user_role.role_id = role.id
                  JOIN role_permission ON role.id = role_permission.role_id
@@ -112,7 +116,7 @@
 
     <delete id="deleteUserLogically">
         update `user`
-        set deleted=1,locked=1
+        set deleted=1
         WHERE id = #{userId}
     </delete>
 

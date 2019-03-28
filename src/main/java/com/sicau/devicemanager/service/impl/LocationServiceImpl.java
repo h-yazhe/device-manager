@@ -1,22 +1,14 @@
 package com.sicau.devicemanager.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.sicau.devicemanager.POJO.DO.Location;
-import com.sicau.devicemanager.POJO.DO.Role;
-import com.sicau.devicemanager.POJO.DO.RoleLocation;
 import com.sicau.devicemanager.POJO.DTO.LocationDTO;
-import com.sicau.devicemanager.POJO.DTO.QueryPage;
-import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
 import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.constants.BusinessExceptionEnum;
-import com.sicau.devicemanager.constants.ResultEnum;
 import com.sicau.devicemanager.dao.DeviceMapper;
 import com.sicau.devicemanager.dao.LocationMapper;
-import com.sicau.devicemanager.dao.RoleLocationMapper;
 import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.service.LocationService;
-import com.sicau.devicemanager.service.UserService;
 import com.sicau.devicemanager.util.KeyUtil;
 import com.sicau.devicemanager.util.web.RequestUtil;
 import org.springframework.beans.BeanUtils;
@@ -25,8 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Yazhe
@@ -40,10 +32,6 @@ public class LocationServiceImpl implements LocationService {
     private LocationMapper locationMapper;
     @Autowired
     private DeviceService deviceService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RoleLocationMapper roleLocationMapper;
     @Autowired
     private DeviceMapper deviceMapper;
     @Override
@@ -137,11 +125,6 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public String getLocationIdOfName(String name) {
-        return locationMapper.getIdByName(name);
-    }
-
-    @Override
     public List<LocationDTO> listLocationTree() {
         List<Location> locationList = locationMapper.selectAll();
         List<LocationDTO> locationDTOList = new ArrayList<>();
@@ -157,35 +140,9 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<Location> listLocationByPId(LocationVO locationVO) {
-        int flag=0;
-        QueryPage queryPage = locationVO.getQueryPage();
-        UserDTO user = userService.getUserById(RequestUtil.getCurrentUserId());
-        String pid=locationVO.getParentId();
-        List<String> roleIds=new ArrayList<>();
-        List<String> locationIds= new ArrayList<>();
-        List<Location> locationList ;
-        List<RoleLocation> roleLocations;
-
-        roleIds=user.getRoleList().stream().map(Role::getId).collect(Collectors.toList());
-        roleLocations=roleLocationMapper.selectByRoleIds(roleIds);
-        locationIds=roleLocations.stream().map(RoleLocation::getLocationId).collect(Collectors.toList());
-        locationList = locationMapper.getAllChildIdByIds(locationIds);
-        //如果要访问的pid是空，则返回此用户所有能够管理的地址
-        if (pid != null && pid.isEmpty()) {
-            return locationMapper.getAllChildIdByIds(locationList.stream().map(Location::getId).collect(Collectors.toList()));
-        }
-        for (Location location:locationList){
-            if (location.getId().equals(pid)){
-                flag=1;
-                break;
-            }
-        }
-        //如果要访问的id不是用户角色所能管理的
-        if (flag==0){
-            throw new BusinessException(ResultEnum.UNAUTHORIZED);
-        }
-        PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(), "name");
-        return locationMapper.getChildrenById(pid);
+    	String pId = locationVO.getParentId();
+    	this.checkLocationInUserManagement(pId, RequestUtil.getCurrentUserId());
+        return locationMapper.getChildrenById(pId);
     }
 
 	@Override

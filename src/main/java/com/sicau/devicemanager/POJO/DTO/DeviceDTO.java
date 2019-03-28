@@ -48,6 +48,8 @@ public class DeviceDTO extends Device {
     @Pattern(regexp = "^\\d*$", message = "categoryId只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String categoryId;
 
+    private String locationId;
+
     private String locationStr;
 
     @Valid
@@ -96,6 +98,16 @@ public class DeviceDTO extends Device {
      * 设备型号
      */
     private String deviceModel;
+
+	@Override
+	public String getLocationId() {
+		return locationId;
+	}
+
+	@Override
+	public void setLocationId(String locationId) {
+		this.locationId = locationId;
+	}
 
 	public DeviceQueryKeyCondition getDeviceQueryKeyCondition() {
 		return deviceQueryKeyCondition;

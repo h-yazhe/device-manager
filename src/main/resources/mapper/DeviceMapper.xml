@@ -436,4 +436,10 @@
         where work_nature_id=#{workNatureId} and deleted=0
     </select>
 
+    <select id="selectDeviceByModelId" parameterType="java.lang.Integer" resultType="com.sicau.devicemanager.POJO.DO.Device">
+        SELECT *
+        FROM device
+        where device_model_id = #{deviceModelId} and deleted=0
+    </select>
+
 </mapper>

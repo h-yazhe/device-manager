@@ -8,6 +8,7 @@ import com.sicau.devicemanager.POJO.DO.RolePermission;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.RoleAddDTO;
 import com.sicau.devicemanager.POJO.DTO.RoleDTO;
+import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.dao.RoleLocationMapper;
 import com.sicau.devicemanager.dao.RoleMapper;
 import com.sicau.devicemanager.dao.UserRoleMapper;
@@ -65,11 +66,15 @@ public class RoleServiceImpl implements RoleService {
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
     public void deleteRoleById(String roleId) {
-        //删除用户与角色的关联信息
-        userRoleMapper.deleteUserRoleByRoleId(roleId);
-        //删除角色权限关联信息
-        roleMapper.deleteRolePermissionByRoleId(roleId);
-        //删除角色
+//        //判断是否存在用户与角色的关联信息
+//        if (!userRoleMapper.selectUserRoleByRoleId(roleId).isEmpty()){
+//            throw new BusinessException("还存在角色是此的用户与角色关联信息，删除失败!");
+//        }
+//        //判断是否存在角色权限的关联信息
+//        if (!roleMapper.selectRolePermissionByRoleId(roleId).isEmpty()){
+//            throw new BusinessException("还存在角色是此的角色权限关联信息，删除失败!");
+//        }
+        //逻辑删除角色
         roleMapper.logicDeleteById(roleId);
     }
 

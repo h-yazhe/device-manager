@@ -38,11 +38,6 @@ public interface LocationService {
      */
     void updateLocationTree(String rootId, List<Location> locationList);
 
-	/**
-	 * 根据地点名获取id
-	 */
-	String getLocationIdOfName(String name);
-
     /**
      * 查询所有地点
      * @return

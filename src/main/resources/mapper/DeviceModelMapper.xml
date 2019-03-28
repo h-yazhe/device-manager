@@ -98,6 +98,7 @@
         SELECT name
         FROM device_model
     </select>
+
 	<select id="getIdByName" resultType="java.lang.String">
 		select id
 		from device_model
