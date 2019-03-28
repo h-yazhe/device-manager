@@ -18,7 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Yazhe
@@ -141,8 +144,45 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<Location> listLocationByPId(LocationVO locationVO) {
     	String pId = locationVO.getParentId();
-    	this.checkLocationInUserManagement(pId, RequestUtil.getCurrentUserId());
-        return locationMapper.getChildrenById(pId);
+		List<Location> userManagedLocations = getUserManagedLocations(RequestUtil.getCurrentUserId());
+		//参数父id是否在用户管理的区域中
+		boolean pIdInUserManagedLocations = false;
+		for (Location location : userManagedLocations) {
+			if (location.getId().equals(pId)) {
+				pIdInUserManagedLocations = true;
+			}
+		}
+		List<Location> resultLocations = new ArrayList<>();
+		// 如果是在用户管理的区域中，则返回所有子地点
+		if (pIdInUserManagedLocations) {
+			userManagedLocations.forEach(userManagedLocation -> {
+				if (userManagedLocation.getParentId().equals(pId)){
+					resultLocations.add(userManagedLocation);
+				}
+			});
+			return resultLocations;
+		}
+		// 如果不是在用户管理的区域中，返回最高级地点所处path上的子地点
+		Map<String, Location> childrenLocationMap = locationMapper.getChildrenById(pId).stream()
+				.collect(Collectors.toMap(Location::getId, location -> location));
+		// 用户管理的根地点
+		List<Location> userManagedRootLocations = locationMapper.getByUserId(RequestUtil.getCurrentUserId());
+		//最高级地点所处path上的地点id，包含最高级地点id
+		List<String> locationIdsInPath = new ArrayList<>();
+		userManagedRootLocations.forEach(userManagedRootLocation -> {
+			// 去除第一个斜杠
+			String path = userManagedRootLocation.getPath().substring(1);
+			locationIdsInPath.addAll(Arrays.asList(path.split("/")));
+			locationIdsInPath.add(userManagedRootLocation.getId());
+		});
+		//返回是最高级地点所处path上的地点的子地点
+		locationIdsInPath.forEach(locationIdInPath -> {
+			Location location = childrenLocationMap.get(locationIdInPath);
+			if (location != null) {
+				resultLocations.add(location);
+			}
+		});
+		return resultLocations;
     }
 
 	@Override

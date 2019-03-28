@@ -8,6 +8,7 @@ import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
+import com.sicau.devicemanager.POJO.VO.LocationVO;
 import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.config.exception.VerificationException;
 import com.sicau.devicemanager.constants.BusinessExceptionEnum;
@@ -329,8 +330,16 @@ public class DeviceServiceImpl implements DeviceService {
         DeviceSearchSelectionVO deviceSearchSelectionVO = new DeviceSearchSelectionVO();
         PageHelper.startPage(1, pageSize);
         deviceSearchSelectionVO.setCategoryList(categoryMapper.getChildrenById(""));
+
         PageHelper.startPage(1, pageSize);
-        deviceSearchSelectionVO.setLocationList(locationMapper.getByUserId(RequestUtil.getCurrentUserId()));
+		LocationVO locationVO = new LocationVO();
+		QueryPage queryPage = new QueryPage();
+		queryPage.setPageNum(1);
+		queryPage.setPageSize(pageSize);
+		locationVO.setQueryPage(queryPage);
+		locationVO.setParentId("");
+        deviceSearchSelectionVO.setLocationList(locationService.listLocationByPId(locationVO));
+
         PageHelper.startPage(1, pageSize);
         deviceSearchSelectionVO.setBrandList(brandMapper.listBrand());
         PageHelper.startPage(1, pageSize);

@@ -44,7 +44,13 @@ public interface LocationService {
      */
     List<LocationDTO> listLocationTree();
 
-    List<Location> listLocationByPId(LocationVO locationVO);
+	/**
+	 * 如果是在用户管理的区域中，则返回所有子地点
+	 * 如果不是在用户管理的区域中，返回最高级地点所处path上的子地点
+	 * @param locationVO
+	 * @return
+	 */
+	List<Location> listLocationByPId(LocationVO locationVO);
 
 	/**
 	 * 获取用户管理的区域
