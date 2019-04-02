@@ -3,7 +3,6 @@ package com.sicau.devicemanager.dao;
 
 import com.sicau.devicemanager.POJO.DO.Role;
 import com.sicau.devicemanager.POJO.DO.RolePermission;
-import com.sicau.devicemanager.POJO.DTO.RoleDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public interface RoleMapper {
      * 查询所有角色信息
      * @return
      */
-    List<RoleDTO> listRole();
+    List<Role> listRole();
 
     /**
      * 根据角色id逻辑删除角色

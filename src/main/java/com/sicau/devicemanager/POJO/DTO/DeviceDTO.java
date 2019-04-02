@@ -8,8 +8,6 @@ import com.sicau.devicemanager.POJO.DO.Category;
 import com.sicau.devicemanager.POJO.DO.Device;
 import com.sicau.devicemanager.POJO.DO.Location;
 import com.sicau.devicemanager.POJO.RO.DeviceQueryKeyCondition;
-import com.sicau.devicemanager.config.validation.ListStringConstraint;
-import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.QueryDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UpdateDeviceGroup;
@@ -17,7 +15,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +31,6 @@ public class DeviceDTO extends Device {
     private Brand brand;
 
     @NotNull(message = "brandId不能为空",groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
-    @Pattern(regexp = "^\\d*$", message = "brandId只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String brandId;
 
     /**
@@ -42,13 +38,9 @@ public class DeviceDTO extends Device {
      */
     @NotNull(message = "分类不能为空",groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
     @NotEmpty(message = "分类不能为空",groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
-    @ListStringConstraint(regexp = "\\d+", message = "categoryIds只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private List<String> categoryIds;
 
-    @Pattern(regexp = "^\\d*$", message = "categoryId只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String categoryId;
-
-    private String locationId;
 
     private String locationStr;
 
@@ -98,16 +90,6 @@ public class DeviceDTO extends Device {
      * 设备型号
      */
     private String deviceModel;
-
-	@Override
-	public String getLocationId() {
-		return locationId;
-	}
-
-	@Override
-	public void setLocationId(String locationId) {
-		this.locationId = locationId;
-	}
 
 	public DeviceQueryKeyCondition getDeviceQueryKeyCondition() {
 		return deviceQueryKeyCondition;

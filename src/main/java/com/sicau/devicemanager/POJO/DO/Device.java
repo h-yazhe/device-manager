@@ -3,14 +3,12 @@ package com.sicau.devicemanager.POJO.DO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
-import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UpdateDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.AddDeviceGroup;
+import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.UpdateDeviceGroup;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
@@ -46,11 +44,9 @@ public class Device {
     private Date useTime;
 
     @NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
-    @Pattern(regexp = "^$|^\\d{19}$", message = "workNatureId只能是19位的数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String workNatureId;
 
     @NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
-    @Pattern(regexp = "\\d+", message = "custodianId只能是数字",groups = CommonValidatedGroup.LegalityGroup.class)
     private String custodianId;
 
     @NotNull(groups = {AddDeviceGroup.class, UpdateDeviceGroup.class})
@@ -209,8 +205,12 @@ public class Device {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+        	return true;
+		}
+        if (o == null || getClass() != o.getClass()) {
+        	return false;
+		}
         Device device = (Device) o;
         return Objects.equals(name, device.name) &&
                 Objects.equals(nationalId, device.nationalId) &&

@@ -8,10 +8,8 @@ import com.sicau.devicemanager.POJO.DO.RolePermission;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.RoleAddDTO;
 import com.sicau.devicemanager.POJO.DTO.RoleDTO;
-import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.dao.RoleLocationMapper;
 import com.sicau.devicemanager.dao.RoleMapper;
-import com.sicau.devicemanager.dao.UserRoleMapper;
 import com.sicau.devicemanager.service.RoleService;
 import com.sicau.devicemanager.util.KeyUtil;
 import com.sicau.devicemanager.util.web.RequestUtil;
@@ -31,8 +29,6 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleMapper roleMapper;
-    @Autowired
-    private UserRoleMapper userRoleMapper;
     @Autowired
     private RoleLocationMapper roleLocationMapper;
 
@@ -96,6 +92,8 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public PageInfo<RoleDTO> listRole(QueryPage queryPage) {
         PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(), "create_time");
-        return new PageInfo<>(roleMapper.listRole());
+		PageInfo<Role> rolePageInfo = new PageInfo<>(roleMapper.listRole());
+
+		return null;
     }
 }

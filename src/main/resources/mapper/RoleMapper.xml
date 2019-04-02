@@ -18,13 +18,6 @@
         </collection>
     </resultMap>
 
-    <sql id="listRole">
-        SELECT role.*, p.id p_id, p.resource, p.resource_name, p.permission_code, p.permission_name, p.required
-        FROM role
-                 JOIN role_permission ON role.id = role_permission.role_id
-                 JOIN permission p ON role_permission.permission_id = p.id
-    </sql>
-
     <insert id="insertRole">
         INSERT INTO `role` (`id`, `name`)
         VALUES (#{id}, #{name});
@@ -47,8 +40,8 @@
         WHERE role_id = #{roleId}
     </delete>
 
-    <select id="listRole" resultMap="RoleDTO">
-        <include refid="listRole"/>
+    <select id="listRole" resultType="com.sicau.devicemanager.POJO.DO.Role">
+        select * from role
     </select>
 
     <update id="logicDeleteById">
