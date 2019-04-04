@@ -15,4 +15,11 @@ public interface PermissionMapper {
      * @return
      */
     List<Permission> listPermission();
+
+	/**
+	 * 根据id查询权限
+	 * @param ids
+	 * @return
+	 */
+	List<Permission> listPermissionInIds(List<String> ids);
 }

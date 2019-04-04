@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResultVO {
+public class ResultVO<T> {
     /**
      * 错误码.
      */
@@ -24,9 +24,9 @@ public class ResultVO {
     /**
      * 具体内容.
      */
-    private Object data;
+    private T data;
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 

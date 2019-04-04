@@ -1,8 +1,11 @@
 package com.sicau.devicemanager.controller;
 
+import com.sicau.devicemanager.POJO.DO.Permission;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.RoleAddDTO;
+import com.sicau.devicemanager.POJO.RO.RoleRequest;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
+import com.sicau.devicemanager.config.validation.group.ValidationGroup.RoleIdGroup;
 import com.sicau.devicemanager.constants.CommonConstants;
 import com.sicau.devicemanager.constants.HttpParamKey;
 import com.sicau.devicemanager.constants.PermissionActionConstant;
@@ -14,6 +17,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -87,4 +91,28 @@ public class RoleController {
     public ResultVO listRole(@Valid @RequestBody QueryPage queryPage) {
         return ResultVOUtil.success(roleService.listRole(queryPage));
     }
+
+	/**
+	 * 查询所有权限
+	 * @return
+	 */
+	@ApiImplicitParams(
+			@ApiImplicitParam(name = HttpParamKey.TOKEN, paramType = "header", required = true)
+	)
+	@GetMapping(ResourceConstants.PERMISSION)
+	@RequiresPermissions(ResourceConstants.PERMISSION + PermissionActionConstant.GET)
+	public ResultVO listPermission() {
+		return ResultVOUtil.success(roleService.listPermission());
+	}
+
+	/**
+	 * 根据角色id查询权限
+	 * @param roleRequest
+	 * @return
+	 */
+	@PostMapping(ResourceConstants.PERMISSION + "/list-by-role-id")
+	@RequiresPermissions(ResourceConstants.PERMISSION + PermissionActionConstant.GET)
+	public ResultVO<List<Permission>> listPermissionByRoleId(@Validated(RoleIdGroup.class) @RequestBody RoleRequest roleRequest) {
+		return ResultVOUtil.success(roleService.listPermissionByRoleId(roleRequest));
+	}
 }

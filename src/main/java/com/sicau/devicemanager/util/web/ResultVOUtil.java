@@ -12,8 +12,8 @@ import com.sicau.devicemanager.constants.ResultEnum;
  */
 public class ResultVOUtil {
 
-    public static ResultVO success(Object object) {
-        ResultVO resultVO = new ResultVO();
+    public static<T> ResultVO<T> success(T object) {
+        ResultVO<T> resultVO = new ResultVO<>();
         resultVO.setData(object);
         resultVO.setCode(ResultEnum.SUCCESS.getCode());
         resultVO.setMsg(ResultEnum.SUCCESS.getMessage());

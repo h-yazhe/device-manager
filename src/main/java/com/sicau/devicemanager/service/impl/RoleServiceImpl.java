@@ -2,12 +2,15 @@ package com.sicau.devicemanager.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sicau.devicemanager.POJO.DO.Permission;
 import com.sicau.devicemanager.POJO.DO.Role;
 import com.sicau.devicemanager.POJO.DO.RoleLocation;
 import com.sicau.devicemanager.POJO.DO.RolePermission;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.RoleAddDTO;
 import com.sicau.devicemanager.POJO.DTO.RoleDTO;
+import com.sicau.devicemanager.POJO.RO.RoleRequest;
+import com.sicau.devicemanager.dao.PermissionMapper;
 import com.sicau.devicemanager.dao.RoleLocationMapper;
 import com.sicau.devicemanager.dao.RoleMapper;
 import com.sicau.devicemanager.service.RoleService;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author BeFondOfTaro
@@ -31,6 +35,8 @@ public class RoleServiceImpl implements RoleService {
     private RoleMapper roleMapper;
     @Autowired
     private RoleLocationMapper roleLocationMapper;
+	@Autowired
+	private PermissionMapper permissionMapper;
 
     @Transactional(rollbackFor = RuntimeException.class)
     @Override
@@ -90,10 +96,20 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public PageInfo<RoleDTO> listRole(QueryPage queryPage) {
+    public PageInfo<Role> listRole(QueryPage queryPage) {
         PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(), "create_time");
-		PageInfo<Role> rolePageInfo = new PageInfo<>(roleMapper.listRole());
-
-		return null;
+		return new PageInfo<>(roleMapper.listRole());
     }
+
+	@Override
+	public List<Permission> listPermission() {
+		return permissionMapper.listPermission();
+	}
+
+	@Override
+	public List<Permission> listPermissionByRoleId(RoleRequest roleRequest) {
+		List<String> roleIdList = roleMapper.selectRolePermissionByRoleId(roleRequest.getRoleId()).stream()
+				.map(RolePermission::getPermissionId).collect(Collectors.toList());
+		return permissionMapper.listPermissionInIds(roleIdList);
+	}
 }

@@ -1,9 +1,11 @@
 package com.sicau.devicemanager.service;
 
 import com.github.pagehelper.PageInfo;
+import com.sicau.devicemanager.POJO.DO.Permission;
+import com.sicau.devicemanager.POJO.DO.Role;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.RoleAddDTO;
-import com.sicau.devicemanager.POJO.DTO.RoleDTO;
+import com.sicau.devicemanager.POJO.RO.RoleRequest;
 
 import java.util.List;
 
@@ -37,5 +39,18 @@ public interface RoleService {
      * @param queryPage 分页参数
      * @return
      */
-    PageInfo<RoleDTO> listRole(QueryPage queryPage);
+    PageInfo<Role> listRole(QueryPage queryPage);
+
+	/**
+	 * 查询所有权限
+	 * @return
+	 */
+	List<Permission> listPermission();
+
+	/**
+	 * 根据角色id查询权限
+	 * @param roleRequest
+	 * @return
+	 */
+	List<Permission> listPermissionByRoleId(RoleRequest roleRequest);
 }
