@@ -42,6 +42,7 @@
 
     <select id="listRole" resultType="com.sicau.devicemanager.POJO.DO.Role">
         select * from role
+		where deleted = 0
     </select>
 
     <update id="logicDeleteById">
