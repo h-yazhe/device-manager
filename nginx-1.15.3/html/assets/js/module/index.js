@@ -528,7 +528,7 @@ var vueDeviceList = new Vue({
         showDistributeModal: function (deviceId,locationId) {
 
             deviceModalVm.distributeDeviceParam.deviceIdList.push(deviceId);
-            deviceModalVm.locationList.parentId=locationId;
+            deviceModalVm.locationRequesst.parentId=locationId;
             deviceModalVm.currentId=locationId;
             deviceModalVm.address();
             $('#distribute-device-modal').modal('toggle');
@@ -840,6 +840,13 @@ var deviceModalVm = new Vue({
             deviceIdList: [],
             locationId: null,
         },
+		locationRequesst: {
+			parentId: '',
+			queryPage: {
+				pageNum: 1,
+				pageSize: 40
+			}
+		},
         distributeSelection:{
             id:'',
             name:'',
@@ -858,7 +865,7 @@ var deviceModalVm = new Vue({
         address:function(){
             sendPost({
                 url:API.getApi(API.addressDevice),
-                data: JSON.stringify(deviceModalVm.locationList),
+                data: JSON.stringify(deviceModalVm.locationRequesst),
                 success: function (res) {
                     var data = res.data;
                     if (res.code == 0) {
