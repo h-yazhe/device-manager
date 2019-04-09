@@ -1,7 +1,9 @@
 package com.sicau.devicemanager.controller;
 
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.DTO.UserRegisterDTO;
+import com.sicau.devicemanager.POJO.VO.PageResult;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
@@ -62,7 +64,7 @@ public class UserController {
     )
     @PostMapping("list-by-page")
     @RequiresPermissions(ResourceConstants.USER + PermissionActionConstant.GET)
-    public ResultVO listUser(@RequestBody @Valid QueryPage queryPage) {
+    public ResultVO<PageResult<UserDTO>> listUser(@RequestBody @Valid QueryPage queryPage) {
         return ResultVOUtil.success(userService.listUser(queryPage));
     }
 

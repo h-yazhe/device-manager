@@ -162,6 +162,7 @@
     </select>
 	<select id="countUser" resultType="java.lang.Integer">
 		select count(1) from `user`
+		where deleted = 0
 	</select>
 	<select id="getIdByUsername" resultType="java.lang.String">
 		select id

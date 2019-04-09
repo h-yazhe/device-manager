@@ -3,6 +3,7 @@ package com.sicau.devicemanager.service;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.DTO.UserRegisterDTO;
+import com.sicau.devicemanager.POJO.VO.PageResult;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public interface UserService {
      * @param queryPage 分页参数
      * @return
      */
-    Map<String,Object> listUser(QueryPage queryPage);
+    PageResult<UserDTO> listUser(QueryPage queryPage);
 
     /**
      * 根据用户id查询密码(不需要暴露endpoint)

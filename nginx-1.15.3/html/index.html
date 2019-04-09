@@ -651,7 +651,7 @@
                     <label for="input-custodian">保管人</label>
                     <select v-model="device.custodianId" id="input-custodian" class="form-control">
                         <option disabled value="">请选择</option>
-                        <option v-for="custodian in selection.custodianList" v-bind:value="custodian.id">{{custodian.name}}</option>
+                        <option v-for="custodian in selection.custodianList" v-bind:value="custodian.id">{{custodian.realName}}</option>
                     </select>
                 </div>
                 <div class="form-group">

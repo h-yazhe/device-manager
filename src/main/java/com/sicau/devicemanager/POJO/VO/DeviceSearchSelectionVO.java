@@ -1,6 +1,7 @@
 package com.sicau.devicemanager.POJO.VO;
 
 import com.sicau.devicemanager.POJO.DO.*;
+import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -23,5 +24,5 @@ public class DeviceSearchSelectionVO {
 
     private List<WorkNature> workNatureList;
 
-    private List<Custodian> custodianList;
+    private List<UserDTO> custodianList;
 }

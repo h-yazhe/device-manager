@@ -3,10 +3,7 @@ package com.sicau.devicemanager.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DO.*;
-import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
-import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
-import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
-import com.sicau.devicemanager.POJO.DTO.QueryPage;
+import com.sicau.devicemanager.POJO.DTO.*;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
 import com.sicau.devicemanager.config.exception.BusinessException;
@@ -16,6 +13,7 @@ import com.sicau.devicemanager.constants.DeviceStatusEnum;
 import com.sicau.devicemanager.dao.*;
 import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.service.LocationService;
+import com.sicau.devicemanager.service.UserService;
 import com.sicau.devicemanager.util.DateUtil;
 import com.sicau.devicemanager.util.KeyUtil;
 import com.sicau.devicemanager.util.XssfUtil;
@@ -25,10 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.crypto.KeyGenerator;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.net.URLEncoder;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,13 +53,13 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private BrandMapper brandMapper;
     @Autowired
-    private CustodianMapper custodianMapper;
-    @Autowired
     private DeviceModelMapper deviceModelMapper;
     @Autowired
     private WorkNatureMapper workNatureMapper;
     @Autowired
     private LocationService locationService;
+    @Autowired
+	private UserService userService;
 
     @Override
     public void addDevice(DeviceDTO deviceDTO) {
@@ -342,8 +340,8 @@ public class DeviceServiceImpl implements DeviceService {
 
         PageHelper.startPage(1, pageSize);
         deviceSearchSelectionVO.setBrandList(brandMapper.listBrand());
-        PageHelper.startPage(1, pageSize);
-        deviceSearchSelectionVO.setCustodianList(custodianMapper.listAll());
+        // 保管人列表即为用户列表
+        deviceSearchSelectionVO.setCustodianList(userService.listUser(queryPage).getList());
         PageHelper.startPage(1, pageSize);
         deviceSearchSelectionVO.setDeviceModelList(deviceModelMapper.listAll());
         PageHelper.startPage(1, pageSize);

@@ -6,6 +6,7 @@ import com.sicau.devicemanager.POJO.DO.UserRole;
 import com.sicau.devicemanager.POJO.DTO.QueryPage;
 import com.sicau.devicemanager.POJO.DTO.UserDTO;
 import com.sicau.devicemanager.POJO.DTO.UserRegisterDTO;
+import com.sicau.devicemanager.POJO.VO.PageResult;
 import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.config.exception.ResourceException;
 import com.sicau.devicemanager.constants.BusinessExceptionEnum;
@@ -52,14 +53,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> listUser(QueryPage queryPage) {
-        Map<String, Object> resMap = new HashMap<>(2);
+    public PageResult<UserDTO> listUser(QueryPage queryPage) {
         Integer startNum = (queryPage.getPageNum() - 1) * queryPage.getPageSize();
         //如果用户被删除了就不再显示了；删除用户就是将deleted设为1
         List<UserDTO> users = userMapper.listUser(startNum, startNum + queryPage.getPageSize());
-        resMap.put("list", users);
-        resMap.put("total", users.size());
-        return resMap;
+		PageResult<UserDTO> pageResult = new PageResult<>();
+		pageResult.setList(users);
+		pageResult.setTotal(userMapper.countUser().longValue());
+        return pageResult;
     }
 
     @Override
