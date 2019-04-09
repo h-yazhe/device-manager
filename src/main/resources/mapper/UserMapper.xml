@@ -169,5 +169,14 @@
 		from `user`
 		where username = #{username}
 	</select>
+	<select id="listUserInIds" resultType="com.sicau.devicemanager.POJO.DTO.UserDTO">
+		select id, username, real_name realName
+		from `user`
+		where id in (
+				<foreach collection="list" item="id" separator=",">
+					#{id}
+				</foreach>
+				)
+	</select>
 
 </mapper>

@@ -29,6 +29,8 @@ public interface UserMapper {
      */
     List<UserDTO> listUser(@Param("startNum") Integer startNum, @Param("endNum") Integer endNum);
 
+    List<UserDTO> listUserInIds(List<String> ids);
+
 	/**
 	 * 统计用户总数
 	 * @return

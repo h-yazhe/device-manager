@@ -2,6 +2,7 @@ package com.sicau.devicemanager.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.sicau.devicemanager.POJO.DO.*;
 import com.sicau.devicemanager.POJO.DTO.*;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
@@ -60,6 +61,8 @@ public class DeviceServiceImpl implements DeviceService {
     private LocationService locationService;
     @Autowired
 	private UserService userService;
+    @Autowired
+	private UserMapper userMapper;
 
     @Override
     public void addDevice(DeviceDTO deviceDTO) {
@@ -279,7 +282,22 @@ public class DeviceServiceImpl implements DeviceService {
         PageHelper.startPage(queryPage.getPageNum(), queryPage.getPageSize(),
                 queryPage.getOrderBy() + " " + queryPage.getOrderDirection());
         List<DeviceDTO> deviceDTOList = deviceMapper.getDeviceInfo(deviceDTO);
-        //组装地点和分类信息
+        if (deviceDTOList.size() == 0) {
+        	return new PageInfo<>(Lists.newArrayList());
+		}
+		// 查询保管人信息（返回真实姓名）
+		List<String> userIds = deviceDTOList.stream().map(Device::getCustodianId).distinct().collect(Collectors.toList());
+		Map<String, UserDTO> userDTOMap = userMapper.listUserInIds(userIds).stream()
+				.collect(Collectors.toMap(UserDTO::getId, user -> user));
+		deviceDTOList.forEach(item -> {
+			UserDTO userDTO = userDTOMap.get(item.getCustodianId());
+			if (userDTO == null) {
+				item.setCustodian(null);
+			}else {
+				item.setCustodian(userDTO.getRealName());
+			}
+		});
+		//组装地点和分类信息
         setLocationAndCategory(deviceDTOList);
         return new PageInfo<>(deviceDTOList);
     }

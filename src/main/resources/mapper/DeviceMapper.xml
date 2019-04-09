@@ -29,6 +29,7 @@
         <result column="use_time" property="useTime" jdbcType="TIMESTAMP"/>
         <result column="unit_price" property="unitPrice" jdbcType="DECIMAL"/>
         <result column="status_id" property="statusId" jdbcType="INTEGER"/>
+		<result column="custodian_id" property="custodianId" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="wn_name" property="workNature" jdbcType="VARCHAR"/>
@@ -67,16 +68,14 @@
 
     <sql id="getDeviceInfo">
         SELECT d.id,d.`name`, d.national_id,d.serial_number,d.use_time,d.unit_price,
-        description, d.status_id,d.create_time,d.update_time,
-        wn.name wn_name,cus.name cus_name,amo.name amo_name,
+		d.custodian_id, d.description, d.status_id,d.create_time,d.update_time,
+        wn.name wn_name,amo.name amo_name,
         bra.id bra_id, bra.name bra_name,dm.name dm_name,
         l.id l_id,l.parent_id l_pid,l.name l_name,l.level l_level,l.path l_path,
         c.id c_id,c.parent_id c_pid,c.name c_name,c.level c_level,c.path c_path
         FROM device d
         LEFT JOIN work_nature wn
         ON d.work_nature_id = wn.id
-        LEFT JOIN custodian cus
-        ON d.custodian_id = cus.id
         left join device_model dm
         on dm.id = d.device_model_id
         LEFT JOIN amount_unit amo
@@ -97,7 +96,7 @@
                 and wn.id = #{workNatureId}
             </if>
             <if test="custodianId!=null">
-                and cus.id = #{custodianId}
+                and d.custodian_id = #{custodianId}
             </if>
             <if test="deviceModelId!=null">
                 and dm.id = #{deviceModelId}
