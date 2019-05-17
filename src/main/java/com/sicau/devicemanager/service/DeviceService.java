@@ -4,7 +4,9 @@ import com.github.pagehelper.PageInfo;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
+import com.sicau.devicemanager.POJO.RO.DeviceRequest;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
+import com.sicau.devicemanager.POJO.VO.DeviceVO;
 import com.sicau.devicemanager.config.exception.VerificationException;
 
 import javax.servlet.http.HttpServletResponse;
@@ -48,6 +50,13 @@ public interface DeviceService {
      * @return
      */
     PageInfo<DeviceDTO> listDevice(DeviceDTO deviceDTO) throws VerificationException;
+
+	/**
+	 * 根据设备id查询设备详细信息
+	 * @param deviceRequest
+	 * @return
+	 */
+	DeviceVO getDeviceDetailById(DeviceRequest deviceRequest);
 
     /**
      * 分发设备

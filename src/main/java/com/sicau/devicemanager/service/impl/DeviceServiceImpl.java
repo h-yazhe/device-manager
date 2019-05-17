@@ -5,8 +5,11 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.sicau.devicemanager.POJO.DO.*;
 import com.sicau.devicemanager.POJO.DTO.*;
+import com.sicau.devicemanager.POJO.RO.DeviceRequest;
 import com.sicau.devicemanager.POJO.VO.DeviceSearchSelectionVO;
+import com.sicau.devicemanager.POJO.VO.DeviceVO;
 import com.sicau.devicemanager.POJO.VO.LocationVO;
+import com.sicau.devicemanager.POJO.converter.DeviceConverterUtil;
 import com.sicau.devicemanager.config.exception.BusinessException;
 import com.sicau.devicemanager.config.exception.VerificationException;
 import com.sicau.devicemanager.constants.BusinessExceptionEnum;
@@ -302,7 +305,14 @@ public class DeviceServiceImpl implements DeviceService {
         return new PageInfo<>(deviceDTOList);
     }
 
-    @Override
+	@Override
+	public DeviceVO getDeviceDetailById(DeviceRequest deviceRequest) {
+    	Device device = deviceMapper.selectByPrimaryKey(deviceRequest.getId());
+    	DeviceVO deviceVO = DeviceConverterUtil.convertDo2Vo(device);
+		return null;
+	}
+
+	@Override
     public void distributeDevice(DistributeDeviceDTO distributeDeviceDTO) {
         //查询设备原始记录
         List<Device> devices = deviceMapper.getByIds(distributeDeviceDTO.getDeviceIdList());

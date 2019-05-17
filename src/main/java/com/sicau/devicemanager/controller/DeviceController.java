@@ -4,6 +4,7 @@ import com.sicau.devicemanager.POJO.DO.Device;
 import com.sicau.devicemanager.POJO.DTO.DeviceDTO;
 import com.sicau.devicemanager.POJO.DTO.DeviceStatusRecordDTO;
 import com.sicau.devicemanager.POJO.DTO.DistributeDeviceDTO;
+import com.sicau.devicemanager.POJO.RO.DeviceRequest;
 import com.sicau.devicemanager.POJO.VO.ResultVO;
 import com.sicau.devicemanager.config.exception.SystemException;
 import com.sicau.devicemanager.config.exception.VerificationException;
@@ -11,6 +12,7 @@ import com.sicau.devicemanager.config.validation.group.CommonValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.DistributeDeviceGroup;
 import com.sicau.devicemanager.config.validation.group.DeviceValidatedGroup.GetDeviceStatusRecordByDeviceId;
+import com.sicau.devicemanager.config.validation.group.ValidationGroup.DeviceIdGroup;
 import com.sicau.devicemanager.constants.*;
 import com.sicau.devicemanager.service.DeviceService;
 import com.sicau.devicemanager.util.JWTUtil;
@@ -72,6 +74,14 @@ public class DeviceController {
         return ResultVOUtil.success(deviceService.listDevice(deviceDTO));
 
     }
+
+	@ApiOperation("根据设备id查询设备详细信息")
+    @PostMapping("get-device-detail-by-id")
+	@RequiresPermissions(ResourceConstants.DEVICE + PermissionActionConstant.GET)
+    public ResultVO getDeviceDetailById(@Validated(DeviceIdGroup.class)
+										@RequestBody DeviceRequest deviceRequest) {
+    	return ResultVOUtil.success(deviceService.getDeviceDetailById(deviceRequest));
+	}
 
     @ApiOperation("删除设备")
     @ApiImplicitParam(name = HttpParamKey.TOKEN, required = true, paramType = "header")

@@ -7,4 +7,7 @@ package com.sicau.devicemanager.config.validation.group;
 public interface ValidationGroup {
 
 	interface RoleIdGroup{}
+
+	interface DeviceIdGroup{
+	}
 }
